@@ -1,5 +1,5 @@
 #
-#requires installation of java, ideally OpenJDK version 11
+#Requires existing installation of java, ideally OpenJDK version 11
 #  
 
 
