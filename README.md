@@ -1,5 +1,5 @@
 # Metacity
 
-- [] Konverze CityGML do CityJSONu
-- [] Segmentace modelu
-- [] Struktura pro streamování modelu
+- [ ] Konverze CityGML do CityJSONu
+- [ ] Segmentace modelu
+- [ ] Struktura pro streamování modelu
