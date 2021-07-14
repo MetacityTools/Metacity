@@ -31,6 +31,11 @@ citygml: toolsfolder javacheck
 		cd ..; \
 	)
 
+
+earcut: toolsfolder
+	
+
+
 javacheck:
 	@-( \
 		java -version 2>&1 >/dev/null | grep "java version\|openjdk version"; \
