@@ -20,7 +20,13 @@
 3. rozřezání geometrie na dlaždice a export do interní reprezentace
 
 ## Reprezentace segmentované geometrie
+Po zpracování je v adresáři `segmented` podadresář `geometry`. V tomto adresáři se nachází dělení segmentované geometrie dle dostupných LOD. 
 
+- každý objekt může mít více LOD a ještě navíc více geometrií pro každé LOD
+
+Triangulace pomocí self-deplynutého `earcut` balíčku https://github.com/MetacitySuite/earcut-python 
+
+Metacity reprezentuje zvlášť 
 - geometrie
 - meta
 - semantika

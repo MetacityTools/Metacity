@@ -4,9 +4,15 @@ import sys
 import os
 import shutil
 import json
+from collections import defaultdict
 from pprint import pprint
 from typing import Dict
 from tqdm import tqdm
+import numpy as np
+from earcut.earcut import earcut
+import itertools
+import matplotlib.pyplot as plt
+
 
 usage = ("Segment CityJSON into tiles,"
          "exports the tiles as smaller CJ files"
@@ -45,8 +51,6 @@ def parse_args():
         return process_args()
 
 
-
-
 input_file, output_dir = parse_args()
 print(input_file, output_dir)
 
@@ -64,30 +68,117 @@ with open(input_file, "r") as file:
     contents = json.load(file)
 
 objects: Dict[str, Dict] = contents["CityObjects"] 
+vertices = np.array(contents["vertices"]) 
 
 for oid, value in tqdm(objects.items()):
     output_path = os.path.join(objects_path, oid + ".json")
     with open(output_path, "w") as file:
         json.dump(value, file, indent=4)
 
-present_lods = {}
+present_lods = defaultdict(lambda: 0)
+stats = defaultdict(lambda: 0)
+present_gtypes = defaultdict(lambda: 0)
+
+
+
 file_names = [f for f in os.listdir(objects_path) if os.path.isfile(os.path.join(objects_path, f))]
 
 
-for file_name in file_names:
+
+for file_name in tqdm(file_names):
     with open(os.path.join(objects_path, file_name), "r") as file:
         building = json.load(file)
 
         for geom in building["geometry"]:
             lod = geom["lod"]
-            if lod in present_lods:
-                present_lods[lod] += 1
-            else :
-                present_lods[lod] = 1
+            gtype = geom["type"]
+            
+            present_lods[lod] += 1
+            present_gtypes[gtype] += 1
 
-#TODO 
-#pomoci earcut vytriangulovat geometrii
+            #generate destination directory
+            geometry_lod_path = os.path.join(geometry_path, str(lod))
+            if not os.path.exists(geometry_lod_path):
+                os.mkdir(geometry_lod_path)
 
+            #load geometry file
+            geometry_lod_file_path = os.path.join(geometry_lod_path, file_name)
+            if os.path.exists(geometry_lod_file_path):
+                geometry_file = open(geometry_lod_file_path, "a")
+                geometries = json.load(geometry_file)
+                stats["merged"] += 1 
+            else:
+                geometry_file = open(geometry_lod_file_path, "a")
+                geometries = []
+                stats["loaded"] += 1
+
+
+            #process geometry
+            if gtype.lower() == 'multipoint':
+                pass
+                #self._processPoints(geom['boundaries'], vnp, vertices)
+                #gtype = pipeline.elements.MetaPoints.gtype
+
+            elif gtype.lower() == 'multilinestring':
+                pass
+                #for line in geom['boundaries']:
+                #    self._processLine(line, vnp, vertices)
+                #gtype = pipeline.elements.MetaLines.gtype
+
+            elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
+                for surface in geom['boundaries']:
+                    
+                    if len(surface) > 1:
+                        face_lengths = [ len(h) for h in surface ]
+                        hole_indicies = itertools.accumulate(face_lengths)
+                    else:
+                        hole_indicies = None
+                    
+                    coords = np.array(surface).flatten()
+
+                    #fig = plt.figure()
+                    #ax = fig.add_subplot(projection='3d')
+                    #ax.scatter(vertices[coords][:, 0], vertices[coords][:, 1], vertices[coords][:, 2])
+                    #plt.show()
+
+                    face_vertices = vertices[coords]
+                    triangle_indices = earcut(face_vertices.flatten(), hole_indicies, 3)
+
+                    print(coords, hole_indicies, face_vertices, triangle_indices)
+                    quit()
+                    #TODO načítání a assembly geometrie
+
+
+                #for face in geom['boundaries']:
+                #    self._processFace(cj, face, vnp, vertices)
+                #gtype = pipeline.elements.MetaObject.gtype
+
+            elif gtype.lower() == 'solid':
+                pass
+                #for shell in geom['boundaries']:
+                #    for face in shell:
+                #        self._processFace(cj, face, vnp, vertices)
+                #gtype = pipeline.elements.MetaObject.gtype
+
+            elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
+                pass
+                #for solid in geom['boundaries']:
+                #    for shell in solid:
+                #        for face in shell:
+                #            self._processFace(cj, face, vnp, vertices)
+
+
+
+            geometries.append(geom)
+
+            #save merged geometries
+            json.dump(geometries, geometry_file)
+
+
+
+print(present_lods)
+print(stats)
+print(present_gtypes)
         
 
 
