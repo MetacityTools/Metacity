@@ -9,9 +9,40 @@ from pprint import pprint
 from typing import Dict
 from tqdm import tqdm
 import numpy as np
-from earcut.earcut import earcut
+from earcut.earcut import earcut, normal
 import itertools
 import matplotlib.pyplot as plt
+import base64
+
+
+
+def buffers_to_stl(flat_vertices, flat_normals, filename):
+    with open(filename, "w") as file:
+        file.write("solid model\n")
+
+        verts = flat_vertices.reshape((flat_vertices.shape[0] // 9, 3, 3))
+        norms = flat_normals.reshape((flat_normals.shape[0] // 9, 3, 3))
+
+        #center = np.average(np.average(verts, axis=1), axis=0)
+        #verts = verts - center
+
+        for tri_vertex, tri_normal in zip(verts, norms):
+            file.write(f"    facet normal ")
+            for i in range(3):
+                file.write(str(tri_normal[0][i]))
+                file.write(" ")
+            file.write("\n")
+
+            file.write(f"       outer loop\n")
+            for i in range(3):
+                file.write(f"          vertex {tri_vertex[i][0]} {tri_vertex[i][1]} {tri_vertex[i][2]}\n")            
+            file.write(f"       endloop\n")
+            file.write(f"    endfacet\n")
+
+        file.write("solid model\n")
+
+
+
 
 
 usage = ("Segment CityJSON into tiles,"
@@ -88,6 +119,9 @@ file_names = [f for f in os.listdir(objects_path) if os.path.isfile(os.path.join
 for file_name in tqdm(file_names):
     with open(os.path.join(objects_path, file_name), "r") as file:
         building = json.load(file)
+        export_vertices = []
+        export_normals = []
+
 
         for geom in building["geometry"]:
             lod = geom["lod"]
@@ -126,27 +160,56 @@ for file_name in tqdm(file_names):
                 #gtype = pipeline.elements.MetaLines.gtype
 
             elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
+                face_lengths = []
+
+                #process boundaries
                 for surface in geom['boundaries']:
                     
+                    #manage holes for triangulation
                     if len(surface) > 1:
                         face_lengths = [ len(h) for h in surface ]
                         hole_indicies = itertools.accumulate(face_lengths)
                     else:
                         hole_indicies = None
                     
-                    coords = np.array(surface).flatten()
+                    #triangulate
+                    vertex_indices = np.array(surface).flatten()
+                    face_vertices = vertices[vertex_indices].flatten()
+                    face_normal, normal_exists = normal(face_vertices)
+                    
+                    if not normal_exists:
+                        raise Exception("The model contains face which couldn't be triangulated.")          
+                    
+                    triangle_indices = earcut(face_vertices, hole_indicies, 3)
+                    
+                    #transform to buffers
+                    buffer_vertices = np.array(vertices[vertex_indices][triangle_indices])
+                    buffer_normals = np.repeat([face_normal], len(triangle_indices), axis=0)    
+                    face_lengths.append(len(triangle_indices))
+                    export_vertices.append(buffer_vertices)
+                    export_normals.append(buffer_normals)
 
-                    #fig = plt.figure()
-                    #ax = fig.add_subplot(projection='3d')
-                    #ax.scatter(vertices[coords][:, 0], vertices[coords][:, 1], vertices[coords][:, 2])
-                    #plt.show()
 
-                    face_vertices = vertices[coords]
-                    triangle_indices = earcut(face_vertices.flatten(), hole_indicies, 3)
+                #process semntaics
+                if 'semantics' in geom:
+                    semantic_indices = geom['semantics']
+                    assert len(semantic_indices) == len(face_lengths)
+                    semantics = np.repeat(np.array(semantic_indices, dtype=np.int32), face_lengths)
+                else:
+                    semantics = np.zeros((np.sum(face_lengths),), dtype=np.int32)
 
-                    print(coords, hole_indicies, face_vertices, triangle_indices)
-                    quit()
-                    #TODO načítání a assembly geometrie
+                #process parsed multisurface
+                v = np.concatenate(export_vertices).flatten() 
+                n = np.concatenate(export_normals).flatten()
+
+                geometries.append({
+                    'vertices': base64.b64encode(np.concatenate(export_vertices).flatten().astype(np.float32)),
+                    'normals': base64.b64encode(np.concatenate(export_normals).flatten().astype(np.float32)),
+                    'semantics': base64.b64encode(np.array(semantics).astype(np.int32)),
+                })
+
+                quit()
+
 
 
                 #for face in geom['boundaries']:
@@ -166,10 +229,6 @@ for file_name in tqdm(file_names):
                 #    for shell in solid:
                 #        for face in shell:
                 #            self._processFace(cj, face, vnp, vertices)
-
-
-
-            geometries.append(geom)
 
             #save merged geometries
             json.dump(geometries, geometry_file)
