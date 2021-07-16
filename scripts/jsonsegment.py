@@ -116,122 +116,128 @@ file_names = [f for f in os.listdir(objects_path) if os.path.isfile(os.path.join
 
 
 
-for file_name in tqdm(file_names):
-    with open(os.path.join(objects_path, file_name), "r") as file:
-        building = json.load(file)
-        export_vertices = []
-        export_normals = []
+def process_building_geometry(geometry_path, file, vertices, present_lods, stats, present_gtypes, file_name):
+    building = json.load(file)
+    export_vertices = []
+    export_normals = []
 
 
-        for geom in building["geometry"]:
-            lod = geom["lod"]
-            gtype = geom["type"]
+    for geom in building["geometry"]:
+        lod = geom["lod"]
+        gtype = geom["type"]
             
-            present_lods[lod] += 1
-            present_gtypes[gtype] += 1
+        present_lods[lod] += 1
+        present_gtypes[gtype] += 1
 
-            #generate destination directory
-            geometry_lod_path = os.path.join(geometry_path, str(lod))
-            if not os.path.exists(geometry_lod_path):
-                os.mkdir(geometry_lod_path)
+        #generate destination directory
+        geometry_lod_path = os.path.join(geometry_path, str(lod))
+        if not os.path.exists(geometry_lod_path):
+            os.mkdir(geometry_lod_path)
 
-            #load geometry file
-            geometry_lod_file_path = os.path.join(geometry_lod_path, file_name)
-            if os.path.exists(geometry_lod_file_path):
-                geometry_file = open(geometry_lod_file_path, "a")
-                geometries = json.load(geometry_file)
-                stats["merged"] += 1 
-            else:
-                geometry_file = open(geometry_lod_file_path, "a")
-                geometries = []
-                stats["loaded"] += 1
+        #load geometry file
+        geometry_lod_file_path = os.path.join(geometry_lod_path, file_name)
+        if os.path.exists(geometry_lod_file_path):
+            geometry_file = open(geometry_lod_file_path, "a")
+            geometries = json.load(geometry_file)
+            stats["merged"] += 1 
+        else:
+            geometry_file = open(geometry_lod_file_path, "a")
+            geometries = []
+            stats["loaded"] += 1
 
 
-            #process geometry
-            if gtype.lower() == 'multipoint':
-                pass
-                #self._processPoints(geom['boundaries'], vnp, vertices)
-                #gtype = pipeline.elements.MetaPoints.gtype
+        #process geometry
+        if gtype.lower() == 'multipoint':
+            pass
+            #self._processPoints(geom['boundaries'], vnp, vertices)
+            #gtype = pipeline.elements.MetaPoints.gtype
 
-            elif gtype.lower() == 'multilinestring':
-                pass
-                #for line in geom['boundaries']:
-                #    self._processLine(line, vnp, vertices)
-                #gtype = pipeline.elements.MetaLines.gtype
+        elif gtype.lower() == 'multilinestring':
+            pass
+            #for line in geom['boundaries']:
+            #    self._processLine(line, vnp, vertices)
+            #gtype = pipeline.elements.MetaLines.gtype
 
-            elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
-                face_lengths = []
+        elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
+            face_lengths = []
 
-                #process boundaries
-                for surface in geom['boundaries']:
-                    
-                    #manage holes for triangulation
-                    if len(surface) > 1:
-                        face_lengths = [ len(h) for h in surface ]
-                        hole_indicies = itertools.accumulate(face_lengths)
-                    else:
-                        hole_indicies = None
+            #process boundaries
+            for surface in geom['boundaries']:
+                #manage holes for triangulation
+                if len(surface) > 1:
+                    face_lengths = [ len(h) for h in surface ]
+                    hole_indicies = itertools.accumulate(face_lengths)
+                else:
+                    hole_indicies = None
                     
                     #triangulate
-                    vertex_indices = np.array(surface).flatten()
-                    face_vertices = vertices[vertex_indices].flatten()
-                    face_normal, normal_exists = normal(face_vertices)
+                vertex_indices = np.array(surface).flatten()
+                face_vertices = vertices[vertex_indices].flatten()
+                face_normal, normal_exists = normal(face_vertices)
                     
-                    if not normal_exists:
-                        raise Exception("The model contains face which couldn't be triangulated.")          
+                if not normal_exists:
+                    raise Exception("The model contains face which couldn't be triangulated.")          
                     
-                    triangle_indices = earcut(face_vertices, hole_indicies, 3)
+                triangle_indices = earcut(face_vertices, hole_indicies, 3)
                     
-                    #transform to buffers
-                    buffer_vertices = np.array(vertices[vertex_indices][triangle_indices])
-                    buffer_normals = np.repeat([face_normal], len(triangle_indices), axis=0)    
-                    face_lengths.append(len(triangle_indices))
-                    export_vertices.append(buffer_vertices)
-                    export_normals.append(buffer_normals)
+                #transform to buffers
+                buffer_vertices = np.array(vertices[vertex_indices][triangle_indices])
+                buffer_normals = np.repeat([face_normal], len(triangle_indices), axis=0)    
+                face_lengths.append(len(triangle_indices))
+                export_vertices.append(buffer_vertices)
+                export_normals.append(buffer_normals)
 
 
-                #process semntaics
-                if 'semantics' in geom:
-                    semantic_indices = geom['semantics']
-                    assert len(semantic_indices) == len(face_lengths)
-                    semantics = np.repeat(np.array(semantic_indices, dtype=np.int32), face_lengths)
-                else:
-                    semantics = np.zeros((np.sum(face_lengths),), dtype=np.int32)
+            #process semntaics
+            if 'semantics' in geom:
+                semantic_indices = geom['semantics']
+                assert len(semantic_indices) == len(face_lengths)
+                semantics = np.repeat(np.array(semantic_indices, dtype=np.int32), face_lengths)
+            else:
+                semantics = np.zeros((np.sum(face_lengths),), dtype=np.int32)
 
-                #process parsed multisurface
-                v = np.concatenate(export_vertices).flatten() 
-                n = np.concatenate(export_normals).flatten()
+            #process parsed multisurface
+            v = np.concatenate(export_vertices).flatten() 
+            n = np.concatenate(export_normals).flatten()
 
-                geometries.append({
+            geometries.append({
                     'vertices': base64.b64encode(np.concatenate(export_vertices).flatten().astype(np.float32)),
                     'normals': base64.b64encode(np.concatenate(export_normals).flatten().astype(np.float32)),
                     'semantics': base64.b64encode(np.array(semantics).astype(np.int32)),
                 })
 
-                quit()
+            ##TODO WIP
+            quit()
 
 
 
-                #for face in geom['boundaries']:
-                #    self._processFace(cj, face, vnp, vertices)
-                #gtype = pipeline.elements.MetaObject.gtype
+            #for face in geom['boundaries']:
+            #    self._processFace(cj, face, vnp, vertices)
+            #gtype = pipeline.elements.MetaObject.gtype
 
-            elif gtype.lower() == 'solid':
-                pass
-                #for shell in geom['boundaries']:
-                #    for face in shell:
-                #        self._processFace(cj, face, vnp, vertices)
-                #gtype = pipeline.elements.MetaObject.gtype
+        elif gtype.lower() == 'solid':
+            pass
+            #for shell in geom['boundaries']:
+            #    for face in shell:
+            #        self._processFace(cj, face, vnp, vertices)
+            #gtype = pipeline.elements.MetaObject.gtype
 
-            elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
-                pass
-                #for solid in geom['boundaries']:
-                #    for shell in solid:
-                #        for face in shell:
-                #            self._processFace(cj, face, vnp, vertices)
+        elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
+            pass
+            #for solid in geom['boundaries']:
+            #    for shell in solid:
+            #        for face in shell:
+            #            self._processFace(cj, face, vnp, vertices)
 
-            #save merged geometries
-            json.dump(geometries, geometry_file)
+        #save merged geometries
+        json.dump(geometries, geometry_file)
+
+
+
+
+for file_name in tqdm(file_names):
+    with open(os.path.join(objects_path, file_name), "r") as file:
+        process_building_geometry(geometry_path, file, vertices, present_lods, stats, present_gtypes, file_name)
 
 
 
