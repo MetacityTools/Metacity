@@ -1,30 +1,30 @@
 #!/usr/bin/python3
 
 import itertools
-import sys
-import os
 import json
+import os
+from argparse import ArgumentParser
 from typing import Dict
-from tqdm import tqdm
+
 import numpy as np
+from tqdm import tqdm
+
+from geometry.geometry import process_multisurface
 from helpers.dirtree import DirectoryTreePaths
 from helpers.stats import Statistics
 from models.model import MetacityModel
-from geometry.geometry import process_multisurface
-from argparse import ArgumentParser
-
 
 
 usage = ("Segment CityJSON file, "
          "exports segments according to LOD and geometry type"
          "into directory 'segmented'.")
 
-parser = ArgumentParser(description=usage)
-parser.add_argument('cj_input_file', type=str, help='CityJSON input file')
-parser.add_argument('output_dir', type=str, help='Output directory, will be emptied if alreay exists')
 
 
 def process_args():
+    parser = ArgumentParser(description=usage)
+    parser.add_argument('cj_input_file', type=str, help='CityJSON input file')
+    parser.add_argument('output_dir', type=str, help='Output directory, will be emptied if alreay exists')
     args = parser.parse_args()
     input_file = args.cj_input_file
     output_folder = args.output_folder
@@ -87,54 +87,54 @@ def get_semantics(geometry_object):
 
 
 
+if __name__ == "__main__":
+    input_file, output_dir = process_args()
+    paths = create_output_dir_tree(output_dir)
+    objects, vertices, shift = load_cj_file(input_file)
+    create_config(paths, shift)
+    object_file_paths = segment_objects_into_files(paths.objects, objects)
+    stats = Statistics()
 
-input_file, output_dir = process_args()
-paths = create_output_dir_tree(output_dir)
-objects, vertices, shift = load_cj_file(input_file)
-create_config(paths, shift)
-object_file_paths = segment_objects_into_files(paths.objects, objects)
-stats = Statistics()
+    for object_file_path in tqdm(object_file_paths):
+        model = MetacityModel()
+        model.load_cityjson_object(object_file_path)
 
-for object_file_path in tqdm(object_file_paths):
-    model = MetacityModel()
-    model.load_cityjson_object(object_file_path)
+        for geometry_object in model.geometry:
+            lod, gtype = get_geometry_stats(geometry_object)
+            stats.parsed_geometry(lod, gtype)
+            semantics = get_semantics(geometry_object)
+            boundries = geometry_object['boundaries']
 
-    for geometry_object in model.geometry:
-        lod, gtype = get_geometry_stats(geometry_object)
-        stats.parsed_geometry(lod, gtype)
-        semantics = get_semantics(geometry_object)
-        boundries = geometry_object['boundaries']
+            #process geometry
+            if gtype.lower() == 'multipoint':
+                pass
+                #self._processPoints(geom['boundaries'], vnp, vertices)
 
-        #process geometry
-        if gtype.lower() == 'multipoint':
-            pass
-            #self._processPoints(geom['boundaries'], vnp, vertices)
+            elif gtype.lower() == 'multilinestring':
+                pass
+                #for line in geom['boundaries']:
+                #    self._processLine(line, vnp, vertices)
 
-        elif gtype.lower() == 'multilinestring':
-            pass
-            #for line in geom['boundaries']:
-            #    self._processLine(line, vnp, vertices)
-
-        elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
-            surface = process_multisurface(vertices, boundries, semantics)
-            model.facets.add_surface(surface, lod)
-
-        elif gtype.lower() == 'solid':
-            for shell, semantics in itertools.zip_longest(boundries, semantics):
-                surface = process_multisurface(vertices, shell, semantics)
+            elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
+                surface = process_multisurface(vertices, boundries, semantics)
                 model.facets.add_surface(surface, lod)
 
-        elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
-            for solid in boundries:
-                for shell in solid:
-                    surface = process_multisurface(vertices, boundries, semantics)
+            elif gtype.lower() == 'solid':
+                for shell, semantics in itertools.zip_longest(boundries, semantics):
+                    surface = process_multisurface(vertices, shell, semantics)
                     model.facets.add_surface(surface, lod)
 
-    model.export(paths)
+            elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
+                pass
+                #requires fix for multisolid semantics
+                #for solid in boundries:
+                #    for shell, semantics in itertools.zip_longest(boundries, semantics):
+                #        surface = process_multisurface(vertices, shell, semantics)
+                #        model.facets.add_surface(surface, lod)
 
-
-
-print(stats)
+        model.export(paths)
+        
+    print(stats)
 
         
 
