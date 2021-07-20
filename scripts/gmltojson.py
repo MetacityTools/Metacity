@@ -3,10 +3,14 @@
 import sys
 import subprocess
 import os
+from argparse import ArgumentParser
+
 
 usage = ("Converts CityGML into CityJSON:"
          "gmltojson.py [input file]")
 
+parser = ArgumentParser(description=usage)
+parser.add_argument('citygml_input_file', type=str, help='CityGML file to be converted')
 
 def readable(file):
     print(file)
@@ -25,18 +29,11 @@ def generate_output_path(input_file):
 
 
 def process_args():
-    input_arg = sys.argv[1]
+    args = parser.parse_args()
+    input_arg = args.citygml_input_file
     input_file = os.path.join(os.getcwd(), input_arg)
-    output_file = generate_output_path(input_file) #sys.argv[2]
+    output_file = generate_output_path(input_file)
     return input_file, output_file
-
-
-def parse_args():
-    if len(sys.argv) < 2:
-        print(usage)
-        return None, None
-    else:
-        return process_args()
 
 
 def check_inputs(input_file, output_file):
@@ -73,11 +70,8 @@ def run_conversion(input_file, gmltools_path):
 
 
 if __name__ == "__main__":
-    input_file, output_file = parse_args()
-    if input_file is None:
-        quit()
+    input_file, output_file = process_args()
     check_inputs(input_file, output_file)
     gmltools_path = find_tools_path(__file__)
     return_code = run_conversion(input_file, gmltools_path)
-    #print(return_code)
 

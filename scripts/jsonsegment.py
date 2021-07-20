@@ -11,12 +11,16 @@ from helpers.dirtree import DirectoryTreePaths
 from helpers.stats import Statistics
 from models.model import MetacityModel
 from geometry.geometry import process_multisurface
+from argparse import ArgumentParser
 
 
-usage = ("Segment CityJSON into tiles,"
-         "exports the tiles as smaller CJ files"
-         "into directory 'segmented'."
-         "jsonsegment.py [input file]")
+
+usage = ("Segment CityJSON file, "
+         "exports segments according to LOD and geometry type"
+         "into directory 'segmented'.")
+
+parser = ArgumentParser(description=usage)
+parser.add_argument('cj_input_file', type=str, help='CityJSON input file')
 
 
 def generate_output_dir(input_file):
@@ -25,18 +29,11 @@ def generate_output_dir(input_file):
 
 
 def process_args():
-    input_arg = sys.argv[1]
+    args = parser.parse_args()
+    input_arg = args.cj_input_file
     input_file = os.path.join(os.getcwd(), input_arg)
     output_folder = generate_output_dir(input_file) #sys.argv[2]
     return input_file, output_folder
-
-
-def parse_args():
-    if len(sys.argv) < 2:
-        print(usage)
-        return None, None
-    else:
-        return process_args()
 
 
 def create_output_dir_tree(output_dir):
@@ -83,10 +80,7 @@ def get_semantics(geometry_object):
 
 
 
-input_file, output_dir = parse_args()
-if input_file == None:
-    quit()
-
+input_file, output_dir = process_args()
 paths = create_output_dir_tree(output_dir)
 objects, vertices = load_cj_file(input_file) 
 object_file_paths = segment_objects_into_files(paths.objects, objects)

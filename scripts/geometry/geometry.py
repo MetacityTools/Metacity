@@ -21,7 +21,6 @@ def triangulation_preprocess(vertices, surface):
                     
     if not normal_exists:  
         raise Exception("The model contains face which couldn't be triangulated.")
-
     return vertex_indices, face_vertices, face_normal
 
 
@@ -33,11 +32,14 @@ def triangulation_to_buffers(vertices, vertex_indices, triangle_indices, face_no
 
 
 def face_to_buffers(vertices, surface):
-    hole_indices = generate_hole_indices(surface)  
-    vertex_indices, face_vertices, face_normal = triangulation_preprocess(vertices, surface)                        
-    triangle_indices = earcut(face_vertices, hole_indices, 3)
-    buffer_vertices, buffer_normals, triangle_count = triangulation_to_buffers(vertices, vertex_indices, triangle_indices, face_normal)
-    return buffer_vertices, buffer_normals, triangle_count
+    try:
+        hole_indices = generate_hole_indices(surface)  
+        vertex_indices, face_vertices, face_normal = triangulation_preprocess(vertices, surface)                        
+        triangle_indices = earcut(face_vertices, hole_indices, 3)
+        buffer_vertices, buffer_normals, triangle_count = triangulation_to_buffers(vertices, vertex_indices, triangle_indices, face_normal)
+        return buffer_vertices, buffer_normals, triangle_count
+    except:
+        return np.array([]), np.array([]), 0
 
 
 def process_multisurface(vertices, boundaries, semantics = None):
