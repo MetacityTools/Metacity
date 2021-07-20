@@ -8,8 +8,8 @@ import json
 
 class PointModel(Model):
     def __init__(self):
-        self.vertices = { lod: [] for lod in range(1, 6) }
-        self.semantics = { lod: [] for lod in range(1, 6) }
+        self.vertices = self.generate_lod_dict()
+        self.semantics = self.generate_lod_dict()
 
 
     def add_point(self, point):

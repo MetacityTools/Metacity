@@ -21,18 +21,13 @@ usage = ("Segment CityJSON file, "
 
 parser = ArgumentParser(description=usage)
 parser.add_argument('cj_input_file', type=str, help='CityJSON input file')
-
-
-def generate_output_dir(input_file):
-    input_dir = os.path.dirname(input_file)
-    return os.path.join(input_dir, "segmented")
+parser.add_argument('output_dir', type=str, help='Output directory, will be emptied if alreay exists')
 
 
 def process_args():
     args = parser.parse_args()
-    input_arg = args.cj_input_file
-    input_file = os.path.join(os.getcwd(), input_arg)
-    output_folder = generate_output_dir(input_file) #sys.argv[2]
+    input_file = args.cj_input_file
+    output_folder = args.output_folder
     return input_file, output_folder
 
 
@@ -48,7 +43,20 @@ def load_cj_file(input_file):
 
     objects: Dict[str, Dict] = contents["CityObjects"] 
     vertices = np.array(contents["vertices"])
-    return objects, vertices
+
+    shift = np.amin(vertices, axis=0)
+    vertices = vertices - shift
+    return objects, vertices, shift.tolist()
+
+
+def create_config(paths, shift):
+    config = {
+        'shift': shift
+    }
+
+    config_path = os.path.join(paths.output, 'config.json')
+    with open(config_path, 'w') as config_file:
+        json.dump(config, config_file)
 
 
 def segment_objects_into_files(objects_path, objects):
@@ -82,7 +90,8 @@ def get_semantics(geometry_object):
 
 input_file, output_dir = process_args()
 paths = create_output_dir_tree(output_dir)
-objects, vertices = load_cj_file(input_file) 
+objects, vertices, shift = load_cj_file(input_file)
+create_config(paths, shift)
 object_file_paths = segment_objects_into_files(paths.objects, objects)
 stats = Statistics()
 

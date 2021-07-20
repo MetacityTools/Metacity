@@ -6,8 +6,7 @@ import os
 from argparse import ArgumentParser
 
 
-usage = ("Converts CityGML into CityJSON:"
-         "gmltojson.py [input file]")
+usage = ("Converts CityGML into CityJSON.")
 
 parser = ArgumentParser(description=usage)
 parser.add_argument('citygml_input_file', type=str, help='CityGML file to be converted')

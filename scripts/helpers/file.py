@@ -1,4 +1,5 @@
-
+import os
+import ntpath
 
 def readable(file):
     print(file)
@@ -9,3 +10,7 @@ def readable(file):
 def writable(file):
     f = open(file, "w")
     return f.writable()
+
+
+def id_from_filename(file_name):
+    return os.path.splitext(ntpath.basename(file_name))[0]

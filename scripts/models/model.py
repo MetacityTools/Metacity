@@ -2,6 +2,7 @@ from models.points import PointModel
 from models.lines import LineModel
 from models.facets import MultifacetedModel
 from helpers.dirtree import DirectoryTreePaths
+from helpers.file import id_from_filename
 
 import ntpath
 import json
@@ -20,7 +21,7 @@ class MetacityModel:
     def load_cityjson_object(self, object_file_path):
         with open(object_file_path, "r") as file:
             self.json = json.load(file)
-            self.oid = os.path.splitext(ntpath.basename(object_file_path))[0]
+            self.oid = id_from_filename(object_file_path)
 
     @property
     def geometry(self):
