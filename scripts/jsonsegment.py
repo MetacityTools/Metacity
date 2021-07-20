@@ -27,7 +27,7 @@ def process_args():
     parser.add_argument('output_dir', type=str, help='Output directory, will be emptied if alreay exists')
     args = parser.parse_args()
     input_file = args.cj_input_file
-    output_folder = args.output_folder
+    output_folder = args.output_dir
     return input_file, output_folder
 
 
@@ -75,15 +75,21 @@ def get_geometry_stats(geometry_object):
     return lod, gtype
 
 
-def generate_semantic_null():
-    return [ None ]
+def ensure_iterable(data):
+    try:
+        _ = iter(data)
+        return data
+    except TypeError:
+        return [ data ]
+
+
 
 
 def get_semantics(geometry_object):
     if 'semantics' in geometry_object:
         return geometry_object['semantics']['values']
     else: 
-        return generate_semantic_null()
+        return None
 
 
 
@@ -120,17 +126,16 @@ if __name__ == "__main__":
                 model.facets.add_surface(surface, lod)
 
             elif gtype.lower() == 'solid':
-                for shell, semantics in itertools.zip_longest(boundries, semantics):
+                for shell, semantics in itertools.zip_longest(boundries, ensure_iterable(semantics)):
                     surface = process_multisurface(vertices, shell, semantics)
                     model.facets.add_surface(surface, lod)
 
             elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
-                pass
                 #requires fix for multisolid semantics
-                #for solid in boundries:
-                #    for shell, semantics in itertools.zip_longest(boundries, semantics):
-                #        surface = process_multisurface(vertices, shell, semantics)
-                #        model.facets.add_surface(surface, lod)
+                for solid, solid_semantic in itertools.zip_longest(boundries, ensure_iterable(semantics)):
+                    for shell, shell_semantics in itertools.zip_longest(solid, ensure_iterable(solid_semantic)):
+                        surface = process_multisurface(vertices, shell, shell_semantics)
+                        model.facets.add_surface(surface, lod)
 
         model.export(paths)
         

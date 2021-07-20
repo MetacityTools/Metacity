@@ -50,7 +50,7 @@ def process_multisurface(vertices, boundaries, semantics = None):
         multisurface.normals.append(buffer_normals.flatten())
         multisurface.triangle_counts.append(triangle_count)
 
-    if semantics != None and semantics != [ None ]:
+    if semantics != None:
         assert len(semantics) == len(multisurface.triangle_counts)
         multisurface.semantics.append(np.repeat(np.array(semantics, dtype=np.int32), multisurface.triangle_counts))
     else:
