@@ -1,6 +1,7 @@
 import base64
 import numpy as np
 
+#export
 def npfloat32_to_buffer(data):
     return base64.b64encode(data.astype(np.float32)).decode('utf-8')
 

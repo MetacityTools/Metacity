@@ -115,11 +115,17 @@ def get_semantics(geometry_object):
         return None
 
 
+def is_empty(objects, vertices):
+    return len(vertices) == 0 or len(objects) == 0
+
 
 if __name__ == "__main__":
     input_file, output_dir, append_action = process_args()
     paths = create_output_dir_tree(output_dir, append_action)
     objects, vertices = load_cj_file(input_file)
+    if is_empty(objects, vertices):
+        quit()
+
     update_config(paths, vertices)
     object_file_paths = segment_objects_into_files(paths.objects, objects)
     stats = Statistics()
