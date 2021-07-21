@@ -16,9 +16,12 @@ def process_args():
 if __name__ == "__main__":
     input_dir = process_args()
     paths = DirectoryTreePaths(input_dir)
-    for lod in paths.facet_type_lod_dirs:
+    for lod in paths.facet_lods:
         models = paths.paths_to_models(lod)
         #WIP SEGMENT NEBO NECO
+
+
+
         
 
 

@@ -1,5 +1,10 @@
-import numpy as np
+import json
 
+import numpy as np
+from models.model import FacetModel, NonFacetModel
+
+
+#export
 def buffers_to_stl(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
     file.write(f"solid {model_name}\n")
 
@@ -21,4 +26,32 @@ def buffers_to_stl(flat_vertices, flat_normals, model_name, file, shift = np.arr
         file.write(f"    endfacet\n")
 
     file.write(f"endsolid {model_name}\n")
+
+
+def load_model(file):
+    try:
+        contents = json.load(file)
+    except:
+        with open(file, 'r') as local_file:
+            contents = json.load(local_file)
+    
+    if 'normals' in contents:
+        model = FacetModel()
+    else:
+        model = NonFacetModel()
+    model.deserialize(contents)
+    return model 
+
+
+def load_models(files):
+    models = []
+    for file in files:
+        models.append(load_model(file))
+    return models
+
+    
+
+
+
+
 

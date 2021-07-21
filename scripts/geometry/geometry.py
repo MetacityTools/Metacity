@@ -1,7 +1,7 @@
 import numpy as np
 import itertools
 from earcut.earcut import earcut, normal
-from geometry.multisurface import MultiSurface
+from models.model import FacetModel
 
 
 def generate_hole_indices(surface):
@@ -42,19 +42,20 @@ def face_to_buffers(vertices, surface):
         return np.array([]), np.array([]), 0
 
 
-def process_multisurface(vertices, boundaries, semantics = None):
-    multisurface = MultiSurface()
+def process_model(vertices, boundaries, semantics):
+    model = FacetModel()
+    triangle_counts = []
     for surface in boundaries:
         buffer_vertices, buffer_normals, triangle_count = face_to_buffers(vertices, surface)
-        multisurface.vertices.append(buffer_vertices.flatten())
-        multisurface.normals.append(buffer_normals.flatten())
-        multisurface.triangle_counts.append(triangle_count)
+        model.vertices.extend(buffer_vertices)
+        model.normals.extend(buffer_normals)
+        triangle_counts.append(triangle_count)
 
     if semantics != None:
-        assert len(semantics) == len(multisurface.triangle_counts)
-        multisurface.semantics.append(np.repeat(np.array(semantics, dtype=np.int32), multisurface.triangle_counts))
+        assert len(semantics) == len(triangle_counts)
+        model.semantics.extend(np.repeat(np.array(semantics, dtype=np.int32), triangle_counts))
     else:
-        multisurface.semantics.append(np.zeros((np.sum(multisurface.triangle_counts),), dtype=np.int32))
+        model.semantics.extend(np.zeros((np.sum(triangle_counts),), dtype=np.int32))
 
-    return multisurface
+    return model
 

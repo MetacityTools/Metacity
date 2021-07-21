@@ -3,25 +3,34 @@ import shutil
 
 class DirectoryTreePaths:
     def __init__(self, output_dir):
+        #dirs
         self.output = output_dir
         self.objects = os.path.join(self.output, "objects")
         self.geometry = os.path.join(self.output, "geometry")
         self.point_geometry = os.path.join(self.geometry, "points")
-        self.line_geometry = os.path.join(self.geometry, "line")
+        self.line_geometry = os.path.join(self.geometry, "lines")
         self.facet_geometry = os.path.join(self.geometry, "facets")
         self.stl = os.path.join(self.output, "stl")
+        self.all_dirs = [ self.output, self.objects, 
+                          self.geometry, self.point_geometry, 
+                          self.line_geometry, self.facet_geometry, 
+                          self.stl ]
+
+        #files
+        self.config = os.path.join(self.output, 'config.json')
 
 
     def recreate_tree(self):
         if os.path.exists(self.output):
             shutil.rmtree(self.output)
-        os.mkdir(self.output)
-        os.mkdir(self.objects)
-        os.mkdir(self.geometry)
-        os.mkdir(self.point_geometry)
-        os.mkdir(self.line_geometry)
-        os.mkdir(self.facet_geometry)
-        os.mkdir(self.stl)
+        for dir in self.all_dirs:
+            os.mkdir(dir)
+
+
+    def reconstruct_existing_tree(self):
+        for dir in self.all_dirs:
+            if not os.path.exists(dir):
+                os.mkdir(dir)
 
 
     def recreate_stl(self):
@@ -31,7 +40,7 @@ class DirectoryTreePaths:
 
 
     @property
-    def primitive_type_dirs(self):
+    def primitives(self):
         """List of primitive directories relative to self.geometry directory
 
         Returns:
@@ -52,17 +61,17 @@ class DirectoryTreePaths:
 
 
     @property
-    def primitive_type_lod_dirs(self):
+    def primitive_lods(self):
         """List of LODs inside primitives relative to self.geometry directory.
 
         Returns:
             List[str]: List of directory names
         """
-        return self.__primitive_type_lod_dirs(self.primitive_type_dirs)
+        return self.__primitive_type_lod_dirs(self.primitives)
 
 
     @property
-    def facet_type_lod_dirs(self):
+    def facet_lods(self):
         """List if LODs inside facet directory relative to self.geometry directory.
 
         Returns:
@@ -71,7 +80,7 @@ class DirectoryTreePaths:
         return self.__primitive_type_lod_dirs(['facets'])
 
 
-    def paths_to_models(self, lod_dirs):
+    def models_for_lods(self, lods):
         """Returns list of paths to individual models for supplied LODs.
         The LODs are specified relatively to self.geometry (geometry) directory.
 
@@ -82,8 +91,8 @@ class DirectoryTreePaths:
             List[str]: List of paths to model files for requested LODs, path is relative to project root
         """
 
-        if isinstance(lod_dirs, str):
-            lod_dirs = [lod_dirs]
+        if isinstance(lods, str):
+            lod_dirs = [lods]
 
         model_files = []
         for lod in lod_dirs:
@@ -95,20 +104,7 @@ class DirectoryTreePaths:
         return model_files
 
 
-    def use_lod_directory(self, base, lod):
-        lod_dir = os.path.join(base, str(lod))
-        if not os.path.exists(lod_dir):
-            os.mkdir(lod_dir)
-        return lod_dir
-
-
-    def use_points_lod_directory(self, lod):
-        return self.use_lod_directory(self.point_geometry, lod)
-
-
-    def use_line_lod_directory(self, lod):
-        return self.use_lod_directory(self.line_geometry, lod)
-
-
-    def use_facet_lod_directory(self, lod):
-        return self.use_lod_directory(self.facet_geometry, lod)
+    def use_directory(self, dir):
+        if not os.path.exists(dir):
+            os.mkdir(dir)
+        return dir
