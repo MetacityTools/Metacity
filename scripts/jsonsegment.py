@@ -81,29 +81,6 @@ def update_config(paths, vertices):
     apply_config(config, vertices)
 
 
-def segment_objects_into_files(objects_path, objects):
-    object_file_paths = []
-    for oid, value in tqdm(objects.items()):
-        output_path = os.path.join(objects_path, oid + ".json")
-        with open(output_path, "w") as file:
-            json.dump(value, file, indent=4)
-        object_file_paths.append(output_path)
-    return object_file_paths
-
-
-def get_geometry_stats(geometry_object):
-    lod = geometry_object["lod"]
-    gtype = geometry_object["type"].lower()
-    return lod, gtype
-
-
-def get_semantics(geometry_object):
-    if 'semantics' in geometry_object:
-        return geometry_object['semantics']['values']
-    else: 
-        return None
-
-
 def is_empty(objects, vertices):
     return len(vertices) == 0 or len(objects) == 0
 
@@ -117,7 +94,6 @@ if __name__ == "__main__":
         quit()
 
     update_config(paths, vertices)
-    #object_file_paths = segment_objects_into_files(paths.objects, objects)
 
     for oid, object in tqdm(objects.items()):
         model = MetacityObject()
