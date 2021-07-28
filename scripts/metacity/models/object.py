@@ -85,6 +85,7 @@ class MetacityObject:
         self.lines.consolidate()
         self.facets.consolidate()
 
+
     def export(self, paths: DirectoryTreePaths):
         self.points.export(paths, self.oid)
         self.lines.export(paths, self.oid)
