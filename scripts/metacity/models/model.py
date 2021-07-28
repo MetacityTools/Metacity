@@ -1,10 +1,11 @@
-from helpers.encoding import npfloat32_to_buffer, npint32_to_buffer, base64_to_float32, base64_to_int32
+from metacity.helpers.encoding import npfloat32_to_buffer, npint32_to_buffer, base64_to_float32, base64_to_int32
 import numpy as np
 
 class NonFacetModel:
     def __init__(self):
         self.vertices = []
         self.semantics = []
+        self.semantics_meta = []
 
 
     def exists(self):
@@ -18,13 +19,16 @@ class NonFacetModel:
 
     def join_model(self, model):
         self.vertices.extend(model.vertices)
-        self.semantics.extend(model.semantics)
+        start_idx = len(self.semantics_meta)
+        self.semantics_meta.extend(model.semantics_meta)
+        self.semantics.extend(np.array(model.semantics) + start_idx)
 
 
     def serialize(self):
         data = {
             'vertices': npfloat32_to_buffer(self.vertices),
-            'semantics': npint32_to_buffer(self.semantics)
+            'semantics': npint32_to_buffer(self.semantics),
+            'semantics_meta': self.semantics_meta
         }
 
         return data
@@ -33,6 +37,7 @@ class NonFacetModel:
     def deserialize(self, data):
         self.vertices = base64_to_float32(data['vertices'])
         self.semantics = base64_to_int32(data['semantics'])
+        self.semantics_meta = data['semantics_meta']
 
 
 

@@ -3,7 +3,7 @@
 import os
 import subprocess
 from argparse import ArgumentParser
-from helpers.file import readable, writable
+from metacity.helpers.file import readable, writable
 
 usage = ("Converts CityGML into CityJSON.")
 

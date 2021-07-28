@@ -3,9 +3,10 @@ from argparse import ArgumentParser
 
 from tqdm import tqdm
 
-from geometry.io import buffers_to_stl, load_model
-from helpers.dirtree import DirectoryTreePaths
-from helpers.file import id_from_filename
+from metacity.io.core import load_model
+from metacity.io.stl import buffers_to_stl
+from metacity.helpers.dirtree import DirectoryTreePaths
+from metacity.helpers.file import id_from_filename
 
 usage = ("Convert selected segments into STL file")
 

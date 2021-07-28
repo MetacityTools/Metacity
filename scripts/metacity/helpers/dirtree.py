@@ -5,13 +5,13 @@ class DirectoryTreePaths:
     def __init__(self, output_dir):
         #dirs
         self.output = output_dir
-        self.objects = os.path.join(self.output, "objects")
+        self.metadata = os.path.join(self.output, "metadata")
         self.geometry = os.path.join(self.output, "geometry")
         self.point_geometry = os.path.join(self.geometry, "points")
         self.line_geometry = os.path.join(self.geometry, "lines")
         self.facet_geometry = os.path.join(self.geometry, "facets")
         self.stl = os.path.join(self.output, "stl")
-        self.all_dirs = [ self.output, self.objects, 
+        self.all_dirs = [ self.output, self.metadata, 
                           self.geometry, self.point_geometry, 
                           self.line_geometry, self.facet_geometry, 
                           self.stl ]

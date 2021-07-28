@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from helpers.dirtree import DirectoryTreePaths
+from metacity.helpers.dirtree import DirectoryTreePaths
 
 usage = ("Segment tiles according to optimal size")
 

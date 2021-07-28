@@ -2,10 +2,10 @@ import json
 import os
 from typing import Callable, Union
 
-from helpers.dirtree import DirectoryTreePaths
-from helpers.file import id_from_filename
-
-from models.model import FacetModel, NonFacetModel
+from metacity.helpers.dirtree import DirectoryTreePaths
+from metacity.helpers.file import write_json
+from metacity.io.cj import load_cityjson_object
+from metacity.models.model import FacetModel, NonFacetModel
 
 
 class ObjectLODs:
@@ -33,16 +33,7 @@ class ObjectLODs:
         data = self.lod[lod].serialize()
         output_dir = self.lod_directory(paths, lod)
         output_file = os.path.join(output_dir, oid + '.json')
-        self.write(output_file, data)
-
-
-    def write(self, filename, data):
-        if os.path.exists(filename):
-            print(f'File {filename} already exixsts, rewriting...')
-            os.remove(filename)
-
-        with open(filename, 'w') as file:
-            json.dump(data, file)
+        write_json(output_file, data)
 
 
 
@@ -81,20 +72,12 @@ class MetacityObject:
         self.points = PointObjectLODs()
         self.lines = LineObjectLODs()
         self.facets = FacetObjectLODs()
-        self.json = None
+        self.meta = None
 
 
-    def load_cityjson_object(self, object_file_path):
-        with open(object_file_path, "r") as file:
-            self.json = json.load(file)
-            self.oid = id_from_filename(object_file_path)
-
-
-    @property
-    def geometry(self):
-        if self.json == None:
-            raise Exception("No input CityJSON Object loaded.")
-        return self.json["geometry"]
+    def load_cityjson_object(self, oid, object, vertices):
+        self.oid = oid
+        load_cityjson_object(self, object, vertices)
 
 
     def consolidate(self):
@@ -102,8 +85,13 @@ class MetacityObject:
         self.lines.consolidate()
         self.facets.consolidate()
 
-
     def export(self, paths: DirectoryTreePaths):
         self.points.export(paths, self.oid)
         self.lines.export(paths, self.oid)
         self.facets.export(paths, self.oid)
+        meta_file = os.path.join(paths.metadata, self.oid + '.json')
+        write_json(meta_file, self.meta)
+
+
+
+

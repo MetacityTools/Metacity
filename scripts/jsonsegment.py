@@ -4,16 +4,13 @@ import itertools
 import json
 import os
 from argparse import ArgumentParser
-from sys import path
 from typing import Dict
 
 import numpy as np
 from tqdm import tqdm
 
-from geometry.geometry import process_model
-from helpers.dirtree import DirectoryTreePaths
-from helpers.stats import Statistics
-from models.object import MetacityObject
+from metacity.helpers.dirtree import DirectoryTreePaths
+from metacity.models.object import MetacityObject
 
 
 usage = ("Segment CityJSON file, "
@@ -100,14 +97,6 @@ def get_geometry_stats(geometry_object):
     return lod, gtype
 
 
-def ensure_iterable(data):
-    try:
-        _ = iter(data)
-        return data
-    except TypeError:
-        return [ data ]
-
-
 def get_semantics(geometry_object):
     if 'semantics' in geometry_object:
         return geometry_object['semantics']['values']
@@ -123,53 +112,18 @@ if __name__ == "__main__":
     input_file, output_dir, append_action = process_args()
     paths = create_output_dir_tree(output_dir, append_action)
     objects, vertices = load_cj_file(input_file)
+    
     if is_empty(objects, vertices):
         quit()
 
     update_config(paths, vertices)
-    object_file_paths = segment_objects_into_files(paths.objects, objects)
-    stats = Statistics()
+    #object_file_paths = segment_objects_into_files(paths.objects, objects)
 
-    for object_file_path in tqdm(object_file_paths):
+    for oid, object in tqdm(objects.items()):
         model = MetacityObject()
-        model.load_cityjson_object(object_file_path)
-
-        for geometry_object in model.geometry:
-            lod, gtype = get_geometry_stats(geometry_object)
-            stats.parsed_geometry(lod, gtype)
-            semantics = get_semantics(geometry_object)
-            boundries = geometry_object['boundaries']
-
-            #process geometry
-            if gtype.lower() == 'multipoint':
-                pass
-                #self._processPoints(geom['boundaries'], vnp, vertices)
-
-            elif gtype.lower() == 'multilinestring':
-                pass
-                #for line in geom['boundaries']:
-                #    self._processLine(line, vnp, vertices)
-
-            elif gtype.lower() == 'multisurface' or gtype.lower() == 'compositesurface':   
-                surface = process_model(vertices, boundries, semantics)
-                model.facets.join_model(surface, lod)
-
-            elif gtype.lower() == 'solid':
-                for shell, semantics in itertools.zip_longest(boundries, ensure_iterable(semantics)):
-                    surface = process_model(vertices, shell, semantics)
-                    model.facets.join_model(surface, lod)
-
-            elif gtype.lower() == 'multisolid' or gtype.lower() == 'compositesolid':
-                #requires fix for multisolid semantics
-                for solid, solid_semantic in itertools.zip_longest(boundries, ensure_iterable(semantics)):
-                    for shell, shell_semantics in itertools.zip_longest(solid, ensure_iterable(solid_semantic)):
-                        surface = process_model(vertices, shell, shell_semantics)
-                        model.facets.join_model(surface, lod)
-
-        model.consolidate()
+        model.load_cityjson_object(oid, object, vertices)
         model.export(paths)
         
-    print(stats)
 
         
 

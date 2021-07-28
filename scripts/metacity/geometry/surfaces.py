@@ -1,7 +1,7 @@
 import numpy as np
 import itertools
 from earcut.earcut import earcut, normal
-from models.model import FacetModel
+from metacity.models.model import FacetModel
 
 
 def generate_hole_indices(surface):
