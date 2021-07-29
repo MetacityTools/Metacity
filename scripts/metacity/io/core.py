@@ -1,8 +1,10 @@
 import json
+
 from metacity.models.model import FacetModel, NonFacetModel
+from typing import Union, List, TextIO
 
 
-def load_model(file):
+def load_model(file: Union[str, TextIO]) -> Union[FacetModel, NonFacetModel]:
     try:
         contents = json.load(file)
     except:
@@ -17,8 +19,12 @@ def load_model(file):
     return model 
 
 
-def load_models(files):
+def load_models(files: List[Union[str, TextIO]]) -> List[Union[FacetModel, NonFacetModel]]:
     models = []
     for file in files:
         models.append(load_model(file))
     return models
+
+
+
+

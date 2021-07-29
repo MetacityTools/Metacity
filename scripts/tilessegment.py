@@ -1,6 +1,10 @@
 from argparse import ArgumentParser
+from json import load
+import os
+from metacity.helpers.dirtree import DirectoryTree
+from metacity.io.core import load_models
 
-from metacity.helpers.dirtree import DirectoryTreePaths
+from memory_profiler import profile
 
 usage = ("Segment tiles according to optimal size")
 
@@ -12,13 +16,25 @@ def process_args():
     input_dir = args.project_directory
     return input_dir
  
+@profile
+def main():
+    input_dir = process_args()
+    paths = DirectoryTree(input_dir)
+    paths.recreate_tiles()
+    for lod in paths.facet_lods:
+        model_paths = paths.models_for_lods(lod)
+        output_dir = os.path.join(paths.tiles, lod)
+        paths.use_directory(output_dir)
+
+        models = load_models(model_paths)
+        
+        
+
+        print(len(models))
+
 
 if __name__ == "__main__":
-    input_dir = process_args()
-    paths = DirectoryTreePaths(input_dir)
-    for lod in paths.facet_lods:
-        models = paths.paths_to_models(lod)
-        #WIP SEGMENT NEBO NECO
+    main()
 
 
 

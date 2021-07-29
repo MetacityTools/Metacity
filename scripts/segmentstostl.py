@@ -1,12 +1,9 @@
 import os
 from argparse import ArgumentParser
+from metacity.project import MetacityProject
 
 from tqdm import tqdm
-
-from metacity.io.core import load_model
-from metacity.io.stl import buffers_to_stl
-from metacity.helpers.dirtree import DirectoryTreePaths
-from metacity.helpers.file import id_from_filename
+from memory_profiler import profile
 
 usage = ("Convert selected segments into STL file")
 
@@ -25,22 +22,37 @@ def lod_dir_to_output_file_name(lod_dir):
     return joiner.join(os.path.split(lod_dir)) + '.stl'
 
 
-if __name__ == "__main__":
+@profile
+def main():
     input_dir = process_args()
-    paths = DirectoryTreePaths(input_dir)
-    paths.recreate_stl()
+    project = MetacityProject(input_dir)
 
-    for lod in paths.primitive_lods:
-        models = paths.models_for_lods(lod)
-        stl_output = lod_dir_to_output_file_name(lod)
-        abs_stl_output = os.path.join(paths.stl, stl_output) 
+    for layer in project.layers:
+        for obj in tqdm(layer.objects):
+            print("oid", obj.oid)
 
-        with open(abs_stl_output, 'w') as stl_file:
-            for object_file in tqdm(models):
-                with open(object_file, 'r') as file:
-                    model = load_model(file)
-                object_id = id_from_filename(object_file)
-                buffers_to_stl(model.vertices, model.normals, object_id, stl_file)
+
+            #objects.append(obj)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+    #paths = DirectoryTree(input_dir)
+    #paths.recreate_stl()
+    #for lod in paths.facet_lods:
+    #    models = paths.models_for_lods(lod)
+    #    stl_output = lod_dir_to_output_file_name(lod)
+    #    abs_stl_output = os.path.join(paths.stl, stl_output) 
+    #    with open(abs_stl_output, 'w') as stl_file:
+    #        for object_file in tqdm(models):
+    #            with open(object_file, 'r') as file:
+    #                model = load_model(file)
+    #            object_id = id_from_filename(object_file)
+    #            buffers_to_stl(model.vertices, model.normals, object_id, stl_file)
 
 
 

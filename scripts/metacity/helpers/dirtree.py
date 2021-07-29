@@ -1,110 +1,141 @@
 import os
+from metacity.helpers.file import id_from_filename
 import shutil
 
-class DirectoryTreePaths:
-    def __init__(self, output_dir):
-        #dirs
-        self.output = output_dir
-        self.metadata = os.path.join(self.output, "metadata")
-        self.geometry = os.path.join(self.output, "geometry")
+class RelativePaths:
+    def __init__(self):
+        self.metadata = "metadata"
+        self.geometry = "geometry"
         self.point_geometry = os.path.join(self.geometry, "points")
         self.line_geometry = os.path.join(self.geometry, "lines")
         self.facet_geometry = os.path.join(self.geometry, "facets")
-        self.stl = os.path.join(self.output, "stl")
-        self.all_dirs = [ self.output, self.metadata, 
-                          self.geometry, self.point_geometry, 
-                          self.line_geometry, self.facet_geometry, 
-                          self.stl ]
+        self.tiles = "tiles"
+        self.point_tiles = os.path.join(self.tiles, "points")
+        self.line_tiles = os.path.join(self.tiles, "lines")
+        self.facet_tiles = os.path.join(self.tiles, "facets")
+        self.stl = "stl"
+        self.all_dirs = [ self.metadata, 
+                          self.geometry, 
+                          self.point_geometry, self.line_geometry, self.facet_geometry, 
+                          self.stl, 
+                          self.tiles, 
+                          self.point_tiles, self.line_tiles, self.facet_tiles ]
 
-        #files
-        self.config = os.path.join(self.output, 'config.json')
+        self.dirs_geometry = [
+            self.point_geometry, self.line_geometry, self.facet_geometry
+        ]
+        
+        self.dirs_tiles = [
+            self.point_tiles, self.line_tiles, self.facet_tiles
+        ]
+
+        self.dirs_with_lods = [
+            self.point_geometry, self.line_geometry, self.facet_geometry,
+            self.point_tiles, self.line_tiles, self.facet_tiles
+        ]  
 
 
-    def recreate_tree(self):
-        if os.path.exists(self.output):
-            shutil.rmtree(self.output)
-        for dir in self.all_dirs:
-            os.mkdir(dir)
+def create_dir_if_not_exists(dir):
+    if not os.path.exists(dir):
+        os.mkdir(dir)
 
 
-    def reconstruct_existing_tree(self):
-        for dir in self.all_dirs:
-            if not os.path.exists(dir):
-                os.mkdir(dir)
+class LayerDirectoryTree:
+    def __init__(self, layer_name, project_dir):
+        self.project_dir = project_dir
+        self.base = os.path.join(project_dir, layer_name)
+        self.rel = RelativePaths()
 
 
-    def recreate_stl(self):
-        if os.path.exists(self.stl):
-            shutil.rmtree(self.stl)    
-        os.mkdir(self.stl)
+    def recreate_layer(self, load_existing=True):
+        if os.path.exists(self.base) and not load_existing:
+            shutil.rmtree(self.base)
+        
+        create_dir_if_not_exists(self.project_dir)
+        create_dir_if_not_exists(self.base)
+
+        for dir in self.rel.all_dirs:
+            create_dir_if_not_exists(os.path.join(self.base, dir))
+
+        for dir in self.rel.dirs_with_lods:
+            for i in range(0, 5):
+                create_dir_if_not_exists(os.path.join(self.base, dir, str(i)))
+
+
+    def __primitive_lod_dir(self, primitive, lod):
+        return os.path.join(self.base, primitive, str(lod))
+    
+    
+    def __primitive_lod_dirs(self, primitive):
+        return [ self.__primitive_lod_dir(primitive, i) for i in range(0, 5) ]
 
 
     @property
-    def primitives(self):
-        """List of primitive directories relative to self.geometry directory
-
-        Returns:
-            List[str]: List of directory names
-        """
-        return [f for f in os.listdir(self.geometry) if os.path.isdir(os.path.join(self.geometry, f))]
+    def point_geometry_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.point_geometry)
 
 
-    def __primitive_type_lod_dirs(self, primitives):
-        dirs = []
-        for primitive in primitives:
-            primitive_dir = os.path.join(self.geometry, primitive) 
-            for lod_dir in os.listdir(primitive_dir):
-                absolute_lod_dir = os.path.join(primitive_dir, lod_dir)
-                if os.path.isdir(absolute_lod_dir):
-                    dirs.append(os.path.join(primitive, lod_dir))
-        return dirs
+    def point_geometry_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.point_geometry, lod)
 
 
     @property
-    def primitive_lods(self):
-        """List of LODs inside primitives relative to self.geometry directory.
+    def line_geometry_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.line_geometry)
+ 
 
-        Returns:
-            List[str]: List of directory names
-        """
-        return self.__primitive_type_lod_dirs(self.primitives)
+    def line_geometry_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.line_geometry, lod)
 
 
     @property
-    def facet_lods(self):
-        """List if LODs inside facet directory relative to self.geometry directory.
-
-        Returns:
-            List[str]: List of directory names
-        """
-        return self.__primitive_type_lod_dirs(['facets'])
+    def facet_geometry_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.facet_geometry)
 
 
-    def models_for_lods(self, lods):
-        """Returns list of paths to individual models for supplied LODs.
-        The LODs are specified relatively to self.geometry (geometry) directory.
+    def facet_geometry_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.facet_geometry, lod)
 
-        Args:
-            lod_dirs (List[str] or str): List of requested LOD directories relative to geometry directory.
-
-        Returns:
-            List[str]: List of paths to model files for requested LODs, path is relative to project root
-        """
-
-        if isinstance(lods, str):
-            lod_dirs = [lods]
-
-        model_files = []
-        for lod in lod_dirs:
-            lod_dir = os.path.join(self.geometry, lod)
-            for object_file in os.listdir(lod_dir):
-                absolute_object_file = os.path.join(lod_dir, object_file)
-                if os.path.isfile(absolute_object_file):
-                    model_files.append(absolute_object_file)
-        return model_files
+    @property
+    def all_geometry_lod_dirs(self):
+        return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_geometry ]
 
 
-    def use_directory(self, dir):
-        if not os.path.exists(dir):
-            os.mkdir(dir)
-        return dir
+    @property
+    def metadta_dir(self):
+        return os.path.join(self.base, self.rel.metadata)
+
+
+    def metadata_for_oid(self, oid: str):
+        return os.path.join(self.metadta_dir, oid + 'json')
+
+
+    @property
+    def any_object_exists(self):
+        for dir in self.all_geometry_lod_dirs:
+            for _ in os.listdir(dir):
+                return True
+        return False
+
+
+    @property
+    def object_ids(self):
+        objects = set()
+        for dir in self.all_geometry_lod_dirs:
+            for o in os.listdir(dir):
+                oid = id_from_filename(o)
+                if oid not in objects:
+                    objects.add(oid)
+        return list(objects)
+
+
+    @property
+    def config(self):
+        return os.path.join(self.base, 'config.json')
+
+
+    @staticmethod
+    def layer_dirs(project_dir):
+        return [ d for d in os.listdir(project_dir) ]
+
+

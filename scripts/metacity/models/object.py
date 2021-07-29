@@ -1,37 +1,47 @@
-import json
 import os
+from metacity.helpers.dirtree import LayerDirectoryTree
 from typing import Callable, Union
 
-from metacity.helpers.dirtree import DirectoryTreePaths
-from metacity.helpers.file import write_json
+from metacity.helpers.file import read_json, write_json
 from metacity.io.cj import load_cityjson_object
+from metacity.io.core import load_model
 from metacity.models.model import FacetModel, NonFacetModel
 
 
 class ObjectLODs:
     def __init__(self, level_model: Callable[[], Union[NonFacetModel,FacetModel]]):
-        self.lod = { lod: level_model() for lod in range(0, 6) }
+        self.lod = { lod: level_model() for lod in range(0, 5) }
 
 
-    def join_model(self, model, lod):
+    def join_model(self, model: Union[FacetModel, NonFacetModel], lod: int):
         self.lod[lod].join_model(model)
 
 
     def consolidate(self):
-        for lod in range(0, 6):
+        for lod in range(0, 5):
             if self.lod[lod].exists():
                 self.lod[lod].consolidate()
 
 
-    def export(self, paths, oid):
-        for lod in range(0, 6):
+    def load(self, oid: str, dirtree: LayerDirectoryTree):
+        for lod in range(0, 5):
+            input_dir = self.lod_directory(dirtree, lod)
+            input_file = os.path.join(input_dir, oid + '.json')
+            try:
+                self.lod[lod] = load_model(input_file)
+            except:
+                continue
+
+
+    def export(self, oid: str, dirtree: LayerDirectoryTree):
+        for lod in range(0, 5):
             if self.lod[lod].exists():
-                self.export_lod(paths, lod, oid)
+                self.export_lod(oid, dirtree, lod)
 
 
-    def export_lod(self, paths, lod, oid):
+    def export_lod(self, oid: str, dirtree: LayerDirectoryTree, lod: int):
         data = self.lod[lod].serialize()
-        output_dir = self.lod_directory(paths, lod)
+        output_dir = self.lod_directory(dirtree, lod)
         output_file = os.path.join(output_dir, oid + '.json')
         write_json(output_file, data)
 
@@ -42,8 +52,8 @@ class PointObjectLODs(ObjectLODs):
         super().__init__(NonFacetModel)
 
 
-    def lod_directory(self, paths, lod):
-        return paths.use_directory(os.path.join(paths.point_geometry, lod))
+    def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.point_geometry_lod_dir(lod)
 
 
 
@@ -52,8 +62,8 @@ class LineObjectLODs(ObjectLODs):
         super().__init__(NonFacetModel)
 
 
-    def lod_directory(self, paths, lod):
-        return paths.use_directory(os.path.join(paths.line_geometry, lod))
+    def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.line_geometry_lod_dir(lod)
 
 
 
@@ -62,8 +72,8 @@ class FacetObjectLODs(ObjectLODs):
         super().__init__(FacetModel)
 
 
-    def lod_directory(self, paths, lod):
-        return paths.use_directory(os.path.join(paths.facet_geometry, str(lod)))
+    def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.facet_geometry_lod_dir(lod)
 
 
 
@@ -73,9 +83,10 @@ class MetacityObject:
         self.lines = LineObjectLODs()
         self.facets = FacetObjectLODs()
         self.meta = None
+        self.oid = None
 
 
-    def load_cityjson_object(self, oid, object, vertices):
+    def load_cityjson_object(self, oid: str, object: dict, vertices):
         self.oid = oid
         load_cityjson_object(self, object, vertices)
 
@@ -86,11 +97,20 @@ class MetacityObject:
         self.facets.consolidate()
 
 
-    def export(self, paths: DirectoryTreePaths):
-        self.points.export(paths, self.oid)
-        self.lines.export(paths, self.oid)
-        self.facets.export(paths, self.oid)
-        meta_file = os.path.join(paths.metadata, self.oid + '.json')
+    def load(self, oid: str, dirtree: LayerDirectoryTree):
+        self.oid = oid
+        self.points.load(oid, dirtree)
+        self.lines.load(oid, dirtree)
+        self.facets.load(oid, dirtree)
+        meta_file = dirtree.metadata_for_oid(self.oid)
+        self.meta = read_json(meta_file)
+
+
+    def export(self, dirtree: LayerDirectoryTree):
+        self.points.export(self.oid, dirtree)
+        self.lines.export(self.oid, dirtree)
+        self.facets.export(self.oid, dirtree)
+        meta_file = dirtree.metadata_for_oid(self.oid)
         write_json(meta_file, self.meta)
 
 

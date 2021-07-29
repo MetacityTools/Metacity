@@ -25,6 +25,17 @@ project/
 │   ├── BID_001328a4-3279-492c-99da-8e51f8e9a587.json
 │   │   ...
 │   └── BRID_ee25756e-b517-4953-984a-9f4794cbbebc.json
+├── tiles
+│   ├── facets
+│   │   ├── 1
+│   │   │   ...
+│   │   └── 2
+│   │       ...
+│   ├── lines
+│   │       ...
+│   └── points
+│           ...
+│
 └── exports
 
 ```
