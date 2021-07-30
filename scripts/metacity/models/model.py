@@ -7,7 +7,7 @@ class NonFacetModel:
         self.semantics = []
         self.semantics_meta = []
 
-
+    @property
     def exists(self):
         return len(self.vertices) > 0
 

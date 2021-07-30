@@ -1,8 +1,8 @@
 import os
 from argparse import ArgumentParser
+from metacity.io.stl import export_objects_stl
 from metacity.project import MetacityProject
 
-from tqdm import tqdm
 from memory_profiler import profile
 
 usage = ("Convert selected segments into STL file")
@@ -27,39 +27,18 @@ def main():
     input_dir = process_args()
     project = MetacityProject(input_dir)
 
+    lod1 = open("lod1.stl", 'w')
+    lod2 = open("lod2.stl", 'w')
+    
     for layer in project.layers:
-        for obj in layer.objects:
-            print("oid", obj.oid)
+        export_objects_stl([lod1, lod2], layer.objects, [1, 2])
 
+    lod1.close()
+    lod2.close()
 
-            #objects.append(obj)
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-    #paths = DirectoryTree(input_dir)
-    #paths.recreate_stl()
-    #for lod in paths.facet_lods:
-    #    models = paths.models_for_lods(lod)
-    #    stl_output = lod_dir_to_output_file_name(lod)
-    #    abs_stl_output = os.path.join(paths.stl, stl_output) 
-    #    with open(abs_stl_output, 'w') as stl_file:
-    #        for object_file in tqdm(models):
-    #            with open(object_file, 'r') as file:
-    #                model = load_model(file)
-    #            object_id = id_from_filename(object_file)
-    #            buffers_to_stl(model.vertices, model.normals, object_id, stl_file)
-
-
-
-
-
-
-
 
 
 

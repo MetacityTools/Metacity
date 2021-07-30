@@ -1,4 +1,10 @@
+from metacity.helpers.iter import ensure_list_like
+from typing import Iterable, List, TextIO, Union
+
 import numpy as np
+from metacity.models.object import MetacityObject
+from tqdm import tqdm
+
 
 def buffers_to_stl(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
     file.write(f"solid {model_name}\n")
@@ -21,3 +27,17 @@ def buffers_to_stl(flat_vertices, flat_normals, model_name, file, shift = np.arr
         file.write(f"    endfacet\n")
 
     file.write(f"endsolid {model_name}\n")
+
+
+def export_objects_stl(file: Union[TextIO, List[TextIO]],  objects: Iterable[MetacityObject], lod: Union[int, List[int]]):
+    file = ensure_list_like(file)
+    lod = ensure_list_like(lod)
+
+    for obj in tqdm(objects):
+        for output_file, l in zip(file, lod):
+            model = obj.facets.lod[l]
+            if model.exists:
+                buffers_to_stl(model.vertices, model.normals, obj.oid, output_file)
+
+    
+
