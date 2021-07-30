@@ -28,7 +28,7 @@ def main():
     project = MetacityProject(input_dir)
 
     for layer in project.layers:
-        for obj in tqdm(layer.objects):
+        for obj in layer.objects:
             print("oid", obj.oid)
 
 

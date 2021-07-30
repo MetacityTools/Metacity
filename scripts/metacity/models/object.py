@@ -3,7 +3,6 @@ from metacity.helpers.dirtree import LayerDirectoryTree
 from typing import Callable, Union
 
 from metacity.helpers.file import read_json, write_json
-from metacity.io.cj import load_cityjson_object
 from metacity.io.core import load_model
 from metacity.models.model import FacetModel, NonFacetModel
 
@@ -84,11 +83,6 @@ class MetacityObject:
         self.facets = FacetObjectLODs()
         self.meta = None
         self.oid = None
-
-
-    def load_cityjson_object(self, oid: str, object: dict, vertices):
-        self.oid = oid
-        load_cityjson_object(self, object, vertices)
 
 
     def consolidate(self):

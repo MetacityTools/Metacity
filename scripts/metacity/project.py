@@ -2,17 +2,10 @@ import shutil
 import os
 
 import numpy as np
-from tqdm import tqdm
 
 from metacity.helpers.dirtree import LayerDirectoryTree
 from metacity.helpers.file import write_json, read_json
-from metacity.io.cj import load_cj_file
 from metacity.models.object import MetacityObject
-
-
-def is_empty(objects, vertices):
-    return len(vertices) == 0 or len(objects) == 0
-
 
 
 class MetacityConfig:
@@ -60,20 +53,6 @@ class MetacityLayer:
             config.update(vertices)
         config.apply(vertices)
         config.export(self.dirtree)
-
-
-    def load_cj_file(self, input_file: str):
-        objects, vertices = load_cj_file(input_file)
-
-        if is_empty(objects, vertices):
-            return
-
-        self.update_config(vertices)
-
-        for oid, object in tqdm(objects.items()):
-            mobject = MetacityObject()
-            mobject.load_cityjson_object(oid, object, vertices)
-            mobject.export(self.dirtree)
             
 
     @property
@@ -101,10 +80,7 @@ class MetacityProject:
             os.mkdir(self.dir)
 
 
-    def layer(self, layer_name: str, load_existing=True):
-        if layer_name in self.layers: 
-            raise Exception(f'Layer {layer_name} already exists')
-        
+    def layer(self, layer_name: str, load_existing=True):        
         layer = MetacityLayer(layer_name, self.dir, load_existing)
         return layer
 

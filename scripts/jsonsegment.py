@@ -2,6 +2,7 @@
 
 from argparse import ArgumentParser
 from metacity.project import MetacityProject
+from metacity.io.cj import load_cj_file
 
 
 usage = ("Segment CityJSON file, "
@@ -25,7 +26,7 @@ if __name__ == "__main__":
     input_file, output_dir, append_action = process_args()
     project = MetacityProject(output_dir, append_action)
     layer = project.layer('layer1')
-    layer.load_cj_file(input_file)
+    load_cj_file(layer, input_file)
 
         
 

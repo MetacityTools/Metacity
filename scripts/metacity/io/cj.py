@@ -5,15 +5,19 @@ from metacity.geometry.surfaces import process_model
 from typing import Dict
 import numpy as np
 import json
+from tqdm import tqdm
+from metacity.models.object import MetacityObject
+from metacity.project import MetacityLayer
 
-def get_semantics(geometry_object):
+
+def get_cj_semantics(geometry_object):
     if 'semantics' in geometry_object:
         return geometry_object['semantics']['values'], geometry_object['semantics']['surfaces']
     else: 
         return None, None
 
 
-def get_cityjson_geometry_stats(geometry_object):
+def get_cj_geometry_stats(geometry_object):
     lod = geometry_object["lod"]
     gtype = geometry_object["type"].lower()
     return lod, gtype
@@ -41,8 +45,8 @@ def load_cj_facet_semanatic_surfaces(object, lod, semantics):
 
 
 def load_cj_geometry(object, vertices, geometry_object):
-    lod, gtype = get_cityjson_geometry_stats(geometry_object)
-    semantic_indices, semantics_surfaces = get_semantics(geometry_object)
+    lod, gtype = get_cj_geometry_stats(geometry_object)
+    semantic_indices, semantics_surfaces = get_cj_semantics(geometry_object)
     boundries = geometry_object['boundaries']
 
     if gtype.lower() == 'multipoint':
@@ -63,23 +67,42 @@ def load_cj_geometry(object, vertices, geometry_object):
         load_cj_facet_semanatic_surfaces(object, lod, semantics_surfaces)
 
 
-def clean_cityjson_meta(object):
+def clean_cj_meta(object):
     return { key: value for key, value in object.items() if key not in ['geometry', 'semantics'] }
 
 
-def load_cityjson_object(object, cjobject, vertices):
+def load_cj_object(object, oid: str, cjobject: Dict, vertices):
     geometry = cjobject['geometry']
     for geometry_object in geometry:
         load_cj_geometry(object, vertices, geometry_object)
-    object.meta = clean_cityjson_meta(cjobject)
+    object.meta = clean_cj_meta(cjobject)
+    object.oid = oid
     object.consolidate()
 
 
-def load_cj_file(input_file):
+def parse_cj_file(input_file):
     with open(input_file, "r") as file:
         contents = json.load(file)
 
     objects: Dict[str, Dict] = contents["CityObjects"] 
     vertices = np.array(contents["vertices"])
     return objects, vertices
+
+
+def is_empty(objects, vertices):
+    return len(vertices) == 0 or len(objects) == 0
+
+
+def load_cj_file(layer: MetacityLayer, input_file: str):
+    objects, vertices = parse_cj_file(input_file)
+
+    if is_empty(objects, vertices):
+        return
+
+    layer.update_config(vertices)
+    
+    for oid, object in tqdm(objects.items()):
+        mobject = MetacityObject()
+        load_cj_object(mobject, oid, object, vertices)
+        mobject.export(layer.dirtree)
 
