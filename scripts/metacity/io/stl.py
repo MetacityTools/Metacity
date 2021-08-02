@@ -33,7 +33,7 @@ def export_objects_stl(file: Union[TextIO, List[TextIO]],  objects: Iterable[Met
     file = ensure_list_like(file)
     lod = ensure_list_like(lod)
 
-    for obj in tqdm(objects):
+    for obj in objects:
         for output_file, l in zip(file, lod):
             model = obj.facets.lod[l]
             if model.exists:

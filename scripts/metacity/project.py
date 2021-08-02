@@ -1,3 +1,4 @@
+from metacity.geometry.bbox import bboxes_bbox
 import shutil
 import os
 
@@ -29,6 +30,7 @@ class MetacityConfig:
 
     def apply(self, vertices):
         vertices -= self.shift
+        return vertices
 
 
     def update(self, vertices):
@@ -53,6 +55,13 @@ class MetacityLayer:
             config.update(vertices)
         config.apply(vertices)
         config.export(self.dirtree)
+
+    
+    def apply_config(self, vertices):
+        config = MetacityConfig(self.dirtree)
+        if self.empty:
+            return vertices
+        return config.apply(vertices)
             
 
     @property
@@ -67,6 +76,18 @@ class MetacityLayer:
             obj = MetacityObject()
             obj.load(oid, self.dirtree)
             yield obj
+
+
+    def lod_bbox(self, lod):
+        return bboxes_bbox([ object.lod_bbox(lod) for object in self.objects ])
+            
+
+    @property
+    def bbox(self):
+        return bboxes_bbox([ object.bbox for object in self.objects ])
+
+    
+        
 
 
 

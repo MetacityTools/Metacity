@@ -1,4 +1,5 @@
 import os
+from metacity.geometry.bbox import bboxes_bbox
 from metacity.helpers.dirtree import LayerDirectoryTree
 from typing import Callable, Union
 
@@ -18,7 +19,7 @@ class ObjectLODs:
 
     def consolidate(self):
         for lod in range(0, 5):
-            if self.lod[lod].exists():
+            if self.lod[lod].exists:
                 self.lod[lod].consolidate()
 
 
@@ -34,7 +35,7 @@ class ObjectLODs:
 
     def export(self, oid: str, dirtree: LayerDirectoryTree):
         for lod in range(0, 5):
-            if self.lod[lod].exists():
+            if self.lod[lod].exists:
                 self.export_lod(oid, dirtree, lod)
 
 
@@ -44,6 +45,15 @@ class ObjectLODs:
         output_file = os.path.join(output_dir, oid + '.json')
         write_json(output_file, data)
 
+
+    def lod_bbox(self, lod):
+        return self.lod[lod].bbox
+
+
+    @property
+    def bbox(self):
+        return bboxes_bbox([ self.lod_bbox(lod) for lod in range(0, 5) ])
+            
 
 
 class PointObjectLODs(ObjectLODs):
@@ -108,5 +118,12 @@ class MetacityObject:
         write_json(meta_file, self.meta)
 
 
+    def lod_bbox(self, lod):
+        bboxes_bbox([ self.facets.lod_bbox(lod), self.lines.lod_bbox(lod), self.points.lod_bbox(lod) ])
+
+
+    @property
+    def bbox(self):
+        return bboxes_bbox([ self.facets.bbox, self.lines.bbox, self.points.bbox ])
 
 

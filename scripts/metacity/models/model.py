@@ -1,3 +1,4 @@
+from metacity.geometry.bbox import empty_bbox, vertices_bbox
 from metacity.helpers.encoding import npfloat32_to_buffer, npint32_to_buffer, base64_to_float32, base64_to_int32
 import numpy as np
 
@@ -38,6 +39,14 @@ class NonFacetModel:
         self.vertices = base64_to_float32(data['vertices'])
         self.semantics = base64_to_int32(data['semantics'])
         self.semantics_meta = data['semantics_meta']
+
+
+    @property
+    def bbox(self):
+        if not self.exists:
+            return empty_bbox()
+        vertices = self.vertices.reshape((self.vertices.shape[0] // 3, 3))
+        return vertices_bbox(vertices)
 
 
 

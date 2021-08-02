@@ -1,4 +1,5 @@
 import itertools
+from metacity.geometry.bbox import vertices_bbox
 
 from metacity.helpers.iter import ensure_iterable
 from metacity.geometry.surfaces import process_model
