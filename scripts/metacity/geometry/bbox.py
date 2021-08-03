@@ -15,7 +15,5 @@ def bboxes_bbox(bboxes: List[np.ndarray]):
     vertices = vertices.flatten()
     vertices = vertices.reshape((vertices.shape[0] // 3, 3))
     return np.array([np.amin(vertices[::2,:], axis=0), np.amax(vertices[1::2,:], axis=0)])
-    #bbox = vertices_bbox(vertices)
-    #return bbox
 
 
