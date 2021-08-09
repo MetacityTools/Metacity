@@ -1,13 +1,12 @@
 from argparse import ArgumentParser
+from metacity.io.stl import buffers_to_stl
 
 from metacity.geometry.bbox import vertices_bbox
 from metacity.project import MetacityLayer, MetacityProject
 
 from memory_profiler import profile
 import numpy as np
-import matplotlib.pyplot as plt
 from tqdm import tqdm
-from pprint import pprint
 usage = ("Segment tiles according to optimal size")
 
 
@@ -22,86 +21,114 @@ def process_args():
 class MetaTile:
     def __init__(self, bbox):
         self.bbox = bbox
+        self.vertices = []
+        self.normals = []
 
-        
+
     def __str__(self):
         return f"{self.bbox}"
 
 
+    def add_triangle(self, vertices, normal):
+        self.vertices.append(vertices)
+        self.normals.append(normal)
 
-def special_case_two_on_plane(z, plane, triangle):
-    if z > plane:
-        return [], [ triangle ]
-    else: 
-        return [ triangle ], []
-
-
-def special_case_one_on_plane_split(y, z, plane, triangle, on_plane_idx, y_idx, z_idx):
-    p = (plane - z) / (y - z)
-    mid = triangle[y_idx] * p + triangle[z_idx] * (1 - p)
-    y_triangle = np.array([triangle[y_idx], mid, triangle[on_plane_idx]])
-    z_triangle = np.array([triangle[on_plane_idx], mid, triangle[z_idx]])
-    if y < plane and z > plane:
-        return y_triangle, z_triangle
-    else:
-        return z_triangle, y_triangle
+    @property
+    def empty(self):
+        return len(self.vertices) == 0
 
 
-def special_case_one_on_plane(y, z, plane, triangle, on_plane_idx, y_idx, z_idx):
-    if y > plane and z > plane:
-        return [], [ triangle ]
-    elif y < plane and z < plane:
-        return [ triangle ], []
-    else:
-        return special_case_one_on_plane_split(y, z, plane, triangle, on_plane_idx, y_idx, z_idx)
+    def consolidate(self):
+        self.vertices = np.array(self.vertices).flatten() 
+        self.normals = np.array(self.normals).flatten()
 
 
-def handle_special_cases(triangle, plane, axis):
+
+
+def cross_point(a, b, plane, axis):
+    p = (plane - b[axis]) / (a[axis] - b[axis])
+    return a * p + b * (1 - p)
+
+
+def one_on_plane_split(x_on_plane, y, z, plane, axis):
+    mid = cross_point(y, z, plane, axis)
+    y_triangle = np.array([y, mid, x_on_plane])
+    z_triangle = np.array([x_on_plane, mid, z])
+    return [ y_triangle, z_triangle ]
+
+
+def special_case_split(triangle, plane, axis):
     a, b, c = triangle
-    a_onplane, b_onplane, c_onplane = (triangle[:, 0] == plane)
-
-    if a_onplane and b_onplane and c_onplane:
-        return [ triangle ], []
-
-    if a_onplane and b_onplane:
-        return special_case_two_on_plane(c[axis], plane, triangle)
+    onplane = (triangle[:, 0] == plane)
     
-    if b_onplane and c_onplane:
-        return special_case_two_on_plane(a[axis], plane, triangle)
+    if np.count_nonzero(onplane) != 1:
+        raise Exception(f"No or multiple points on plane: {onplane}.")
     
-    if c_onplane and a_onplane:
-        return special_case_two_on_plane(b[axis], plane, triangle)
+    a_onplane, b_onplane, c_onplane = onplane
 
     if a_onplane:
-        return special_case_one_on_plane(b[axis], c[axis], plane, triangle, 0, 1, 2)
+        return one_on_plane_split(a, b, c, plane, axis)
 
     if b_onplane:
-        return special_case_one_on_plane(c[axis], a[axis], plane, triangle, 1, 2, 0)
+        return one_on_plane_split(b, c, a, plane, axis)
 
     if c_onplane:
-        return special_case_one_on_plane(a[axis], b[axis], plane, triangle, 2, 0, 1)
+        return one_on_plane_split(c, a, b, plane, axis)
 
 
-def x_split_triangle(triangle, plane):
-    onplane = (triangle[:, 0] == plane)
+def roll(triangle, plane, axis):
+    positioned = False
+    while not positioned:
+        leftplane = triangle[:, axis] < plane
+        positioned = (leftplane[1] and leftplane[2]) or not (leftplane[1] or leftplane[2])
+        if not positioned:
+            triangle = np.roll(triangle, 1, axis=0)
+    
+    return triangle
 
-    if np.any(onplane):
-        return handle_special_cases(triangle, plane, 0)
-
-    #TODO
 
 
-def x_split(triangles, planes):
-    planes.sort()
-    segmented = []
+def general_split(triangle, plane, axis):
+    triangle = roll(triangle, plane, axis)
+    a, b, c = triangle
+    mid_ab = cross_point(a, b, plane, axis)
+    mid_ac = cross_point(a, c, plane, axis)
+    dist_ab_c = np.sum((mid_ab - c) ** 2)
+    dist_b_ac = np.sum((b - mid_ac) ** 2)
 
+    if dist_ab_c > dist_b_ac:
+        return [ np.array([ a, mid_ab, mid_ac ])    , np.array([ mid_ab, b, mid_ac ]), np.array([ b, c, mid_ac ]) ]
+    else:
+        return [ np.array([ a, mid_ab, mid_ac ]), np.array([ mid_ab, b, c ]), np.array([ mid_ab, c, mid_ac ]) ]
+
+
+def triangle_not_splitable(triangle, plane, axis):
+    return np.all(triangle[:, axis] <= plane) or np.all(triangle[:, axis] >= plane)
+
+
+def point_on_plane(triangle, plane, axis):
+    return np.any(triangle[:, axis] == plane)
+
+
+def split(triangle, plane, axis):
+    if triangle_not_splitable(triangle, plane, axis):
+        return [ triangle ]
+
+    if point_on_plane(triangle, plane, axis):
+        return special_case_split(triangle, plane, axis)
+    else:
+        return general_split(triangle, plane, axis)
+
+
+def split_along_planes(triangles, planes, axis):
+    tri_split = []
     for plane in planes:
-        for triangle in triangles:
-            x_split_triangle(triangle, plane)
+        for tri in triangles:
+            tri_split.extend(split(tri, plane, axis))
 
-
-
-    #TODO
+        triangles = tri_split
+        tri_split = []
+    return triangles
 
 
 class MetaRegularGrid:
@@ -109,7 +136,6 @@ class MetaRegularGrid:
         self.bbox = bbox
         self.shift = self.bbox[0]
         self.tile_size = tile_size
-        #self.epsilon = tile_size * 0.0001 # test this value TBA
         self.tiles = {}
         self.__init_grid(bbox, tile_size)
 
@@ -148,8 +174,14 @@ class MetaRegularGrid:
 
 
 
+    def vertices_tile_index(self, vertices):
+        return np.floor(((vertices - self.shift) / self.tile_size)[:, 0:2]).astype(int)
+
+
+
     def triangle_tile_index(self, triangle):
-        return np.floor(((triangle - self.shift) / self.tile_size)[:, 0:2]).astype(int)
+        center = np.sum(triangle, axis=0) / 3
+        return np.floor(((center - self.shift) / self.tile_size)[0:2]).astype(int)
 
 
     def split_planes(self, indices):
@@ -165,53 +197,51 @@ class MetaRegularGrid:
             y_planes.append(self.__y_tile_top(y))
 
         return x_planes, y_planes
-                
-                
+    
 
-    def insert(self, triangle):
-        indices = self.triangle_tile_index(triangle)
+    def insert(self, triangle, normal):
+        indices = self.vertices_tile_index(triangle)
+        x_planes, y_planes = self.split_planes(indices)
+        triangles = [ triangle ]
 
-        if np.array_equal(indices[0], indices[1]) and np.array_equal(indices[0], indices[2]):
-            pass
-            #all equal, not neccasary to slice
-        else:
-            print(indices)
-            x_planes, y_planes = self.split_planes(indices)
-            print(x_planes, y_planes)
-
-            triangles = [ triangle ]
-            print(triangles)
-            triangles = x_split(triangles, x_planes)
-            quit()
-
-
-
+        triangles = split_along_planes(triangles, x_planes, 0)
+        triangles = split_along_planes(triangles, y_planes, 1)
+        
+        for tri in triangles:
+            x, y = self.triangle_tile_index(tri)
+            self.tiles[x][y].add_triangle(tri, normal)
 
 
 
 def slice_layer(layer: MetacityLayer):
     vertices = []
+    normals = []
     
     for object in tqdm(layer.objects):
         vertices.append(object.facets.lod[2].vertices)
+        normals.append(object.facets.lod[2].normals)
 
     vertices = np.concatenate(vertices)
+    normals = np.concatenate(normals)
     vertices = vertices.reshape((vertices.shape[0] // 3, 3))
-    grid = MetaRegularGrid(vertices_bbox(vertices), 100.0)
+    grid = MetaRegularGrid(vertices_bbox(vertices), 200.0)
     triangles = vertices.reshape((vertices.shape[0] // 3, 3, 3))
+    normals = normals.reshape((normals.shape[0] // 9, 3, 3))
 
-    for triangle in triangles:
-        grid.insert(triangle)
-
-
-
-
+    print(triangles.shape)
+    for triangle, normal in tqdm(zip(triangles, normals)):
+        grid.insert(triangle, normal)
 
 
+    for x in grid.tiles.keys():
+        for y in grid.tiles[x].keys():
+            grid.tiles[x][y].consolidate()
 
-    #plt.scatter(vertices[:, 0], vertices[:, 1])
-    #plt.show()
+            if not grid.tiles[x][y].empty:
+                with open(f"tile_{x}_{y}.stl", "w") as stl_file:
+                    buffers_to_stl(grid.tiles[x][y].vertices, grid.tiles[x][y].normals, f"tile_{x}_{y}", stl_file)
 
+    
 
 
 
