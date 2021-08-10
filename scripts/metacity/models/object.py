@@ -5,7 +5,7 @@ from typing import Callable, Union
 
 from metacity.helpers.file import read_json, write_json
 from metacity.io.core import load_model
-from metacity.models.model import FacetModel, NonFacetModel
+from metacity.models.model import FacetModel, LineModel, NonFacetModel, PointModel
 
 
 class ObjectLODs:
@@ -58,7 +58,7 @@ class ObjectLODs:
 
 class PointObjectLODs(ObjectLODs):
     def __init__(self):
-        super().__init__(NonFacetModel)
+        super().__init__(PointModel)
 
 
     def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
@@ -68,7 +68,7 @@ class PointObjectLODs(ObjectLODs):
 
 class LineObjectLODs(ObjectLODs):
     def __init__(self):
-        super().__init__(NonFacetModel)
+        super().__init__(LineModel)
 
 
     def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):

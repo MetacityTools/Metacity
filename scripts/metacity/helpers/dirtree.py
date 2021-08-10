@@ -13,11 +13,9 @@ class RelativePaths:
         self.point_tiles = os.path.join(self.tiles, "points")
         self.line_tiles = os.path.join(self.tiles, "lines")
         self.facet_tiles = os.path.join(self.tiles, "facets")
-        self.stl = "stl"
         self.all_dirs = [ self.metadata, 
                           self.geometry, 
-                          self.point_geometry, self.line_geometry, self.facet_geometry, 
-                          self.stl, 
+                          self.point_geometry, self.line_geometry, self.facet_geometry,  
                           self.tiles, 
                           self.point_tiles, self.line_tiles, self.facet_tiles ]
 
@@ -80,12 +78,30 @@ class LayerDirectoryTree:
 
 
     @property
+    def point_tiles_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.point_tiles)
+
+
+    def point_tiles_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.point_tiles, lod)
+
+
+    @property
     def line_geometry_lod_dirs(self):
         return self.__primitive_lod_dirs(self.rel.line_geometry)
  
 
     def line_geometry_lod_dir(self, lod):
         return self.__primitive_lod_dir(self.rel.line_geometry, lod)
+
+
+    @property
+    def line_tiles_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.line_tiles)
+ 
+
+    def line_tiles_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.line_tiles, lod)
 
 
     @property
@@ -96,9 +112,25 @@ class LayerDirectoryTree:
     def facet_geometry_lod_dir(self, lod):
         return self.__primitive_lod_dir(self.rel.facet_geometry, lod)
 
+    
+    @property
+    def facet_tiles_lod_dirs(self):
+        return self.__primitive_lod_dirs(self.rel.facet_tiles)
+
+
+    def facet_tiles_lod_dir(self, lod):
+        return self.__primitive_lod_dir(self.rel.facet_tiles, lod)
+
+
     @property
     def all_geometry_lod_dirs(self):
         return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_geometry ]
+
+
+
+    @property
+    def all_tiles_lod_dirs(self):
+        return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_tiles ]
 
 
     @property
@@ -132,6 +164,17 @@ class LayerDirectoryTree:
     @property
     def config(self):
         return os.path.join(self.base, 'config.json')
+
+
+    @property
+    def grid(self):
+        return os.path.join(self.base, 'grid.json')
+
+    
+
+
+
+
 
 
     @staticmethod

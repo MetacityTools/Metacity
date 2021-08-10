@@ -39,7 +39,7 @@ class MetacityConfig:
 
     def export(self, dirtree: LayerDirectoryTree):
         write_json(dirtree.config, self.serialize())
-            
+
 
 
 class MetacityLayer:
