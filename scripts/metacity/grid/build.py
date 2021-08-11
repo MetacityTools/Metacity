@@ -1,9 +1,25 @@
-from metacity.grid.cache import build_grid_cache
 import numpy as np
 from metacity.grid.config import RegularGridConfig
 from metacity.grid.tile import MetaTile
 from metacity.helpers.dirtree import LayerDirectoryTree
 from metacity.project import MetacityLayer
+from metacity.models.object import MetacityObject
+from metacity.grid.slicer import RegularGridSlicer
+from metacity.grid.cache import RegularGirdCacher
+from tqdm import tqdm 
+
+
+def cache_object(slicer: RegularGridSlicer, cacher: RegularGirdCacher, object: MetacityObject):
+    slicer.slice_object(object)
+    cacher.cache_object(object)
+    
+
+def build_grid_cache(layer: MetacityLayer, config: RegularGridConfig):
+    slicer = RegularGridSlicer(config)
+    cacher = RegularGirdCacher(config, layer.dirtree)
+    cacher.clear_cache()
+    for obj in tqdm(layer.objects):
+        cache_object(slicer, cacher, obj)
 
 
 def tile_bbox(config: RegularGridConfig, x, y):

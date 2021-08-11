@@ -2,10 +2,8 @@ from typing import Dict
 import numpy as np
 from metacity.grid.config import RegularGridConfig
 from metacity.models.object import MetacityObject, ObjectLODs
-from metacity.project import MetacityLayer
-from metacity.grid.slicer import RegularGridSlicer
 from metacity.helpers.dirtree import LayerDirectoryTree
-from tqdm import tqdm
+
 
 class RegularGirdCacher:
     def __init__(self, config: RegularGridConfig, dirtree: LayerDirectoryTree):
@@ -72,22 +70,4 @@ class RegularGirdCacher:
         for (x, y), tile in self.tiles.items():
             for obj in tile.values():
                 obj.consolidate()
-                obj.cache(x, y, self.dirtree)        
-
-
-
-def cache_object(slicer: RegularGridSlicer, cacher: RegularGirdCacher, object: MetacityObject):
-    slicer.slice_object(object)
-    cacher.cache_object(object)
-    
-
-def build_grid_cache(layer: MetacityLayer, config: RegularGridConfig):
-    slicer = RegularGridSlicer(config)
-    cacher = RegularGirdCacher(config, layer.dirtree)
-    
-    cacher.clear_cache()
-
-    for obj in tqdm(layer.objects):
-        cache_object(slicer, cacher, obj)
-
-
+                obj.cache(x, y, self.dirtree) 
