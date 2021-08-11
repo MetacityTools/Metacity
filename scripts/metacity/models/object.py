@@ -39,9 +39,23 @@ class ObjectLODs:
                 self.export_lod(oid, dirtree, lod)
 
 
+
+    def cache(self, oid: str, x: int, y: int, dirtree: LayerDirectoryTree):
+        for lod in range(0, 5):
+            if self.lod[lod].exists:
+                self.cache_lod(oid, x, y, dirtree, lod)
+
+
     def export_lod(self, oid: str, dirtree: LayerDirectoryTree, lod: int):
         data = self.lod[lod].serialize()
         output_dir = self.lod_directory(dirtree, lod)
+        output_file = os.path.join(output_dir, oid + '.json')
+        write_json(output_file, data)
+
+
+    def cache_lod(self, oid: str, x: int, y: int, dirtree: LayerDirectoryTree, lod: int):
+        data = self.lod[lod].serialize()
+        output_dir = self.lod_cache_directory(x, y, dirtree, lod)
         output_file = os.path.join(output_dir, oid + '.json')
         write_json(output_file, data)
 
@@ -62,8 +76,11 @@ class PointObjectLODs(ObjectLODs):
 
 
     def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
-        return dirtree.point_geometry_lod_dir(lod)
+        return dirtree.primitive_lod_dir(dirtree.rel.point_geometry, lod)
 
+
+    def lod_cache_directory(self, x, y, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.primitive_cache_lod_dir(dirtree.rel.points, x, y, lod)  
 
 
 class LineObjectLODs(ObjectLODs):
@@ -72,8 +89,11 @@ class LineObjectLODs(ObjectLODs):
 
 
     def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
-        return dirtree.line_geometry_lod_dir(lod)
+        return dirtree.primitive_lod_dir(dirtree.rel.line_geometry, lod)
 
+
+    def lod_cache_directory(self, x, y, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.primitive_cache_lod_dir(dirtree.rel.lines, x, y, lod)  
 
 
 class FacetObjectLODs(ObjectLODs):
@@ -82,8 +102,11 @@ class FacetObjectLODs(ObjectLODs):
 
 
     def lod_directory(self, dirtree: LayerDirectoryTree, lod: int):
-        return dirtree.facet_geometry_lod_dir(lod)
+        return dirtree.primitive_lod_dir(dirtree.rel.facet_geometry, lod)
 
+
+    def lod_cache_directory(self, x, y, dirtree: LayerDirectoryTree, lod: int):
+        return dirtree.primitive_cache_lod_dir(dirtree.rel.facets, x, y, lod)  
 
 
 class MetacityObject:
@@ -116,6 +139,12 @@ class MetacityObject:
         self.facets.export(self.oid, dirtree)
         meta_file = dirtree.metadata_for_oid(self.oid)
         write_json(meta_file, self.meta)
+
+
+    def cache(self, x, y, dirtree):
+        self.points.cache(self.oid, x, y, dirtree)
+        self.lines.cache(self.oid, x, y, dirtree)
+        self.facets.cache(self.oid, x, y, dirtree)
 
 
     def lod_bbox(self, lod):

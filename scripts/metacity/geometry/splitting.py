@@ -53,7 +53,7 @@ def general_split(triangle, plane, axis):
     dist_b_ac = np.sum((b - mid_ac) ** 2)
 
     if dist_ab_c > dist_b_ac:
-        return [ np.array([ a, mid_ab, mid_ac ])    , np.array([ mid_ab, b, mid_ac ]), np.array([ b, c, mid_ac ]) ]
+        return [ np.array([ a, mid_ab, mid_ac ]), np.array([ mid_ab, b, mid_ac ]), np.array([ b, c, mid_ac ]) ]
     else:
         return [ np.array([ a, mid_ab, mid_ac ]), np.array([ mid_ab, b, c ]), np.array([ mid_ab, c, mid_ac ]) ]
 
@@ -84,4 +84,4 @@ def split_along_planes(triangles, planes, axis):
 
         triangles = tri_split
         tri_split = []
-    return triangles
+    return np.array(triangles)

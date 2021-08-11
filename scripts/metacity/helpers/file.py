@@ -3,7 +3,6 @@ import ntpath
 import json
 
 def readable(file):
-    print(file)
     f = open(file, "r")
     return f.readable()
 
@@ -23,7 +22,7 @@ def write_json(filename, data):
         os.remove(filename)
 
     with open(filename, 'w') as file:
-        json.dump(data, file)
+        json.dump(data, file, indent=4)
 
 
 def read_json(filename):

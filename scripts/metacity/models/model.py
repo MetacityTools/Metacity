@@ -24,8 +24,8 @@ class NonFacetModel:
 
 
     def consolidate(self):
-        self.vertices = np.array(self.vertices).flatten() 
-        self.semantics = np.array(self.semantics).flatten()
+        self.vertices = np.array(self.vertices).ravel() 
+        self.semantics = np.array(self.semantics).ravel()
 
 
     def join_model(self, model, store_semantics_meta = True):
@@ -35,6 +35,11 @@ class NonFacetModel:
 
         if store_semantics_meta:
             self.semantics_meta.extend(model.semantics_meta)
+
+
+    def extend(self, vertices, semantics):
+        self.vertices.extend(vertices.ravel())
+        self.semantics.extend(semantics.ravel())
 
 
     def serialize(self):
@@ -104,12 +109,17 @@ class FacetModel(NonFacetModel):
 
     def consolidate(self):
         super().consolidate()
-        self.normals = np.array(self.normals).flatten()
+        self.normals = np.array(self.normals).ravel()
 
 
     def join_model(self, model, store_semantics_meta = True):
         super().join_model(model, store_semantics_meta)
         self.normals.extend(model.normals)
+
+
+    def extend(self, vertices, normals, semantics):
+        super().extend(vertices, semantics)
+        self.normals.extend(normals.ravel())
 
 
     def serialize(self):
@@ -135,28 +145,29 @@ class FacetModel(NonFacetModel):
 
 
 
-class TileModel:
-    def __init__(self, primitive_class):
-        self.primitive = primitive_class()
-        self.idbuffer = []
-        self.semantics_meta = {}
 
-
-    def consolidate(self):
-        self.primitive.consolidate()
-        self.idbuffer = np.array(self.idbuffer).flatten()
-
-
-    def join_primitive_model(self, model, bid):
-        self.primitive.join_model(model, store_semantics_meta=False)
-        count_vertices = model.vertices.shape[0] // 3 #vertices are always present
-        self.idbuffer.extend(np.full((count_vertices,), bid))
-        self.semantics_meta[bid] = model.semantics_meta
-        
-        
-    def serialize(self):
-        data = self.primitive.serialize()
-        data['idbuffer'] = npint32_to_buffer(self.idbuffer)
-        return data
+#class TileModel:
+#    def __init__(self, primitive_class):
+#        self.primitive = primitive_class()
+#        self.idbuffer = []
+#        self.semantics_meta = {}
+#
+#
+#    def consolidate(self):
+#        self.primitive.consolidate()
+#        self.idbuffer = np.array(self.idbuffer).flatten()
+#
+#
+#    def join_primitive_model(self, model, bid):
+#        self.primitive.join_model(model, store_semantics_meta=False)
+#        count_vertices = model.vertices.shape[0] // 3 #vertices are always present
+#        self.idbuffer.extend(np.full((count_vertices,), bid))
+#        self.semantics_meta[bid] = model.semantics_meta
+#        
+#        
+#    def serialize(self):
+#        data = self.primitive.serialize()
+#        data['idbuffer'] = npint32_to_buffer(self.idbuffer)
+#        return data
 
 

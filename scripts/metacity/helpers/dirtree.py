@@ -6,36 +6,52 @@ class RelativePaths:
     def __init__(self):
         self.metadata = "metadata"
         self.geometry = "geometry"
-        self.point_geometry = os.path.join(self.geometry, "points")
-        self.line_geometry = os.path.join(self.geometry, "lines")
-        self.facet_geometry = os.path.join(self.geometry, "facets")
-        self.tiles = "tiles"
-        self.point_tiles = os.path.join(self.tiles, "points")
-        self.line_tiles = os.path.join(self.tiles, "lines")
-        self.facet_tiles = os.path.join(self.tiles, "facets")
+        self.points = "points"
+        self.lines = "lines"
+        self.facets = "factes"
+        self.point_geometry = os.path.join(self.geometry, self.points)
+        self.line_geometry = os.path.join(self.geometry, self.lines)
+        self.facet_geometry = os.path.join(self.geometry, self.facets)
+        self.grid = "grid"
+        self.grid_cache = os.path.join(self.grid, "cache")
+        self.grid_tiles = os.path.join(self.grid, "tiles")
+        
         self.all_dirs = [ self.metadata, 
                           self.geometry, 
                           self.point_geometry, self.line_geometry, self.facet_geometry,  
-                          self.tiles, 
-                          self.point_tiles, self.line_tiles, self.facet_tiles ]
+                          self.grid,
+                          self.grid_cache, self.grid_tiles ]
 
         self.dirs_geometry = [
             self.point_geometry, self.line_geometry, self.facet_geometry
         ]
         
-        self.dirs_tiles = [
-            self.point_tiles, self.line_tiles, self.facet_tiles
-        ]
 
         self.dirs_with_lods = [
-            self.point_geometry, self.line_geometry, self.facet_geometry,
-            self.point_tiles, self.line_tiles, self.facet_tiles
+            self.point_geometry, self.line_geometry, self.facet_geometry
         ]  
+
+
+    @property
+    def primitives(self):
+        return [self.points, self.lines, self.facets]
+
 
 
 def create_dir_if_not_exists(dir):
     if not os.path.exists(dir):
         os.mkdir(dir)
+
+
+def recreate_dir(dir):
+    if os.path.exists(dir):
+        shutil.rmtree(dir)
+    create_dir_if_not_exists(dir)
+
+
+def recreate_lod_dirs(base):
+    for i in range(0, 5):
+        create_dir_if_not_exists(os.path.join(base, str(i)))
 
 
 class LayerDirectoryTree:
@@ -46,91 +62,57 @@ class LayerDirectoryTree:
 
 
     def recreate_layer(self, load_existing=True):
-        if os.path.exists(self.base) and not load_existing:
-            shutil.rmtree(self.base)
-        
         create_dir_if_not_exists(self.project_dir)
-        create_dir_if_not_exists(self.base)
+
+        if load_existing:
+            create_dir_if_not_exists(self.base)
+        else:
+            recreate_dir(self.base)
 
         for dir in self.rel.all_dirs:
             create_dir_if_not_exists(os.path.join(self.base, dir))
 
         for dir in self.rel.dirs_with_lods:
-            for i in range(0, 5):
-                create_dir_if_not_exists(os.path.join(self.base, dir, str(i)))
+            recreate_lod_dirs(os.path.join(self.base, dir))
 
 
-    def __primitive_lod_dir(self, primitive, lod):
+    def tile_name(self, x, y):
+        return f'{x}_{y}'
+
+
+    def recreate_tile(self, x, y):
+        tile_name = self.tile_name(x, y)
+        tile_base = os.path.join(self.base, self.rel.grid_tiles, tile_name)
+        recreate_dir(tile_base)
+        recreate_lod_dirs(tile_base)
+
+
+    def recreate_tile_cache(self, tile_name):
+        cache_base = os.path.join(self.base, self.rel.grid_cache, tile_name)
+        recreate_dir(cache_base)
+
+        for prim in self.rel.primitives:
+            prim_path = os.path.join(cache_base, prim)
+            create_dir_if_not_exists(prim_path)
+            recreate_lod_dirs(prim_path)
+
+
+    def recreate_cache(self):
+        for tile in self.tiles:
+            self.recreate_tile_cache(tile)
+
+
+    def primitive_lod_dir(self, primitive, lod):
         return os.path.join(self.base, primitive, str(lod))
-    
-    
-    def __primitive_lod_dirs(self, primitive):
-        return [ self.__primitive_lod_dir(primitive, i) for i in range(0, 5) ]
 
 
-    @property
-    def point_geometry_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.point_geometry)
-
-
-    def point_geometry_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.point_geometry, lod)
-
-
-    @property
-    def point_tiles_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.point_tiles)
-
-
-    def point_tiles_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.point_tiles, lod)
-
-
-    @property
-    def line_geometry_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.line_geometry)
- 
-
-    def line_geometry_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.line_geometry, lod)
-
-
-    @property
-    def line_tiles_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.line_tiles)
- 
-
-    def line_tiles_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.line_tiles, lod)
-
-
-    @property
-    def facet_geometry_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.facet_geometry)
-
-
-    def facet_geometry_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.facet_geometry, lod)
-
-    
-    @property
-    def facet_tiles_lod_dirs(self):
-        return self.__primitive_lod_dirs(self.rel.facet_tiles)
-
-
-    def facet_tiles_lod_dir(self, lod):
-        return self.__primitive_lod_dir(self.rel.facet_tiles, lod)
+    def primitive_cache_lod_dir(self, primitive, x, y, lod):
+        return os.path.join(self.base, self.rel.grid_cache, self.tile_name(x, y), primitive, str(lod))
 
 
     @property
     def all_geometry_lod_dirs(self):
         return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_geometry ]
-
-
-
-    @property
-    def all_tiles_lod_dirs(self):
-        return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_tiles ]
 
 
     @property
@@ -162,23 +144,34 @@ class LayerDirectoryTree:
 
 
     @property
+    def tiles(self):
+        for tile in os.listdir(os.path.join(self.base, self.rel.grid_tiles)):
+            yield tile
+
+
+    @property
     def config(self):
         return os.path.join(self.base, 'config.json')
 
 
     @property
-    def grid(self):
-        return os.path.join(self.base, 'grid.json')
-
-    
+    def grid_config(self):
+        return os.path.join(self.base, self.rel.grid, 'grid.json')
 
 
+    def tile_config(self, x, y):
+        return os.path.join(self.base, self.rel.grid_tiles, self.tile_name(x, y), 'config.json')
 
 
+    def grid_cache_tile_object(self, x, y):
+        #TODO
+        pass
 
 
     @staticmethod
     def layer_dirs(project_dir):
         return [ d for d in os.listdir(project_dir) ]
+
+
 
 

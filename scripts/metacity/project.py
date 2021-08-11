@@ -15,7 +15,7 @@ class MetacityConfig:
         try:
             self.deserialize(read_json(dirtree.config))
         except:
-            self.export(dirtree)
+            pass
 
 
     def serialize(self):
