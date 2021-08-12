@@ -8,14 +8,14 @@ class RelativePaths:
         self.geometry = "geometry"
         self.points = "points"
         self.lines = "lines"
-        self.facets = "factes"
+        self.facets = "facets"
         self.point_geometry = os.path.join(self.geometry, self.points)
         self.line_geometry = os.path.join(self.geometry, self.lines)
         self.facet_geometry = os.path.join(self.geometry, self.facets)
         self.grid = "grid"
         self.grid_cache = os.path.join(self.grid, "cache")
         self.grid_tiles = os.path.join(self.grid, "tiles")
-        
+
         self.all_dirs = [ self.metadata, 
                           self.geometry, 
                           self.point_geometry, self.line_geometry, self.facet_geometry,  
@@ -25,7 +25,7 @@ class RelativePaths:
         self.dirs_geometry = [
             self.point_geometry, self.line_geometry, self.facet_geometry
         ]
-        
+
 
         self.dirs_with_lods = [
             self.point_geometry, self.line_geometry, self.facet_geometry
@@ -52,6 +52,7 @@ def recreate_dir(dir):
 def recreate_lod_dirs(base):
     for i in range(0, 5):
         create_dir_if_not_exists(os.path.join(base, str(i)))
+
 
 
 class LayerDirectoryTree:
@@ -98,21 +99,21 @@ class LayerDirectoryTree:
 
 
     def recreate_cache(self):
-        for tile in self.tiles:
+        for tile in self.tile_names:
             self.recreate_tile_cache(tile)
 
 
-    def primitive_lod_dir(self, primitive, lod):
-        return os.path.join(self.base, primitive, str(lod))
-
-
-    def primitive_cache_lod_dir(self, primitive, x, y, lod):
-        return os.path.join(self.base, self.rel.grid_cache, self.tile_name(x, y), primitive, str(lod))
+    def clear_grid(self):
+        grid = os.path.join(self.base, self.rel.grid)
+        shutil.rmtree(grid)
+        os.mkdir(grid)
+        os.mkdir(os.path.join(self.base, self.rel.grid_cache))
+        os.mkdir(os.path.join(self.base, self.rel.grid_tiles))
 
 
     @property
-    def all_geometry_lod_dirs(self):
-        return [ os.path.join(self.base, dir, str(i)) for i in range(0, 5) for dir in self.rel.dirs_geometry ]
+    def all_lod_dirs(self):
+        return [ os.path.join(dir, str(i)) for i in range(0, 5) for dir in self.rel.primitives ]
 
 
     @property
@@ -121,30 +122,51 @@ class LayerDirectoryTree:
 
 
     def metadata_for_oid(self, oid: str):
-        return os.path.join(self.metadta_dir, oid + 'json')
+        return os.path.join(self.metadta_dir, oid + '.json')
 
 
     @property
     def any_object_exists(self):
-        for dir in self.all_geometry_lod_dirs:
-            for _ in os.listdir(dir):
+        for dir in self.all_lod_dirs:
+            for _ in os.listdir(os.path.join(self.base, self.rel.geometry, dir)):
                 return True
         return False
 
 
+    def objects(self, base_dir):
+        oids = set()
+        for dir in self.all_lod_dirs:
+            for o in os.listdir(os.path.join(base_dir, dir)):
+                oid = id_from_filename(o)
+                if oid not in oids:
+                    oids.add(oid)
+                    yield oid
+
+
     @property
     def object_ids(self):
-        objects = set()
-        for dir in self.all_geometry_lod_dirs:
-            for o in os.listdir(dir):
-                oid = id_from_filename(o)
-                if oid not in objects:
-                    objects.add(oid)
-        return list(objects)
+        base_dir = os.path.join(self.base, self.rel.geometry)
+        return self.objects(base_dir)
+
+
+    def objects_in_tile_cache(self, x, y):
+        cache_dir = os.path.join(self.base, self.rel.grid_cache, self.tile_name(x, y))
+        return self.objects(cache_dir)
+
 
 
     @property
-    def tiles(self):
+    def geometry_object_dir(self):
+        return os.path.join(self.base, self.rel.geometry)
+
+
+    @property
+    def cache_object_dir(self):
+        return os.path.join(self.base, self.rel.grid_cache)
+
+
+    @property
+    def tile_names(self):
         for tile in os.listdir(os.path.join(self.base, self.rel.grid_tiles)):
             yield tile
 
@@ -163,14 +185,16 @@ class LayerDirectoryTree:
         return os.path.join(self.base, self.rel.grid_tiles, self.tile_name(x, y), 'config.json')
 
 
-    def grid_cache_tile_object(self, x, y):
-        #TODO
-        pass
+    def tile_dir(self, x, y):
+        return os.path.join(self.base, self.rel.grid_tiles, self.tile_name(x, y))
 
 
     @staticmethod
     def layer_dirs(project_dir):
         return [ d for d in os.listdir(project_dir) ]
+
+
+
 
 
 

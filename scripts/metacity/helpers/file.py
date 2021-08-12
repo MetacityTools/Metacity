@@ -18,7 +18,7 @@ def id_from_filename(file_name):
 
 def write_json(filename, data):
     if os.path.exists(filename):
-        print(f'File {filename} already exixsts, rewriting...')
+        print(f'File {filename} already exists, rewriting...')
         os.remove(filename)
 
     with open(filename, 'w') as file:

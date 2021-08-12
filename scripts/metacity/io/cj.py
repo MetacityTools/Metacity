@@ -105,5 +105,5 @@ def load_cj_file(layer: MetacityLayer, input_file: str):
     for oid, object in tqdm(objects.items()):
         mobject = MetacityObject()
         load_cj_object(mobject, oid, object, vertices)
-        mobject.export(layer.dirtree)
+        mobject.export_base(layer.dirtree)
 

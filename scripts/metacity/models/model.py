@@ -28,13 +28,11 @@ class NonFacetModel:
         self.semantics = np.array(self.semantics).ravel()
 
 
-    def join_model(self, model, store_semantics_meta = True):
+    def join_model(self, model):
         self.vertices.extend(model.vertices)
         start_idx = len(self.semantics_meta)
         self.semantics.extend(np.array(model.semantics) + start_idx)
-
-        if store_semantics_meta:
-            self.semantics_meta.extend(model.semantics_meta)
+        self.semantics_meta.extend(model.semantics_meta)
 
 
     def extend(self, vertices, semantics):
@@ -59,7 +57,7 @@ class NonFacetModel:
 
     @property
     def bbox(self):
-        if not self.exists:
+        if self.empty:
             return empty_bbox()
         vertices = self.vertices.reshape((self.vertices.shape[0] // 3, 3))
         return vertices_bbox(vertices)
@@ -72,6 +70,9 @@ class NonFacetModel:
 
 
 class PointModel(NonFacetModel):
+    json_type = 'points'
+
+
     def __init__(self):
         super().__init__()
 
@@ -85,8 +86,16 @@ class PointModel(NonFacetModel):
             yield segment, semantic
 
 
+    def serialize(self):
+        data = super().serialize()
+        data['type'] = PointModel.json_type
+        return data
+
+
 
 class LineModel(NonFacetModel):
+    json_type = 'lines'
+
     def __init__(self):
         super().__init__()
 
@@ -100,8 +109,17 @@ class LineModel(NonFacetModel):
             yield segment, semantic
 
 
+    def serialize(self):
+        data = super().serialize()
+        data['type'] = LineModel.json_type
+        return data
+
+
 
 class FacetModel(NonFacetModel):
+    json_type = 'facets'
+
+
     def __init__(self):
         super().__init__()
         self.normals = []
@@ -112,8 +130,8 @@ class FacetModel(NonFacetModel):
         self.normals = np.array(self.normals).ravel()
 
 
-    def join_model(self, model, store_semantics_meta = True):
-        super().join_model(model, store_semantics_meta)
+    def join_model(self, model):
+        super().join_model(model)
         self.normals.extend(model.normals)
 
 
@@ -125,6 +143,7 @@ class FacetModel(NonFacetModel):
     def serialize(self):
         data = super().serialize()
         data['normals'] =  npfloat32_to_buffer(self.normals)
+        data['type'] = FacetModel.json_type
         return data
 
 
@@ -143,31 +162,5 @@ class FacetModel(NonFacetModel):
         for triangle, normal, semantic in zip(vert, norm, sema):
             yield triangle, normal, semantic
 
-
-
-
-#class TileModel:
-#    def __init__(self, primitive_class):
-#        self.primitive = primitive_class()
-#        self.idbuffer = []
-#        self.semantics_meta = {}
-#
-#
-#    def consolidate(self):
-#        self.primitive.consolidate()
-#        self.idbuffer = np.array(self.idbuffer).flatten()
-#
-#
-#    def join_primitive_model(self, model, bid):
-#        self.primitive.join_model(model, store_semantics_meta=False)
-#        count_vertices = model.vertices.shape[0] // 3 #vertices are always present
-#        self.idbuffer.extend(np.full((count_vertices,), bid))
-#        self.semantics_meta[bid] = model.semantics_meta
-#        
-#        
-#    def serialize(self):
-#        data = self.primitive.serialize()
-#        data['idbuffer'] = npint32_to_buffer(self.idbuffer)
-#        return data
 
 

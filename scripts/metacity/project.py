@@ -71,10 +71,9 @@ class MetacityLayer:
 
     @property
     def objects(self):
-        oids = self.dirtree.object_ids
-        for oid in oids:
+        for oid in self.dirtree.object_ids:
             obj = MetacityObject()
-            obj.load(oid, self.dirtree)
+            obj.load_base(oid, self.dirtree)
             yield obj
 
 

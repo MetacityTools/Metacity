@@ -1,22 +1,23 @@
 import numpy as np
+from metacity.grid.cache import RegularGirdCache
 from metacity.grid.config import RegularGridConfig
+from metacity.grid.grid import RegularGrid
+from metacity.grid.slicer import RegularGridSlicer
 from metacity.grid.tile import MetaTile
 from metacity.helpers.dirtree import LayerDirectoryTree
-from metacity.project import MetacityLayer
 from metacity.models.object import MetacityObject
-from metacity.grid.slicer import RegularGridSlicer
-from metacity.grid.cache import RegularGirdCacher
-from tqdm import tqdm 
+from metacity.project import MetacityLayer
+from tqdm import tqdm
 
 
-def cache_object(slicer: RegularGridSlicer, cacher: RegularGirdCacher, object: MetacityObject):
+def cache_object(slicer: RegularGridSlicer, cacher: RegularGirdCache, object: MetacityObject):
     slicer.slice_object(object)
     cacher.cache_object(object)
     
 
 def build_grid_cache(layer: MetacityLayer, config: RegularGridConfig):
     slicer = RegularGridSlicer(config)
-    cacher = RegularGirdCacher(config, layer.dirtree)
+    cacher = RegularGirdCache(config, layer.dirtree)
     cacher.clear_cache()
     for obj in tqdm(layer.objects):
         cache_object(slicer, cacher, obj)
@@ -53,12 +54,22 @@ def generate_layout(dirtree: LayerDirectoryTree, config: RegularGridConfig):
     generate_tiles(dirtree, config)
 
 
+def build_from_cache(layer: MetacityLayer, config: RegularGridConfig):
+    grid = RegularGrid(layer.dirtree)
+    tile: MetaTile
+    for tile in tqdm(grid.tiles):
+        tile.build_from_cache(layer.dirtree, config)        
+
+
 def build_grid(layer: MetacityLayer, tile_size):
     config = RegularGridConfig(layer.dirtree)
     config.bbox = layer.bbox
     config.tile_size = tile_size
+    layer.dirtree.clear_grid()
     generate_layout(layer.dirtree, config)
     config.export(layer.dirtree)
     build_grid_cache(layer, config)
+    build_from_cache(layer, config)
+    
 
 
