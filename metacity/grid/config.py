@@ -1,9 +1,9 @@
-from metacity.helpers.dirtree import LayerDirectoryTree
+from metacity.helpers.dirtree import grid as tree
 from metacity.helpers.file import write_json, read_json
 import numpy as np
 
 class RegularGridConfig:
-    def __init__(self, dirtree: LayerDirectoryTree):
+    def __init__(self, layer_dir):
         self.bbox = np.array([0, 0, 0])
         self.tile_size = 0
         
@@ -13,7 +13,8 @@ class RegularGridConfig:
         self.id_counter = 0
     
         try:
-            self.deserialize(read_json(dirtree.grid_config))
+            path = tree.grid_config(layer_dir)
+            self.deserialize(read_json(path))
         except:
             pass
 
@@ -68,7 +69,8 @@ class RegularGridConfig:
         self.tile_size = data['tile_size']
 
 
-    def export(self, dirtree: LayerDirectoryTree):
-        write_json(dirtree.grid_config, self.serialize())
+    def export(self, layer_dir):
+        path = tree.grid_config(layer_dir)
+        write_json(path, self.serialize())
 
 

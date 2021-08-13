@@ -1,19 +1,17 @@
-from metacity.geometry.bbox import bboxes_bbox
-import shutil
-import os
-
 import numpy as np
 
-from metacity.helpers.dirtree import LayerDirectoryTree
-from metacity.helpers.file import write_json, read_json
+from metacity.geometry.bbox import bboxes_bbox
+from metacity.helpers.dirtree import layer as tree
+from metacity.helpers.file import read_json, write_json
 from metacity.models.object import MetacityObject
 
 
 class MetacityConfig:
-    def __init__(self, dirtree: LayerDirectoryTree):
+    def __init__(self, layer_dir):
         self.shift = [0., 0., 0.]
         try:
-            self.deserialize(read_json(dirtree.config))
+            path = tree.layer_config(layer_dir)
+            self.deserialize(read_json(path))
         except:
             pass
 
@@ -37,28 +35,28 @@ class MetacityConfig:
         self.shift = np.amin(vertices, axis=0).tolist()
 
 
-    def export(self, dirtree: LayerDirectoryTree):
-        write_json(dirtree.config, self.serialize())
+    def export(self, layer_dir):
+        path = tree.layer_config(layer_dir)
+        write_json(path, self.serialize())
 
 
 
 class MetacityLayer:
-    def __init__(self, name: str, project_dir: str, load_existing=True):
-        self.name = name
-        self.dirtree = LayerDirectoryTree(name, project_dir)
-        self.dirtree.recreate_layer(load_existing)
+    def __init__(self, layer_dir: str, load_existing=True):
+        self.dir = layer_dir
+        tree.recreate_layer(layer_dir, load_existing)
 
 
     def update_config(self, vertices):
-        config = MetacityConfig(self.dirtree)
+        config = MetacityConfig(self.dir)
         if self.empty:
             config.update(vertices)
         config.apply(vertices)
-        config.export(self.dirtree)
+        config.export(self.dir)
 
     
     def apply_config(self, vertices):
-        config = MetacityConfig(self.dirtree)
+        config = MetacityConfig(self.dir)
         if self.empty:
             return vertices
         return config.apply(vertices)
@@ -66,15 +64,19 @@ class MetacityLayer:
 
     @property
     def empty(self):
-        return not self.dirtree.any_object_exists
+        return not tree.any_object_in_layer(self.dir)
 
 
     @property
     def objects(self):
-        for oid in self.dirtree.object_ids:
+        for oid in tree.layer_objects(self.dir):
             obj = MetacityObject()
-            obj.load_base(oid, self.dirtree)
+            obj.load(oid, self.geometry_path, self.meta_path)
             yield obj
+
+
+    def add_object(self, object: MetacityObject):
+        object.export(self.geometry_path, self.meta_path)
 
 
     def lod_bbox(self, lod):
@@ -85,30 +87,45 @@ class MetacityLayer:
     def bbox(self):
         return bboxes_bbox([ object.bbox for object in self.objects ])
 
-    
-        
+
+    @property
+    def geometry_path(self):
+        return tree.layer_geometry(self.dir)
+
+
+    @property
+    def cache_path(self):
+        return tree.layer_cache(self.dir)
+
+
+    @property
+    def meta_path(self):
+        return tree.layer_metadata(self.dir)
 
 
 
 class MetacityProject:
     def __init__(self, directory: str, load_existing=True):
         self.dir = directory
-        if os.path.exists(self.dir): 
-            if not load_existing:
-                shutil.rmtree(self.dir)
-        else:
-            os.mkdir(self.dir)
+        tree.recrete_project(self.dir, load_existing)
 
 
-    def layer(self, layer_name: str, load_existing=True):        
-        layer = MetacityLayer(layer_name, self.dir, load_existing)
+    def layer(self, layer_name: str, load_existing=True):  
+        layer_dir = tree.layer_dir(self.dir, layer_name)   
+        layer = MetacityLayer(layer_dir, load_existing)
         return layer
 
 
     @property
+    def layer_names(self):
+        return tree.layer_names(self.dir)
+
+
+    @property
     def layers(self):
-        dirs = LayerDirectoryTree.layer_dirs(self.dir)
+        dirs = self.layer_names
         return [ MetacityLayer(d, self.dir) for d in dirs ]
+
 
     
 

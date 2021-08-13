@@ -1,10 +1,9 @@
-from metacity.grid.config import RegularGridConfig
 from metacity.models.model import PointModel, LineModel, FacetModel
 from metacity.models.tiles.model import TileModel
-from metacity.models.object import MetacityObject, ObjectLODs
+from metacity.models.object import ObjectLODs
 
 import numpy as np
-from metacity.helpers.dirtree import LayerDirectoryTree
+from metacity.helpers.dirtree import grid as tree
 from metacity.helpers.file import write_json, read_json
 from typing import Callable, Union
 from metacity.io.core import load_tile
@@ -12,14 +11,14 @@ import os
 
 
 class MetaTileLODs:
-    def __init__(self, level_model: Callable[[], Union[PointModel, LineModel, FacetModel]]):
-        self.lod = { lod: TileModel(level_model) for lod in range(0, 5) }
-        self.primitive = level_model
+    def __init__(self, model_class: Callable[[], Union[PointModel, LineModel, FacetModel]]):
+        self.lod = { lod: TileModel(model_class) for lod in range(0, 5) }
+        self.primitive_class = model_class
 
 
     @property
     def type(self):
-        return self.primitive.json_type
+        return self.primitive_class.json_type
 
 
     def join_models(self, bid: int, modelLODs: ObjectLODs):
@@ -40,7 +39,7 @@ class MetaTileLODs:
 
 
     def load_lod(self, tile_dir: str, lod: int):
-        input_file = os.path.join(tile_dir, str(lod), self.type + '.json')
+        input_file = tree.path_to_tile_lod(tile_dir, self.type, lod)
         try:
             self.lod[lod] = load_tile(input_file)
         except:
@@ -55,7 +54,7 @@ class MetaTileLODs:
 
     def export_lod(self, tile_dir: str, lod: int):
         data = self.lod[lod].serialize()
-        output_file = os.path.join(tile_dir, str(lod), self.type + '.json')
+        output_file = tree.path_to_tile_lod(tile_dir, self.type, lod)
         write_json(output_file, data)
 
 
@@ -72,18 +71,25 @@ class MetaTile:
         self.points = MetaTileLODs(PointModel)
 
 
+    @property
+    def name(self):
+        return tree.tile_name(self.x, self.y)
+
+
     def consolidate(self):
         self.points.consolidate()
         self.lines.consolidate()
         self.facets.consolidate()
 
 
-    def load(self, x, y, dirtree: LayerDirectoryTree):
-        tile_dir = dirtree.tile_dir(x, y)
+    def load(self, x, y, layer_dir):
+        tile_name = tree.tile_name(x, y)
+        tile_config = tree.tile_config(layer_dir, tile_name)
+        tile_dir = tree.tile_dir(tile_name)
         self.points.load(tile_dir)
         self.lines.load(tile_dir)
         self.facets.load(tile_dir)
-        self.deserialize(read_json(dirtree.tile_config(x, y)))
+        self.deserialize(read_json(tile_config))
 
 
     def serialize(self):
@@ -102,30 +108,19 @@ class MetaTile:
         self.objects = data['objects']
 
 
-    def export(self, dirtree: LayerDirectoryTree):
-        tile_dir = dirtree.tile_dir(self.x, self.y)
+    def export(self, layer_dir):
+        tile_dir = tree.tile_dir(layer_dir, self.name)
+        tile_config = tree.tile_config(layer_dir, self.name)
         self.points.export(tile_dir)
         self.lines.export(tile_dir)
         self.facets.export(tile_dir)
-        write_json(dirtree.tile_config(self.x, self.y), self.serialize())
+        write_json(tile_config, self.serialize())
 
 
-    def join_object(self, object, bid):
+    def join_object(self, object: Union[PointModel, LineModel, FacetModel], bid):
         self.facets.join_models(bid, object.facets)
         self.lines.join_models(bid, object.lines)
         self.points.join_models(bid, object.points)
-
-
-    def build_from_cache(self, dirtree: LayerDirectoryTree, config: RegularGridConfig):
-        for oid in dirtree.objects_in_tile_cache(self.x, self.y):
-            object = MetacityObject()
-            object.load_cache(oid, self.x, self.y, dirtree)
-            bid = config.id_for_oid(object.oid)
-            self.join_object(object, bid)
-            self.objects += 1
-
-        self.consolidate()
-        self.export(dirtree)
 
 
 

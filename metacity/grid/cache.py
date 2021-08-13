@@ -1,19 +1,27 @@
+from sys import meta_path
 from typing import Dict
 import numpy as np
 from metacity.grid.config import RegularGridConfig
 from metacity.models.object import MetacityObject, ObjectLODs
-from metacity.helpers.dirtree import LayerDirectoryTree
+from metacity.helpers.dirtree import grid as tree
 
 
 class RegularGridCache:
-    def __init__(self, config: RegularGridConfig, dirtree: LayerDirectoryTree):
-        self.config = config
-        self.dirtree = dirtree
+    def __init__(self, layer_dir):
+        self.config = RegularGridConfig(layer_dir)
+        self.layer_dir = layer_dir
         self.tiles = {}
 
 
     def clear_cache(self):
-        self.dirtree.recreate_cache()
+        tree.clear_grid(self.layer_dir)
+
+
+    def cache_object(self, object: MetacityObject):
+        self.tiles = {}
+        self.cache_facets(object)
+        self.cache_processed_tiles()
+        self.tiles = {}
 
 
     def triangle_tile_index(self, triangle):
@@ -57,20 +65,16 @@ class RegularGridCache:
                 x, y = self.triangle_tile_index(t)
                 cache_obj = self.get_cache_object(x, y, object)
                 cache_obj.facets.lod[lod].extend(t, n, s)
-                
-
-    def cache_object(self, object: MetacityObject):
-        self.tiles = {}
-        self.cache_facets(object)
-        self.cache_processed_tiles()
-        self.tiles = {}
 
 
     def cache_processed_tiles(self):
         for (x, y), tile in self.tiles.items():
+            obj: MetacityObject
+            tile_name = tree.tile_name(x, y)
             for obj in tile.values():
                 obj.consolidate()
-                obj.export_cache(x, y, self.dirtree) 
+                cache_path = tree.tile_cache_dir(self.layer_dir, tile_name)
+                obj.export(cache_path)
 
 
     

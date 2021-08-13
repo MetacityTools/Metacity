@@ -6,11 +6,11 @@ from metacity.models.object import MetacityObject
 
 
 class RegularGridSlicer:
-    def __init__(self, config: RegularGridConfig):
-        self.config = config
+    def __init__(self, layer_dir):
+        self.config = RegularGridConfig(layer_dir)
 
 
-    def split_planes(self: RegularGridConfig, indices):
+    def split_planes(self, indices):
         min_box = np.amin(indices, axis=0)
         max_box = np.amax(indices, axis=0)
 
