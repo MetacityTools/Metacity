@@ -5,7 +5,7 @@ from metacity.models.object import MetacityObject, ObjectLODs
 from metacity.helpers.dirtree import LayerDirectoryTree
 
 
-class RegularGirdCache:
+class RegularGridCache:
     def __init__(self, config: RegularGridConfig, dirtree: LayerDirectoryTree):
         self.config = config
         self.dirtree = dirtree

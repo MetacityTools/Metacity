@@ -1,5 +1,5 @@
 import numpy as np
-from metacity.grid.cache import RegularGirdCache
+from metacity.grid.cache import RegularGridCache
 from metacity.grid.config import RegularGridConfig
 from metacity.grid.grid import RegularGrid
 from metacity.grid.slicer import RegularGridSlicer
@@ -7,17 +7,16 @@ from metacity.grid.tile import MetaTile
 from metacity.helpers.dirtree import LayerDirectoryTree
 from metacity.models.object import MetacityObject
 from metacity.project import MetacityLayer
-from tqdm import tqdm
 
 
-def cache_object(slicer: RegularGridSlicer, cacher: RegularGirdCache, object: MetacityObject):
+def cache_object(slicer: RegularGridSlicer, cacher: RegularGridCache, object: MetacityObject):
     slicer.slice_object(object)
     cacher.cache_object(object)
     
 
 def build_grid_cache(layer: MetacityLayer, config: RegularGridConfig):
     slicer = RegularGridSlicer(config)
-    cacher = RegularGirdCache(config, layer.dirtree)
+    cacher = RegularGridCache(config, layer.dirtree)
     cacher.clear_cache()
     for obj in tqdm(layer.objects):
         cache_object(slicer, cacher, obj)

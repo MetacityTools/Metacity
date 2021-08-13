@@ -1,7 +1,7 @@
 from metacity.grid.tile import MetaTile
 from metacity.grid.config import RegularGridConfig
 from metacity.grid.slicer import RegularGridSlicer
-from metacity.grid.cache import RegularGirdCache
+from metacity.grid.cache import RegularGridCache
 
 
 class RegularGrid:
@@ -21,7 +21,7 @@ class RegularGrid:
 
     @property
     def cache(self):
-        return RegularGirdCache(self.cofig, self.dirtree)
+        return RegularGridCache(self.cofig, self.dirtree)
 
 
     @property
