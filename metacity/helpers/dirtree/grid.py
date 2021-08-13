@@ -24,6 +24,7 @@ def tile_names(layer_dir):
     for tile in os.listdir(grid_base):
         yield tile
 
+
 def recreate_tile(layer_dir, tile_name):
     tile_base = tile_dir(layer_dir, tile_name)
     base.recreate_dir(tile_base)

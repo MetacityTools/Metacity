@@ -69,9 +69,11 @@ class MetacityLayer:
 
     @property
     def objects(self):
+        gp = self.geometry_path
+        mp = self.meta_path
         for oid in tree.layer_objects(self.dir):
             obj = MetacityObject()
-            obj.load(oid, self.geometry_path, self.meta_path)
+            obj.load(oid, gp, mp)
             yield obj
 
 

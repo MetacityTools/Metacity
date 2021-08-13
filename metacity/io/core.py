@@ -5,12 +5,17 @@ from metacity.models.tiles.model import TileModel
 from typing import Union, List, TextIO
 
 
-def load_model(file: Union[str, TextIO]) -> Union[FacetModel, LineModel, PointModel]:
+def get_content(file):
     try:
         contents = json.load(file)
     except:
         with open(file, 'r') as local_file:
             contents = json.load(local_file)
+    return contents
+
+
+def load_model(file: Union[str, TextIO]) -> Union[FacetModel, LineModel, PointModel]:
+    contents = get_content(file)
     
     type = contents['type']
     if type == PointModel.json_type:
@@ -34,12 +39,7 @@ def load_models(files: List[Union[str, TextIO]]) -> List[Union[FacetModel, LineM
 
 
 def load_tile(file: Union[str, TextIO]) -> Union[FacetModel, LineModel, PointModel]:
-    try:
-        contents = json.load(file)
-    except:
-        with open(file, 'r') as local_file:
-            contents = json.load(local_file)
-
+    contents = get_content(file)
 
     type = contents['type']
     if type == PointModel.json_type:

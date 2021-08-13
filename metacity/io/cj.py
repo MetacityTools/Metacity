@@ -71,7 +71,7 @@ def clean_cj_meta(object):
     return { key: value for key, value in object.items() if key not in ['geometry', 'semantics'] }
 
 
-def load_cj_object(object, oid: str, cjobject: Dict, vertices):
+def load_cj_object(object: MetacityObject, oid: str, cjobject: Dict, vertices):
     geometry = cjobject['geometry']
     for geometry_object in geometry:
         load_cj_geometry(object, vertices, geometry_object)
@@ -100,9 +100,11 @@ def load_cj_file(layer: MetacityLayer, input_file: str):
         return
 
     layer.update_config(vertices)
+    geometry_path = layer.geometry_path
+    meta_path = layer.meta_path
     
     for oid, object in tqdm(objects.items()):
         mobject = MetacityObject()
         load_cj_object(mobject, oid, object, vertices)
-        mobject.export_base(layer.dirtree)
+        mobject.export(geometry_path, meta_path)
 
