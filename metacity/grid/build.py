@@ -4,7 +4,7 @@ from metacity.grid.cache import RegularGridCache
 from metacity.grid.config import RegularGridConfig
 from metacity.grid.grid import RegularGrid
 from metacity.grid.slicer import RegularGridSlicer
-from metacity.grid.tile import MetaTile
+from metacity.models.tiles.object import MetaTile
 from metacity.helpers.dirtree import LayerDirectoryTree
 from metacity.models.object import MetacityObject
 from metacity.project import MetacityLayer

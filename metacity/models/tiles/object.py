@@ -1,6 +1,6 @@
 from metacity.grid.config import RegularGridConfig
 from metacity.models.model import PointModel, LineModel, FacetModel
-from metacity.models.tile import TileModel
+from metacity.models.tiles.model import TileModel
 from metacity.models.object import MetacityObject, ObjectLODs
 
 import numpy as np

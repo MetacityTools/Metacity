@@ -10,30 +10,29 @@ all: build
 #environments
 build: clean
 	@-( \
-		python3 setup.py sdist bdist_wheel \
+		python setup.py sdist bdist_wheel \
 	)
 
 upload: 
 	@-( \
 		rm dist/metacity*; \
-		python3 setup.py sdist; \
-		python3 -m twine upload dist/*; \
+		python setup.py sdist; \
+		python -m twine upload dist/*; \
 	)
 
 deploy: clean
 	@-( \
 		git add setup.py; \
-		git commit -m "Updating version in setup.py"; \
-		python3 setup.py sdist bdist_wheel; \
+		git commit -m "Deploying to Pypi.org"; \
+		python setup.py sdist bdist_wheel; \
 		rm dist/metacity*; \
-		python3 setup.py sdist; \
-		python3 -m twine upload dist/*; \
+		python setup.py sdist; \
+		python -m twine upload dist/*; \
 	)
 	
 
-
 clean:
 	@-( \
-		find . -type d -wholename '*/build' -exec rm -r {} +;\
-    	find . -type f -name '*.so' -exec rm {} +;\
+		find . -type d -not -path "*/env/*" -wholename '*/build' -exec rm -r {} +;\
+    	find . -type f -not -path "*/env/*" -name '*.so' -exec rm {} +;\
 	)

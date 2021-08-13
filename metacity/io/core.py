@@ -1,7 +1,7 @@
 import json
 
 from metacity.models.model import FacetModel, LineModel, PointModel
-from metacity.models.tile import TileModel
+from metacity.models.tiles.model import TileModel
 from typing import Union, List, TextIO
 
 

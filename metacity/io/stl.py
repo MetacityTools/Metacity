@@ -3,7 +3,6 @@ from typing import Iterable, List, TextIO, Union
 
 import numpy as np
 from metacity.models.object import MetacityObject
-from tqdm import tqdm
 
 
 def buffers_to_stl(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  

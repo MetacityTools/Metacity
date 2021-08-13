@@ -1,8 +1,8 @@
 import os
-from metacity.geometry.bbox import bboxes_bbox
-from metacity.helpers.dirtree import LayerDirectoryTree
 from typing import Callable, Union
 
+from metacity.geometry.bbox import bboxes_bbox
+from metacity.helpers.dirtree import LayerDirectoryTree
 from metacity.helpers.file import read_json, write_json
 from metacity.io.core import load_model
 from metacity.models.model import FacetModel, LineModel, PointModel

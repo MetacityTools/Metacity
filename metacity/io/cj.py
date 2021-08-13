@@ -1,13 +1,13 @@
 import itertools
-
-from metacity.helpers.iter import ensure_iterable
-from metacity.geometry.surfaces import process_model
-from typing import Dict
-import numpy as np
 import json
-from tqdm import tqdm
+from typing import Dict
+
+import numpy as np
+from metacity.geometry.surfaces import process_model
+from metacity.helpers.iter import ensure_iterable
 from metacity.models.object import MetacityObject
 from metacity.project import MetacityLayer
+from tqdm import tqdm
 
 
 def get_cj_semantics(geometry_object):

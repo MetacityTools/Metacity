@@ -1,9 +1,11 @@
+import itertools
+from typing import List, Tuple, Union
+
 import numpy as np
 import numpy.typing as npt
-import itertools
 from earcut.earcut import earcut, normal
 from metacity.models.model import FacetModel
-from typing import List, Tuple, Union
+
 
 def generate_hole_indices(surface: List[List[int]]) -> Union[List[int], None]:
     #manage holes for triangulation
