@@ -22,14 +22,18 @@ upload:
 
 deploy: clean
 	@-( \
-		git add setup.py; \
-		git commit -m "Deploying to Pypi.org"; \
 		python setup.py sdist bdist_wheel; \
 		rm dist/metacity*; \
 		python setup.py sdist; \
 		python -m twine upload dist/*; \
 	)
-	
+
+
+push: clean
+	@-( \
+		git add setup.py; \
+		git commit -m "Deploying to Pypi.org"; \
+	)
 
 clean:
 	@-( \
