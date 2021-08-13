@@ -1,5 +1,5 @@
 import pathlib
-from setuptools import setup
+from setuptools import setup, find_packages
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -10,7 +10,8 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="metacity",
-    version="0.0.1",
+    packages=find_packages(),
+    version="0.0.2",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -22,7 +23,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
     ],
-    packages=["metacity"],
     python_requires='>=3.8',                # Minimum version requirement of the package
     install_requires=[
         "earcut>=1.1.4",
