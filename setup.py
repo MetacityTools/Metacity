@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 setup(
     name="metacity",
     packages=find_packages(),
-    version="0.0.2",
+    version="0.0.3",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",

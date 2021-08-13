@@ -1,4 +1,5 @@
 import numpy as np
+from tqdm import tqdm
 from metacity.grid.cache import RegularGridCache
 from metacity.grid.config import RegularGridConfig
 from metacity.grid.grid import RegularGrid
