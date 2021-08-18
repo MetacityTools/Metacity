@@ -85,7 +85,7 @@ class MetaTile:
     def load(self, x, y, layer_dir):
         tile_name = tree.tile_name(x, y)
         tile_config = tree.tile_config(layer_dir, tile_name)
-        tile_dir = tree.tile_dir(tile_name)
+        tile_dir = tree.tile_dir(layer_dir, tile_name)
         self.points.load(tile_dir)
         self.lines.load(tile_dir)
         self.facets.load(tile_dir)

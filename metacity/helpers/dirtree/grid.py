@@ -39,7 +39,7 @@ def recreate_tile_cache(layer_dir, tile_name):
 
 def recreate_cache(layer_dir):
     for tile in tile_names(layer_dir):
-        recreate_tile_cache(tile)
+        recreate_tile_cache(layer_dir, tile)
 
 
 def clear_grid(layer_dir):

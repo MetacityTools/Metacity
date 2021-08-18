@@ -32,7 +32,7 @@ def cache_to_tiles(grid: RegularGrid):
     config = grid.config
     for tile in tqdm(grid.tiles):
         tile_from_cache(tile, grid, config)  
-    config.export() 
+    config.export(grid.dir) 
 
 
 #generate cache

@@ -3,7 +3,7 @@ from metacity.grid.config import RegularGridConfig
 from metacity.grid.slicer import RegularGridSlicer
 from metacity.grid.cache import RegularGridCache
 
-from helpers.dirtree import grid as tree
+from metacity.helpers.dirtree import grid as tree
 
 
 class RegularGrid:

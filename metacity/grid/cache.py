@@ -78,7 +78,7 @@ class RegularGridCache:
 
 
     def clear_cache(self):
-        tree.clear_grid(self.layer_dir)
+        tree.recreate_cache(self.layer_dir)
 
 
     def insert_object(self, object: MetacityObject):

@@ -37,13 +37,13 @@ def recreate_lod_dirs(base):
 
 def recreate_geometry_tree(base):
     for primitive in PRIMITIVES:
-        path = os.join(base, primitive)
-        os.mkdir(path)
+        path = os.path.join(base, primitive)
+        create_dir_if_not_exists(path)
         recreate_lod_dirs(path)
 
 
 def geometry_tree(base_dir):
-    return [ os.path.join(dir, str(i)) for i in range(0, 5) for dir in os.listdir(base_dir) ]
+    return [ os.path.join(base_dir, primitive, str(lod)) for lod in range(0, 5) for primitive in os.listdir(base_dir) ]
 
 
 def metadata_for_oid(meta_path, oid: str):

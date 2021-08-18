@@ -125,8 +125,8 @@ class MetacityProject:
 
     @property
     def layers(self):
-        dirs = self.layer_names
-        return [ MetacityLayer(d, self.dir) for d in dirs ]
+        names = self.layer_names
+        return [ self.layer(name) for name in names ]
 
 
     
