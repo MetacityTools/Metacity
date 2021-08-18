@@ -14,7 +14,7 @@ from tqdm import tqdm
 
 #build from cache
 def tile_from_cache(tile: MetaTile, grid: RegularGrid, config: RegularGridConfig):
-    cache_path = ltree.layer_cache(grid.dir)
+    cache_path = ltree.layer_tile_cache(grid.dir, tile.name)
     meta_path = ltree.layer_metadata(grid.dir)
 
     for oid in tree.tile_cache_objects(grid.dir, tile.name):

@@ -37,6 +37,10 @@ def layer_cache(layer_dir):
     return os.path.join(layer_dir, base.GRID_CACHE)
 
 
+def layer_tile_cache(layer_dir, tile_name):
+    return os.path.join(layer_dir, base.GRID_CACHE, tile_name)
+
+
 def any_object_in_layer(layer_dir):
     geometry = os.path.join(layer_dir, base.GEOMETRY)
     for _ in base.objects(geometry):
