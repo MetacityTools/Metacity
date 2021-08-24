@@ -8,10 +8,11 @@ POINTS = "points"
 LINES = "lines"
 FACETS = "facets"
 GRID = "grid"
+ORIGINAL = "original"
 GRID_CACHE = os.path.join(GRID, "cache")
 GRID_TILES = os.path.join(GRID, "tiles")
 
-BASE_DIRS = [ METADATA, GEOMETRY, 
+BASE_DIRS = [ METADATA, GEOMETRY, ORIGINAL,
              GRID, GRID_CACHE, GRID_TILES ]
 
 PRIMITIVES = [ POINTS, LINES, FACETS ]

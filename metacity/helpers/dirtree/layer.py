@@ -1,5 +1,6 @@
 import os
 from metacity.helpers.dirtree import base
+from metacity.helpers.file import filename
 import shutil
 
 
@@ -60,6 +61,15 @@ def layer_config(layer_dir):
 
 def layer_dir(project_dir, layer_name):
     return os.path.join(project_dir, layer_name)
+
+
+def layer_originals(layer_dir):
+    return os.path.join(layer_dir, base.ORIGINAL)
+
+
+def copy_to_layer(layer_dir: str, file_path: str):
+    dst = os.path.join(layer_dir, base.ORIGINAL)
+    return shutil.copy2(file_path, dst)
 
 
 def layer_names(project_dir):

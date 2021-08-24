@@ -5,6 +5,8 @@ from typing import Dict
 import numpy as np
 from metacity.geometry.surfaces import process_model
 from metacity.helpers.iter import ensure_iterable
+from metacity.helpers.dirtree import layer as tree
+
 from metacity.models.object import MetacityObject
 from metacity.project import MetacityLayer
 from tqdm import tqdm
@@ -93,7 +95,9 @@ def is_empty(objects, vertices):
     return len(vertices) == 0 or len(objects) == 0
 
 
+
 def load_cj_file(layer: MetacityLayer, input_file: str):
+    tree.copy_to_layer(layer.dir, input_file)
     objects, vertices = parse_cj_file(input_file)
 
     if is_empty(objects, vertices):

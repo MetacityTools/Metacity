@@ -12,8 +12,12 @@ def writable(file):
     return f.writable()
 
 
-def id_from_filename(file_name):
-    return os.path.splitext(ntpath.basename(file_name))[0]
+def filename(file_path):
+    return ntpath.basename(file_path)
+
+
+def id_from_filename(file_path):
+    return os.path.splitext(filename(file_path))[0]
 
 
 def write_json(filename, data):
@@ -28,4 +32,3 @@ def write_json(filename, data):
 def read_json(filename):
     with open(filename, 'r') as file:
         return json.load(file)
-
