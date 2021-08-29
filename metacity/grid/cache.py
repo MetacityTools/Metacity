@@ -2,7 +2,7 @@ from sys import meta_path
 from typing import Dict
 import numpy as np
 from metacity.grid.config import RegularGridConfig
-from metacity.models.object import MetacityObject, ObjectLODs
+from metacity.models.object import MetacityObject, ModelLODs, ObjectLODs
 from metacity.helpers.dirtree import grid as tree
 
 
@@ -12,9 +12,9 @@ def copy_lod_semantics(original: ObjectLODs, copy: ObjectLODs):
 
 
 def copy_semantics(object, cache_obj):
-    copy_lod_semantics(object.facets, cache_obj.facets)
-    copy_lod_semantics(object.lines, cache_obj.lines)
-    copy_lod_semantics(object.points, cache_obj.points)
+    copy_lod_semantics(object.models.facets, cache_obj.models.facets)
+    copy_lod_semantics(object.models.lines, cache_obj.models.lines)
+    copy_lod_semantics(object.models.points, cache_obj.models.points)
 
 
 def create_cache_obj(object: MetacityObject, tile: Dict[str, MetacityObject]):
@@ -53,11 +53,15 @@ class InMemoryCache:
 
     def cache(self, object: MetacityObject):
         for lod in range(0, 5):
-            model = object.facets.lod[lod]
-            for t, n, s in model.items:
-                x, y = self.triangle_tile_index(t)
-                cache_obj = self.get_object(x, y, object)
-                cache_obj.facets.lod[lod].extend(t, n, s)
+            self.cache_facets(object.models.facets, lod)
+
+
+    def cache_facets(self, facets: ModelLODs, lod):
+        model = facets.lod[lod]
+        for t, n, s in model.items:
+            x, y = self.triangle_tile_index(t)
+            cache_obj = self.get_object(x, y, object)
+            cache_obj.models.facets.lod[lod].extend(t, n, s)
 
 
     def export(self, layer_dir):

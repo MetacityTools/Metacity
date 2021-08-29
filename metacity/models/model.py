@@ -1,6 +1,7 @@
 from metacity.geometry.bbox import empty_bbox, vertices_bbox
 from metacity.helpers.encoding import npfloat32_to_buffer, npint32_to_buffer, base64_to_float32, base64_to_int32
 import numpy as np
+from metacity.helpers.dirtree import base
 
 class NonFacetModel:
     def __init__(self):
@@ -70,7 +71,7 @@ class NonFacetModel:
 
 
 class PointModel(NonFacetModel):
-    json_type = 'points'
+    json_type = base.POINTS
 
 
     def __init__(self):
@@ -94,7 +95,7 @@ class PointModel(NonFacetModel):
 
 
 class LineModel(NonFacetModel):
-    json_type = 'lines'
+    json_type = base.LINES
 
     def __init__(self):
         super().__init__()
@@ -117,7 +118,7 @@ class LineModel(NonFacetModel):
 
 
 class FacetModel(NonFacetModel):
-    json_type = 'facets'
+    json_type = base.FACETS
 
 
     def __init__(self):

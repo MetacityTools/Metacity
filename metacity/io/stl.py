@@ -34,7 +34,7 @@ def export_objects_stl(file: Union[TextIO, List[TextIO]],  objects: Iterable[Met
 
     for obj in objects:
         for output_file, l in zip(file, lod):
-            model = obj.facets.lod[l]
+            model = obj.models.facets.lod[l]
             if model.exists:
                 buffers_to_stl(model.vertices, model.normals, obj.oid, output_file)
 

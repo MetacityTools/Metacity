@@ -37,16 +37,16 @@ def load_cj_solid(object, vertices, lod, semantics, solid):
 
 def load_cj_surface(object, vertices, lod, semantics, boundries):
     surface = process_model(vertices, boundries, semantics)
-    object.facets.join_model(surface, lod)
+    object.models.facets.join_model(surface, lod)
 
 
 def load_cj_facet_semanatic_surfaces(object, lod, semantics):
     if semantics == None:
         return
-    object.facets.lod[lod].semantics_meta.extend(semantics)
+    object.models.facets.lod[lod].semantics_meta.extend(semantics)
 
 
-def load_cj_geometry(object, vertices, geometry_object):
+def load_cj_geometry(object: MetacityObject, vertices, geometry_object):
     lod, gtype = get_cj_geometry_stats(geometry_object)
     semantic_indices, semantics_surfaces = get_cj_semantics(geometry_object)
     boundries = geometry_object['boundaries']
@@ -75,8 +75,10 @@ def clean_cj_meta(object):
 
 def load_cj_object(object: MetacityObject, oid: str, cjobject: Dict, vertices):
     geometry = cjobject['geometry']
+    
     for geometry_object in geometry:
         load_cj_geometry(object, vertices, geometry_object)
+    
     object.meta = clean_cj_meta(cjobject)
     object.oid = oid
     object.consolidate()

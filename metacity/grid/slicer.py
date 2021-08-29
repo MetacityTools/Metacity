@@ -2,7 +2,7 @@ import numpy as np
 from metacity.geometry.splitting import split_along_planes
 from metacity.grid.config import RegularGridConfig
 from metacity.models.model import FacetModel
-from metacity.models.object import MetacityObject
+from metacity.models.object import MetacityObject, ModelLODs
 
 
 class RegularGridSlicer:
@@ -47,17 +47,17 @@ class RegularGridSlicer:
         return sliced_model
 
 
-    def slice_facet_models(self, object: MetacityObject):
+    def slice_facet_models(self, facets: ModelLODs):
         for lod in range(0, 5):
-            model = object.facets.lod[lod]
+            model = facets.lod[lod]
             if model.exists:
                 #DANGER ZONE, modyfing the metacity raw object for data transfer purpouses, shoud not be exported now
                 model = self.slice_facet_model(model)
-                object.facets.lod[lod] = model
+                facets.lod[lod] = model
 
 
     def slice_object(self, object: MetacityObject):
-        self.slice_facet_models(object)
+        self.slice_facet_models(object.models.facets)
         #TODO lines + points
 
         
