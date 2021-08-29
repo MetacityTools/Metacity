@@ -1,4 +1,4 @@
-from metacity.dirtree.base import recreate_geometry_tree
+from metacity.filesystem.base import recreate_geometry_tree
 import pytest
 
 

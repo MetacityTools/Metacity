@@ -1,5 +1,5 @@
-from metacity.datamodel.models.primitives.base import BaseModel
-from metacity.utils.base import encoding as en
+from metacity.datamodel.primitives.base import BaseModel
+from metacity.io import encoding as en
 import numpy as np
 
 class FacetModel(BaseModel):
@@ -26,9 +26,9 @@ class FacetModel(BaseModel):
         pass #TODO
 
 
-    @property
-    def joiner(self):
-        pass #TODO
+    def join(self, model):
+        super().join(model)
+        self.normals = np.append(self.normals, model.normals)
 
 
     def serialize(self):

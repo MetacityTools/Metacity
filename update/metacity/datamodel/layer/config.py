@@ -1,13 +1,13 @@
 import numpy as np
-from metacity.dirtree import layer as tree
-from metacity.helpers.file import read_json, write_json
+from metacity.filesystem import layer as fs
+from metacity.filesystem.file import read_json, write_json
 
 
 class LayerConfig:
     def __init__(self, layer_dir):
         self.shift = [0., 0., 0.]
         try:
-            path = tree.layer_config(layer_dir)
+            path = fs.layer_config(layer_dir)
             self.deserialize(read_json(path))
         except:
             pass
@@ -25,7 +25,6 @@ class LayerConfig:
 
     def apply(self, vertices):
         vertices -= self.shift
-        return vertices
 
 
     def update(self, vertices):
@@ -33,5 +32,5 @@ class LayerConfig:
 
 
     def export(self, layer_dir):
-        path = tree.layer_config(layer_dir)
+        path = fs.layer_config(layer_dir)
         write_json(path, self.serialize())

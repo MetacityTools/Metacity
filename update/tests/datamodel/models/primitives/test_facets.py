@@ -1,5 +1,5 @@
 import numpy as np
-from metacity.datamodel.models.primitives import facets
+from metacity.datamodel.primitives import facets
 from tests.assets import random_vertices_normals, random_semantics, random_semantic_meta
 
 
@@ -9,7 +9,7 @@ def init_random_model():
     model.vertices = vertices.flatten()
     model.normals = normals.flatten()
     model.semantics = random_semantics()
-    model.semantics_meta = random_semantic_meta()
+    model.meta = random_semantic_meta()
     return model
 
 
@@ -17,7 +17,7 @@ def models_equal(model, model2):
     assert np.all(model.vertices == model2.vertices)
     assert np.all(model.semantics == model2.semantics)
     assert np.all(model.normals == model2.normals)
-    assert model.semantics_meta == model2.semantics_meta
+    assert model.meta == model2.meta
 
 
 def test_init():
@@ -25,7 +25,7 @@ def test_init():
     assert model.vertices.shape == (0,)
     assert model.semantics.shape == (0,)
     assert model.normals.shape == (0,)
-    assert len(model.semantics_meta) == 0
+    assert len(model.meta) == 0
 
 
 def test_items():
@@ -61,4 +61,3 @@ def test_serialize():
 def test_untested_props():
     model = facets.FacetModel() 
     assert model.slicer == None
-    assert model.joiner == None

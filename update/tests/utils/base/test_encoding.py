@@ -1,5 +1,5 @@
 import numpy as np
-from metacity.utils.base import encoding as en
+from metacity.io import encoding as en
 from tests.assets import random_vertices, random_semantics
 
 def test_float32():

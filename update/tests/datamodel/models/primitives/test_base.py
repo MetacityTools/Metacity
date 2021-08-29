@@ -1,6 +1,6 @@
-from metacity.utils.base.bbox import empty_bbox
+from metacity.geometry.bbox import empty_bbox
 import numpy as np
-from metacity.datamodel.models.primitives import base
+from metacity.datamodel.primitives import base
 from tests.assets import random_semantics, random_vertices, random_semantic_meta
 
 
@@ -8,7 +8,7 @@ def test_init():
     model = base.BaseModel()
     assert model.vertices.shape == (0,)
     assert model.semantics.shape == (0,)
-    assert len(model.semantics_meta) == 0
+    assert len(model.meta) == 0
 
 
 def test_exists():
@@ -44,18 +44,17 @@ def test_serialize():
     model = base.BaseModel()   
     model.vertices = random_vertices().flatten()
     model.semantics = random_semantics().flatten()
-    model.semantics_meta = random_semantic_meta()
+    model.meta = random_semantic_meta()
     data = model.serialize()
     model2 = base.BaseModel()
     model2.deserialize(data)
 
     assert np.all(model.vertices == model2.vertices)
     assert np.all(model.semantics == model2.semantics)
-    assert model.semantics_meta == model2.semantics_meta
+    assert model.meta == model2.meta
 
 
 def test_untested_props():
     model = base.BaseModel() 
     assert model.items == None
     assert model.slicer == None
-    assert model.joiner == None

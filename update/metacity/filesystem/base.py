@@ -1,7 +1,7 @@
 import os
 import shutil
-from metacity.helpers.file import id_from_filename
-from metacity.datamodel.models.primitives import points, lines, facets
+from metacity.filesystem.file import id_from_filename
+from metacity.datamodel.primitives import points, lines, facets
 
 
 METADATA = "metadata"

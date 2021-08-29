@@ -1,5 +1,5 @@
 import numpy as np
-import metacity.utils.base.bbox as bbox
+import metacity.geometry.bbox as bbox
 
 
 

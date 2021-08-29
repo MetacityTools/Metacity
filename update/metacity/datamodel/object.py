@@ -1,6 +1,6 @@
 from metacity.datamodel.models.set import ModelSet
-from metacity.dirtree import base as tree
-from metacity.helpers.file import read_json, write_json
+from metacity.filesystem import base as fs
+from metacity.filesystem.file import read_json, write_json
 
 
 class MetacityObject:
@@ -17,7 +17,7 @@ class MetacityObject:
     def load(self, oid: str, geometry_path: str, meta_path: str):
         self.oid = oid
         self.models.load(oid, geometry_path)
-        meta_file = tree.metadata_for_oid(meta_path, self.oid)
+        meta_file = fs.metadata_for_oid(meta_path, self.oid)
         self.meta = read_json(meta_file)
 
 
@@ -28,5 +28,5 @@ class MetacityObject:
 
     def __export_meta(self, meta_path):
         if meta_path != "":
-            meta_file = tree.metadata_for_oid(meta_path, self.oid)
+            meta_file = fs.metadata_for_oid(meta_path, self.oid)
             write_json(meta_file, self.meta)

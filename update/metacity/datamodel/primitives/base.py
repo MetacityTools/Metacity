@@ -1,6 +1,6 @@
 import numpy as np
-from metacity.utils.base import encoding as en
-from metacity.utils.base.bbox import empty_bbox, vertices_bbox
+from metacity.io import encoding as en
+from metacity.geometry.bbox import empty_bbox, vertices_bbox
 
 class BaseModel:
     TYPE = "base"
@@ -11,7 +11,7 @@ class BaseModel:
         """
         self.vertices = np.array([], dtype=np.float32)
         self.semantics = np.array([], dtype=np.int32)
-        self.semantics_meta = []
+        self.meta = []
 
 
     @property
@@ -56,16 +56,25 @@ class BaseModel:
         pass
 
 
-    @property
-    def joiner(self):
-        pass
+    def join(self, model):
+        self.vertices = np.append(self.vertices, model.vertices)
+        semantics = self.__update_semantics(model.semantics)
+        self.semantics = np.append(self.semantics, semantics)
+        self.meta.extend(model.meta)
+
+
+    def __update_semantics(self, semantics):
+        start_idx = len(self.meta)
+        semantics[semantics == -1] -= start_idx
+        semantics += start_idx
+        return semantics
 
 
     def serialize(self):
         data = {
             'vertices': en.npfloat32_to_buffer(self.vertices),
             'semantics': en.npint32_to_buffer(self.semantics),
-            'semantics_meta': self.semantics_meta
+            'meta': self.meta
         }
         return data
 
@@ -73,6 +82,6 @@ class BaseModel:
     def deserialize(self, data):
         self.vertices = en.base64_to_float32(data['vertices'])
         self.semantics = en.base64_to_int32(data['semantics'])
-        self.semantics_meta = data['semantics_meta']
+        self.meta = data['meta']
 
 

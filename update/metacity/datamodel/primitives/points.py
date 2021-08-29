@@ -1,8 +1,8 @@
-from metacity.datamodel.models.primitives.base import BaseModel
+from metacity.datamodel.primitives.base import BaseModel
 
 
-class LineModel(BaseModel):
-    TYPE = "lines"
+class PointModel(BaseModel):
+    TYPE = "points"
 
 
     def __init__(self):
@@ -11,13 +11,13 @@ class LineModel(BaseModel):
 
     @property
     def items(self):
-        vert = self.vertices.reshape((self.vertices.shape[0] // 6, 2, 3))
-        sema = self.semantics.reshape((self.semantics.shape[0] // 2, 2))
-
+        vert = self.vertices.reshape((self.vertices.shape[0] // 3, 3))
+        sema = self.semantics
+        
         for segment, semantic in zip(vert, sema):
             yield segment, semantic
 
-
+    
     @property
     def slicer(self):
         pass #TODO
@@ -30,5 +30,5 @@ class LineModel(BaseModel):
 
     def serialize(self):
         data = super().serialize()
-        data['type'] = LineModel.TYPE
+        data['type'] = PointModel.TYPE
         return data

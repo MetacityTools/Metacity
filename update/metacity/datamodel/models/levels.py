@@ -1,9 +1,9 @@
 from typing import Callable
 
-from metacity.datamodel.models.primitives.base import BaseModel
-from metacity.dirtree import base as tree
-from metacity.helpers.file import read_json, write_json
-from metacity.utils.base.bbox import bboxes_bbox
+from metacity.datamodel.primitives.base import BaseModel
+from metacity.filesystem import base as fs
+from metacity.filesystem.file import read_json, write_json
+from metacity.geometry.bbox import bboxes_bbox
 
 
 class ModelLevels:
@@ -32,9 +32,9 @@ class ModelLevels:
 
 
     def load_lod(self, oid, geometry_path, lod):
-        input_file = tree.path_to_object_lod(geometry_path, self.type, lod, oid)
+        input_file = fs.path_to_object_lod(geometry_path, self.type, lod, oid)
         
-        if not tree.file_exists(input_file):
+        if not fs.file_exists(input_file):
             return
 
         self.load_model(input_file, lod)
@@ -55,7 +55,7 @@ class ModelLevels:
 
     def export_lod(self, oid: str, geometry_path: str, lod: int):
         data = self.lod[lod].serialize()
-        output_file = tree.path_to_object_lod(geometry_path, self.type, lod, oid)
+        output_file = fs.path_to_object_lod(geometry_path, self.type, lod, oid)
         write_json(output_file, data)
 
 
