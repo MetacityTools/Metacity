@@ -4,52 +4,49 @@ from update.metacity.datamodel.object import MetacityObject
 
 import numpy as np
 from metacity.datamodel.layer.layer import MetacityLayer
-from metacity.io.cityjson.objects import CJObjectParser
+from metacity.io.cityjson.objects import parse_object
 from metacity.filesystem import layer as fs
 from tqdm import tqdm
 
 
-class CityJSONParser:
-    def __init__(self, layer: MetacityLayer, input_file: str):
-        self.layer = layer
-        self.input_file = input_file
+class CJParser:
+    def __init__(self, input_file: str):
+        with open(input_file, "r") as file:
+            contents = json.load(file)
+
+        self.objects = contents["CityObjects"] 
+        self.vertices = np.array(contents["vertices"])
 
 
-    def load(self):
-        fs.copy_to_layer(self.layer.dir, self.input_file)
-        parse_input_file(self)
-        if is_empty(self):
-            return
-        apply_config(self)
-        process_objects(self)
+    @property
+    def is_empty(self):
+        return len(self.vertices) == 0 or len(self.objects) == 0
 
 
-def is_empty(loader: CityJSONParser):
-    return len(loader.vertices) == 0 or len(loader.objects) == 0
+    def apply_config(self, layer: MetacityLayer):
+        config = layer.config
+        if layer.empty:
+            config.update(self.vertices)
+        config.apply(self.vertices)
+        config.export(layer.dir)
 
 
-def parse_input_file(loader: CityJSONParser):
-    with open(loader.input_file, "r") as file:
-        contents = json.load(file)
-    loader.objects = contents["CityObjects"] 
-    loader.vertices = np.array(contents["vertices"])
+    def parse_objects(self, layer: MetacityLayer):
+        geometry_path = layer.geometry_path
+        meta_path = layer.meta_path
+
+        for oid, cjobject in tqdm(self.objects.items()):
+            obj = MetacityObject()
+            parse_object(obj, self.vertices, cjobject)
+            obj.oid = oid
+            obj.export(geometry_path, meta_path)
 
 
-def apply_config(loader: CityJSONParser):
-    config = loader.layer.config
-    if loader.layer.empty:
-        config.update(loader.vertices)
-    config.apply(loader.vertices)
-    config.export(loader.layer.dir)
 
-
-def process_objects(loader: CityJSONParser):
-    geometry_path = loader.layer.geometry_path
-    meta_path = loader.layer.meta_path
-
-    for oid, object in tqdm(loader.objects.items()):
-        obj = MetacityObject()
-        parser = CJObjectParser(loader.vertices, oid, object)
-        parser.parse(obj)
-        obj.export(geometry_path, meta_path)
-
+def parse(layer: MetacityLayer, input_file: str):
+    fs.copy_to_layer(layer.dir, input_file)
+    parser = CJParser(layer, input_file)
+    if not parser.is_empty:
+        parser.apply_config(layer)
+        parser.parse_objects(layer)
+    
