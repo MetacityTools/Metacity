@@ -3,7 +3,7 @@ from typing import Callable
 from metacity.datamodel.primitives.base import BaseModel
 from metacity.filesystem import base as fs
 from metacity.filesystem.file import read_json, write_json
-from metacity.geometry.bbox import bboxes_bbox
+from metacity.utils.bbox import bboxes_bbox
 
 
 class ModelLevels:

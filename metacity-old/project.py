@@ -1,6 +1,7 @@
 import numpy as np
 
-from metacity.geometry.bbox import bboxes_bbox
+from metacity.utils.bbox import bboxes_bbox
+
 from metacity.helpers.dirtree import layer as tree
 from metacity.helpers.file import read_json, write_json
 from metacity.models.object import MetacityObject

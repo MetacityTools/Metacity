@@ -1,7 +1,7 @@
 from metacity.datamodel.models.levels import ModelLevels
 from typing import List
 from metacity.datamodel.primitives import points, lines, facets
-from metacity.geometry.bbox import bboxes_bbox
+from metacity.utils.bbox import bboxes_bbox
 
 
 class ModelSet:

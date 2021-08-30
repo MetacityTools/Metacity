@@ -1,5 +1,5 @@
 from metacity.datamodel.primitives.base import BaseModel
-from metacity.io import encoding as en
+from metacity.utils import encoding as en
 import numpy as np
 
 class FacetModel(BaseModel):

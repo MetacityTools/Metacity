@@ -1,4 +1,4 @@
-from metacity.geometry.bbox import empty_bbox
+from metacity.utils.bbox import empty_bbox
 import numpy as np
 from metacity.datamodel.primitives import base
 from tests.data.random import random_semantics, random_vertices, random_semantic_meta

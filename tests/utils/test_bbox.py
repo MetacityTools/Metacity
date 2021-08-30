@@ -1,4 +1,4 @@
-import metacity.geometry.bbox as bbox
+import metacity.utils.bbox as bbox
 import numpy as np
 from tests.data.random import random_bboxes, random_vertices
 

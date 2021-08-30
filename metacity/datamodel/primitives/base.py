@@ -1,6 +1,6 @@
 import numpy as np
-from metacity.io import encoding as en
-from metacity.geometry.bbox import empty_bbox, vertices_bbox
+from metacity.utils import encoding as en
+from metacity.utils.bbox import empty_bbox, vertices_bbox
 
 class BaseModel:
     TYPE = "base"

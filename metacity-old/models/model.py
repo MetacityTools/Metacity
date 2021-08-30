@@ -1,4 +1,4 @@
-from metacity.geometry.bbox import empty_bbox, vertices_bbox
+from metacity.utils.bbox import empty_bbox, vertices_bbox
 from metacity.helpers.encoding import npfloat32_to_buffer, npint32_to_buffer, base64_to_float32, base64_to_int32
 import numpy as np
 from metacity.helpers.dirtree import base

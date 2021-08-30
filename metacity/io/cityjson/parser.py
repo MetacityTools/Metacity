@@ -2,7 +2,6 @@ import json
 from typing import Dict, List
 
 import numpy as np
-from numpy.core.function_base import geomspace
 from metacity.datamodel.layer.layer import MetacityLayer
 from metacity.filesystem import layer as fs
 from tqdm import tqdm

@@ -1,5 +1,5 @@
 import numpy as np
-from metacity.io import encoding as en
+from metacity.utils import encoding as en
 from tests.data.random import random_vertices, random_semantics
 
 def test_float32():
@@ -18,4 +18,3 @@ def test_int32():
     data3 = en.base64_to_type(buffer, np.int32)
     assert np.all(data == data2)
     assert np.all(data == data3)
-

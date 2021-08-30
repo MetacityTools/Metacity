@@ -1,6 +1,6 @@
 from typing import Callable, List, Union
 
-from metacity.geometry.bbox import bboxes_bbox
+from metacity.utils.bbox import bboxes_bbox
 from metacity.helpers.dirtree import base as tree
 from metacity.helpers.file import read_json, write_json
 from metacity.io.core import load_model

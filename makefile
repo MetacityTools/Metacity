@@ -40,3 +40,6 @@ clean:
 		find . -type d -not -path "*/env/*" -wholename '*/build' -exec rm -r {} +;\
     	find . -type f -not -path "*/env/*" -name '*.so' -exec rm {} +;\
 	)
+
+test:
+	@python -m pytest --cov=metacity --cov-report term-missing -v
