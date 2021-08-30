@@ -1,8 +1,8 @@
 from metacity.datamodel.models.levels import ModelLevels
 from metacity.datamodel.primitives.facets import FacetModel
-from tests.datamodel.models.primitives.test_facets import (init_random_model,
+from tests.datamodel.primitives.test_facets import (init_random_model,
                                                            models_equal)
-from tests.tree import geometry_tree  # it is accessed as param in test
+from tests.data.files import geometry_tree  # it is accessed as param in test
 
 
 def test_init():

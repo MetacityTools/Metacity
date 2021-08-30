@@ -1,6 +1,6 @@
 import numpy as np
 from metacity.io import encoding as en
-from tests.assets import random_vertices, random_semantics
+from tests.data.random import random_vertices, random_semantics
 
 def test_float32():
     data = random_vertices().flatten()

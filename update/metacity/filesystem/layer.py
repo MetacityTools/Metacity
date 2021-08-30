@@ -1,5 +1,5 @@
 import os
-from metacity.dirtree import base
+from metacity.filesystem import base
 import shutil
 
 
