@@ -1,6 +1,10 @@
-from tests.data.files import DatasetStats, railway_dataset, railway_dataset_stats
-from metacity.io.cityjson.parser import CJParser
 from collections import defaultdict
+
+import numpy as np
+from metacity.io.cityjson.geometry.geometry import CJGeometry
+from metacity.io.cityjson.parser import CJParser
+from tests.data.files import (DatasetStats, railway_dataset,
+                              railway_dataset_stats)
 
 
 def count_gtypes(parser):
@@ -22,3 +26,18 @@ def test_load(railway_dataset, railway_dataset_stats: DatasetStats):
     assert stats.gtypes == gtypes
 
 
+def assert_no_semantics(data, vertices):
+    geometry = CJGeometry(data, vertices, None)
+    primitiveA = geometry.primitive
+
+    assert np.all(primitiveA.semantics == -1)
+    assert len(primitiveA.semantics) == len(primitiveA.vertices) // 3
+
+    del data["semantics"]
+    geometry = CJGeometry(data, vertices, None)
+    primitiveB = geometry.primitive
+
+    assert np.all(primitiveB.semantics == -1)
+    assert len(primitiveB.semantics) == len(primitiveB.vertices) // 3
+
+    return primitiveA, primitiveB

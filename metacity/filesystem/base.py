@@ -57,8 +57,18 @@ def metadata_for_oid(meta_path, oid: str):
     return os.path.join(meta_path, oid + '.json')
 
 
-def path_to_object_lod(geometry_path, primitive, lod, oid):
-    return os.path.join(geometry_path, primitive, str(lod), oid + '.json')
+def path_to_object(geometry_path, oid):
+    return os.path.join(geometry_path, oid)
+
+
+def path_to_model(path, model):
+    return os.path.join(path, model)
+
+
+def object_models(geometry_path, oid):
+    object_dir = os.path.join(geometry_path, oid)
+    for model in os.listdir(object_dir):
+        yield model
 
 
 def objects(base_dir):

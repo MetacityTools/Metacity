@@ -12,6 +12,7 @@ class BaseModel:
         self.vertices = np.array([], dtype=np.float32)
         self.semantics = np.array([], dtype=np.int32)
         self.meta = []
+        self.meta_model = {}
 
 
     @property

@@ -1,5 +1,6 @@
+from tests.io.cityjson.test_cityjson import assert_no_semantics
 import numpy as np
-from metacity.io.cityjson.parser import CJGeometry
+from metacity.io.cityjson.geometry.geometry import CJGeometry
 from tests.data.cityjson import random_points
 
 
@@ -28,14 +29,10 @@ def test_points_no_semantics():
     vertices, data = random_points()
     data["semantics"]["values"] = None
 
-    geometry = CJGeometry(data, vertices, None)
-    primitive = geometry.primitive
-    assert np.all(primitive.semantics == -1)
-    assert len(primitive.semantics) == len(data["boundaries"])
+    primitiveA, primitiveB = assert_no_semantics(data, vertices)
 
-    del data["semantics"]
-    geometry = CJGeometry(data, vertices, None)
-    primitive = geometry.primitive
-    assert np.all(primitive.semantics == -1)
-    assert len(primitive.semantics) == len(data["boundaries"])
+    assert len(primitiveA.semantics) == len(data["boundaries"])
+    assert len(primitiveB.semantics) == len(data["boundaries"])
+
+
 

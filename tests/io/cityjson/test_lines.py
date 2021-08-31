@@ -1,5 +1,6 @@
+from tests.io.cityjson.test_cityjson import assert_no_semantics
 import numpy as np
-from metacity.io.cityjson.parser import CJGeometry
+from metacity.io.cityjson.geometry.geometry import CJGeometry
 from tests.data.cityjson import random_lines
 
 
@@ -36,15 +37,5 @@ def test_lines_no_semantics():
     vertices, data = random_lines(segments=segments)
     data["semantics"]["values"] = None
 
-    geometry = CJGeometry(data, vertices, None)
-    primitive = geometry.primitive
+    assert_no_semantics(data, vertices)
 
-    assert np.all(primitive.semantics == -1)
-    assert len(primitive.semantics) == len(primitive.vertices) // 3
-
-    del data["semantics"]
-    geometry = CJGeometry(data, vertices, None)
-    primitive = geometry.primitive
-
-    assert np.all(primitive.semantics == -1)
-    assert len(primitive.semantics) == len(primitive.vertices) // 3
