@@ -7,26 +7,21 @@ class MetacityProject:
         self.dir = directory
         fs.recrete_project(self.dir, load_existing)
 
-
     def create_layer(self, layer_name: str):
-        layer_dir = fs.layer_dir(self.dir, layer_name)   
+        layer_dir = fs.layer_dir(self.dir, layer_name)
         layer = MetacityLayer(layer_dir, load_existing=False)
         return layer
 
-
     def get_layer(self, layer_name: str):
-        layer_dir = fs.layer_dir(self.dir, layer_name)   
+        layer_dir = fs.layer_dir(self.dir, layer_name)
         layer = MetacityLayer(layer_dir)
         return layer
-
 
     @property
     def layer_names(self):
         return fs.layer_names(self.dir)
 
-
     @property
     def layers(self):
         names = self.layer_names
-        return [ self.get_layer(name) for name in names ]
-
+        return [self.get_layer(name) for name in names]

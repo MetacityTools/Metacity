@@ -1,13 +1,16 @@
 import os
-
 import pytest
-from metacity.filesystem.base import recreate_geometry_tree
 
 
 @pytest.fixture(scope="session")
 def geometry_tree(tmpdir_factory):
     root = tmpdir_factory.mktemp("geometry")
-    recreate_geometry_tree(root)
+    return root
+
+
+@pytest.fixture(scope="session")
+def layer_tree(tmpdir_factory):
+    root = tmpdir_factory.mktemp("layer")
     return root
 
 
@@ -35,7 +38,7 @@ def railway_dataset_stats():
     stats.gtypes = {
         'multisurface' : 104,
         'geometryinstance' : 15,
-        'compositesurface' : 1
+        'compositesurface' : 1,
     }
 
     return stats

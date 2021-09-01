@@ -1,33 +1,53 @@
-from typing import List
-
-from numpy.lib.function_base import append
+from typing import Callable, Dict, List
 
 from metacity.datamodel.primitives.base import BaseModel
-from metacity.utils.bbox import bboxes_bbox
+from metacity.datamodel.primitives.facets import FacetModel
+from metacity.datamodel.primitives.lines import LineModel
+from metacity.datamodel.primitives.points import PointModel
 from metacity.filesystem import base as fs
 from metacity.filesystem.file import read_json, write_json
+from metacity.utils.bbox import bboxes_bbox
+
+
+PRIMITIVES: Dict[str, Callable[[], BaseModel]] = {
+    PointModel.TYPE: PointModel,
+    LineModel.TYPE: LineModel,
+    FacetModel.TYPE: FacetModel
+}
 
 
 class ModelSet:
     def __init__(self):
         self.models: List[BaseModel] = []
 
-    #TODO tba
     def export(self, oid: str, geometry_path: str):
+        output_dir = fs.path_to_object(geometry_path, oid)
+        fs.create_dir_if_not_exists(output_dir)
+
         for i, model in enumerate(self.models):
             data = model.serialize()
-            output_dir = fs.path_to_object(geometry_path, oid)
-            fs.create_dir_if_not_exists(output_dir)
-            output_file = fs.path_to_model(output_dir, 'model' + str(i) + '.json')
+            name = f'model_{i}_{model.TYPE}.json'
+            output_file = fs.path_to_model(output_dir, name)
             write_json(output_file, data)
-
 
     def load(self, oid, geometry_path):
         for model in fs.object_models(geometry_path, oid):
-            read_json(model)
-            self.models.append()
+            data = read_json(model)
+            if not self.validate(model, data):
+                continue
+            primitive = PRIMITIVES[data['type']]()
+            primitive.deserialize(data)
+            self.models.append(primitive)
 
+    def validate(self, model, data):
+        if 'type' not in data:
+            print(f'Model missing model type: {model}')
+            return False
+        if data['type'] not in PRIMITIVES:
+            print(f'Unknown model type: {data["type"]} in {model}')
+            return False
+        return True
 
     @property
     def bbox(self):
-        return bboxes_bbox([ model.bbox for model in self.models ])
+        return bboxes_bbox([model.bbox for model in self.models])

@@ -1,0 +1,726 @@
+metacity/datamodel/object.py:12:1: W293 blank line contains whitespace
+    
+^
+metacity/datamodel/object.py:13:5: E303 too many blank lines (2)
+    def load(self, oid: str, geometry_path: str, meta_path: str):
+    ^
+metacity/datamodel/object.py:20:5: E303 too many blank lines (2)
+    def export(self, geometry_path: str, meta_path=""):
+    ^
+metacity/datamodel/object.py:25:5: E303 too many blank lines (2)
+    def __export_meta(self, meta_path):
+    ^
+metacity/datamodel/project.py:11:5: E303 too many blank lines (2)
+    def create_layer(self, layer_name: str):
+    ^
+metacity/datamodel/project.py:12:55: W291 trailing whitespace
+        layer_dir = fs.layer_dir(self.dir, layer_name)   
+                                                      ^
+metacity/datamodel/project.py:17:5: E303 too many blank lines (2)
+    def get_layer(self, layer_name: str):
+    ^
+metacity/datamodel/project.py:18:55: W291 trailing whitespace
+        layer_dir = fs.layer_dir(self.dir, layer_name)   
+                                                      ^
+metacity/datamodel/project.py:23:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/project.py:28:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/project.py:31:17: E201 whitespace after '['
+        return [ self.get_layer(name) for name in names ]
+                ^
+metacity/datamodel/project.py:31:56: E202 whitespace before ']'
+        return [ self.get_layer(name) for name in names ]
+                                                       ^
+metacity/datamodel/project.py:32:1: W391 blank line at end of file
+
+^
+metacity/datamodel/primitives/facets.py:5:1: E302 expected 2 blank lines, found 1
+class FacetModel(BaseModel):
+^
+metacity/datamodel/primitives/facets.py:9:5: E303 too many blank lines (2)
+    def __init__(self):
+    ^
+metacity/datamodel/primitives/facets.py:14:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/facets.py:24:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/facets.py:26:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/datamodel/primitives/facets.py:26:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/datamodel/primitives/facets.py:29:5: E303 too many blank lines (2)
+    def join(self, model):
+    ^
+metacity/datamodel/primitives/facets.py:34:5: E303 too many blank lines (2)
+    def serialize(self):
+    ^
+metacity/datamodel/primitives/facets.py:36:26: E222 multiple spaces after operator
+        data['normals'] =  en.npfloat32_to_buffer(self.normals)
+                         ^
+metacity/datamodel/primitives/facets.py:40:5: E303 too many blank lines (2)
+    def deserialize(self, data):
+    ^
+metacity/datamodel/primitives/facets.py:45:1: W391 blank line at end of file
+
+^
+metacity/datamodel/primitives/lines.py:8:5: E303 too many blank lines (2)
+    def __init__(self):
+    ^
+metacity/datamodel/primitives/lines.py:12:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/lines.py:21:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/lines.py:23:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/datamodel/primitives/lines.py:23:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/datamodel/primitives/lines.py:26:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/lines.py:28:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/datamodel/primitives/lines.py:28:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/datamodel/primitives/lines.py:31:5: E303 too many blank lines (2)
+    def serialize(self):
+    ^
+metacity/datamodel/primitives/lines.py:33:20: W292 no newline at end of file
+        return data                   ^
+metacity/datamodel/primitives/base.py:5:1: E302 expected 2 blank lines, found 1
+class BaseModel:
+^
+metacity/datamodel/primitives/base.py:10:80: E501 line too long (98 > 79 characters)
+        """
+        Initializes empy instance of Base Model. This class should not be instantiated on its own.
+        """
+           
+                                                                   ^
+metacity/datamodel/primitives/base.py:18:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:21:80: E501 line too long (81 > 79 characters)
+        """
+        Returns True if the model contains any vertices, otherwise returns False.
+        """
+           
+                                                                   ^
+metacity/datamodel/primitives/base.py:25:1: W293 blank line contains whitespace
+    
+^
+metacity/datamodel/primitives/base.py:26:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:29:80: E501 line too long (80 > 79 characters)
+        """
+        Returns True if the model contains no vertices, otherwise returns False.
+        """
+           
+                                                                   ^
+metacity/datamodel/primitives/base.py:34:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:37:80: E501 line too long (89 > 79 characters)
+        """
+        Returns True if the model contains semantic information, otherwise returns False.
+        """
+           
+                                                                   ^
+metacity/datamodel/primitives/base.py:42:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:49:1: W293 blank line contains whitespace
+    
+^
+metacity/datamodel/primitives/base.py:50:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:55:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/base.py:60:5: E303 too many blank lines (2)
+    def join(self, model):
+    ^
+metacity/datamodel/primitives/base.py:67:5: E303 too many blank lines (2)
+    def __update_semantics(self, semantics):
+    ^
+metacity/datamodel/primitives/base.py:74:5: E303 too many blank lines (2)
+    def serialize(self):
+    ^
+metacity/datamodel/primitives/base.py:85:5: E303 too many blank lines (2)
+    def deserialize(self, data):
+    ^
+metacity/datamodel/primitives/base.py:91:1: W391 blank line at end of file
+
+^
+metacity/datamodel/primitives/points.py:8:5: E303 too many blank lines (2)
+    def __init__(self):
+    ^
+metacity/datamodel/primitives/points.py:12:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/points.py:16:1: W293 blank line contains whitespace
+        
+^
+metacity/datamodel/primitives/points.py:20:1: W293 blank line contains whitespace
+    
+^
+metacity/datamodel/primitives/points.py:21:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/points.py:23:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/datamodel/primitives/points.py:23:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/datamodel/primitives/points.py:26:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/primitives/points.py:28:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/datamodel/primitives/points.py:28:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/datamodel/primitives/points.py:31:5: E303 too many blank lines (2)
+    def serialize(self):
+    ^
+metacity/datamodel/models/set.py:1:1: F401 'metacity.datamodel.primitives.base' imported but unused
+from metacity.datamodel.primitives import base
+^
+metacity/datamodel/models/set.py:8:1: F811 redefinition of unused 'BaseModel' from line 2
+from metacity.datamodel.primitives.base import BaseModel
+^
+metacity/datamodel/models/set.py:26:5: E303 too many blank lines (2)
+    def export(self, oid: str, geometry_path: str):
+    ^
+metacity/datamodel/models/set.py:29:1: W293 blank line contains whitespace
+        
+^
+metacity/datamodel/models/set.py:32:80: E501 line too long (86 > 79 characters)
+            output_file = fs.path_to_model(output_dir, f'model_{i}_{model.TYPE}.json')
+                                                                               ^
+metacity/datamodel/models/set.py:36:5: E303 too many blank lines (2)
+    def load(self, oid, geometry_path):
+    ^
+metacity/datamodel/models/set.py:46:5: E303 too many blank lines (2)
+    def validate(self, model, data):
+    ^
+metacity/datamodel/models/set.py:48:56: W291 trailing whitespace
+            print(f'Model missing model type: {model}') 
+                                                       ^
+metacity/datamodel/models/set.py:56:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/models/set.py:58:29: E201 whitespace after '['
+        return bboxes_bbox([ model.bbox for model in self.models ])
+                            ^
+metacity/datamodel/models/set.py:58:65: E202 whitespace before ']'
+        return bboxes_bbox([ model.bbox for model in self.models ])
+                                                                ^
+metacity/datamodel/layer/layer.py:11:1: W293 blank line contains whitespace
+            
+^
+metacity/datamodel/layer/layer.py:13:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:18:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:21:1: W293 blank line contains whitespace
+            
+^
+metacity/datamodel/layer/layer.py:23:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:25:29: E201 whitespace after '['
+        return bboxes_bbox([ object.models.bbox for object in self.objects ])
+                            ^
+metacity/datamodel/layer/layer.py:25:75: E202 whitespace before ']'
+        return bboxes_bbox([ object.models.bbox for object in self.objects ])
+                                                                          ^
+metacity/datamodel/layer/layer.py:28:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:33:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:38:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:43:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:53:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/datamodel/layer/layer.py:55:17: E201 whitespace after '['
+        return [ oid for oid in fs.layer_objects(self.dir) ]
+                ^
+metacity/datamodel/layer/layer.py:55:59: E202 whitespace before ']'
+        return [ oid for oid in fs.layer_objects(self.dir) ]
+                                                          ^
+metacity/datamodel/layer/layer.py:56:1: W293 blank line contains whitespace
+            
+^
+metacity/datamodel/layer/layer.py:59:5: E303 too many blank lines (3)
+    def add_object(self, object: MetacityObject):
+    ^
+metacity/datamodel/layer/config.py:12:9: E722 do not use bare 'except'
+        except:
+        ^
+metacity/datamodel/layer/config.py:16:5: E303 too many blank lines (2)
+    def apply(self, layer, vertices):
+    ^
+metacity/datamodel/layer/config.py:23:5: E303 too many blank lines (2)
+    def serialize(self):
+    ^
+metacity/datamodel/layer/config.py:29:5: E303 too many blank lines (2)
+    def deserialize(self, data):
+    ^
+metacity/datamodel/layer/config.py:33:5: E303 too many blank lines (2)
+    def export(self, layer_dir):
+    ^
+metacity/utils/encoding.py:4:1: E265 block comment should start with '# '
+#export
+^
+metacity/utils/encoding.py:5:1: E302 expected 2 blank lines, found 1
+def npfloat32_to_buffer(data):
+^
+metacity/utils/encoding.py:14:1: E303 too many blank lines (3)
+#import
+^
+metacity/utils/encoding.py:14:1: E265 block comment should start with '# '
+#import
+^
+metacity/utils/encoding.py:15:1: E302 expected 2 blank lines, found 3
+def base64_to_type(b64data, type):
+^
+metacity/utils/encoding.py:26:45: W292 no newline at end of file
+    return base64_to_type(b64data, np.int32)                                            ^
+metacity/utils/bbox.py:6:80: E501 line too long (106 > 79 characters)
+    return np.array([[np.Infinity, np.Infinity, np.Infinity], [-np.Infinity, -np.Infinity, -np.Infinity]])
+                                                                               ^
+metacity/utils/bbox.py:17:42: E231 missing whitespace after ','
+    return np.array([np.amin(vertices[::2,:], axis=0), np.amax(vertices[1::2,:], axis=0)])
+                                         ^
+metacity/utils/bbox.py:17:77: E231 missing whitespace after ','
+    return np.array([np.amin(vertices[::2,:], axis=0), np.amax(vertices[1::2,:], axis=0)])
+                                                                            ^
+metacity/utils/bbox.py:17:80: E501 line too long (90 > 79 characters)
+    return np.array([np.amin(vertices[::2,:], axis=0), np.amax(vertices[1::2,:], axis=0)])
+                                                                               ^
+metacity/utils/bbox.py:19:1: W391 blank line at end of file
+
+^
+metacity/filesystem/file.py:20:1: E265 block comment should start with '# '
+#def id_from_filename(file_path):
+^
+metacity/filesystem/layer.py:7:36: W291 trailing whitespace
+    if os.path.exists(project_dir): 
+                                   ^
+metacity/filesystem/layer.py:72:13: E201 whitespace after '['
+    return [ d for d in os.listdir(project_dir) ]
+            ^
+metacity/filesystem/layer.py:72:48: E202 whitespace before ']'
+    return [ d for d in os.listdir(project_dir) ]
+                                               ^
+metacity/filesystem/layer.py:74:1: W391 blank line at end of file
+
+^
+metacity/filesystem/base.py:12:14: E201 whitespace after '['
+BASE_DIRS = [ METADATA, GEOMETRY, ORIGINAL,
+             ^
+metacity/filesystem/base.py:13:14: E128 continuation line under-indented for visual indent
+             GRID, GRID_CACHE, GRID_TILES ]
+             ^
+metacity/filesystem/base.py:13:42: E202 whitespace before ']'
+             GRID, GRID_CACHE, GRID_TILES ]
+                                         ^
+metacity/filesystem/base.py:16:1: E265 block comment should start with '# '
+#basics
+^
+metacity/filesystem/base.py:52:16: W292 no newline at end of file
+        yield o               ^
+metacity/io/stl/export.py:1:1: F401 'typing.Iterable' imported but unused
+from typing import Iterable, List, TextIO, Union
+^
+metacity/io/stl/export.py:1:1: F401 'typing.List' imported but unused
+from typing import Iterable, List, TextIO, Union
+^
+metacity/io/stl/export.py:1:1: F401 'typing.TextIO' imported but unused
+from typing import Iterable, List, TextIO, Union
+^
+metacity/io/stl/export.py:1:1: F401 'typing.Union' imported but unused
+from typing import Iterable, List, TextIO, Union
+^
+metacity/io/stl/export.py:4:1: F401 'metacity.datamodel.object.MetacityObject' imported but unused
+from metacity.datamodel.object import MetacityObject
+^
+metacity/io/stl/export.py:10:13: E201 whitespace after '['
+    return [ data ]
+            ^
+metacity/io/stl/export.py:10:18: E202 whitespace before ']'
+    return [ data ]
+                 ^
+metacity/io/stl/export.py:13:72: E251 unexpected spaces around keyword / parameter equals
+def export_buffers(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
+                                                                       ^
+metacity/io/stl/export.py:13:74: E251 unexpected spaces around keyword / parameter equals
+def export_buffers(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
+                                                                         ^
+metacity/io/stl/export.py:13:80: E501 line too long (95 > 79 characters)
+def export_buffers(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
+                                                                               ^
+metacity/io/stl/export.py:13:96: W291 trailing whitespace
+def export_buffers(flat_vertices, flat_normals, model_name, file, shift = np.array([0, 0, 0])):  
+                                                                                               ^
+metacity/io/stl/export.py:21:20: F541 f-string is missing placeholders
+        file.write(f"    facet normal ")
+                   ^
+metacity/io/stl/export.py:27:20: F541 f-string is missing placeholders
+        file.write(f"       outer loop\n")
+                   ^
+metacity/io/stl/export.py:29:80: E501 line too long (102 > 79 characters)
+            file.write(f"          vertex {tri_vertex[i][0]} {tri_vertex[i][1]} {tri_vertex[i][2]}\n")            
+                                                                               ^
+metacity/io/stl/export.py:29:103: W291 trailing whitespace
+            file.write(f"          vertex {tri_vertex[i][0]} {tri_vertex[i][1]} {tri_vertex[i][2]}\n")            
+                                                                                                      ^
+metacity/io/stl/export.py:30:20: F541 f-string is missing placeholders
+        file.write(f"       endloop\n")
+                   ^
+metacity/io/stl/export.py:31:20: F541 f-string is missing placeholders
+        file.write(f"    endfacet\n")
+                   ^
+metacity/io/stl/export.py:35:1: E265 block comment should start with '# '
+#TODO
+^
+metacity/io/stl/export.py:36:1: E265 block comment should start with '# '
+#def export_objects(file: Union[TextIO, List[TextIO]],  objects: Iterable[MetacityObject]):
+^
+metacity/io/stl/export.py:36:80: E501 line too long (91 > 79 characters)
+#def export_objects(file: Union[TextIO, List[TextIO]],  objects: Iterable[MetacityObject]):
+                                                                               ^
+metacity/io/stl/export.py:43:80: E501 line too long (84 > 79 characters)
+#                export_buffers(model.vertices, model.normals, obj.oid, output_file)
+                                                                               ^
+metacity/io/stl/export.py:45:1: W293 blank line contains whitespace
+    ^
+metacity/io/stl/export.py:45:5: W292 no newline at end of file
+        ^
+metacity/io/cityjson/object.py:10:80: E501 line too long (88 > 79 characters)
+        self.geometry: List[CJGeometry] = self.parse_geometry(data, vertices, templates)
+                                                                               ^
+metacity/io/cityjson/object.py:13:5: E303 too many blank lines (2)
+    def clean_meta(self, data):
+    ^
+metacity/io/cityjson/object.py:14:17: E201 whitespace after '{'
+        return { key: value for key, value in data.items() if key not in ['geometry', 'semantics'] }
+                ^
+metacity/io/cityjson/object.py:14:80: E501 line too long (100 > 79 characters)
+        return { key: value for key, value in data.items() if key not in ['geometry', 'semantics'] }
+                                                                               ^
+metacity/io/cityjson/object.py:14:99: E202 whitespace before '}'
+        return { key: value for key, value in data.items() if key not in ['geometry', 'semantics'] }
+                                                                                                  ^
+metacity/io/cityjson/object.py:17:5: E303 too many blank lines (2)
+    def parse_geometry(self, data, vertices, templates):
+    ^
+metacity/io/cityjson/object.py:25:5: E303 too many blank lines (2)
+    def export(self, geometry_path, meta_path):
+    ^
+metacity/io/cityjson/object.py:31:48: W292 no newline at end of file
+        object.export(geometry_path, meta_path)                                               ^
+metacity/io/cityjson/parser.py:2:1: F401 'typing.List' imported but unused
+from typing import List
+^
+metacity/io/cityjson/parser.py:16:47: W291 trailing whitespace
+        self.objects = contents["CityObjects"] 
+                                              ^
+metacity/io/cityjson/parser.py:17:80: E501 line too long (101 > 79 characters)
+        self.templates = contents["geometry-templates"] if "geometry-templates" in contents else None
+                                                                               ^
+metacity/io/cityjson/parser.py:21:5: E303 too many blank lines (2)
+    @property
+    ^
+metacity/io/cityjson/parser.py:26:5: E303 too many blank lines (2)
+    def adjust_data(self, layer: MetacityLayer):
+    ^
+metacity/io/cityjson/parser.py:28:1: W293 blank line contains whitespace
+        
+^
+metacity/io/cityjson/parser.py:29:1: W293 blank line contains whitespace
+    
+^
+metacity/io/cityjson/parser.py:30:5: E303 too many blank lines (2)
+    def parse_and_export(self, layer: MetacityLayer):
+    ^
+metacity/io/cityjson/parser.py:42:1: W293 blank line contains whitespace
+    
+^
+metacity/io/cityjson/parser.py:44:1: W391 blank line at end of file
+
+^
+metacity/io/cityjson/geometry/multisurface.py:1:80: E501 line too long (84 > 79 characters)
+from metacity.io.cityjson.geometry.base import CJBasePrimitive, rep_nones, gen_nones
+                                                                               ^
+metacity/io/cityjson/geometry/multisurface.py:9:5: E265 block comment should start with '# '
+    #manage holes for triangulation
+    ^
+metacity/io/cityjson/geometry/multisurface.py:12:21: E201 whitespace after '['
+    face_lengths = [ len(h) for h in surface ]
+                    ^
+metacity/io/cityjson/geometry/multisurface.py:12:45: E202 whitespace before ']'
+    face_lengths = [ len(h) for h in surface ]
+                                            ^
+metacity/io/cityjson/geometry/multisurface.py:13:25: E201 whitespace after '['
+    face_length_sums = [ i for i in itertools.accumulate(face_lengths) ]
+                        ^
+metacity/io/cityjson/geometry/multisurface.py:13:71: E202 whitespace before ']'
+    face_length_sums = [ i for i in itertools.accumulate(face_lengths) ]
+                                                                      ^
+metacity/io/cityjson/geometry/multisurface.py:18:50: W291 trailing whitespace
+    hole_indices = generate_hole_indices(surface)  
+                                                 ^
+metacity/io/cityjson/geometry/multisurface.py:20:20: E201 whitespace after '['
+    vi = np.array([ val for sublist in surface for val in sublist ]) #flatten irregularly-shaped list of lists
+                   ^
+metacity/io/cityjson/geometry/multisurface.py:20:66: E202 whitespace before ']'
+    vi = np.array([ val for sublist in surface for val in sublist ]) #flatten irregularly-shaped list of lists
+                                                                 ^
+metacity/io/cityjson/geometry/multisurface.py:20:69: E261 at least two spaces before inline comment
+    vi = np.array([ val for sublist in surface for val in sublist ]) #flatten irregularly-shaped list of lists
+                                                                    ^
+metacity/io/cityjson/geometry/multisurface.py:20:70: E262 inline comment should start with '# '
+    vi = np.array([ val for sublist in surface for val in sublist ]) #flatten irregularly-shaped list of lists
+                                                                     ^
+metacity/io/cityjson/geometry/multisurface.py:20:80: E501 line too long (110 > 79 characters)
+    vi = np.array([ val for sublist in surface for val in sublist ]) #flatten irregularly-shaped list of lists
+                                                                               ^
+metacity/io/cityjson/geometry/multisurface.py:22:1: W293 blank line contains whitespace
+    
+^
+metacity/io/cityjson/geometry/multisurface.py:25:26: W291 trailing whitespace
+    if not normal_exists: 
+                         ^
+metacity/io/cityjson/geometry/multisurface.py:26:9: E265 block comment should start with '# '
+        #The model contains face which couldn't be triangulated.
+        ^
+metacity/io/cityjson/geometry/multisurface.py:32:24: W291 trailing whitespace
+    tri_count = len(ti) 
+                       ^
+metacity/io/cityjson/geometry/multisurface.py:33:66: W291 trailing whitespace
+    n = np.repeat([normal], tri_count, axis=0).astype(np.float32)    
+                                                                 ^
+metacity/io/cityjson/geometry/multisurface.py:44:5: E303 too many blank lines (2)
+    def join(self, surface):
+    ^
+metacity/io/cityjson/geometry/multisurface.py:53:17: E741 ambiguous variable name 'l'
+        sv, sn, l = parse_surface_vertices(surface, vertices)
+                ^
+metacity/io/cityjson/geometry/multisurface.py:54:9: E265 block comment should start with '# '
+        #maybe not the best solution
+        ^
+metacity/io/cityjson/geometry/multisurface.py:63:5: E303 too many blank lines (2)
+    v = np.array(v, dtype=np.float32).flatten()
+    ^
+metacity/io/cityjson/geometry/multisurface.py:69:24: E711 comparison to None should be 'if cond is not None:'
+    if semantic_values != None:
+                       ^
+metacity/io/cityjson/geometry/multisurface.py:86:5: E303 too many blank lines (2)
+    def parse(self, boundaries, semantics, vertices):
+    ^
+metacity/io/cityjson/geometry/multisurface.py:87:15: E741 ambiguous variable name 'l'
+        v, n, l = parse_vertices(boundaries, vertices)
+              ^
+metacity/io/cityjson/geometry/multisurface.py:88:22: E711 comparison to None should be 'if cond is not None:'
+        if semantics != None:
+                     ^
+metacity/io/cityjson/geometry/multisurface.py:97:5: E303 too many blank lines (2)
+    def extract_surface(self, surface):
+    ^
+metacity/io/cityjson/geometry/multisurface.py:98:62: W291 trailing whitespace
+        self.vertices = np.array(surface.v, dtype=np.float32) 
+                                                             ^
+metacity/io/cityjson/geometry/multisurface.py:103:5: E303 too many blank lines (2)
+    def preprocess_semantics(self, data):
+    ^
+metacity/io/cityjson/geometry/multisurface.py:113:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/multisurface.py:117:1: W391 blank line at end of file
+
+^
+metacity/io/cityjson/geometry/lines.py:12:1: W293 blank line contains whitespace
+        
+^
+metacity/io/cityjson/geometry/lines.py:19:5: E303 too many blank lines (2)
+    def parse_vertices(self, data, vertices):
+    ^
+metacity/io/cityjson/geometry/lines.py:30:5: E303 too many blank lines (2)
+    def parse_semantics(self, semantics, segment_lengths):
+    ^
+metacity/io/cityjson/geometry/lines.py:31:32: E711 comparison to None should be 'if cond is not None:'
+        if semantics["values"] != None:
+                               ^
+metacity/io/cityjson/geometry/lines.py:32:52: W291 trailing whitespace
+            buffer = rep_nones(semantics["values"]) 
+                                                   ^
+metacity/io/cityjson/geometry/lines.py:41:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/lines.py:44:1: W293 blank line contains whitespace
+    ^
+metacity/io/cityjson/geometry/lines.py:44:5: W292 no newline at end of file
+        ^
+metacity/io/cityjson/geometry/solid.py:1:80: E501 line too long (80 > 79 characters)
+from metacity.io.cityjson.geometry.multisurface import CJSurface, CJMultiSurface
+                                                                               ^
+metacity/io/cityjson/geometry/solid.py:10:17: E201 whitespace after '['
+        return [ data ]
+                ^
+metacity/io/cityjson/geometry/solid.py:10:22: E202 whitespace before ']'
+        return [ data ]
+                     ^
+metacity/io/cityjson/geometry/solid.py:11:1: W293 blank line contains whitespace
+    
+^
+metacity/io/cityjson/geometry/solid.py:18:5: E303 too many blank lines (2)
+    def parse(self, boundaries, semantics, vertices):
+    ^
+metacity/io/cityjson/geometry/solid.py:20:80: E501 line too long (100 > 79 characters)
+        for shell, shell_semantics in itertools.zip_longest(boundaries, ensure_iterable(semantics)):
+                                                                               ^
+metacity/io/cityjson/geometry/solid.py:25:1: W391 blank line at end of file
+
+^
+metacity/io/cityjson/geometry/base.py:3:1: E302 expected 2 blank lines, found 1
+def rep_nones(data):
+^
+metacity/io/cityjson/geometry/base.py:4:9: E117 over-indented
+        return [ i if i != None else -1 for i in data]
+        ^
+metacity/io/cityjson/geometry/base.py:4:17: E201 whitespace after '['
+        return [ i if i != None else -1 for i in data]
+                ^
+metacity/io/cityjson/geometry/base.py:4:25: E711 comparison to None should be 'if cond is not None:'
+        return [ i if i != None else -1 for i in data]
+                        ^
+metacity/io/cityjson/geometry/base.py:8:13: E201 whitespace after '['
+    return [ -1 ] * elements_count
+            ^
+metacity/io/cityjson/geometry/base.py:8:16: E202 whitespace before ']'
+    return [ -1 ] * elements_count
+               ^
+metacity/io/cityjson/geometry/base.py:16:5: E303 too many blank lines (2)
+    def generate_semantics(self, elements_count):
+    ^
+metacity/io/cityjson/geometry/base.py:21:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/base.py:22:80: E501 line too long (106 > 79 characters)
+        raise NotImplementedError(f"The CJ primitive {self} requires implementation of transform method.")
+                                                                               ^
+metacity/io/cityjson/geometry/base.py:25:5: E303 too many blank lines (2)
+    def export_into(self, primitive):
+    ^
+metacity/io/cityjson/geometry/base.py:29:27: E201 whitespace after '{'
+        primitive.tags = { "lod": self.lod }
+                          ^
+metacity/io/cityjson/geometry/base.py:29:43: E202 whitespace before '}'
+        primitive.tags = { "lod": self.lod }
+                                          ^
+metacity/io/cityjson/geometry/points.py:19:5: E303 too many blank lines (2)
+    def parse_vertices(self, data, vertices):
+    ^
+metacity/io/cityjson/geometry/points.py:20:80: E501 line too long (81 > 79 characters)
+        return np.array(vertices[data["boundaries"]], dtype=np.float32).flatten()
+                                                                               ^
+metacity/io/cityjson/geometry/points.py:23:5: E303 too many blank lines (2)
+    def parse_semantics(self, semantics, elements_count):
+    ^
+metacity/io/cityjson/geometry/points.py:24:32: E711 comparison to None should be 'if cond is not None:'
+        if semantics["values"] != None:
+                               ^
+metacity/io/cityjson/geometry/points.py:33:5: E303 too many blank lines (2)
+    def transform(self):
+    ^
+metacity/io/cityjson/geometry/points.py:34:13: E261 at least two spaces before inline comment
+        pass #TODO
+            ^
+metacity/io/cityjson/geometry/points.py:34:14: E262 inline comment should start with '# '
+        pass #TODO
+             ^
+metacity/io/cityjson/geometry/points.py:37:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/geometry.py:1:1: F401 'numpy.left_shift' imported but unused
+from numpy import left_shift
+^
+metacity/io/cityjson/geometry/geometry.py:9:1: E302 expected 2 blank lines, found 1
+class CJGeometry:
+^
+metacity/io/cityjson/geometry/geometry.py:29:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/multisolid.py:1:80: E501 line too long (83 > 79 characters)
+from metacity.io.cityjson.geometry.solid import CJSurface, CJSolid, ensure_iterable
+                                                                               ^
+metacity/io/cityjson/geometry/multisolid.py:7:1: E303 too many blank lines (4)
+class CJMultiSolid(CJSolid):
+^
+metacity/io/cityjson/geometry/multisolid.py:12:5: E303 too many blank lines (2)
+    def parse(self, boundaries, semantics, vertices):
+    ^
+metacity/io/cityjson/geometry/multisolid.py:14:80: E501 line too long (99 > 79 characters)
+        for solid, solid_semantic in itertools.zip_longest(boundaries, ensure_iterable(semantics)):
+                                                                               ^
+metacity/io/cityjson/geometry/geometryinstance.py:5:1: E303 too many blank lines (4)
+from metacity.datamodel.primitives.points import PointModel
+^
+metacity/io/cityjson/geometry/geometryinstance.py:10:9: E265 block comment should start with '# '
+        #TODO
+        ^
+metacity/io/cityjson/geometry/geometryinstance.py:14:5: E303 too many blank lines (2)
+    def export(self):
+    ^
+metacity/io/cityjson/geometry/geometryinstance.py:15:28: W292 no newline at end of file
+        return PointModel()                           ^
+1     E117 over-indented
+1     E128 continuation line under-indented for visual indent
+15    E201 whitespace after '['
+14    E202 whitespace before ']'
+1     E222 multiple spaces after operator
+2     E231 missing whitespace after ','
+2     E251 unexpected spaces around keyword / parameter equals
+7     E261 at least two spaces before inline comment
+7     E262 inline comment should start with '# '
+10    E265 block comment should start with '# '
+6     E302 expected 2 blank lines, found 1
+79    E303 too many blank lines (2)
+22    E501 line too long (86 > 79 characters)
+5     E711 comparison to None should be 'if cond is not None:'
+1     E722 do not use bare 'except'
+2     E741 ambiguous variable name 'l'
+8     F401 'metacity.datamodel.primitives.base' imported but unused
+4     F541 f-string is missing placeholders
+1     F811 redefinition of unused 'BaseModel' from line 2
+13    W291 trailing whitespace
+7     W292 no newline at end of file
+17    W293 blank line contains whitespace
+8     W391 blank line at end of file
+233

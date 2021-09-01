@@ -1,11 +1,12 @@
 import numpy as np
 
+
 def rep_nones(data):
-        return [ i if i != None else -1 for i in data]
+    return [i if i is not None else -1 for i in data]
 
 
 def gen_nones(elements_count):
-    return [ -1 ] * elements_count
+    return [-1] * elements_count
 
 
 class CJBasePrimitive:
@@ -16,6 +17,14 @@ class CJBasePrimitive:
         self.semantics = np.array(gen_nones(elements_count), dtype=np.int32)
         self.meta = []
 
+    def export(self):
+        message = (f"The CJ primitive {self} requires"
+                   "implementation of transform method.")
+        raise NotImplementedError(message)
 
-    def transform(self):
-        raise NotImplementedError(f"The CJ primitive {self} requires implementation of transform method.")
+    def export_into(self, primitive):
+        primitive.vertices = self.vertices
+        primitive.semantics = self.semantics
+        primitive.meta = self.meta
+        primitive.tags = {"lod": self.lod}
+        return primitive

@@ -2,6 +2,7 @@ import os
 import ntpath
 import json
 
+
 def readable(file):
     f = open(file, "r")
     return f.readable()
@@ -14,10 +15,6 @@ def writable(file):
 
 def filename(file_path):
     return ntpath.basename(file_path)
-
-
-def id_from_filename(file_path):
-    return os.path.splitext(filename(file_path))[0]
 
 
 def write_json(filename, data):

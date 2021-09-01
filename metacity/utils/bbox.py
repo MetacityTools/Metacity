@@ -3,7 +3,8 @@ from typing import List
 
 
 def empty_bbox():
-    return np.array([[np.Infinity, np.Infinity, np.Infinity], [-np.Infinity, -np.Infinity, -np.Infinity]])
+    return np.array([[np.Infinity, np.Infinity, np.Infinity],
+                     [-np.Infinity, -np.Infinity, -np.Infinity]])
 
 
 def vertices_bbox(vertices: np.ndarray):
@@ -14,6 +15,5 @@ def bboxes_bbox(bboxes: List[np.ndarray]):
     vertices = np.concatenate(bboxes)
     vertices = vertices.flatten()
     vertices = vertices.reshape((vertices.shape[0] // 3, 3))
-    return np.array([np.amin(vertices[::2,:], axis=0), np.amax(vertices[1::2,:], axis=0)])
-
-
+    return np.array([np.amin(vertices[::2, :], axis=0),
+                     np.amax(vertices[1::2, :], axis=0)])

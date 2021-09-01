@@ -9,22 +9,15 @@ class MetacityObject:
         self.meta = None
         self.oid = None
 
-
-    def consolidate(self):
-        self.models.consolidate()
-
-    
     def load(self, oid: str, geometry_path: str, meta_path: str):
         self.oid = oid
         self.models.load(oid, geometry_path)
         meta_file = fs.metadata_for_oid(meta_path, self.oid)
         self.meta = read_json(meta_file)
 
-
     def export(self, geometry_path: str, meta_path=""):
         self.models.export(self.oid, geometry_path)
         self.__export_meta(meta_path)
-
 
     def __export_meta(self, meta_path):
         if meta_path != "":

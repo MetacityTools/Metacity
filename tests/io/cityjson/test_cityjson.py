@@ -1,29 +1,30 @@
-from collections import defaultdict
+from metacity.datamodel.layer.layer import MetacityLayer
 
 import numpy as np
 from metacity.io.cityjson.geometry.geometry import CJGeometry
 from metacity.io.cityjson.parser import CJParser
 from tests.data.files import (DatasetStats, railway_dataset,
-                              railway_dataset_stats)
+                              railway_dataset_stats, layer_tree)
 
 
-def count_gtypes(parser):
-    gtypes = defaultdict(lambda: 0)
-    for o in parser.parsed_objects:
-        for g in o.geometry:
-            gtypes[g.type] += 1
-    return gtypes
-
-
-def test_load(railway_dataset, railway_dataset_stats: DatasetStats):
+def test_load(railway_dataset, layer_tree, railway_dataset_stats: DatasetStats):
     stats = railway_dataset_stats
+    layer = MetacityLayer(layer_tree)
     parser = CJParser(railway_dataset)
-    parser.parse()
-    gtypes = count_gtypes(parser)
-    
+    parser.parse_and_export(layer)
+    dataset_names = parser.objects.keys()
+
     assert parser.is_empty == False
-    assert len(parser.parsed_objects) == stats.obj_count
-    assert stats.gtypes == gtypes
+    assert set(dataset_names) == set(layer.object_names)
+    assert len(layer.object_names) == stats.obj_count
+    
+    for obj in layer.objects:        
+        assert len(obj.models.models) == len(parser.objects[obj.oid]['geometry'])
+
+
+    
+
+
 
 
 def assert_no_semantics(data, vertices):

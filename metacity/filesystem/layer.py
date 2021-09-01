@@ -21,9 +21,6 @@ def recreate_layer(layer_dir, load_existing=True):
         path = os.path.join(layer_dir, dir)
         base.create_dir_if_not_exists(path)
 
-    path = os.path.join(layer_dir, base.GEOMETRY)
-    base.recreate_geometry_tree(path)
-
 
 def layer_metadata(layer_dir):
     return os.path.join(layer_dir, base.METADATA)
@@ -67,11 +64,9 @@ def layer_originals(layer_dir):
 
 
 def copy_to_layer(layer_dir: str, file_path: str):
-    dst = os.path.join(layer_dir, base.ORIGINAL)
+    dst = layer_originals(layer_dir)
     return shutil.copy2(file_path, dst)
 
 
 def layer_names(project_dir):
-    return [ d for d in os.listdir(project_dir) ]
-
-
+    return [d for d in os.listdir(project_dir)]

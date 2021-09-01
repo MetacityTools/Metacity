@@ -1,5 +1,4 @@
 import json
-from typing import List
 
 import numpy as np
 from metacity.datamodel.layer.layer import MetacityLayer
@@ -13,37 +12,28 @@ class CJParser:
         with open(input_file, "r") as file:
             contents = json.load(file)
 
-        self.objects = contents["CityObjects"] 
-        self.templates = contents["geometry-templates"] if "geometry-templates" in contents else None
+        self.objects = contents["CityObjects"]
+        if "geometry-templates" in contents:
+            self.templates = contents["geometry-templates"]
+        else:
+            self.templates = None
         self.vertices = np.array(contents["vertices"])
-        self.parsed_objects: List[CJObject] = []
-
 
     @property
     def is_empty(self):
         return len(self.vertices) == 0 or len(self.objects) == 0
 
+    def adjust_data(self, layer: MetacityLayer):
+        layer.config.apply(layer, self.vertices)
 
-#    def apply_config(self, layer: MetacityLayer):
-#        config = layer.config
-#        if layer.empty:
-#            config.update(self.vertices)
-#        config.apply(self.vertices)
-#        config.export(layer.dir)
-#
-    
-    def parse(self):
+    def parse_and_export(self, layer: MetacityLayer):
         for oid, data in tqdm(self.objects.items()):
-            self.parsed_objects.append(CJObject(oid, data, self.vertices, self.templates))
-
-
+            object = CJObject(oid, data, self.vertices, self.templates)
+            object.export(layer.geometry_path, layer.meta_path)
 
 
 def parse(layer: MetacityLayer, input_file: str):
     fs.copy_to_layer(layer.dir, input_file)
     parser = CJParser(input_file)
-    parser.parse()
-
-    
-
-
+    parser.adjust_data()
+    parser.parse_and_export()

@@ -1,10 +1,10 @@
-from numpy import left_shift
 from metacity.io.cityjson.geometry.points import CJPoints
 from metacity.io.cityjson.geometry.lines import CJLines
 from metacity.io.cityjson.geometry.multisurface import CJMultiSurface
 from metacity.io.cityjson.geometry.solid import CJSolid
 from metacity.io.cityjson.geometry.multisolid import CJMultiSolid
 from metacity.io.cityjson.geometry.geometryinstance import CJGeometryInstance
+
 
 class CJGeometry:
     def __init__(self, data, vertices, templates):
@@ -22,6 +22,8 @@ class CJGeometry:
             self.primitive = CJSolid(data, vertices)
         elif self.type == 'multisolid' or self.type == 'compositesolid':
             self.primitive = CJMultiSolid(data, vertices)
+        else:
+            raise Exception(f'Unknown CityJSON geometry type: {self.type}')
 
     def export(self):
-        return self.primitive.transform()
+        return self.primitive.export()

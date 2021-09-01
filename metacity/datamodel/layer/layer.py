@@ -8,17 +8,30 @@ class MetacityLayer:
     def __init__(self, layer_dir: str, load_existing=True):
         self.dir = layer_dir
         fs.recreate_layer(layer_dir, load_existing)
-            
 
     @property
     def config(self):
         return LayerConfig(self.dir)
 
-
     @property
     def empty(self):
         return not fs.any_object_in_layer(self.dir)
 
+    @property
+    def bbox(self):
+        return bboxes_bbox([object.models.bbox for object in self.objects])
+
+    @property
+    def geometry_path(self):
+        return fs.layer_geometry(self.dir)
+
+    @property
+    def cache_path(self):
+        return fs.layer_cache(self.dir)
+
+    @property
+    def meta_path(self):
+        return fs.layer_metadata(self.dir)
 
     @property
     def objects(self):
@@ -29,30 +42,9 @@ class MetacityLayer:
             obj.load(oid, gp, mp)
             yield obj
 
+    @property
+    def object_names(self):
+        return [oid for oid in fs.layer_objects(self.dir)]
 
     def add_object(self, object: MetacityObject):
         object.export(self.geometry_path, self.meta_path)
-
-
-    def lod_bbox(self, lod):
-        return bboxes_bbox([ object.models.lod_bbox(lod) for object in self.objects ])
-            
-
-    @property
-    def bbox(self):
-        return bboxes_bbox([ object.models.bbox for object in self.objects ])
-
-
-    @property
-    def geometry_path(self):
-        return fs.layer_geometry(self.dir)
-
-
-    @property
-    def cache_path(self):
-        return fs.layer_cache(self.dir)
-
-
-    @property
-    def meta_path(self):
-        return fs.layer_metadata(self.dir)

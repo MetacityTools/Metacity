@@ -4,10 +4,8 @@ from metacity.datamodel.primitives.base import BaseModel
 class LineModel(BaseModel):
     TYPE = "lines"
 
-
     def __init__(self):
         super().__init__()
-
 
     @property
     def items(self):
@@ -17,18 +15,16 @@ class LineModel(BaseModel):
         for segment, semantic in zip(vert, sema):
             yield segment, semantic
 
-
     @property
     def slicer(self):
-        pass #TODO
-
+        # TODO
+        pass
 
     @property
     def joiner(self):
-        pass #TODO
-
+        # TODO
+        pass
 
     def serialize(self):
         data = super().serialize()
-        data['type'] = LineModel.TYPE
         return data

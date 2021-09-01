@@ -1,5 +1,7 @@
-from metacity.io.cityjson.geometry.base import CJBasePrimitive, rep_nones, gen_nones
 import numpy as np
+from metacity.datamodel.primitives.points import PointModel
+from metacity.io.cityjson.geometry.base import (CJBasePrimitive, gen_nones,
+                                                rep_nones)
 
 
 class CJPoints(CJBasePrimitive):
@@ -13,13 +15,12 @@ class CJPoints(CJBasePrimitive):
         else:
             self.generate_semantics(elements_count)
 
-
     def parse_vertices(self, data, vertices):
-        return np.array(vertices[data["boundaries"]], dtype=np.float32).flatten()
-
+        return np.array(vertices[data["boundaries"]],
+                        dtype=np.float32).flatten()
 
     def parse_semantics(self, semantics, elements_count):
-        if semantics["values"] != None:
+        if semantics["values"] is not None:
             buffer = rep_nones(semantics["values"])
         else:
             buffer = gen_nones(elements_count)
@@ -27,6 +28,5 @@ class CJPoints(CJBasePrimitive):
         self.semantics = np.array(buffer, dtype=np.int32)
         self.meta = semantics["surfaces"]
 
-
-    def transform(self):
-        pass #TODO
+    def export(self):
+        return self.export_into(PointModel())
