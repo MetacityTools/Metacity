@@ -1,7 +1,6 @@
 from metacity.utils.bbox import empty_bbox
 import numpy as np
 from metacity.datamodel.primitives import base
-from tests.data.random import random_semantics, random_vertices, random_semantic_meta
 
 
 def test_init():
@@ -40,11 +39,11 @@ def test_bbox():
     assert np.all(model.bbox == [vertex, vertex])
     
 
-def test_serialize():
+def test_serialize(random_vertices, random_semantics, random_semantic_meta):
     model = base.BaseModel()   
-    model.vertices = random_vertices().flatten()
-    model.semantics = random_semantics().flatten()
-    model.meta = random_semantic_meta()
+    model.vertices = random_vertices.flatten()
+    model.semantics = random_semantics.flatten()
+    model.meta = random_semantic_meta
     data = model.serialize()
     model2 = base.BaseModel()
     model2.deserialize(data)

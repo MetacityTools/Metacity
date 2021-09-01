@@ -6,8 +6,9 @@ METADATA = "metadata"
 GEOMETRY = "geometry"
 GRID = "grid"
 ORIGINAL = "original"
-GRID_CACHE = os.path.join(GRID, "cache")
-GRID_TILES = os.path.join(GRID, "tiles")
+TILE_MODLES = "models"
+GRID_CACHE = "cache"
+GRID_TILES = "tiles"
 
 BASE_DIRS = [METADATA, GEOMETRY, ORIGINAL,
              GRID, GRID_CACHE, GRID_TILES]

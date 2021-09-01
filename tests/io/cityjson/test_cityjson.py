@@ -1,15 +1,11 @@
-from metacity.datamodel.layer.layer import MetacityLayer
-
 import numpy as np
+from metacity.datamodel.layer.layer import MetacityLayer
 from metacity.io.cityjson.geometry.geometry import CJGeometry
 from metacity.io.cityjson.parser import CJParser
-from tests.data.files import (DatasetStats, railway_dataset,
-                              railway_dataset_stats, layer_tree)
 
 
-def test_load(railway_dataset, layer_tree, railway_dataset_stats: DatasetStats):
+def test_load(layer, railway_dataset, railway_dataset_stats):
     stats = railway_dataset_stats
-    layer = MetacityLayer(layer_tree)
     parser = CJParser(railway_dataset)
     parser.parse_and_export(layer)
     dataset_names = parser.objects.keys()
@@ -20,11 +16,6 @@ def test_load(railway_dataset, layer_tree, railway_dataset_stats: DatasetStats):
     
     for obj in layer.objects:        
         assert len(obj.models.models) == len(parser.objects[obj.oid]['geometry'])
-
-
-    
-
-
 
 
 def assert_no_semantics(data, vertices):

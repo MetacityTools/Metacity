@@ -1,15 +1,6 @@
 import numpy as np
 from metacity.datamodel.primitives import points
-from tests.data.random import random_vertices, random_semantics, random_semantic_meta
 
-
-def init_random_model():
-    model = points.PointModel()
-    vertices = random_vertices()
-    model.vertices = vertices.flatten()
-    model.semantics = random_semantics()
-    model.meta = random_semantic_meta()
-    return model
 
 
 def test_init():
@@ -19,8 +10,8 @@ def test_init():
     assert len(model.meta) == 0
 
 
-def test_items():
-    model = init_random_model()
+def test_items(random_point_model):
+    model = random_point_model
 
     vertices, semantics = [], []
     for t, s in model.items:
@@ -37,8 +28,8 @@ def test_items():
 
     
 
-def test_serialize():
-    model = init_random_model()
+def test_serialize(random_point_model):
+    model = random_point_model
     data = model.serialize()
     model2 = points.PointModel()
     model2.deserialize(data)

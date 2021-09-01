@@ -1,9 +1,8 @@
 import numpy as np
 from metacity.utils import encoding as en
-from tests.data.random import random_vertices, random_semantics
 
-def test_float32():
-    data = random_vertices().flatten()
+def test_float32(random_vertices):
+    data = random_vertices.flatten()
     buffer = en.npfloat32_to_buffer(data)
     data2 = en.base64_to_float32(buffer)
     data3 = en.base64_to_type(buffer, np.float32)
@@ -11,8 +10,8 @@ def test_float32():
     assert np.all(data == data3)
 
 
-def test_int32():
-    data = random_semantics().flatten()
+def test_int32(random_semantics):
+    data = random_semantics.flatten()
     buffer = en.npint32_to_buffer(data)
     data2 = en.base64_to_int32(buffer)
     data3 = en.base64_to_type(buffer, np.int32)

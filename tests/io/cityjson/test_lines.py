@@ -1,17 +1,16 @@
 from tests.io.cityjson.test_cityjson import assert_no_semantics
 import numpy as np
 from metacity.io.cityjson.geometry.geometry import CJGeometry
-from tests.data.cityjson import random_lines
 
 
 
-def test_lines_all_defined():
-    segments = [12, 12, 12, 12, 12]
-    vertices, data = random_lines(segments=segments)
+def test_lines_all_defined(random_lines):
+    vertices, data = random_lines
 
     geometry = CJGeometry(data, vertices, None)
     primitive = geometry.primitive
     
+    segments = [12, 12, 12, 12, 12]
     repeats = np.array(segments) * 2 - 2
     assert len(primitive.vertices) // 3 == sum(repeats)
     assert np.all(np.repeat(data["semantics"]["values"], repeats) == primitive.semantics)
@@ -19,9 +18,8 @@ def test_lines_all_defined():
     assert len(primitive.vertices) // 3 == len(primitive.semantics)
 
 
-def test_lines_some_semantics_not_defined():
-    segments = [12, 12, 12, 12, 12]
-    vertices, data = random_lines(segments=segments)
+def test_lines_some_semantics_not_defined(random_lines):
+    vertices, data = random_lines
     data["semantics"]["values"][1] = None
     
     geometry = CJGeometry(data, vertices, None)
@@ -32,9 +30,8 @@ def test_lines_some_semantics_not_defined():
     assert np.all(primitive.semantics[44:] != -1)
 
 
-def test_lines_no_semantics():
-    segments = [12, 12, 12, 12, 12]
-    vertices, data = random_lines(segments=segments)
+def test_lines_no_semantics(random_lines):
+    vertices, data = random_lines
     data["semantics"]["values"] = None
 
     assert_no_semantics(data, vertices)

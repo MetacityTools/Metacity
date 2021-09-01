@@ -1,15 +1,5 @@
 import numpy as np
 from metacity.datamodel.primitives import lines
-from tests.data.random import random_vertices, random_semantics, random_semantic_meta
-
-
-def init_random_model():
-    model = lines.LineModel()
-    vertices = random_vertices()
-    model.vertices = vertices.flatten()
-    model.semantics = random_semantics()
-    model.meta = random_semantic_meta()
-    return model
 
 
 def test_init():
@@ -19,9 +9,8 @@ def test_init():
     assert len(model.meta) == 0
 
 
-def test_items():
-    model = init_random_model()
-
+def test_items(random_line_model):
+    model = random_line_model
     vertices, semantics = [], []
     for t, s in model.items:
         assert t.shape == (2, 3)
@@ -37,8 +26,8 @@ def test_items():
 
     
 
-def test_serialize():
-    model = init_random_model()
+def test_serialize(random_line_model):
+    model = random_line_model
     data = model.serialize()
     model2 = lines.LineModel()
     model2.deserialize(data)

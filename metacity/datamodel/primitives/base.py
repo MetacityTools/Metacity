@@ -13,6 +13,7 @@ class BaseModel:
         """
         self.vertices = np.array([], dtype=np.float32)
         self.semantics = np.array([], dtype=np.int32)
+        self.modelid = None
         self.meta = []
         self.tags = {}
 
@@ -60,6 +61,8 @@ class BaseModel:
         semantics = self.__update_semantics(model.semantics)
         self.semantics = np.append(self.semantics, semantics)
         self.meta.extend(model.meta)
+        if self.modelid and model.modelid:
+            self.modelid = np.append(self.modelid, model.modelid)
 
     def __update_semantics(self, semantics):
         start_idx = len(self.meta)
@@ -75,6 +78,8 @@ class BaseModel:
             'tags': self.tags,
             'type': self.TYPE
         }
+        if self.modelid is not None:
+            data['modelid'] = en.npint32_to_buffer(self.modelid)
         return data
 
     def deserialize(self, data):
@@ -82,3 +87,5 @@ class BaseModel:
         self.semantics = en.base64_to_int32(data['semantics'])
         self.meta = data['meta']
         self.tags = data['tags']
+        if 'modelid' in data:
+            self.modelid = en.base64_to_int32(data['modelid'])

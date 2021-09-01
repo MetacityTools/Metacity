@@ -1,6 +1,5 @@
 import metacity.utils.bbox as bbox
 import numpy as np
-from tests.data.random import random_bboxes, random_vertices
 
 
 ##TESTS
@@ -18,14 +17,14 @@ def subtest_vertices(low, high, vertices):
     assert np.all(np.any(high == vertices, axis=0))    
 
 
-def test_vertices_bbox():
-    vertices = random_vertices()
+def test_vertices_bbox(random_vertices):
+    vertices = random_vertices
     low, high = bbox.vertices_bbox(vertices)
     subtest_vertices(low, high, vertices)  
         
 
-def test_bboxes_bbox():
-    bboxes = random_bboxes()
+def test_bboxes_bbox(random_bboxes):
+    bboxes = random_bboxes
     low, high = bbox.bboxes_bbox(bboxes)
     vertices = np.reshape(bboxes, (len(bboxes) * 2, 3))
     subtest_vertices(low, high, vertices)     

@@ -1,16 +1,5 @@
 import numpy as np
 from metacity.datamodel.primitives import facets
-from tests.data.random import random_vertices_normals, random_semantics, random_semantic_meta
-
-
-def init_random_model():
-    model = facets.FacetModel()
-    vertices, normals = random_vertices_normals()
-    model.vertices = vertices.flatten()
-    model.normals = normals.flatten()
-    model.semantics = random_semantics()
-    model.meta = random_semantic_meta()
-    return model
 
 
 def models_equal(model, model2):
@@ -28,8 +17,8 @@ def test_init():
     assert len(model.meta) == 0
 
 
-def test_items():
-    model = init_random_model()
+def test_items(random_facet_model):
+    model = random_facet_model
 
     vertices, normals, semantics = [], [], []
     for t, n, s in model.items:
@@ -50,8 +39,8 @@ def test_items():
 
     
 
-def test_serialize():
-    model = init_random_model()
+def test_serialize(random_facet_model):
+    model = random_facet_model
     data = model.serialize()
     model2 = facets.FacetModel()
     model2.deserialize(data)
