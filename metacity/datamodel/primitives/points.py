@@ -9,8 +9,8 @@ class PointModel(BaseModel):
 
     @property
     def items(self):
-        vert = self.vertices.reshape((self.vertices.shape[0] // 3, 3))
-        sema = self.semantics
+        vert = self.buffers.vertices.reshape((self.buffers.vertices.shape[0] // 3, 3))
+        sema = self.buffers.semantics.data
 
         for segment, semantic in zip(vert, sema):
             yield segment, semantic

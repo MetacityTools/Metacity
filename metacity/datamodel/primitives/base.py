@@ -1,7 +1,9 @@
+from metacity.datamodel.buffers.float32 import Float32Buffer
+from metacity.datamodel.buffers.int32 import Int32Buffer
 import numpy as np
 from metacity.utils import encoding as en
 from metacity.utils.bbox import empty_bbox, vertices_bbox
-
+from dotmap import DotMap
 
 class BaseModel:
     TYPE = "base"
@@ -11,9 +13,9 @@ class BaseModel:
         Initializes empy instance of Base Model.
         This class should not be instantiated on its own.
         """
-        self.vertices = np.array([], dtype=np.float32)
-        self.semantics = np.array([], dtype=np.int32)
-        self.modelid = None
+        self.buffers = DotMap()
+        self.buffers.vertices = Float32Buffer()
+        self.buffers.semantics = Int32Buffer()
         self.meta = []
         self.tags = {}
 
@@ -23,7 +25,7 @@ class BaseModel:
         Returns True if the model contains any vertices,
         otherwise returns False.
         """
-        return len(self.vertices) > 0
+        return len(self.buffers.vertices) > 0
 
     @property
     def empty(self):
@@ -31,7 +33,7 @@ class BaseModel:
         Returns True if the model contains no vertices,
         otherwise returns False.
         """
-        return len(self.vertices) == 0
+        return len(self.buffers.vertices) == 0
 
     @property
     def has_semantics(self):
@@ -39,13 +41,13 @@ class BaseModel:
         Returns True if the model contains semantic information,
         otherwise returns False.
         """
-        return len(self.semantics) > 0
+        return len(self.buffers.semantics) > 0
 
     @property
     def bbox(self):
         if self.empty:
             return empty_bbox()
-        vertices = self.vertices.reshape((self.vertices.shape[0] // 3, 3))
+        vertices = self.buffers.vertices.reshape((self.buffers.vertices.shape[0] // 3, 3))
         return vertices_bbox(vertices)
 
     @property
@@ -57,35 +59,32 @@ class BaseModel:
         pass
 
     def join(self, model):
-        self.vertices = np.append(self.vertices, model.vertices)
-        semantics = self.__update_semantics(model.semantics)
-        self.semantics = np.append(self.semantics, semantics)
+        for buffer in self.buffers.keys():
+            self.buffers[buffer].join(model.buffers[buffer])
+        self.__update_semantics(len(model.buffers.semantics))
+        
         self.meta.extend(model.meta)
-        if self.modelid and model.modelid:
-            self.modelid = np.append(self.modelid, model.modelid)
+        self.tags = {**self.tags, **model.tags}
 
-    def __update_semantics(self, semantics):
+    def __update_semantics(self, len_right_semantics):
         start_idx = len(self.meta)
-        semantics[semantics == -1] -= start_idx
-        semantics += start_idx
-        return semantics
+        total_len = len(self.buffers.semantics)
+        len_left_semantics = total_len - len_right_semantics 
+        slice = self.buffers.semantics.data[len_left_semantics:]
+        slice[slice != -1] += start_idx
 
     def serialize(self):
         data = {
-            'vertices': en.npfloat32_to_buffer(self.vertices),
-            'semantics': en.npint32_to_buffer(self.semantics),
+            'buffers': {name: buffer.serialize() for name, buffer in self.buffers.items()},
             'meta': self.meta,
             'tags': self.tags,
             'type': self.TYPE
         }
-        if self.modelid is not None:
-            data['modelid'] = en.npint32_to_buffer(self.modelid)
         return data
 
     def deserialize(self, data):
-        self.vertices = en.base64_to_float32(data['vertices'])
-        self.semantics = en.base64_to_int32(data['semantics'])
+        for name, buffer in self.buffers.items():
+            buffer.deserialize(data['buffers'][name])
         self.meta = data['meta']
         self.tags = data['tags']
-        if 'modelid' in data:
-            self.modelid = en.base64_to_int32(data['modelid'])
+

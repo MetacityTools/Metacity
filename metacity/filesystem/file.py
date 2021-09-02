@@ -13,10 +13,6 @@ def writable(file):
     return f.writable()
 
 
-def filename(file_path):
-    return ntpath.basename(file_path)
-
-
 def write_json(filename, data):
     if os.path.exists(filename):
         print(f'File {filename} already exists, rewriting...')

@@ -40,6 +40,8 @@ class ModelSet:
             self.models.append(primitive)
 
     def validate(self, model, data):
+        if fs.filename(model) == 'config.json':
+            return False
         if 'type' not in data:
             print(f'Model missing model type: {model}')
             return False
@@ -51,3 +53,5 @@ class ModelSet:
     @property
     def bbox(self):
         return bboxes_bbox([model.bbox for model in self.models])
+
+

@@ -102,10 +102,8 @@ class MetaTile:
     def name(self):
         return tree.tile_name(self.x, self.y)
 
-
     def consolidate(self):
         self.models.consolidate()
-
 
     def load(self, x, y, layer_dir):
         tile_name = tree.tile_name(x, y)

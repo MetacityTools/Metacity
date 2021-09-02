@@ -3,17 +3,18 @@ from metacity.datamodel.primitives import facets
 
 
 def models_equal(model, model2):
-    assert np.all(model.vertices == model2.vertices)
-    assert np.all(model.semantics == model2.semantics)
-    assert np.all(model.normals == model2.normals)
+    assert np.all(model.buffers.vertices == model2.buffers.vertices)
+    assert np.all(model.buffers.semantics == model2.buffers.semantics)
+    assert np.all(model.buffers.normals == model2.buffers.normals)
+    assert model.buffers.keys() == model2.buffers.keys()
     assert model.meta == model2.meta
 
 
 def test_init():
     model = facets.FacetModel()
-    assert model.vertices.shape == (0,)
-    assert model.semantics.shape == (0,)
-    assert model.normals.shape == (0,)
+    assert model.buffers.vertices.shape == (0,)
+    assert model.buffers.semantics.shape == (0,)
+    assert model.buffers.normals.shape == (0,)
     assert len(model.meta) == 0
 
 
@@ -33,9 +34,9 @@ def test_items(random_facet_model):
     normals = np.array(normals).flatten()
     semantics = np.array(semantics).flatten()
     
-    assert np.all(vertices == model.vertices)
-    assert np.all(normals == model.normals)
-    assert np.all(semantics == model.semantics)
+    assert np.all(vertices == model.buffers.vertices)
+    assert np.all(normals == model.buffers.normals)
+    assert np.all(semantics == model.buffers.semantics)
 
     
 

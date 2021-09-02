@@ -1,20 +1,23 @@
 import os
 import shutil
-
+import ntpath
 
 METADATA = "metadata"
 GEOMETRY = "geometry"
 GRID = "grid"
 ORIGINAL = "original"
-TILE_MODLES = "models"
-GRID_CACHE = "cache"
 GRID_TILES = "tiles"
+GRID_CACHE = "cache"
 
 BASE_DIRS = [METADATA, GEOMETRY, ORIGINAL,
-             GRID, GRID_CACHE, GRID_TILES]
+             os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
 
 # basics
+def filename(file_path):
+    return ntpath.basename(file_path)
+
+
 def create_dir_if_not_exists(dir):
     if not os.path.exists(dir):
         os.makedirs(dir)

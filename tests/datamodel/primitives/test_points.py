@@ -5,8 +5,8 @@ from metacity.datamodel.primitives import points
 
 def test_init():
     model = points.PointModel()
-    assert model.vertices.shape == (0,)
-    assert model.semantics.shape == (0,)
+    assert model.buffers.vertices.shape == (0,)
+    assert model.buffers.semantics.shape == (0,)
     assert len(model.meta) == 0
 
 
@@ -23,8 +23,8 @@ def test_items(random_point_model):
     vertices = np.array(vertices).flatten()
     semantics = np.array(semantics).flatten()
     
-    assert np.all(vertices == model.vertices)
-    assert np.all(semantics == model.semantics)
+    assert np.all(vertices == model.buffers.vertices)
+    assert np.all(semantics == model.buffers.semantics)
 
     
 
@@ -34,8 +34,9 @@ def test_serialize(random_point_model):
     model2 = points.PointModel()
     model2.deserialize(data)
 
-    assert np.all(model.vertices == model2.vertices)
-    assert np.all(model.semantics == model2.semantics)
+    assert np.all(model.buffers.vertices == model2.buffers.vertices)
+    assert np.all(model.buffers.semantics == model2.buffers.semantics)
+    assert model.buffers.keys() == model2.buffers.keys()
     assert model.meta == model2.meta
 
 

@@ -11,7 +11,7 @@ class MetacityLayer:
 
     @property
     def config(self):
-        return LayerConfig(self.dir)
+        return LayerConfig(self)
 
     @property
     def empty(self):

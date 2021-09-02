@@ -9,8 +9,8 @@ class LineModel(BaseModel):
 
     @property
     def items(self):
-        vert = self.vertices.reshape((self.vertices.shape[0] // 6, 2, 3))
-        sema = self.semantics.reshape((self.semantics.shape[0] // 2, 2))
+        vert = self.buffers.vertices.reshape((self.buffers.vertices.shape[0] // 6, 2, 3))
+        sema = self.buffers.semantics.reshape((self.buffers.semantics.shape[0] // 2, 2))
 
         for segment, semantic in zip(vert, sema):
             yield segment, semantic

@@ -1,6 +1,8 @@
 from metacity.datamodel.primitives.base import BaseModel
 from metacity.utils import encoding as en
+from metacity.datamodel.buffers.float32 import Float32Buffer
 import numpy as np
+
 
 
 class FacetModel(BaseModel):
@@ -8,13 +10,13 @@ class FacetModel(BaseModel):
 
     def __init__(self):
         super().__init__()
-        self.normals = np.array([])
+        self.buffers.normals = Float32Buffer()
 
     @property
     def items(self):
-        vert = self.vertices.reshape((self.vertices.shape[0] // 9, 3, 3))
-        norm = self.normals.reshape((self.normals.shape[0] // 9, 3, 3))
-        sema = self.semantics.reshape((self.semantics.shape[0] // 3, 3))
+        vert = self.buffers.vertices.reshape((self.buffers.vertices.shape[0] // 9, 3, 3))
+        norm = self.buffers.normals.reshape((self.buffers.normals.shape[0] // 9, 3, 3))
+        sema = self.buffers.semantics.reshape((self.buffers.semantics.shape[0] // 3, 3))
 
         for triangle, normal, semantic in zip(vert, norm, sema):
             yield triangle, normal, semantic
@@ -24,15 +26,3 @@ class FacetModel(BaseModel):
         # TODO
         pass
 
-    def join(self, model):
-        super().join(model)
-        self.normals = np.append(self.normals, model.normals)
-
-    def serialize(self):
-        data = super().serialize()
-        data['normals'] = en.npfloat32_to_buffer(self.normals)
-        return data
-
-    def deserialize(self, data):
-        super().deserialize(data)
-        self.normals = en.base64_to_float32(data['normals'])

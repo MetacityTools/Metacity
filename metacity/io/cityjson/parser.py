@@ -24,7 +24,7 @@ class CJParser:
         return len(self.vertices) == 0 or len(self.objects) == 0
 
     def adjust_data(self, layer: MetacityLayer):
-        layer.config.apply(layer, self.vertices)
+        layer.config.apply(self.vertices)
 
     def parse_and_export(self, layer: MetacityLayer):
         for oid, data in tqdm(self.objects.items()):

@@ -105,5 +105,5 @@ class CJMultiSurface(CJBasePrimitive):
 
     def export(self):
         primitive = self.export_into(FacetModel())
-        primitive.normals = self.normals
+        primitive.buffers.normals.data = self.normals
         return primitive
