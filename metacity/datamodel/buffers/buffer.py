@@ -26,3 +26,14 @@ class MetacityBuffer:
 
     def reshape(self, shape):
         return self.data.reshape(shape)
+
+    def set(self, data):
+        self.data = data
+
+    def deepcopy(self):
+        copy = MetacityBuffer()
+        copy.data = np.copy(self.data)
+        return copy
+
+    def erase(self):
+        self.data = np.array([])

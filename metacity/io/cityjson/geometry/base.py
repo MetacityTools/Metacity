@@ -23,8 +23,11 @@ class CJBasePrimitive:
         raise NotImplementedError(message)
 
     def export_into(self, primitive):
-        primitive.buffers.vertices.data = self.vertices
-        primitive.buffers.semantics.data = self.semantics
+        primitive.buffers.vertices.set(self.vertices)
+        primitive.buffers.semantics.set(self.semantics)
         primitive.meta = self.meta
         primitive.tags = {"lod": self.lod}
         return primitive
+ 
+
+ 

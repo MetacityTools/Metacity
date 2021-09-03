@@ -1,4 +1,7 @@
+import numpy as np
 from metacity.datamodel.primitives.base import BaseModel
+from metacity.utils.slicing import split_line
+import numpy as np
 
 
 class LineModel(BaseModel):
@@ -16,15 +19,25 @@ class LineModel(BaseModel):
             yield segment, semantic
 
     @property
-    def slicer(self):
-        # TODO
-        pass
+    def deepcopy(self):
+        model = LineModel()
+        self.deepcopy_into(model)
+        return model
 
-    @property
-    def joiner(self):
-        # TODO
-        pass
+    def split(self, x_planes, y_planes):
+        vertices, semantics = [], []
+        for segment, semantic in self.items:
+            segments = split_line(segment, x_planes, y_planes)
+            vertices.extend(segments)
+            semantics.extend(np.repeat([semantic], len(segments), axis=0))
+        vertices = np.array(vertices, dtype=np.float32).flatten()
+        semantics = np.array(semantics, dtype=np.int32).flatten()
 
-    def serialize(self):
-        data = super().serialize()
-        return data
+        splitted = LineModel()
+        self.deepcopy_nonbuffers(splitted)
+        splitted.buffers.vertices.set(vertices)
+        splitted.buffers.semantics.set(semantics)
+        return splitted
+
+
+

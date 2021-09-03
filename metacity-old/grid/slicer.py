@@ -43,6 +43,8 @@ class RegularGridSlicer:
         sliced_model.semantics_meta = model.semantics_meta
         for triangle, normals, semantics in model.items:
             triangles = self.split_triangle(triangle)
+            # tady je chyba
+            # protoze je vice trojuhelniku a jen jedna normala
             sliced_model.extend(triangles, normals, semantics)
         return sliced_model
 
@@ -51,7 +53,9 @@ class RegularGridSlicer:
         for lod in range(0, 5):
             model = facets.lod[lod]
             if model.exists:
-                #DANGER ZONE, modyfing the metacity raw object for data transfer purpouses, shoud not be exported now
+                # DANGER ZONE, modyfing the metacity 
+                # raw object for data transfer purpouses,
+                # shoud not be exported now
                 model = self.slice_facet_model(model)
                 facets.lod[lod] = model
 

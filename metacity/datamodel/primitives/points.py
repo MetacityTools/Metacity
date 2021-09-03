@@ -16,15 +16,11 @@ class PointModel(BaseModel):
             yield segment, semantic
 
     @property
-    def slicer(self):
-        # TODO
-        pass
+    def deepcopy(self):
+        model = PointModel()
+        self.deepcopy_into(model)
+        return model
 
-    @property
-    def joiner(self):
-        # TODO
-        pass
+    def split(self, x_planes, y_planes):
+        return self.deepcopy
 
-    def serialize(self):
-        data = super().serialize()
-        return data

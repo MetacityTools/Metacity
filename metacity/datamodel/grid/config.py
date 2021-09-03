@@ -17,8 +17,8 @@ class RegularGridConfig:
         try:
             path = fs.grid_config(self.grid.dir)
             self.deserialize(read_json(path))
-        except Exception as e:
-            print(e)
+        except Exception:
+            pass
 
     def id_for_oid(self, oid):
         if oid not in self.oid_to_id:

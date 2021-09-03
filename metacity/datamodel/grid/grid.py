@@ -2,6 +2,7 @@ from metacity.filesystem import grid as fs
 from metacity.datamodel.grid.config import RegularGridConfig
 from metacity.datamodel.models.tile import MetaTile
 
+
 class RegularGrid:
     def __init__(self, layer_dir):
         self.dir = fs.grid_dir(layer_dir)
@@ -16,3 +17,13 @@ class RegularGrid:
             tile = MetaTile()
             tile.load(self.dir, tile_name)
             yield tile
+
+    def splitting_planes(self):
+        resolution = self.config.resolution
+        x_planes = []
+        for x in range(resolution[0]):
+            x_planes.append(self.config.x_tile_top(x))
+        y_planes = []
+        for y in range(resolution[1]):
+            y_planes.append(self.config.y_tile_top(y))
+        return x_planes, y_planes

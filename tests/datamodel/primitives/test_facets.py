@@ -38,7 +38,65 @@ def test_items(random_facet_model):
     assert np.all(normals == model.buffers.normals)
     assert np.all(semantics == model.buffers.semantics)
 
-    
+
+def test_slice():
+    inv = np.array([0.0, 0.0, 0.0, 
+                    3.0, 0.0, 0.0, 
+                    0.0, 3.0, 0.0], dtype=np.float32)
+    ins = np.array([0, 0, 0], dtype=np.int32)
+    inn = np.array([0.0, 0.0, 1.0, 
+                    0.0, 0.0, 1.0, 
+                    0.0, 0.0, 1.0], dtype=np.float32)
+    x_planes = [1.0, 2.0]
+    y_planes = [1.5]
+    # TODO matching segments regardless of order
+    ouv = np.array([3.0,   0.0,  0.0,   
+                    2.0,   1.0,  0.0,
+                    2.0,   0.0,  0.0,
+                    1.0,   2.0,  0.0,
+                    1.0,   1.5,  0.0,
+                    1.5,   1.5,  0.0,
+                    1.0,   1.5,  0.0,
+                    1.0,   0.0,  0.0,
+                    2.0,   1.0,  0.0,
+                    1.0,   1.5,  0.0,
+                    2.0,   1.0,  0.0,
+                    1.5,   1.5,  0.0,
+                    2.0,   1.0,  0.0,
+                    1.0,   0.0,  0.0,
+                    2.0,   0.0,  0.0,
+                    0.0,   0.0,  0.0,
+                    0.75,  1.5,  0.0,
+                    0.0,   1.5,  0.0,
+                    0.75,  1.5,  0.0,
+                    1.0,   2.0,  0.0,
+                    0.0,   1.5,  0.0,
+                    1.0,   2.0,  0.0,
+                    0.0,   3.0,  0.0,   
+                    0.0,   1.5,  0.0, 
+                    1.0,   2.0,  0.0,   
+                    0.75,  1.5,  0.0,   
+                    1.0,   1.5,  0.0,
+                    0.75,  1.5,  0.0,
+                    0.0,   0.0,  0.0,   
+                    1.0,   0.0,  0.0,
+                    0.75,  1.5,  0.0,   
+                    1.0,   0.0,  0.0,   
+                    1.0,   1.5,  0.0 ], dtype=np.float32)
+    nv = len(ouv) // 3
+    oun = np.array([0.0,   0.0,  1.0] * nv, dtype=np.float32)
+    ous = np.array([0] * nv, dtype=np.int32)
+
+    model = facets.FacetModel()
+    model.buffers.vertices.set(inv)
+    model.buffers.normals.set(inn)
+    model.buffers.semantics.set(ins)
+    splitted = model.split(x_planes, y_planes)
+    print(splitted.buffers.normals.data)
+    assert np.all(splitted.buffers.vertices.data == ouv)
+    assert np.all(splitted.buffers.normals.data == oun)
+    assert np.all(splitted.buffers.semantics.data == ous)  
+
 
 def test_serialize(random_facet_model):
     model = random_facet_model
@@ -46,8 +104,3 @@ def test_serialize(random_facet_model):
     model2 = facets.FacetModel()
     model2.deserialize(data)
     models_equal(model, model2)
-
-
-def test_untested_props():
-    model = facets.FacetModel() 
-    assert model.slicer == None

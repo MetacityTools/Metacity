@@ -3,7 +3,18 @@ from metacity.datamodel.grid.grid import RegularGrid
 from metacity.datamodel.grid.config import RegularGridConfig
 from metacity.datamodel.models.tile import MetaTile
 from metacity.filesystem import grid as fs
+from metacity.datamodel.object import MetacityObject
+from typing import Iterable
 import numpy as np
+from tqdm import tqdm
+
+
+#generate cache
+def build_cache(grid: RegularGrid, objects: Iterable[MetacityObject]):
+    x_planes, y_planes = grid.splitting_planes()
+    obj: MetacityObject
+    for obj in tqdm(objects):
+        splitted = obj.models.split(x_planes, y_planes)
 
 
 # generate layout
@@ -51,3 +62,4 @@ def generate_layout(grid: RegularGrid, bbox, tile_size):
 def build_grid(layer: MetacityLayer, tile_size):
     grid = RegularGrid(layer.dir)
     generate_layout(grid, layer.bbox, tile_size)
+    build_cache(grid, layer.objects)

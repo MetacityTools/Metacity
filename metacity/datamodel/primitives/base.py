@@ -1,9 +1,8 @@
 from metacity.datamodel.buffers.float32 import Float32Buffer
 from metacity.datamodel.buffers.int32 import Int32Buffer
-import numpy as np
-from metacity.utils import encoding as en
 from metacity.utils.bbox import empty_bbox, vertices_bbox
 from dotmap import DotMap
+import copy
 
 class BaseModel:
     TYPE = "base"
@@ -52,11 +51,25 @@ class BaseModel:
 
     @property
     def items(self):
-        pass
+        raise NotImplementedError("Method items() not implemented on base class.")
+
+    def split(self, x_planes, y_planes):
+        raise NotImplementedError("Method split() not implemented on base class.")
 
     @property
-    def slicer(self):
-        pass
+    def deepcopy(self):
+        model = BaseModel()
+        self.deepcopy_into(model)
+        return model
+
+    def deepcopy_into(self, model):
+        for buffer in self.buffers.keys():
+            model.buffers[buffer] = self.buffers[buffer].deepcopy()
+        self.deepcopy_nonbuffers(model)
+
+    def deepcopy_nonbuffers(self, model):
+        model.meta.extend(copy.deepcopy(self.meta))
+        model.meta.extend(copy.deepcopy(self.tags))
 
     def join(self, model):
         for buffer in self.buffers.keys():

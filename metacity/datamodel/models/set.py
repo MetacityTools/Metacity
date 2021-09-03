@@ -39,6 +39,12 @@ class ModelSet:
             primitive.deserialize(data)
             self.models.append(primitive)
 
+    def split(self, x_planes, y_planes):
+        splitted = ModelSet()
+        for model in self.models:
+            splitted.models.append(model.split(x_planes, y_planes))
+        return splitted
+
     def validate(self, model, data):
         if fs.filename(model) == 'config.json':
             return False

@@ -1,8 +1,7 @@
+from metacity.utils.slicing import split_triangle
 from metacity.datamodel.primitives.base import BaseModel
-from metacity.utils import encoding as en
 from metacity.datamodel.buffers.float32 import Float32Buffer
 import numpy as np
-
 
 
 class FacetModel(BaseModel):
@@ -22,7 +21,26 @@ class FacetModel(BaseModel):
             yield triangle, normal, semantic
 
     @property
-    def slicer(self):
-        # TODO
-        pass
+    def deepcopy(self):
+        model = FacetModel()
+        self.deepcopy_into(model)
+        return model
 
+    def split(self, x_planes, y_planes):
+        vertices, normals, semantics = [], [], []
+        for triangle, normal, semantic in self.items:
+            triangles = split_triangle(triangle, x_planes, y_planes)
+            vertices.extend(triangles)
+            normals.extend(np.repeat([normal], len(triangles), axis=0))
+            semantics.extend(np.repeat([semantic], len(triangles), axis=0))
+        vertices = np.array(vertices, dtype=np.float32).flatten()
+        normals = np.array(normals, dtype=np.float32).flatten()
+        semantics = np.array(semantics, dtype=np.int32).flatten()
+
+        splitted = FacetModel()
+        self.deepcopy_nonbuffers(splitted)
+        splitted.buffers.vertices.set(vertices)
+        splitted.buffers.normals.set(normals)
+        splitted.buffers.semantics.set(semantics)
+
+        return splitted

@@ -18,3 +18,11 @@ class Float32Buffer(MetacityBuffer):
 
     def __len__(self):
         return len(self.data)
+
+    def deepcopy(self):
+        copy = Float32Buffer()
+        copy.data = np.copy(self.data)
+        return copy
+
+    def erase(self):
+        self.data = np.array([], dtype=np.float32)
