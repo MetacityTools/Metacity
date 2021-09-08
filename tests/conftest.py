@@ -1,3 +1,4 @@
+from metacity.grid.build import generate_layout
 import os
 
 import metacity.utils.bbox as bbox
@@ -333,8 +334,8 @@ def layer(layer_tree):
 
 @pytest.fixture(scope="function")
 def grid(layer):
-    yield RegularGrid(layer.dir)
-
+    rg = RegularGrid(layer.dir)
+    yield rg
 
 ######################################
 # MODLES

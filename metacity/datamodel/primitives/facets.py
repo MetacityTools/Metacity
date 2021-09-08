@@ -1,3 +1,4 @@
+from metacity.utils.sorter import GridSorter
 from metacity.utils.slicing import split_triangle
 from metacity.datamodel.primitives.base import BaseModel
 from metacity.datamodel.buffers.float32 import Float32Buffer
@@ -26,21 +27,42 @@ class FacetModel(BaseModel):
         self.deepcopy_into(model)
         return model
 
+    @property
+    def deepcopy_nobuffers(self):
+        model = FacetModel()
+        self.deepcopy_into_nobuffers(model)
+        return model
+
     def split(self, x_planes, y_planes):
-        vertices, normals, semantics = [], [], []
+        v, n, s = [], [], []
         for triangle, normal, semantic in self.items:
             triangles = split_triangle(triangle, x_planes, y_planes)
-            vertices.extend(triangles)
-            normals.extend(np.repeat([normal], len(triangles), axis=0))
-            semantics.extend(np.repeat([semantic], len(triangles), axis=0))
-        vertices = np.array(vertices, dtype=np.float32).flatten()
-        normals = np.array(normals, dtype=np.float32).flatten()
-        semantics = np.array(semantics, dtype=np.int32).flatten()
+            v.extend(triangles)
+            n.extend(np.repeat([normal], len(triangles), axis=0))
+            s.extend(np.repeat([semantic], len(triangles), axis=0))
+        model = FacetModel()
+        self.set_meta_copy(model, v, n, s)
+        return model.__splitsort(x_planes, y_planes)
 
-        splitted = FacetModel()
-        self.deepcopy_nonbuffers(splitted)
-        splitted.buffers.vertices.set(vertices)
-        splitted.buffers.normals.set(normals)
-        splitted.buffers.semantics.set(semantics)
+    def __splitsort(self, x_planes, y_planes):
+        grid = GridSorter(x_planes, y_planes)
+        for t, n, s in self.items:
+            center = np.sum(t, axis=0) / 3
+            grid.insert((t, n, s), center)
+        models = []
+        for elements in grid.partitions.values():
+            v, n, s = [], [], []
+            for element in elements:
+                v.append(element[0])
+                n.append(element[1])
+                s.append(element[2])
+            model = FacetModel()
+            self.set_meta_copy(model, v, n, s)
+            models.append(model)
+        return models
 
-        return splitted
+    def set_meta_copy(self, model, *data):
+        vertices, normals, semantics = data
+        super().set_meta_copy(model, vertices, semantics)
+        n = np.array(normals, dtype=np.float32).flatten()
+        model.buffers.normals.set(n)

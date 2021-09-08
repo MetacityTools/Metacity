@@ -15,7 +15,7 @@ def one_on_plane_split(x_on_plane, y, z, plane, axis):
 
 def special_case_split(triangle, plane, axis):
     a, b, c = triangle
-    onplane = (triangle[:, 0] == plane)
+    onplane = (triangle[:, axis] == plane)
     
     if np.count_nonzero(onplane) != 1:
         raise Exception(f"No or multiple points on plane: {onplane}.")
@@ -106,12 +106,6 @@ def split_lines_along_axis(lines, planes, axis):
 
         lines = line_split
     return np.array(lines)
-
-
-def split_triangle(triangles, x_planes, y_planes):
-    triangles = split_triangles_along_axis(triangles, x_planes, 0)
-    triangles = split_triangles_along_axis(triangles, y_planes, 1)
-    return triangles
 
 
 def split_triangle(triangle, x_planes, y_planes):

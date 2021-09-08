@@ -35,26 +35,27 @@ def test_slice():
     y_planes = [1.0]
     # the output array is a bit scrambled
     # TODO matching segments regardless of order
-    ouv = np.array([0.0, 0.0, 0.0,
-                    1.0, 1.0, 0.0, 
-                    1.0, 1.0, 0.0,
-                    2.0, 2.0, 0.0, 
-                    2.0, 2.0, 0.0, 
-                    3.0, 1.5, 0.0,
-                    6.0, 0.0, 0.0,
-                    4.0, 1.0, 0.0,
-                    4.0, 1.0, 0.0,
-                    3.0, 1.5, 0.0 ], dtype=np.float32)
+    ouv = [np.array([0.0, 0.0, 0.0,
+                     1.0, 1.0, 0.0]), 
+           np.array([1.0, 1.0, 0.0,
+                     2.0, 2.0, 0.0, 
+                     2.0, 2.0, 0.0, 
+                     3.0, 1.5, 0.0]),
+           np.array([6.0, 0.0, 0.0,
+                     4.0, 1.0, 0.0]),
+           np.array([4.0, 1.0, 0.0,
+                     3.0, 1.5, 0.0])]
 
-    ous = np.array([0, 0, 0, 0, 1, 1, 1, 1, 1, 1], dtype=np.int32)
+    ous = [[0, 0], [0, 0, 1, 1], [1, 1], [1, 1]]
 
     model = lines.LineModel()
     model.buffers.vertices.set(inv)
     model.buffers.semantics.set(ins)
     splitted = model.split(x_planes, y_planes)
-    print(splitted.buffers.vertices.data)
-    assert np.all(splitted.buffers.vertices.data == ouv)
-    assert np.all(splitted.buffers.semantics.data == ous)
+    assert len(splitted) == 4
+    for segment, v, s in zip(splitted, ouv, ous):
+        assert np.all(segment.buffers.vertices.data == v)
+        assert np.all(segment.buffers.semantics.data == s)
 
 
 def test_serialize(random_line_model):

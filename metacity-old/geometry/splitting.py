@@ -85,3 +85,4 @@ def split_along_planes(triangles, planes, axis):
         triangles = tri_split
         tri_split = []
     return np.array(triangles)
+

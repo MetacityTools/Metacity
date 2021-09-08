@@ -3,6 +3,7 @@ from metacity.datamodel.buffers.int32 import Int32Buffer
 from metacity.utils.bbox import empty_bbox, vertices_bbox
 from dotmap import DotMap
 import copy
+import numpy as np
 
 class BaseModel:
     TYPE = "base"
@@ -62,14 +63,20 @@ class BaseModel:
         self.deepcopy_into(model)
         return model
 
+    @property
+    def deepcopy_nobuffers(self):
+        model = BaseModel()
+        self.deepcopy_into_nobuffers(model)
+        return model
+
     def deepcopy_into(self, model):
         for buffer in self.buffers.keys():
             model.buffers[buffer] = self.buffers[buffer].deepcopy()
-        self.deepcopy_nonbuffers(model)
+        self.deepcopy_into_nobuffers(model)
 
-    def deepcopy_nonbuffers(self, model):
+    def deepcopy_into_nobuffers(self, model):
         model.meta.extend(copy.deepcopy(self.meta))
-        model.meta.extend(copy.deepcopy(self.tags))
+        model.tags.update(copy.deepcopy(self.tags))
 
     def join(self, model):
         for buffer in self.buffers.keys():
@@ -101,3 +108,10 @@ class BaseModel:
         self.meta = data['meta']
         self.tags = data['tags']
 
+    def set_meta_copy(self, model, *data):
+        vertices, semantics = data
+        v = np.array(vertices, dtype=np.float32).flatten()
+        s = np.array(semantics, dtype=np.int32).flatten()
+        model.buffers.vertices.set(v)
+        model.buffers.semantics.set(s)
+        self.deepcopy_into_nobuffers(model)

@@ -39,9 +39,3 @@ def test_serialize(random_point_model):
     assert model.buffers.keys() == model2.buffers.keys()
     assert model.meta == model2.meta
 
-
-
-def test_untested_props():
-    model = points.PointModel()
-    assert model.slicer == None
-    assert model.joiner == None

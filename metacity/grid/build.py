@@ -56,6 +56,7 @@ def generate_layout(grid: RegularGrid, bbox, tile_size):
     fs.clear_grid(grid.dir)
     config = generate_config(grid, bbox, tile_size)
     generate_tiles(config, grid.dir)
+    config.export()
 
 
 # main

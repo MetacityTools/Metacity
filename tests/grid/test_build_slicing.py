@@ -1,7 +1,9 @@
 from metacity.datamodel.grid.grid import RegularGrid
+from metacity.grid import build
 import numpy as np
 
-def test_slicing_planes(grid: RegularGrid):
+def test_slicing_planes(grid: RegularGrid, random_bbox):
+    build.generate_layout(grid, random_bbox, 20)
     x_planes, y_planes = grid.splitting_planes()
     xp, yp = np.array(x_planes), np.array(y_planes)
     dx, dy = np.diff(xp), np.diff(yp)
