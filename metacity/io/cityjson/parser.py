@@ -35,5 +35,5 @@ class CJParser:
 def parse(layer: MetacityLayer, input_file: str):
     fs.copy_to_layer(layer.dir, input_file)
     parser = CJParser(input_file)
-    parser.adjust_data()
-    parser.parse_and_export()
+    parser.adjust_data(layer)
+    parser.parse_and_export(layer)

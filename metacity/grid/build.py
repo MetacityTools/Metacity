@@ -1,21 +1,44 @@
+from metacity.datamodel.models.set import ModelSet
+from metacity.utils.sorter import GridSorter
 from metacity.datamodel.layer.layer import MetacityLayer
 from metacity.datamodel.grid.grid import RegularGrid
 from metacity.datamodel.grid.config import RegularGridConfig
 from metacity.datamodel.models.tile import MetaTile
 from metacity.filesystem import grid as fs
 from metacity.datamodel.object import MetacityObject
-from typing import Iterable
+from typing import Dict, Iterable
 import numpy as np
 from tqdm import tqdm
+
+
+#assemble tiles
+def build_tiles(grid: RegularGrid):
+    pass
+
 
 
 #generate cache
 def build_cache(grid: RegularGrid, objects: Iterable[MetacityObject]):
     x_planes, y_planes = grid.splitting_planes()
+    sorter = GridSorter(x_planes, y_planes)
     obj: MetacityObject
     for obj in tqdm(objects):
         splitted = obj.models.split(x_planes, y_planes)
+        object_into_cache(grid, sorter, obj, splitted)
 
+
+def object_into_cache(grid, sorter, obj, splitted):
+    msets: Dict[(int, int), ModelSet] = {}
+    for model in splitted.models:
+        x, y = sorter.get_point_idx(model.centroid)
+        if (x, y) not in msets:
+            msets[(x, y)] = ModelSet()
+        msets[(x, y)].models.append(model)
+
+    for (x, y), mset in msets.items():
+        tile = grid.tile(x, y)
+        tile.add_object_to_cache(grid.dir, obj.oid, mset)
+            
 
 # generate layout
 def tile_bbox(config: RegularGridConfig, x, y):
@@ -49,6 +72,7 @@ def generate_config(grid: RegularGrid, bbox, tile_size):
     config.bbox = bbox
     config.tile_size = tile_size
     config.resolution = resolution(bbox, tile_size)
+    print(config.serialize())
     return config
 
 
@@ -64,3 +88,5 @@ def build_grid(layer: MetacityLayer, tile_size):
     grid = RegularGrid(layer.dir)
     generate_layout(grid, layer.bbox, tile_size)
     build_cache(grid, layer.objects)
+    build_tiles(grid)
+    return grid

@@ -48,3 +48,10 @@ class MetaTile(ModelSet):
         super().export(self.name, fs.grid_tiles_dir(grid_dir))
         tile_config = fs.tile_config(grid_dir, self.name)
         write_json(tile_config, self.serialize())
+
+    def add_object_to_cache(self, grid_dir, oid: str, models: ModelSet):
+        cache_dir = fs.tile_cache_dir(grid_dir, self.name)
+        models.export(oid, cache_dir)
+        
+
+

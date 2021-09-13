@@ -18,6 +18,11 @@ class RegularGrid:
             tile.load(self.dir, tile_name)
             yield tile
 
+    def tile(self, x, y):
+        tile = MetaTile()
+        tile.load(self.dir, fs.tile_name(x, y))
+        return tile
+
     def splitting_planes(self):
         resolution = self.config.resolution
         x_planes = []
