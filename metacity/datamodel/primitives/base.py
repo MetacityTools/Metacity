@@ -123,3 +123,6 @@ class BaseModel:
         model.buffers.vertices.set(v)
         model.buffers.semantics.set(s)
         self.deepcopy_into_nobuffers(model)
+
+    def __repr__(self):
+        return f"<Model type:{self.TYPE} vertices:{self.buffers.vertices.shape}>"

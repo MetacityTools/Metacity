@@ -1,3 +1,4 @@
+from metacity.datamodel.buffers.int32 import Int32Buffer
 from metacity.datamodel.models.set import ModelSet
 from metacity.utils.sorter import GridSorter
 from metacity.datamodel.layer.layer import MetacityLayer
@@ -13,8 +14,21 @@ from tqdm import tqdm
 
 #assemble tiles
 def build_tiles(grid: RegularGrid):
-    pass
+    for tile in grid.tiles:
+        build_from_cache(grid, tile)
+        tile.export(grid.dir)
 
+
+def build_from_cache(grid: RegularGrid, tile: MetaTile):
+    tile_cache_dir = fs.tile_cache_dir(grid.dir, tile.name)
+    config = grid.config
+    for oid in fs.tile_cache_objects(grid.dir, tile.name):
+        modelset = ModelSet()
+        modelset.load(oid, tile_cache_dir)
+        oid_id = config.id_for_oid(oid)
+        for model in modelset.models:
+            tile.add_model(oid_id, model)
+    config.export()
 
 
 #generate cache

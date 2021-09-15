@@ -42,6 +42,14 @@ class MetacityLayer:
             obj.load(oid, gp, mp)
             yield obj
 
+
+    def object(self, oid):
+        gp = self.geometry_path
+        mp = self.meta_path
+        obj = MetacityObject()
+        obj.load(oid, gp, mp)
+        return obj
+
     @property
     def object_names(self):
         return [oid for oid in fs.layer_objects(self.dir)]
