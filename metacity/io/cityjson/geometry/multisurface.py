@@ -1,4 +1,5 @@
 import itertools
+from metacity.utils.surface import Surface
 
 import numpy as np
 from earcut import earcut as ec
@@ -32,18 +33,6 @@ def parse_surface_vertices(surface, vertices):
     tri_count = len(ti)
     n = np.repeat([normal], tri_count, axis=0).astype(np.float32)
     return v, n, tri_count
-
-
-class CJSurface:
-    def __init__(self, vertices=None, normals=None, semantics=None):
-        self.v = [] if vertices is None else vertices
-        self.n = [] if normals is None else normals
-        self.s = [] if semantics is None else semantics
-
-    def join(self, surface):
-        self.v.extend(surface.v)
-        self.n.extend(surface.n)
-        self.s.extend(surface.s)
 
 
 def parse_vertices(boundaries, vertices):
@@ -87,7 +76,7 @@ class CJMultiSurface(CJBasePrimitive):
             semantics = gen_nones(sum(ln))
 
         semantics = np.array(semantics, dtype=np.int32)
-        return CJSurface(v, n, semantics)
+        return Surface(v, n, semantics)
 
     def extract_surface(self, surface):
         self.vertices = np.array(surface.v, dtype=np.float32)

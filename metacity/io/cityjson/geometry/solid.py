@@ -1,7 +1,7 @@
 import itertools
+from metacity.utils.surface import Surface
 
-from metacity.io.cityjson.geometry.multisurface import (CJMultiSurface,
-                                                        CJSurface)
+from metacity.io.cityjson.geometry.multisurface import (CJMultiSurface)
 
 
 def ensure_iterable(data):
@@ -17,7 +17,7 @@ class CJSolid(CJMultiSurface):
         super().__init__(data, vertices)
 
     def parse(self, boundaries, semantics, vertices):
-        surface = CJSurface()
+        surface = Surface()
         models = itertools.zip_longest(boundaries, ensure_iterable(semantics))
         for shell, shell_semantics in models:
             s = super().parse(shell, shell_semantics, vertices)

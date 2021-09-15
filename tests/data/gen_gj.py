@@ -50,7 +50,7 @@ def gen_points(dim, count=20):
 
 def linestring(dim=2):
     verts = gen_points(dim)
-    return get_multipoint_gj(verts, dim)
+    return get_linestring_gj(verts, dim)
 
 
 def get_linestring_gj(verts, dims):
@@ -94,8 +94,18 @@ def gen_polygon(dim):
     # flatten
     if dim == 3:
         verts[:, 2] = 0
-    verts = np.append(verts, [verts[0]], axis=0)
-    # TODO should be ordered according to right hand rule
+    
+    verts = anti_clock_sort(verts)
+    return verts
+
+
+def anti_clock_sort(verts):
+    center = np.sum(verts, axis=0) / len(verts)
+    vec2 = (verts - center)[:, :2]
+    cplx = vec2[:, 0] + vec2[:, 1] * 1j
+    angles = np.angle(cplx)
+    avert = np.array([v for _, v in sorted(zip(angles, verts), key=lambda pair: pair[0])])
+    verts = np.append(avert, [avert[0]], axis=0)
     return verts
 
 
@@ -113,7 +123,7 @@ def get_polygon_gj(verts, dims):
 
 
 def multipolygon(dim=2):
-    verts = np.array([gen_polygon(dim) for i in range(5)])
+    verts = np.array([[gen_polygon(dim)] for i in range(5)])
     return get_multipolygon_gj(verts, dim)
 
 
@@ -122,7 +132,7 @@ def get_multipolygon_gj(verts, dims):
         "type" : "Feature",
         "geometry" : {
             "type" : "MultiPolygon",
-            "coordinates" : [ verts.tolist() ]
+            "coordinates" : verts.tolist()
         },
         "properties" : {
             "dimensions": dims
@@ -131,9 +141,7 @@ def get_multipolygon_gj(verts, dims):
 
 
 def geometrycollection(dim=2):
-    geometries = [point(dim), multipoint(dim), linestring(dim), multilinestring(dim), polygon(dim), multipolygon(dim)]
-    for g in geometries:
-        del g["type"]
+    geometries = [ g["geometry"] for g in [point(dim), multipoint(dim), linestring(dim), multilinestring(dim), polygon(dim), multipolygon(dim)] ]
     return get_geometrycollection_gj(geometries, dim)
 
 
