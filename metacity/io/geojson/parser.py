@@ -197,4 +197,3 @@ def parse(layer: MetacityLayer, input_file: str):
 
     parser = GJParser(contents)
     parser.parse()
-    pprint(parser.parsed)
