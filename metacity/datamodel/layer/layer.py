@@ -2,6 +2,7 @@ from metacity.datamodel.layer.config import LayerConfig
 from metacity.datamodel.object import MetacityObject
 from metacity.filesystem import layer as fs
 from metacity.utils.bbox import bboxes_bbox
+import uuid
 
 
 class MetacityLayer:
@@ -42,7 +43,6 @@ class MetacityLayer:
             obj.load(oid, gp, mp)
             yield obj
 
-
     def object(self, oid):
         gp = self.geometry_path
         mp = self.meta_path
@@ -56,3 +56,10 @@ class MetacityLayer:
 
     def add_object(self, object: MetacityObject):
         object.export(self.geometry_path, self.meta_path)
+
+    def generate_oid(self):
+        names = self.object_names
+        oid = str(uuid.uuid4())
+        while oid in names:
+            oid = str(uuid.uuid4())
+        return oid

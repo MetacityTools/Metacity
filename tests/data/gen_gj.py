@@ -147,8 +147,11 @@ def geometrycollection(dim=2):
 
 def get_geometrycollection_gj(geometries, dims):
     return {
-        "type" : "GeometryCollection",
-        "geometries" : geometries,
+        "type" : "Feature",
+        "geometry" : {
+            "type": "GeometryCollection",
+            "geometries": geometries
+        },
         "properties" : {
             "dimensions": dims
         }
