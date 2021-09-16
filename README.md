@@ -1,6 +1,6 @@
 # Metacity
 
-![Build Status](https://github.com/MetacitySuite/Metacity/workflows/pythonCI.yml/badge.svg)
+![Build Status](https://github.com/MetacitySuite/Metacity/workflows/pytesting/badge.svg)
 
 Toolkit for Urban Data processing
 
