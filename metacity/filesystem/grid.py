@@ -64,6 +64,11 @@ def tile_cache_object_dir(grid_dir, tile_name, oid):
     return os.path.join(cache_dir, oid)
 
 
+def tile_cache_object_exists(grid_dir, tile_name, oid):
+    dir = tile_cache_object_dir(grid_dir, tile_name, oid)
+    return os.path.exists(dir)
+
+
 def tile_name(x, y):
     return f'{x}_{y}'
 

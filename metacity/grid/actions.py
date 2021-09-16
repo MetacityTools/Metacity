@@ -5,8 +5,12 @@ from metacity.datamodel.grid.grid import RegularGrid
 
 
 def delete_object(grid: RegularGrid, oid: str):
+    tiles = []
     for tile in grid.tiles:
-        tile.delete_object_from_cache(grid.dir, oid)
+        if tile.contains_object(grid.dir, oid):
+            tile.delete_object_from_cache(grid.dir, oid)
+            tiles.append(tile)
+    build_tiles(grid, tiles)
 
 
 def rebuild_grid(layer: MetacityLayer, tile_size=None):
@@ -17,5 +21,5 @@ def rebuild_grid(layer: MetacityLayer, tile_size=None):
 
 
 def add_object(grid: RegularGrid, object: MetacityObject):
-    tiles = build_cache(grid, [object])
-    build_tiles(grid, tiles)
+    tile_ids = build_cache(grid, [object])
+    build_tiles(grid, tile_ids)

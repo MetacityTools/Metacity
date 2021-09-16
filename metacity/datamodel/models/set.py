@@ -41,6 +41,7 @@ class ModelSet:
 
     def delete(self, oid, geometry_path):
         output_dir = fs.path_to_object(geometry_path, oid)
+        self.models = []
         fs.remove_dirtree(output_dir)
 
     def split(self, x_planes, y_planes):

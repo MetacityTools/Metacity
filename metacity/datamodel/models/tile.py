@@ -65,6 +65,11 @@ class MetaTile(ModelSet):
         tile_config = fs.tile_config(grid_dir, self.name)
         write_json(tile_config, self.serialize())
 
+    def delete(self, grid_dir):
+        super().delete(self.name, fs.grid_tiles_dir(grid_dir))
+        tile_config = fs.tile_config(grid_dir, self.name)
+        fs.base.remove_file(tile_config)
+
     def add_object_to_cache(self, grid_dir, oid: str, models: ModelSet):
         cache_dir = fs.tile_cache_dir(grid_dir, self.name)
         models.export(oid, cache_dir)
@@ -77,6 +82,9 @@ class MetaTile(ModelSet):
         cache_dir = fs.tile_cache_dir(grid_dir, self.name)
         models = ModelSet()
         models.delete(oid, cache_dir)
+
+    def contains_object(self, grid_dir, oid: str):
+        return fs.tile_cache_object_exists(grid_dir, self.name, oid)
 
 
 
