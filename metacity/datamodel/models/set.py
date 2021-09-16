@@ -39,6 +39,10 @@ class ModelSet:
             primitive.deserialize(data)
             self.models.append(primitive)
 
+    def delete(self, oid, geometry_path):
+        output_dir = fs.path_to_object(geometry_path, oid)
+        fs.remove_dirtree(output_dir)
+
     def split(self, x_planes, y_planes):
         splitted = ModelSet()
         for model in self.models:

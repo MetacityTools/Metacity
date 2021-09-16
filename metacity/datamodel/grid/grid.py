@@ -26,9 +26,9 @@ class RegularGrid:
     def splitting_planes(self):
         resolution = self.config.resolution
         x_planes = []
-        for x in range(resolution[0]):
+        for x in range(resolution[0] - 1):
             x_planes.append(self.config.x_tile_top(x))
         y_planes = []
-        for y in range(resolution[1]):
+        for y in range(resolution[1] - 1):
             y_planes.append(self.config.y_tile_top(y))
         return x_planes, y_planes

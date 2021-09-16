@@ -19,6 +19,11 @@ class MetacityObject:
         self.models.export(self.oid, geometry_path)
         self.__export_meta(meta_path)
 
+    def delete(self, geometry_path: str, meta_path: str):
+        meta_file = fs.metadata_for_oid(meta_path, self.oid)
+        fs.remove_file(meta_file)
+        self.models.delete(self.oid, geometry_path)
+
     def __export_meta(self, meta_path):
         if meta_path != "":
             meta_file = fs.metadata_for_oid(meta_path, self.oid)

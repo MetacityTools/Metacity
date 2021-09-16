@@ -73,5 +73,10 @@ class MetaTile(ModelSet):
         cache_dir = fs.tile_cache_dir(grid_dir, self.name)
         return fs.base.objects(cache_dir)  
 
+    def delete_object_from_cache(self, grid_dir, oid: str):
+        cache_dir = fs.tile_cache_dir(grid_dir, self.name)
+        models = ModelSet()
+        models.delete(oid, cache_dir)
+
 
 

@@ -57,6 +57,13 @@ class MetacityLayer:
     def add_object(self, object: MetacityObject):
         object.export(self.geometry_path, self.meta_path)
 
+    def delete_object(self, oid):
+        gp = self.geometry_path
+        mp = self.meta_path
+        obj = MetacityObject()
+        obj.oid = oid
+        obj.delete(gp, mp)
+
     def generate_oid(self):
         names = self.object_names
         oid = str(uuid.uuid4())
