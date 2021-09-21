@@ -6,7 +6,7 @@ from metacity.datamodel.primitives.lines import LineModel
 from metacity.datamodel.primitives.points import PointModel
 from metacity.filesystem import base as fs
 from metacity.filesystem.file import read_json, write_json
-from metacity.utils.bbox import bboxes_bbox
+from metacity.utils.bbox import bboxes_bbox, empty_bbox
 
 
 PRIMITIVES: Dict[str, Callable[[], BaseModel]] = {
@@ -39,10 +39,15 @@ class ModelSet:
             primitive.deserialize(data)
             self.models.append(primitive)
 
+    def delete(self, oid, geometry_path):
+        output_dir = fs.path_to_object(geometry_path, oid)
+        self.models = []
+        fs.remove_dirtree(output_dir)
+
     def split(self, x_planes, y_planes):
         splitted = ModelSet()
         for model in self.models:
-            splitted.models.append(model.split(x_planes, y_planes))
+            splitted.models.extend(model.split(x_planes, y_planes))
         return splitted
 
     def validate(self, model, data):
@@ -58,6 +63,8 @@ class ModelSet:
 
     @property
     def bbox(self):
+        if len(self.models) == 0:
+            return empty_bbox()
         return bboxes_bbox([model.bbox for model in self.models])
 
 

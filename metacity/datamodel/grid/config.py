@@ -6,7 +6,7 @@ from metacity.filesystem.file import read_json, write_json
 class RegularGridConfig:
     def __init__(self, grid):
         self.bbox = np.array([0, 0, 0])
-        self.tile_size = 0
+        self.tile_size = 1000
 
         self.oid_to_id = {}
         self.id_to_oid = {}

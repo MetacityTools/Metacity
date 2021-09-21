@@ -16,7 +16,7 @@ class LayerConfig:
     def apply(self, vertices):
         if self.layer.empty:
             self.shift = np.amin(vertices, axis=0).tolist()
-            self.export(self.layer.dir)
+            self.export()
         vertices -= self.shift
 
     def serialize(self):

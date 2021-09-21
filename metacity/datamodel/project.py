@@ -17,6 +17,10 @@ class MetacityProject:
         layer = MetacityLayer(layer_dir)
         return layer
 
+    def delete_layer(self, layer_name: str):
+        layer_dir = fs.layer_dir(self.dir, layer_name)
+        fs.base.remove_dirtree(layer_dir)
+
     @property
     def layer_names(self):
         return fs.layer_names(self.dir)

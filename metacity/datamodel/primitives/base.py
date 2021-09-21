@@ -1,3 +1,4 @@
+from metacity.utils.sorter import GridSorter
 from metacity.datamodel.buffers.float32 import Float32Buffer
 from metacity.datamodel.buffers.int32 import Int32Buffer
 from metacity.utils.bbox import empty_bbox, vertices_bbox
@@ -58,6 +59,13 @@ class BaseModel:
         raise NotImplementedError("Method split() not implemented on base class.")
 
     @property
+    def centroid(self):
+        size = len(self.buffers.vertices)
+        nv = size // 3
+        reshaped = self.buffers.vertices.reshape((nv, 3))
+        return np.sum(reshaped, axis=0) / nv
+    
+    @property
     def deepcopy(self):
         model = BaseModel()
         self.deepcopy_into(model)
@@ -115,3 +123,6 @@ class BaseModel:
         model.buffers.vertices.set(v)
         model.buffers.semantics.set(s)
         self.deepcopy_into_nobuffers(model)
+
+    def __repr__(self):
+        return f"<Model type:{self.TYPE} vertices:{self.buffers.vertices.shape}>"

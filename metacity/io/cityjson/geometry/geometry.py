@@ -11,7 +11,7 @@ class CJGeometry:
         self.type = data["type"].lower()
 
         if self.type == 'geometryinstance':
-            self.primitive = CJGeometryInstance(data, templates)
+            self.primitive = CJGeometryInstance(data, vertices, templates)
         elif self.type == 'multipoint':
             self.primitive = CJPoints(data, vertices)
         elif self.type == 'multilinestring':

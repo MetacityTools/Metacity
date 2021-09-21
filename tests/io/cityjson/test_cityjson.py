@@ -4,7 +4,7 @@ from metacity.io.cityjson.geometry.geometry import CJGeometry
 from metacity.io.cityjson.parser import CJParser
 
 
-def test_load(layer, railway_dataset, railway_dataset_stats):
+def test_load(layer: MetacityLayer, railway_dataset, railway_dataset_stats):
     stats = railway_dataset_stats
     parser = CJParser(railway_dataset)
     parser.parse_and_export(layer)

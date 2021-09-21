@@ -1,3 +1,5 @@
+from metacity.datamodel.buffers.int32 import Int32Buffer
+from metacity.datamodel.primitives.base import BaseModel
 from metacity.filesystem.file import read_json, write_json
 from metacity.datamodel.models.set import ModelSet
 from metacity.filesystem import grid as fs
@@ -44,7 +46,45 @@ class MetaTile(ModelSet):
         super().load(tile_name, tile_dir)
         self.deserialize(read_json(tile_config))
 
+    def add_model(self, oid_id: int, amodel: BaseModel):
+        self.add_oid_buffer_to_model(oid_id, amodel)
+        for model in self.models:
+            if model.TYPE == amodel.TYPE:
+                model.join(amodel)
+                return
+        # in case the type is not present in tile already
+        self.models.append(amodel.deepcopy)
+
+    def add_oid_buffer_to_model(self, oid_id, amodel):
+        idbuffer = Int32Buffer()
+        idbuffer.set(np.array([oid_id] * len(amodel.buffers.semantics), dtype=np.int32))
+        amodel.buffers["oid"] = idbuffer
+
     def export(self, grid_dir):
         super().export(self.name, fs.grid_tiles_dir(grid_dir))
         tile_config = fs.tile_config(grid_dir, self.name)
         write_json(tile_config, self.serialize())
+
+    def delete(self, grid_dir):
+        super().delete(self.name, fs.grid_tiles_dir(grid_dir))
+        tile_config = fs.tile_config(grid_dir, self.name)
+        fs.base.remove_file(tile_config)
+
+    def add_object_to_cache(self, grid_dir, oid: str, models: ModelSet):
+        cache_dir = fs.tile_cache_dir(grid_dir, self.name)
+        models.export(oid, cache_dir)
+        
+    def cache_objects(self, grid_dir):
+        cache_dir = fs.tile_cache_dir(grid_dir, self.name)
+        return fs.base.objects(cache_dir)  
+
+    def delete_object_from_cache(self, grid_dir, oid: str):
+        cache_dir = fs.tile_cache_dir(grid_dir, self.name)
+        models = ModelSet()
+        models.delete(oid, cache_dir)
+
+    def contains_object(self, grid_dir, oid: str):
+        return fs.tile_cache_object_exists(grid_dir, self.name, oid)
+
+
+

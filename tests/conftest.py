@@ -315,6 +315,12 @@ def railway_dataset():
 
 
 @pytest.fixture(scope='function')
+def geojson_dataset():
+    dataset_path = os.path.join(data_dir(), 'data', 'gjdata.json')
+    yield dataset_path
+
+
+@pytest.fixture(scope='function')
 def railway_dataset_stats():
     stats = DatasetStats()
     stats.obj_count = 121

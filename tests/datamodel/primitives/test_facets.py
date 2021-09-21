@@ -1,6 +1,6 @@
 import numpy as np
 from metacity.datamodel.primitives import facets
-
+import bisect
 
 def models_equal(model, model2):
     assert np.all(model.buffers.vertices == model2.buffers.vertices)
@@ -50,54 +50,73 @@ def test_slice():
     x_planes = [1.0, 2.0]
     y_planes = [1.5]
     # TODO matching segments regardless of order
-    ouv = [3.0,   0.0,  0.0,   
-           2.0,   1.0,  0.0,
-           2.0,   0.0,  0.0,
-           1.0,   2.0,  0.0,
-           1.0,   1.5,  0.0,
-           1.5,   1.5,  0.0,
-           1.0,   1.5,  0.0,
-           1.0,   0.0,  0.0,
-           2.0,   1.0,  0.0,
-           1.0,   1.5,  0.0,
-           2.0,   1.0,  0.0,
-           1.5,   1.5,  0.0,
-           2.0,   1.0,  0.0,
-           1.0,   0.0,  0.0,
-           2.0,   0.0,  0.0,
-           0.0,   0.0,  0.0,
-           0.75,  1.5,  0.0,
-           0.0,   1.5,  0.0,
-           0.75,  1.5,  0.0,
-           1.0,   2.0,  0.0,
-           0.0,   1.5,  0.0,
-           1.0,   2.0,  0.0,
-           0.0,   3.0,  0.0,   
-           0.0,   1.5,  0.0, 
-           1.0,   2.0,  0.0,   
-           0.75,  1.5,  0.0,   
-           1.0,   1.5,  0.0,
-           0.75,  1.5,  0.0,
-           0.0,   0.0,  0.0,   
-           1.0,   0.0,  0.0,
-           0.75,  1.5,  0.0,   
-           1.0,   0.0,  0.0,   
-           1.0,   1.5,  0.0 ]
-    nv = len(ouv) // 3
-    oun = np.array([0.0,   0.0,  1.0] * nv, dtype=np.float32)
-    ous = np.array([0] * nv, dtype=np.int32)
+    ouv = [[3.0,   0.0,  0.0,   
+            2.0,   1.0,  0.0,
+            2.0,   0.0,  0.0],
+           [1.0,   2.0,  0.0,
+            1.0,   1.5,  0.0,
+            1.5,   1.5,  0.0],
+           [1.0,   1.5,  0.0,
+            1.0,   0.0,  0.0,
+            2.0,   1.0,  0.0,
+            1.0,   1.5,  0.0,
+            2.0,   1.0,  0.0,
+            1.5,   1.5,  0.0,
+            2.0,   1.0,  0.0,
+            1.0,   0.0,  0.0,
+            2.0,   0.0,  0.0],
+           [0.0,   0.0,  0.0,
+            0.75,  1.5,  0.0,
+            0.0,   1.5,  0.0,
+            0.75,  1.5,  0.0,
+            0.0,   0.0,  0.0,   
+            1.0,   0.0,  0.0,
+            0.75,  1.5,  0.0,   
+            1.0,   0.0,  0.0,   
+            1.0,   1.5,  0.0],
+           [0.75,  1.5,  0.0,
+            1.0,   2.0,  0.0,
+            0.0,   1.5,  0.0,
+            1.0,   2.0,  0.0,
+            0.0,   3.0,  0.0,   
+            0.0,   1.5,  0.0, 
+            1.0,   2.0,  0.0,   
+            0.75,  1.5,  0.0,   
+            1.0,   1.5,  0.0]]
 
     model = facets.FacetModel()
     model.buffers.vertices.set(inv)
     model.buffers.normals.set(inn)
     model.buffers.semantics.set(ins)
+    
     splitted = model.split(x_planes, y_planes)
-    for partition in splitted:
-        print(partition.buffers.vertices.data)
+    
+    occupied_semgments = set()
+    for partition, ovs in zip(splitted, ouv):
+        assert_unique_partition(x_planes, y_planes, occupied_semgments, ovs)
+        assert np.all(partition.buffers.vertices.data == ovs)
+        
+        nv = len(ovs) // 3
+        oun = np.array([0.0,   0.0,  1.0] * nv, dtype=np.float32)
+        ous = np.array([0] * nv, dtype=np.int32)
+        
+        assert np.all(partition.buffers.normals.data == oun)
+        assert np.all(partition.buffers.semantics.data == ous)
 
-    assert np.all(splitted.buffers.vertices.data == ouv)
-    assert np.all(splitted.buffers.normals.data == oun)
-    assert np.all(splitted.buffers.semantics.data == ous)  
+
+def assert_unique_partition(x_planes, y_planes, occupied_semgments, ovs):
+    xs = []
+    ys = []
+    for t in np.array(ovs).reshape(len(ovs) // 9, 3, 3):
+        center = np.sum(t, axis=0) / 3
+        for x, y in zip(center[::3], center[1::3]):
+            xs.append(bisect.bisect_left(x_planes, x))
+            ys.append(bisect.bisect_left(y_planes, y))
+        
+    assert all(x==xs[0] for x in xs)
+    assert all(y==ys[0] for y in ys)
+    assert (x, y) not in occupied_semgments
+    occupied_semgments.add((x, y))
 
 
 def test_serialize(random_facet_model):

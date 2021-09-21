@@ -54,3 +54,11 @@ def object_models(geometry_path, oid):
 def objects(geometry_path):
     for o in os.listdir(geometry_path):
         yield o
+
+def remove_dirtree(dir):
+    if os.path.exists(dir):
+        shutil.rmtree(dir)
+
+def remove_file(path):
+    if os.path.exists(path):  
+        os.remove(path)
