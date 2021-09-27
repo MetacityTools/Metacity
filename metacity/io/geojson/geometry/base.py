@@ -29,7 +29,6 @@ class GJModelObject(GJGeometryObject):
             pads = [(0, 0)] * (data.ndim - 1)
             pads.append((0, 1))
             data = np.pad(data, pads)
-            print(data)
         if data.shape[-1] != 3:
             raise Exception(f"Coordinate data have an unexpected shape: {data.shape}")
         return data

@@ -54,6 +54,7 @@ class MetaTile(ModelSet):
                 return
         # in case the type is not present in tile already
         self.models.append(amodel.deepcopy)
+        self.object_count += 1
 
     def add_oid_buffer_to_model(self, oid_id, amodel):
         idbuffer = Int32Buffer()
