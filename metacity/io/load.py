@@ -21,7 +21,7 @@ def parse_json(layer: MetacityLayer, input_file: str):
     raise Exception(f"Could not parse {input_file}: \nCityJSON parser:{e1}\nGeoJSON parser:{e2}")
 
 
-def parse_shp(layer: MetacityLayer, input_file: str):
+def parse_shapefile(layer: MetacityLayer, input_file: str):
     try:
         parse_shp(layer, input_file)
     except Exception as e:
@@ -33,6 +33,6 @@ def load(layer: MetacityLayer, input_file: str):
     if suffix == 'json':
         parse_json(layer, input_file)
     elif suffix == 'shp':
-        parse_shp(layer, input_file)
+        parse_shapefile(layer, input_file)
     else:
         raise Exception(f"Could not parse {input_file}: unknown suffix")

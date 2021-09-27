@@ -320,6 +320,11 @@ def geojson_dataset():
     yield dataset_path
 
 @pytest.fixture(scope='function')
+def shp_dataset():
+    dataset_path = os.path.join(data_dir(), 'data', 'cyklo', 'DOP_Cyklotrasy_l.shp')
+    yield dataset_path
+
+@pytest.fixture(scope='function')
 def railway_dataset_stats():
     stats = DatasetStats()
     stats.obj_count = 121
