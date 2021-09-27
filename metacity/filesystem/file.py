@@ -34,4 +34,4 @@ def change_suffix(path, suffix):
     return f"{base}.{suffix}"
 
 def get_suffix(path):
-    return os.path.splitext(path)[1]
+    return os.path.splitext(path)[1][1:]

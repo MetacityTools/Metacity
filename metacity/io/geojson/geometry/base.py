@@ -23,26 +23,34 @@ class GJModelObject(GJGeometryObject):
     def empty(self):
         return len(self.coordinates) == 0
 
-    def format_coords(self):
-        if self.data["coordinates"] is None:
-            return np.array([], dtype=np.float32)
-        data = np.array(self.data["coordinates"], dtype=np.float32)
+    def to_3d(self, data):
+        data = np.array(data, dtype=np.float32)
         if data.shape[-1] == 2:
             pads = [(0, 0)] * (data.ndim - 1)
             pads.append((0, 1))
             data = np.pad(data, pads)
+            print(data)
         if data.shape[-1] != 3:
             raise Exception(f"Coordinate data have an unexpected shape: {data.shape}")
         return data
+
+    def format_coords(self):
+        if self.data["coordinates"] is None:
+            return []
+        return self.data["coordinates"]
 
     def empty_semantics(self, nvert):
         return np.array([-1] * nvert, dtype=np.int32)
 
     @property
+    def flatten_vertices(self):
+        raise NotImplementedError()
+
+    @property
     def vertices(self):
         if self.empty:
             return np.array([])
-        v = self.coordinates.flatten()
+        v = self.flatten_vertices
         return v.reshape((len(v) // 3, 3))
 
             

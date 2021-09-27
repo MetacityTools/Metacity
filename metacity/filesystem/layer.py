@@ -68,6 +68,11 @@ def copy_to_layer(layer_dir: str, file_path: str):
     return shutil.copy2(file_path, dst)
 
 
+def layer_source_path(layer_dir: str, file_name: str):
+    dst = layer_originals(layer_dir)
+    return os.path.join(dst, file_name)
+
+
 def layer_names(project_dir):
     return [d for d in os.listdir(project_dir)]
 

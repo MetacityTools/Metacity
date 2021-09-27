@@ -1,3 +1,4 @@
+from typing import IO
 from metacity.datamodel.layer.config import LayerConfig
 from metacity.datamodel.object import MetacityObject
 from metacity.filesystem import layer as fs
@@ -70,3 +71,6 @@ class MetacityLayer:
         while oid in names:
             oid = str(uuid.uuid4())
         return oid
+
+    def source_file_path(self, file_name: str):
+        return fs.layer_source_path(self.dir, file_name)

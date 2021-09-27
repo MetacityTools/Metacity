@@ -67,7 +67,7 @@ def get_linestring_gj(verts, dims):
 
 
 def multilinestring(dim=2):
-    verts = np.array([gen_points(dim) for i in range(5)])
+    verts = [gen_points(dim, count=(i + 1) * 10).tolist() for i in range(5)]
     return get_multilinestring_gj(verts, dim)
 
 
@@ -76,7 +76,7 @@ def get_multilinestring_gj(verts, dims):
         "type" : "Feature",
         "geometry" : {
             "type" : "MultiLineString",
-            "coordinates" : verts.tolist()
+            "coordinates" : verts
         },
         "properties" : {
             "dimensions": dims
@@ -89,8 +89,8 @@ def polygon(dim=2):
     return get_polygon_gj(verts, dim)
 
 
-def gen_polygon(dim):
-    verts = gen_points(dim, count=6)
+def gen_polygon(dim, count=6):
+    verts = gen_points(dim, count=count)
     # flatten
     if dim == 3:
         verts[:, 2] = 0
@@ -123,7 +123,7 @@ def get_polygon_gj(verts, dims):
 
 
 def multipolygon(dim=2):
-    verts = np.array([[gen_polygon(dim)] for i in range(5)])
+    verts = [[gen_polygon(dim, count=(i + 1) * 3).tolist() ] for i in range(5)]
     return get_multipolygon_gj(verts, dim)
 
 
@@ -132,7 +132,7 @@ def get_multipolygon_gj(verts, dims):
         "type" : "Feature",
         "geometry" : {
             "type" : "MultiPolygon",
-            "coordinates" : verts.tolist()
+            "coordinates" : verts
         },
         "properties" : {
             "dimensions": dims
