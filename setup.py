@@ -10,8 +10,8 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="metacity",
-    packages=find_packages("."),
-    version="0.0.14",
+    packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    version="0.0.17",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -24,9 +24,10 @@ setup(
         "Programming Language :: Python :: 3.8",
     ],
     python_requires='>=3.8',                # Minimum version requirement of the package
-    install_requires=[
+    install_requires = [
+        "dotmap>=1.3.23",
         "earcut>=1.1.4",
-        "numpy>=1.21.0",
-        "tqdm>=4.61.2"
-    ] # Install other dependencies if any
+        "numpy>=1.21.1",
+        "tqdm>=4.62.0"
+    ]
 )

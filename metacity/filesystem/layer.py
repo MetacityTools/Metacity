@@ -70,3 +70,12 @@ def copy_to_layer(layer_dir: str, file_path: str):
 
 def layer_names(project_dir):
     return [d for d in os.listdir(project_dir)]
+
+
+def non_coliding_layer_dir(project_dir, layer_name):
+    layer_path = layer_dir(project_dir, layer_name)
+    i = 2
+    while os.path.exists(layer_path):
+        layer_path = layer_dir(project_dir, f"{layer_name}-{i}")
+        i += 1
+    return layer_path

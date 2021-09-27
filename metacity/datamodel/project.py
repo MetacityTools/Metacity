@@ -8,8 +8,8 @@ class MetacityProject:
         fs.recrete_project(self.dir, load_existing)
 
     def create_layer(self, layer_name: str):
-        layer_dir = fs.layer_dir(self.dir, layer_name)
-        layer = MetacityLayer(layer_dir, load_existing=False)
+        layer_dir = fs.non_coliding_layer_dir(self.dir, layer_name)
+        layer = MetacityLayer(layer_dir)
         return layer
 
     def get_layer(self, layer_name: str):
