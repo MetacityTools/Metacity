@@ -2,3 +2,4 @@ earcut==1.1.4
 numpy==1.21.1
 tqdm==4.62.0
 dotmap>=1.3.23
+geopandas>=0.9.0

@@ -26,10 +26,12 @@ def read_json(filename):
     with open(filename, 'r') as file:
         return json.load(file)
 
-
 def dir_from_path(path):
     return os.path.dirname(path)
 
 def change_suffix(path, suffix):
     base = os.path.splitext(path)[0]
     return f"{base}.{suffix}"
+
+def get_suffix(path):
+    return os.path.splitext(path)[1]

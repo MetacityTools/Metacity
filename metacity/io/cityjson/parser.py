@@ -8,10 +8,7 @@ from tqdm import tqdm
 
 
 class CJParser:
-    def __init__(self, input_file: str):
-        with open(input_file, "r") as file:
-            contents = json.load(file)
-
+    def __init__(self, contents):
         self.objects = contents["CityObjects"]
         if "geometry-templates" in contents:
             self.templates = contents["geometry-templates"]
@@ -33,7 +30,9 @@ class CJParser:
 
 
 def parse(layer: MetacityLayer, input_file: str):
-    fs.copy_to_layer(layer.dir, input_file)
-    parser = CJParser(input_file)
+    with open(input_file, "r") as file:
+        contents = json.load(file)
+
+    parser = CJParser(contents)
     parser.adjust_data(layer)
     parser.parse_and_export(layer)

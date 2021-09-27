@@ -11,7 +11,7 @@ README = (HERE / "README.md").read_text()
 setup(
     name="metacity",
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
-    version="0.0.17",
+    version="0.0.18",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -28,6 +28,7 @@ setup(
         "dotmap>=1.3.23",
         "earcut>=1.1.4",
         "numpy>=1.21.1",
-        "tqdm>=4.62.0"
+        "tqdm>=4.62.0",
+        "geopandas>=0.9.0"
     ]
 )
