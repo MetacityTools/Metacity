@@ -21,12 +21,12 @@ class GJPolygon(GJModelObject):
             return Surface()
         
         ti = ec.earcut(vs, data["holes"], 3)
-        vs.reshape((vs.shape[0] // 3, 3))
+        vs = vs.reshape((vs.shape[0] // 3, 3))
 
         v = np.array(vs[ti], dtype=np.float32)
-        tri_count = len(ti)    
-        n = np.repeat([normal], tri_count, axis=0).astype(np.float32)    
-        s = np.repeat([-1], tri_count, axis=0).astype(np.int32)   
+        vert_count = len(ti)
+        n = np.repeat([normal], vert_count, axis=0).astype(np.float32)    
+        s = np.repeat([-1], vert_count, axis=0).astype(np.int32)   
         return Surface(v, n, s)
 
     def to_primitives(self, shift):
@@ -34,9 +34,9 @@ class GJPolygon(GJModelObject):
             return []
         model = FacetModel()
         surface = self.triangulate(self.coordinates, shift)
-        model.buffers.vertices.set(np.array(surface.v, dtype=np.float32))
-        model.buffers.vertices.set(np.array(surface.n, dtype=np.float32))
-        model.buffers.semantics.set(np.array(surface.s, dtype=np.int32))
+        model.buffers.vertices.set(np.array(surface.v, dtype=np.float32).flatten())
+        model.buffers.normals.set(np.array(surface.n, dtype=np.float32).flatten())
+        model.buffers.semantics.set(np.array(surface.s, dtype=np.int32).flatten())
         return [model]
 
     def transform_polygon(self, polygon):

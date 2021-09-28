@@ -170,7 +170,5 @@ geojson = {
        ]
 }
 
-print(geojson)
-
 with open("gjdata.json", 'w') as file:
     json.dump(geojson, file, indent=4)

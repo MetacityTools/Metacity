@@ -1,5 +1,6 @@
+from metacity.datamodel.primitives.facets import FacetModel
 import numpy as np
-
+from metacity.datamodel.object import MetacityObject
 
 def ensure_list_like(data):
     if isinstance(data, list) or isinstance(data, tuple):
@@ -7,8 +8,7 @@ def ensure_list_like(data):
     return [data]
 
 
-def export_buffers(flat_v, flat_n, name, file, shift=np.array([0, 0, 0])):
-    file.write(f"solid {name}\n")
+def export_buffers(flat_v, flat_n, file, shift=np.array([0, 0, 0])):
 
     verts = flat_v.reshape((flat_v.shape[0] // 9, 3, 3))
     verts = verts - shift
@@ -27,4 +27,12 @@ def export_buffers(flat_v, flat_n, name, file, shift=np.array([0, 0, 0])):
         file.write("       endloop\n")
         file.write("    endfacet\n")
 
-    file.write(f"endsolid {name}\n")
+
+
+def export_object(object: MetacityObject, file):
+    file.write(f"solid {object.oid}\n")
+    for model in object.models.models:
+        if model.TYPE == FacetModel.TYPE:
+            print(object.oid, model.buffers.vertices.data)
+            export_buffers(model.buffers.vertices.data, model.buffers.normals.data, file)
+    file.write(f"endsolid {object.oid}\n")

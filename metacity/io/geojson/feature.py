@@ -4,7 +4,7 @@ from metacity.io.geojson.geometry.base import GJObject
 from metacity.datamodel.object import MetacityObject
 from metacity.datamodel.layer.layer import MetacityLayer
 import numpy as np
-
+from tqdm import tqdm
 
 class GJFeature(GJObject):
     def __init__(self, data):
@@ -72,6 +72,6 @@ class GJFeatureCollection(GJObject):
     def export(self, layer: MetacityLayer, shift):
         geometry_path = layer.geometry_path
         meta_path = layer.meta_path
-        for feature in self.features:
+        for feature in tqdm(self.features):
             obj = feature.to_metaobject(layer, shift)
             obj.export(geometry_path, meta_path)            

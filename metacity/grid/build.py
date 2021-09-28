@@ -92,7 +92,6 @@ def generate_config(grid: RegularGrid, bbox, tile_size):
     config.bbox = bbox
     config.tile_size = tile_size
     config.resolution = resolution(bbox, tile_size)
-    print(config.serialize())
     return config
 
 
