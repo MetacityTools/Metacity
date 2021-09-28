@@ -2,11 +2,14 @@ import numpy as np
 from metacity.datamodel.layer.layer import MetacityLayer
 from metacity.io.cityjson.geometry.geometry import CJGeometry
 from metacity.io.cityjson.parser import CJParser
-
+import json
 
 def test_load(layer: MetacityLayer, railway_dataset, railway_dataset_stats):
     stats = railway_dataset_stats
-    parser = CJParser(railway_dataset)
+    with open(railway_dataset, 'r') as file:
+        contents = json.load(file)
+
+    parser = CJParser(contents)
     parser.parse_and_export(layer)
     dataset_names = parser.objects.keys()
 
