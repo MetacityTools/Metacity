@@ -8,7 +8,7 @@ from metacity.io.geojson.geometry.collection import parse_geometry
 
 def feature_into_collection(feature):
     collection = GJFeatureCollection({})
-    collection.parsed = [feature]
+    collection.features = [feature]
     return collection
 
 

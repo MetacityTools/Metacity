@@ -2,7 +2,7 @@ from typing import List
 from metacity.io.geojson.geometry.collection import parse_geometry
 from metacity.io.geojson.geometry.base import GJObject
 from metacity.datamodel.object import MetacityObject
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import MetacityLayer, NameGenerator
 import numpy as np
 from tqdm import tqdm
 
@@ -17,7 +17,7 @@ class GJFeature(GJObject):
             self.meta = data["properties"] 
 
     def __repr__(self):
-        return f"<Feature: {[m for m in self.models]}>"
+        return f"<Feature: {self.model}>"
 
     @property
     def vertices(self):
@@ -25,12 +25,12 @@ class GJFeature(GJObject):
             return np.array([])
         return self.model.vertices
 
-    def to_metaobject(self, layer: MetacityLayer, shift):
+    def to_metaobject(self, gen: NameGenerator, shift):
         obj = MetacityObject()
         if 'id' in self.meta:
             obj.oid = self.meta['id']
         else:
-            obj.oid = layer.generate_oid()
+            obj.oid = gen.random_name
         
         if self.model is not None:
             for m in self.model.to_primitives(shift):
@@ -72,6 +72,7 @@ class GJFeatureCollection(GJObject):
     def export(self, layer: MetacityLayer, shift):
         geometry_path = layer.geometry_path
         meta_path = layer.meta_path
+        oid_generator = layer.oid_generator
         for feature in tqdm(self.features):
-            obj = feature.to_metaobject(layer, shift)
+            obj = feature.to_metaobject(oid_generator, shift)
             obj.export(geometry_path, meta_path)            

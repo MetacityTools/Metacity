@@ -1,9 +1,21 @@
-from typing import IO
 from metacity.datamodel.layer.config import LayerConfig
 from metacity.datamodel.object import MetacityObject
 from metacity.filesystem import layer as fs
 from metacity.utils.bbox import bboxes_bbox
 import uuid
+from typing import List
+
+class NameGenerator:
+    def __init__(self, names: List[str]):
+        self.names = set(names)
+
+    @property
+    def random_name(self):
+        oid = str(uuid.uuid4())
+        while oid in self.names:
+            oid = str(uuid.uuid4())
+        self.names.add(oid)
+        return oid
 
 
 class MetacityLayer:
@@ -65,12 +77,10 @@ class MetacityLayer:
         obj.oid = oid
         obj.delete(gp, mp)
 
-    def generate_oid(self):
+    @property
+    def oid_generator(self):
         names = self.object_names
-        oid = str(uuid.uuid4())
-        while oid in names:
-            oid = str(uuid.uuid4())
-        return oid
+        return NameGenerator(names)
 
-    def source_file_path(self, file_name: str):
-        return fs.layer_source_path(self.dir, file_name)
+    def add_source_file(self, source_file_path: str):
+        return fs.copy_to_layer(self.dir, source_file_path)
