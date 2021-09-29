@@ -4,7 +4,6 @@ import numpy as np
 from metacity.datamodel.layer.layer import MetacityLayer
 from metacity.filesystem import layer as fs
 from metacity.io.cityjson.object import CJObject
-from tqdm import tqdm
 
 
 class CJParser:
@@ -24,7 +23,7 @@ class CJParser:
         layer.config.apply(self.vertices)
 
     def parse_and_export(self, layer: MetacityLayer):
-        for oid, data in tqdm(self.objects.items()):
+        for oid, data in self.objects.items():
             object = CJObject(oid, data, self.vertices, self.templates)
             object.export(layer.geometry_path, layer.meta_path)
 

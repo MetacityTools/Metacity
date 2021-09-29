@@ -8,7 +8,6 @@ from metacity.filesystem import grid as fs
 from metacity.datamodel.object import MetacityObject
 from typing import Dict, Iterable
 import numpy as np
-from tqdm import tqdm
 
 
 #assemble tiles
@@ -38,7 +37,7 @@ def build_cache(grid: RegularGrid, objects: Iterable[MetacityObject]):
     sorter = GridSorter(x_planes, y_planes)
     obj: MetacityObject
     updated_tiles = set()
-    for obj in tqdm(objects):
+    for obj in objects:
         splitted = obj.models.split(x_planes, y_planes)
         tile = object_into_cache(grid, sorter, obj, splitted)
         updated_tiles.update(tile)

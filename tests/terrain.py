@@ -3,7 +3,6 @@ from metacity.grid.build import build_grid
 import metacity.datamodel.project as proj
 import metacity.io.load as load
 import numpy as np
-from tqdm import tqdm
 
 from metacity.io.stl.export import export_object
 
@@ -15,7 +14,7 @@ l = project.get_layer("layer")
 #bbox = l.bbox
 #print(bbox)
 #with open("terrain.stl", 'w') as stl:
-#    for object in tqdm(l.objects):
+#    for object in l.objects:
 #        export_object(object, stl)
 
 
