@@ -3,8 +3,9 @@ from typing import List
 
 
 def empty_bbox():
-    return np.array([[np.Infinity, np.Infinity, np.Infinity],
-                     [-np.Infinity, -np.Infinity, -np.Infinity]])
+    fl = np.finfo(np.float32)
+    return np.array([[fl.max, fl.max, fl.max],
+                     [fl.min, fl.min, fl.min]])
 
 
 def vertices_bbox(vertices: np.ndarray):

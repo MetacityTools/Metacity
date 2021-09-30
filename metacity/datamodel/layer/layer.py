@@ -2,6 +2,7 @@ from metacity.datamodel.layer.config import LayerConfig
 from metacity.datamodel.object import MetacityObject
 from metacity.filesystem import layer as fs
 from metacity.utils.bbox import bboxes_bbox
+from metacity.datamodel.grid.grid import RegularGrid
 import uuid
 from typing import List
 
@@ -28,6 +29,10 @@ class MetacityLayer:
         return LayerConfig(self)
 
     @property
+    def grid(self):
+        return RegularGrid(self.dir)
+
+    @property
     def empty(self):
         return not fs.any_object_in_layer(self.dir)
 
@@ -46,6 +51,10 @@ class MetacityLayer:
     @property
     def meta_path(self):
         return fs.layer_metadata(self.dir)
+
+    @property
+    def name(self):
+        return fs.layer_name(self.dir)
 
     @property
     def objects(self):

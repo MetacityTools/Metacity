@@ -1,11 +1,12 @@
 import numpy as np
 from metacity.filesystem import grid as fs
 from metacity.filesystem.file import read_json, write_json
+from metacity.utils.bbox import empty_bbox
 
 
 class RegularGridConfig:
     def __init__(self, grid):
-        self.bbox = np.array([0, 0, 0])
+        self.bbox = empty_bbox()
         self.tile_size = 1000
 
         self.oid_to_id = {}

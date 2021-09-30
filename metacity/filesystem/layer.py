@@ -59,6 +59,10 @@ def layer_dir(project_dir, layer_name):
     return os.path.join(project_dir, layer_name)
 
 
+def layer_name(layer_dir):
+    return os.path.basename(layer_dir)
+
+
 def layer_originals(layer_dir):
     return os.path.join(layer_dir, base.ORIGINAL)
 
