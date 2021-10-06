@@ -1,6 +1,6 @@
 from metacity.datamodel.primitives.facets import FacetModel
 import numpy as np
-from metacity.datamodel.object import MetacityObject
+from metacity.datamodel.object import Object
 
 def ensure_list_like(data):
     if isinstance(data, list) or isinstance(data, tuple):
@@ -29,7 +29,7 @@ def export_buffers(flat_v, flat_n, file, shift=np.array([0, 0, 0])):
 
 
 
-def export_object(object: MetacityObject, file):
+def export_object(object: Object, file):
     file.write(f"solid {object.oid}\n")
     for model in object.models.models:
         if model.TYPE == FacetModel.TYPE:

@@ -1,6 +1,6 @@
-from metacity.datamodel.object import MetacityObject
+from metacity.datamodel.object import Object
 from metacity.grid.build import build_grid, build_cache, build_tiles
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.datamodel.grid.grid import RegularGrid
 
 
@@ -13,13 +13,13 @@ def delete_object(grid: RegularGrid, oid: str):
     build_tiles(grid, tiles)
 
 
-def rebuild_grid(layer: MetacityLayer, tile_size=None):
+def rebuild_grid(layer: Layer, tile_size=None):
     if tile_size is None:
         grid = RegularGrid(layer.dir)
         tile_size = grid.config.tile_size
     build_grid(layer, tile_size) 
 
 
-def add_object(grid: RegularGrid, object: MetacityObject):
+def add_object(grid: RegularGrid, object: Object):
     tile_ids = build_cache(grid, [object])
     build_tiles(grid, tile_ids)

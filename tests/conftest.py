@@ -5,7 +5,7 @@ import metacity.utils.bbox as bbox
 import numpy as np
 import pytest
 from metacity.datamodel.grid.grid import RegularGrid
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 
 from metacity.datamodel.primitives import facets
 from metacity.datamodel.primitives import lines
@@ -339,7 +339,7 @@ def railway_dataset_stats():
 
 @pytest.fixture(scope="function")
 def layer(layer_tree):
-    yield MetacityLayer(layer_tree)
+    yield Layer(layer_tree)
 
 
 @pytest.fixture(scope="function")

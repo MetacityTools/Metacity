@@ -1,10 +1,10 @@
 import numpy as np
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.io.cityjson.geometry.geometry import CJGeometry
 from metacity.io.cityjson.parser import CJParser
 import json
 
-def test_load(layer: MetacityLayer, railway_dataset, railway_dataset_stats):
+def test_load(layer: Layer, railway_dataset, railway_dataset_stats):
     stats = railway_dataset_stats
     with open(railway_dataset, 'r') as file:
         contents = json.load(file)

@@ -1,11 +1,11 @@
 from metacity.datamodel.models.set import ModelSet
 from metacity.utils.sorter import GridSorter
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.datamodel.grid.grid import RegularGrid
 from metacity.datamodel.grid.config import RegularGridConfig
 from metacity.datamodel.models.tile import MetaTile
 from metacity.filesystem import grid as fs
-from metacity.datamodel.object import MetacityObject
+from metacity.datamodel.object import Object
 from typing import Dict, Iterable
 import numpy as np
 
@@ -32,10 +32,10 @@ def build_from_cache(grid: RegularGrid, tile: MetaTile):
 
 
 #generate cache
-def build_cache(grid: RegularGrid, objects: Iterable[MetacityObject]):
+def build_cache(grid: RegularGrid, objects: Iterable[Object]):
     x_planes, y_planes = grid.splitting_planes()
     sorter = GridSorter(x_planes, y_planes)
-    obj: MetacityObject
+    obj: Object
     updated_tiles = set()
     for obj in objects:
         splitted = obj.models.split(x_planes, y_planes)
@@ -44,7 +44,7 @@ def build_cache(grid: RegularGrid, objects: Iterable[MetacityObject]):
     return updated_tiles
 
 
-def object_into_cache(grid: RegularGrid, sorter: GridSorter, obj: MetacityObject, splitted: ModelSet):
+def object_into_cache(grid: RegularGrid, sorter: GridSorter, obj: Object, splitted: ModelSet):
     msets: Dict[(int, int), ModelSet] = {}
     for model in splitted.models:
         x, y = sorter.get_point_idx(model.centroid)
@@ -102,7 +102,7 @@ def generate_layout(grid: RegularGrid, bbox, tile_size):
 
 
 # main
-def build_grid(layer: MetacityLayer, tile_size):
+def build_grid(layer: Layer, tile_size):
     grid = RegularGrid(layer.dir)
     generate_layout(grid, layer.bbox, tile_size)
     tile_ids = build_cache(grid, layer.objects)

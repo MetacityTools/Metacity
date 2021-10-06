@@ -1,9 +1,9 @@
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.grid.build import build_grid
 from metacity.io.cityjson.parser import parse
 
 
-def test_build(layer: MetacityLayer, railway_dataset):
+def test_build(layer: Layer, railway_dataset):
     parse(layer, railway_dataset)
     grid = build_grid(layer, 1000)
 

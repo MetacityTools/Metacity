@@ -1,8 +1,8 @@
 from typing import List
 from metacity.io.geojson.geometry.collection import parse_geometry
 from metacity.io.geojson.geometry.base import GJObject
-from metacity.datamodel.object import MetacityObject
-from metacity.datamodel.layer.layer import MetacityLayer, NameGenerator
+from metacity.datamodel.object import Object
+from metacity.datamodel.layer.layer import Layer, NameGenerator
 import numpy as np
 
 class GJFeature(GJObject):
@@ -25,7 +25,7 @@ class GJFeature(GJObject):
         return self.model.vertices
 
     def to_metaobject(self, gen: NameGenerator, shift):
-        obj = MetacityObject()
+        obj = Object()
         if 'id' in self.meta:
             obj.oid = self.meta['id']
         else:
@@ -68,7 +68,7 @@ class GJFeatureCollection(GJObject):
                 if ftr != None:
                     self.features.append(ftr)
 
-    def export(self, layer: MetacityLayer, shift):
+    def export(self, layer: Layer, shift):
         geometry_path = layer.geometry_path
         meta_path = layer.meta_path
         oid_generator = layer.oid_generator

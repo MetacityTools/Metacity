@@ -1,5 +1,4 @@
 import os
-import ntpath
 import json
 
 
@@ -15,7 +14,6 @@ def writable(file):
 
 def write_json(filename, data):
     if os.path.exists(filename):
-        print(f'File {filename} already exists, rewriting...')
         os.remove(filename)
 
     with open(filename, 'w') as file:

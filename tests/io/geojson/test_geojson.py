@@ -1,9 +1,9 @@
 from collections import defaultdict
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.io.geojson.parser import parse
 
 
-def test_geojson(layer: MetacityLayer, geojson_dataset):
+def test_geojson(layer: Layer, geojson_dataset):
     parse(layer, geojson_dataset)
     assert len(layer.object_names) == 14
     

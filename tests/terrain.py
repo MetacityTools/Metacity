@@ -6,7 +6,7 @@ import numpy as np
 
 from metacity.io.stl.export import export_object
 
-project = proj.MetacityProject("project")
+project = proj.Project("project")
 l = project.get_layer("layer")
 #build_grid(l, 1000)
 #load.load(l, "/home/vojtatom/Desktop/TER_Prah56_polygonZ/TER_Prah56.shp")

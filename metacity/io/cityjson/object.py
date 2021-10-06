@@ -1,4 +1,4 @@
-from metacity.datamodel.object import MetacityObject
+from metacity.datamodel.object import Object
 from typing import List, Dict
 from metacity.io.cityjson.geometry.geometry import CJGeometry
 
@@ -22,7 +22,7 @@ class CJObject:
         return geometries
 
     def export(self, geometry_path, meta_path):
-        object = MetacityObject()
+        object = Object()
         object.meta = self.meta
         object.oid = self.oid
         for g in self.geometry:

@@ -1,6 +1,6 @@
 import json
 
-from metacity.datamodel.layer.layer import MetacityLayer
+from metacity.datamodel.layer.layer import Layer
 from metacity.io.geojson.feature import (GJFeature, GJFeatureCollection,
                                          parse_feature)
 from metacity.io.geojson.geometry.collection import parse_geometry
@@ -42,16 +42,16 @@ class GJParser:
         self.data = data
         self.collection = parse_any(self.data)
 
-    def set_layer_shift(self, layer: MetacityLayer):
+    def set_layer_shift(self, layer: Layer):
         vs = self.collection.vertices
         layer.config.apply(vs)
     
-    def export(self, layer: MetacityLayer):
+    def export(self, layer: Layer):
         if self.collection is not None:
             self.collection.export(layer, layer.config.shift)
             
 
-def parse(layer: MetacityLayer, input_file: str):
+def parse(layer: Layer, input_file: str):
     with open(input_file, 'r') as file:
         contents = json.load(file)
 
