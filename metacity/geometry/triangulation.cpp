@@ -25,52 +25,45 @@ namespace mapbox
     } // namespace util
 } // namespace mapbox
 
-void Triangulator::triangulate(const Polygon &in_polygon, vector<tvec3> &out_vertices)
-{
-    clear();
-    to_cgal_mesh(in_polygon);
-    compute_normal();
-    if (normal == CGAL::NULL_VECTOR)
-        return;
-
-    project_pair(in_polygon, out_vertices);
-    std::vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
-    for (const auto &i : indices)
-    {
-        out_vertices.emplace_back(vertexrefs[i]);
-    }
-}
-
-void Triangulator::clear()
+void Triangulator::triangulate(const Polygons &in_polygons, vector<tvec3> &out_vertices)
 {
     mesh.clear();
-    tmp_points.clear();
-    projected.clear();
-    vertexrefs.clear();
+    tmp_faces.clear();
+    to_cgal_mesh(in_polygons);
+
+    for(size_t i = 0; i < tmp_faces.size(); ++i) {
+        projected.clear();
+        vertexrefs.clear();
+
+        compute_normal(tmp_faces[i]);
+        if (normal == CGAL::NULL_VECTOR)
+            continue;
+
+        project_pair(in_polygons[i], out_vertices);
+        std::vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
+        for (const auto &i : indices)
+            out_vertices.emplace_back(vertexrefs[i]);
+    }
 }
 
-void Triangulator::to_cgal_mesh(const Polygon &polygon)
+void Triangulator::to_cgal_mesh(const Polygons &polygons)
 {
-    for (const auto &p : polygon[0])
-        tmp_points.push_back(mesh.add_vertex(K::Point_3(p.x, p.y, p.z)));
-    mesh.add_face(tmp_points);
+    tmp_faces.clear();
+    Mesh::Face_index fi;
+    for (const auto &polygon : polygons)
+    {
+        tmp_points.clear();
+        for (const auto &p : polygon[0])
+            tmp_points.push_back(mesh.add_vertex(K::Point_3(p.x, p.y, p.z)));
+        fi = mesh.add_face(tmp_points);
+        if (fi != Mesh::null_face())
+            tmp_faces.push_back(fi);
+    }
 }
 
-void Triangulator::compute_normal()
-{
-    Mesh::Property_map fnormals = mesh.add_property_map<Mesh::face_index, K::Vector_3>("f:normals", CGAL::NULL_VECTOR).first;
-    CGAL::Polygon_mesh_processing::compute_face_normals(mesh, fnormals);
-
-    if (mesh.num_faces() > 1)
-    {
-        //this can be done better...
-        normal = CGAL::NULL_VECTOR;
-    }
-    else
-    {
-        const auto face_index = mesh.faces_begin();
-        normal = fnormals[*face_index];
-    }
+void Triangulator::compute_normal(const Mesh::Face_index fi)
+{    
+    normal = CGAL::Polygon_mesh_processing::compute_face_normal(fi, mesh);
 }
 
 void Triangulator::project_pair(const Polygon &polygon, vector<tvec3> &out_vertices)

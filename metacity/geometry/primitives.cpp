@@ -275,6 +275,5 @@ void MultiPolygon::deserialize(const json data)
 void MultiPolygon::triangulate()
 {
     Triangulator t;
-    for(const Polygon & p: polygons)
-        t.triangulate(p, vertices);
+    t.triangulate(polygons, vertices);
 }

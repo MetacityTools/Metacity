@@ -10,8 +10,8 @@ Backend Metacity:
     ✔ Deserializace @done(21-10-11 10:09)
         - analogicky jako serializace
     ✔ Triangulace @started(21-10-11 11:49) @done(21-10-11 17:26) @lasted(5h37m38s)
-        - lze, ale zbytečně komplikované @link:https://doc.cgal.org/latest/Triangulation_2/index.html#title23 
-        - @link:https://github.com/mapbox/earcut.hpp
+        - cgal lze, ale zbytečně komplikované @link:https://doc.cgal.org/latest/Triangulation_2/index.html#title23 
+        - prakticky použitelné @link:https://github.com/mapbox/earcut.hpp
         - výpočet vyžaduje cgal - bude potřeba nainstalovat na kompu, kde poběží, případně přidat do závislostí... 
         - @link:https://www.cgal.org/download/
         - @link:https://doc.cgal.org/latest/Polygon_mesh_processing/index.html#PMPNormalComp
@@ -20,10 +20,35 @@ Backend Metacity:
             ✔ najít normály @done(21-10-11 14:29)
             ✔ projekce do 2D podle normály - provedeno pomocí plane projection @done(21-10-11 17:27)
             ✔ triangulace pomocí mapboxu @done(21-10-11 17:27)
-    ☐ Ořez dle polygonální sítě
-    ☐ Ořez dle rovin
-    ☐ Třídění do dlaždic
+    ✔ Ověřit, jestli add face v cgalu nevrací index - dalo by se využít k hromadnému zpracování @done(21-10-11 20:49)
+        - ověřeno, upraveno, takže alokace meshe před triangulací je provedena najednou
+        - někdy to vrací divné face ID... ale ty jsou platné taky.
+        - přidán check pro zpracování, aby se nepřidávaly null faces
+    ☐ Transformace bodů do vertexů
+    ☐ Transformace linek do vertexů
+    ☐ Třídění do dlaždic - dělení geometrie podle pravidelné mřížky, uložení do samostatných objektů, přidání objectid (stavba gridu)
+        Postup:
+            1. object dostane grid
+            2. sám si vyrobí bounding rect
+            3. vybere roviny které ho dělí
+            4. rozřeže sebe na kousky (nový vector, kam se uloží rozžezané kousky interně v metodě)
+            5. tyto rozřezané kousky předá gridu - ten si je zařadí na správné místo
+            6. grid se vyexportuje na disk
+            7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30x30x 100 objektů x 10 kB = 878 MB v paměti, což jde
+            8. po dozpracování se projde cache pro každou dlaždici a uloží se samostatně do jednoho souboru
+        Poznámky:
+            - tile má tedy export cache do n souborů po k objektech a 1 soubor finální
+            - adresace objektů v cache - lze uložit jako json, ale mohlo by být neefektivní, alternativy ale budou vyžadovat lineární průchod, jelikož ale není vyžadována funkcionalita mazání, nemělo by být tak moc problematické
+            - dá se dodělat
+    ☐ Stavba pravidelné mřížky pro skupinu meshe
+        - princip: mám sadu objektů (points, lines, facets) a chci je rozházet do mřížky
+        - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
+        - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
+    ☐ Ořez dle polygonální sítě 
+        - pomocí CGAL intersect pro trojúhelníky @link:https://doc.cgal.org/latest/Kernel_23/group__intersection__linear__grp.html
+        - bude potřeba promítnout 3D data do 2D, pak najít průnik, pak zpětně dopočítat 3D souřadnice
     ☐ Vytvoření proxy objektu pro linkování
+    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum
     ☐ Otestovat, dopsat testy?
 
 Metacity PIPY:
