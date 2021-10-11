@@ -1,0 +1,40 @@
+Project:
+    ☐ Backend Metacity @2days
+    ☐ Metacity PIPY @1day
+    ☐ Frontend Metacity @3days
+
+Backend Metacity: 
+    ✔ Serializace @done(21-10-11 10:09)
+        - @link:https://github.com/nlohmann/json
+        - @link:https://github.com/pybind/pybind11_json
+    ✔ Deserializace @done(21-10-11 10:09)
+        - analogicky jako serializace
+    ✔ Triangulace @started(21-10-11 11:49) @done(21-10-11 17:26) @lasted(5h37m38s)
+        - lze, ale zbytečně komplikované @link:https://doc.cgal.org/latest/Triangulation_2/index.html#title23 
+        - @link:https://github.com/mapbox/earcut.hpp
+        - výpočet vyžaduje cgal - bude potřeba nainstalovat na kompu, kde poběží, případně přidat do závislostí... 
+        - @link:https://www.cgal.org/download/
+        - @link:https://doc.cgal.org/latest/Polygon_mesh_processing/index.html#PMPNormalComp
+        - alt:
+            ✔ převést polygony na polygon mesh @done(21-10-11 14:29)
+            ✔ najít normály @done(21-10-11 14:29)
+            ✔ projekce do 2D podle normály - provedeno pomocí plane projection @done(21-10-11 17:27)
+            ✔ triangulace pomocí mapboxu @done(21-10-11 17:27)
+    ☐ Ořez dle polygonální sítě
+    ☐ Ořez dle rovin
+    ☐ Třídění do dlaždic
+    ☐ Vytvoření proxy objektu pro linkování
+    ☐ Otestovat, dopsat testy?
+
+Metacity PIPY:
+    ☐ Deploy stabilní verze backendu
+    ☐ Sepsat seznam potřebných funkcionalit 
+    ☐ Ověřit, jestli funkcionality jsou
+    ☐ Doplnit funkcionality chybějící
+
+Frontend Metacity:
+    ☐ Načítání dlaždic
+    ☐ Rozmyslet zbytek vizualizace
+
+Poznámky:
+    https://github.com/tobywf/python-ext-asan - debug na linuxu

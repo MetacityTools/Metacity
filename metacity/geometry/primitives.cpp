@@ -1,6 +1,8 @@
 #include <stdexcept>
 #include "primitives.hpp"
+#include "triangulation.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
+
 
 Primitive::~Primitive() {}
 
@@ -55,6 +57,10 @@ vector<tvec3> Primitive::uint8_to_vec(const vector<uint8_t> &bytes) const
     return vec;
 }
 
+vector<float> Primitive::get_vertices() const {
+    return vec_to_float(vertices);
+}
+
 void MultiPoint::push_p2(const vector<tfloat> iv)
 {
     if (iv.size() % tvec2::length())
@@ -86,16 +92,21 @@ json MultiPoint::serialize() const
 
     return {
         {"points", spoints},
-        {"type", "point"}};
+        {"vertices", vec_to_float(vertices)},
+        {"type", "point"},
+        {"tags", tags}};
 }
 
-void MultiPoint::deserialize(const json &data)
+void MultiPoint::deserialize(const json data)
 {
     const auto spoints = data.at("points").get<string>();
+    data.at("tags").get_to(tags);
     using base64 = cppcodec::base64_rfc4648;
     const vector<uint8_t> ui8points = base64::decode(spoints);
     points = uint8_to_vec(ui8points);
 };
+
+//===============================================================================
 
 void MultiLine::push_l2(const vector<tfloat> iv)
 {
@@ -145,12 +156,25 @@ json MultiLine::serialize() const
 
     return {
         {"lines", vsline},
-        {"type", "line"}};
+        {"vertices", vec_to_float(vertices)},
+        {"type", "line"},
+        {"tags", tags}};
 }
 
-void MultiLine::deserialize(const json &data){
+void MultiLine::deserialize(const json data)
+{
+    const auto vslines = data.at("lines").get<vector<string>>();
+    data.at("tags").get_to(tags);
+    using base64 = cppcodec::base64_rfc4648;
 
+    for (const auto &sline : vslines)
+    {
+        const vector<uint8_t> ui8line = base64::decode(sline);
+        lines.emplace_back(uint8_to_vec(ui8line));
+    }
 };
+
+//===============================================================================
 
 void MultiPolygon::push_p2(const vector<vector<tfloat>> ivertices)
 {
@@ -225,9 +249,32 @@ json MultiPolygon::serialize() const
 
     return {
         {"polygons", vvspolygons},
-        {"type", "line"}};
+        {"vertices", vec_to_float(vertices)},
+        {"type", "polygon"},
+        {"tags", tags}};
 }
 
-void MultiPolygon::deserialize(const json &data){
+void MultiPolygon::deserialize(const json data)
+{
+    const auto vvspolygon = data.at("polygons").get<vector<vector<string>>>();
+    data.at("tags").get_to(tags);
+    using base64 = cppcodec::base64_rfc4648;
 
+    for (const auto &vspolygon : vvspolygon)
+    {
+        vector<vector<tvec3>> vpolygon;
+        for (const auto &sring : vspolygon)
+        {
+            const vector<uint8_t> ui8ring = base64::decode(sring);
+            vpolygon.emplace_back(uint8_to_vec(ui8ring));
+        }
+        polygons.emplace_back(move(vpolygon));
+    }
 };
+
+void MultiPolygon::triangulate()
+{
+    Triangulator t;
+    for(const Polygon & p: polygons)
+        t.triangulate(p, vertices);
+}

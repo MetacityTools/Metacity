@@ -19,10 +19,11 @@ def makeExtension(module: str, path: str, cfiles: List[str]):
         extra_compile_args=["-Wall", "-std=c++17", "-g"],
         extra_link_args=[],#, '-ffast-math', '-O2'],
         include_dirs = [pybind11.get_include()],
-        language='c++'
+        language='c++',
+        undef_macros=[ "NDEBUG" ]
         )
 
-dfiles = ["primitive", "primitives"]
+dfiles = ["primitive", "primitives", "triangulation"]
 extension = [makeExtension("metacity.geometry.primitive", "geometry", dfiles)]
 
 # This call to setup() does all the work

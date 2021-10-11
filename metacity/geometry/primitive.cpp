@@ -5,7 +5,7 @@
 #include "primitives.hpp"
 
 namespace py = pybind11;
-using jsonref = const json &;
+using jsonref = const json;
 
 class PyPrimitive : public Primitive {
 public:
@@ -114,6 +114,7 @@ public:
 PYBIND11_MODULE(primitive, m) {
     py::class_<Primitive, std::shared_ptr<Primitive>, PyPrimitive>(m, "Primitive")
         .def(py::init<>())
+        .def_property_readonly("vertices", &Primitive::get_vertices)
         .def("serialize", &Primitive::serialize)
         .def("deserialize", &Primitive::deserialize);
 
@@ -141,5 +142,6 @@ PYBIND11_MODULE(primitive, m) {
         .def("push_p3", &MultiPolygon::push_p3)
         .def("contents", &MultiPolygon::contents)
         .def("serialize", &MultiPolygon::serialize)
+        .def("triangulate", &MultiPolygon::triangulate)
         .def("deserialize", &MultiPolygon::deserialize);
 }

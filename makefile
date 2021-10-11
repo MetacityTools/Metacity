@@ -9,9 +9,7 @@ all: build
 
 #environments
 build: clean
-	@-( \
-		python setup.py sdist bdist_wheel \
-	)
+	@python setup.py build_ext --inplace
 
 upload: 
 	@-( \
