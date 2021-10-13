@@ -24,17 +24,8 @@ def layer_models(layer_dir):
     return os.path.join(layer_dir, base.MODELS)
 
 
-def layer_object_set_model(layer_dir, offset):
-    return os.path.join(layer_models(layer_dir), f"set{offset}.json")
-
-
-def layer_object_set_meta(layer_dir, offset):
-    return os.path.join(layer_metadata(layer_dir), f"set{offset}.json")
-
-
-def layer_object_set_exists(layer_dir, offset):
-    return os.path.exists(layer_object_set_model(layer_dir, offset)) \
-        and os.path.exists(layer_object_set_meta(layer_dir, offset))
+def data_set(set_dir, offset):
+    return os.path.join(set_dir, offset)
 
 
 def layer_cache(layer_dir):

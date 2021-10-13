@@ -3,6 +3,9 @@ Project:
     ☐ Metacity PIPY @1day
     ☐ Frontend Metacity @3days
 
+Side:
+    ☐ Koupit lampičku do kanclu
+
 Backend Metacity: 
     ✔ Serializace @done(21-10-11 10:09)
         - @link:https://github.com/nlohmann/json
@@ -24,22 +27,41 @@ Backend Metacity:
         - ověřeno, upraveno, takže alokace meshe před triangulací je provedena najednou
         - někdy to vrací divné face ID... ale ty jsou platné taky.
         - přidán check pro zpracování, aby se nepřidávaly null faces
-    ☐ Transformace bodů do vertexů
-    ☐ Transformace linek do vertexů
-    ☐ Třídění do dlaždic - dělení geometrie podle pravidelné mřížky, uložení do samostatných objektů, přidání objectid (stavba gridu)
+    ✔ Transformace bodů do vertexů @done(21-10-12 13:30)
+    ✔ Transformace linek do vertexů @done(21-10-12 13:30)
+    ☐ Třídění do dlaždic - dělení geometrie podle pravidelné mřížky, uložení do samostatných objektů, přidání objectid (stavba gridu) @started(21-10-12 14:41)
+         - co když neznám na začátku všechna data? - lepší předpokládat hustá data, kde v každé buňce něco je vzhledem k charakteru vstupních dat
+         - předpoklad: na začátku znám všechna data pro která budu stavět
+         - pro to, abych zjistil rozsah dat, musím všechna data projít
+         - ideál by bylo mít pevně stanovený počátek a dělení od daného počátku, resp kódování tím pádem mít hybrid hustého a řídkého zobrazení
+         - umožní to skládat vrstvy na sebe snadno?
         Postup:
-            1. object dostane grid
-            2. sám si vyrobí bounding rect
-            3. vybere roviny které ho dělí
-            4. rozřeže sebe na kousky (nový vector, kam se uloží rozžezané kousky interně v metodě)
-            5. tyto rozřezané kousky předá gridu - ten si je zařadí na správné místo
+            ✔ 0. vyrob prázdný grid @done(21-10-12 16:02)
+            ✔ 1. object dostane grid @done(21-10-12 16:40)
+            2. object projde primitiva a ta rozřeže dle gridu - dle bounding boxu? - dle rozměrů gridu
+                ✔ body @done(21-10-13 22:09)
+                ✔ linky @done(21-10-13 22:09)
+                trojuhelniky
+            3. tyto rozřezané kousky předá gridu 
+            4. ten si je zařadí na správné místo do cache
+            5  pro každou tile se grid exportuje na disk
             6. grid se vyexportuje na disk
-            7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30x30x 100 objektů x 10 kB = 878 MB v paměti, což jde
+            7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30 x 30 x 100 objektů x 10 kB = 878 MB v paměti, což jde
             8. po dozpracování se projde cache pro každou dlaždici a uloží se samostatně do jednoho souboru
         Poznámky:
             - tile má tedy export cache do n souborů po k objektech a 1 soubor finální
             - adresace objektů v cache - lze uložit jako json, ale mohlo by být neefektivní, alternativy ale budou vyžadovat lineární průchod, jelikož ale není vyžadována funkcionalita mazání, nemělo by být tak moc problematické
-            - dá se dodělat
+            - co musí být rchle u gridu: 
+                - rozřezaní elementů
+                - spojování
+        Z pohledu gridu:
+            - vytvořit prázdný
+            - načíst z disku
+            - info pro primitivum kde řezat - tile size?
+            - přidání primitiva (zařazení)
+            - build z cache
+
+    ☐ Refactoring setů - dalo by se zjednodušit...
     ☐ Stavba pravidelné mřížky pro skupinu meshe
         - princip: mám sadu objektů (points, lines, facets) a chci je rozházet do mřížky
         - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo

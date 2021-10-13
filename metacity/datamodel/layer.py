@@ -1,8 +1,8 @@
+from metacity.datamodel.grid import Grid
 from metacity.datamodel.object import Object
 from metacity.datamodel.set import ObjectSet
 from metacity.filesystem import layer as fs
 from metacity.utils.bbox import bboxes_bbox
-from metacity.datamodel.grid.grid import RegularGrid
 from metacity.utils.persistable import Persistable
 
 
@@ -24,22 +24,13 @@ class Layer(Persistable):
             self.export()
 
     @property
-    def grid(self):
-        return RegularGrid(self.dir)
-
-    @property
-    def bbox(self):
-        return bboxes_bbox([object.models.bbox for object in self.objects])
-
-    @property
     def name(self):
         return fs.layer_name(self.dir)
 
     def add(self, object: Object):
         if not self.set.can_contain(self.size):
             self.set.export()
-            offset = (self.size // self.group_by) * self.group_by
-            self.set = ObjectSet(self.dir, offset, self.group_by)
+            self.activate_set(self.size)
         self.set.add(object)
         self.size += 1
 
@@ -49,10 +40,13 @@ class Layer(Persistable):
 
     def __getitem__(self, index: int):
         if not self.set.can_contain(index):
-            offset = (index // self.group_by) * self.group_by
-            self.set = ObjectSet(self.dir, offset, self.group_by)
+            self.activate_set(index)
         obj = self.set[index]
         return obj
+
+    def activate_set(self, index):
+        offset = (index // self.group_by) * self.group_by
+        self.set = ObjectSet(self.dir, offset, self.group_by)
 
     @property
     def objects(self):
@@ -61,6 +55,15 @@ class Layer(Persistable):
 
     def add_source_file(self, source_file_path: str):
         return fs.copy_to_layer(self.dir, source_file_path)
+
+    def build_grid(self):
+        grid = Grid(self.dir)
+        grid.clear()
+        for oid, object in enumerate(self.objects):
+            for model in object.models:
+                grid.add(oid, model) 
+
+
 
     def serialize(self):
         return {

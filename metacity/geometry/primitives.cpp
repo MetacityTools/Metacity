@@ -1,8 +1,8 @@
 #include <stdexcept>
+#include <unordered_map>
 #include "primitives.hpp"
 #include "triangulation.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
-
 
 Primitive::~Primitive() {}
 
@@ -23,6 +23,12 @@ void Primitive::append(vector<uint8_t> &vec, tfloat f) const
 {
     uint8_t *d = (uint8_t *)&f;
     vec.insert(vec.end(), d, d + 4);
+}
+
+void Primitive::grid_coords(const tvec3 &point, const float tile_size, pair<int, int> &coords) const
+{
+    coords.first = (point.x / tile_size);
+    coords.second = (point.y / tile_size);
 }
 
 vector<uint8_t> Primitive::vec_to_unit8(const vector<tvec3> &vec) const
@@ -57,223 +63,55 @@ vector<tvec3> Primitive::uint8_to_vec(const vector<uint8_t> &bytes) const
     return vec;
 }
 
-vector<float> Primitive::get_vertices() const {
-    return vec_to_float(vertices);
-}
-
-void MultiPoint::push_p2(const vector<tfloat> iv)
+string Primitive::vec_to_string(const vector<tvec3> &vec) const
 {
-    if (iv.size() % tvec2::length())
-        throw runtime_error("Unexpected number of elements in input array");
-
-    for (size_t i = 0; i < iv.size(); i += tvec2::length())
-        points.emplace_back(iv[i], iv[i + 1], 0);
-}
-
-void MultiPoint::push_p3(const vector<tfloat> iv)
-{
-    if (iv.size() % tvec3::length())
-        throw runtime_error("Unexpected number of elements in input array");
-
-    for (size_t i = 0; i < iv.size(); i += tvec3::length())
-        points.emplace_back(iv[i], iv[i + 1], iv[i + 2]);
-}
-
-vector<tfloat> MultiPoint::contents() const
-{
-    return vec_to_float(points);
-}
-
-json MultiPoint::serialize() const
-{
-    vector<uint8_t> ui8points = vec_to_unit8(points);
+    vector<uint8_t> ui8 = vec_to_unit8(vec);
     using base64 = cppcodec::base64_rfc4648;
-    string spoints = base64::encode(&ui8points[0], ui8points.size());
-
-    return {
-        {"points", spoints},
-        {"vertices", vec_to_float(vertices)},
-        {"type", "point"},
-        {"tags", tags}};
+    return base64::encode(&ui8[0], ui8.size());
 }
 
-void MultiPoint::deserialize(const json data)
+vector<tvec3> Primitive::string_to_vec(const string &s) const
 {
-    const auto spoints = data.at("points").get<string>();
+    using base64 = cppcodec::base64_rfc4648;
+    const vector<uint8_t> ui8 = base64::decode(s);
+    return uint8_to_vec(ui8);
+}
+
+void Primitive::push_vert(const tvec3 &vec)
+{
+    vertices.emplace_back(vec);
+}
+void Primitive::push_vert(const tvec3 &vec1, const tvec3 &vec2)
+{
+    vertices.emplace_back(vec1);
+    vertices.emplace_back(vec2);
+}
+void Primitive::push_vert(const tvec3 &vec1, const tvec3 &vec2, const tvec3 &vec3)
+{
+    vertices.insert(vertices.end(), {vec1, vec2, vec3});
+}
+
+void Primitive::deserialize(const json data)
+{
+    const auto sverts = data.at("vertices").get<string>();
+    vertices = string_to_vec(sverts);
     data.at("tags").get_to(tags);
-    using base64 = cppcodec::base64_rfc4648;
-    const vector<uint8_t> ui8points = base64::decode(spoints);
-    points = uint8_to_vec(ui8points);
-};
-
-//===============================================================================
-
-void MultiLine::push_l2(const vector<tfloat> iv)
-{
-    if (iv.size() % tvec2::length() || (iv.size() < tvec2::length() * 2))
-        throw runtime_error("Unexpected number of elements in input array");
-
-    vector<tvec3> line;
-    for (size_t i = 0; i < iv.size(); i += tvec2::length())
-        line.emplace_back(iv[i], iv[i + 1], 0);
-    lines.emplace_back(move(line));
 }
 
-void MultiLine::push_l3(const vector<tfloat> iv)
+json Primitive::serialize() const
 {
-    if (iv.size() % tvec3::length() || (iv.size() < tvec3::length() * 2))
-        throw runtime_error("Unexpected number of elements in input array");
-
-    vector<tvec3> line;
-    for (size_t i = 0; i < iv.size(); i += tvec3::length())
-        line.emplace_back(iv[i], iv[i + 1], iv[i + 2]);
-    lines.emplace_back(move(line));
-}
-
-vector<vector<tfloat>> MultiLine::contents() const
-{
-    vector<vector<tfloat>> c;
-    for (const auto &l : lines)
-    {
-        vector<tfloat> lp = vec_to_float(l);
-        c.emplace_back(move(lp));
-    }
-
-    return c;
-}
-
-json MultiLine::serialize() const
-{
-    using base64 = cppcodec::base64_rfc4648;
-    vector<string> vsline;
-
-    for (const auto &line : lines)
-    {
-        vector<uint8_t> ui8points = vec_to_unit8(line);
-        string sline = base64::encode(&ui8points[0], ui8points.size());
-        vsline.emplace_back(move(sline));
-    }
-
     return {
-        {"lines", vsline},
-        {"vertices", vec_to_float(vertices)},
-        {"type", "line"},
-        {"tags", tags}};
+        {"vertices", vec_to_string(vertices)},
+        {"tags", tags},
+        {"type", type()}};
 }
 
-void MultiLine::deserialize(const json data)
+size_t pair_hash::operator()(const pair<int, int> &p) const
 {
-    const auto vslines = data.at("lines").get<vector<string>>();
-    data.at("tags").get_to(tags);
-    using base64 = cppcodec::base64_rfc4648;
+    auto h1 = hash<int>{}(p.first);
+    auto h2 = hash<int>{}(p.second);
 
-    for (const auto &sline : vslines)
-    {
-        const vector<uint8_t> ui8line = base64::decode(sline);
-        lines.emplace_back(uint8_to_vec(ui8line));
-    }
-};
-
-//===============================================================================
-
-void MultiPolygon::push_p2(const vector<vector<tfloat>> ivertices)
-{
-    vector<vector<tvec3>> polygon;
-    for (const auto &iring : ivertices)
-    {
-        if (iring.size() % tvec2::length())
-            throw runtime_error("Unexpected number of elements in input array");
-
-        if (iring.size() / tvec2::length() < 3) // only a single point or a line
-            continue;
-
-        vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec2::length())
-            ring.emplace_back(iring[i], iring[i + 1], 0);
-        polygon.emplace_back(move(ring));
-    }
-    polygons.emplace_back(move(polygon));
-}
-
-void MultiPolygon::push_p3(const vector<vector<tfloat>> ivertices)
-{
-    vector<vector<tvec3>> polygon;
-    for (const auto &iring : ivertices)
-    {
-        if (iring.size() % tvec3::length())
-            throw runtime_error("Unexpected number of elements in input array");
-
-        if (iring.size() / tvec3::length() < 3) // only a single point or a line
-            continue;
-
-        vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec3::length())
-            ring.emplace_back(iring[i], iring[i + 1], iring[i + 2]);
-        polygon.emplace_back(move(ring));
-    }
-    polygons.emplace_back(move(polygon));
-}
-
-vector<vector<vector<tfloat>>> MultiPolygon::contents() const
-{
-    vector<vector<vector<tfloat>>> c;
-    for (const auto &p : polygons)
-    {
-        vector<vector<tfloat>> pr;
-        for (const auto &r : p)
-        {
-            vector<tfloat> cr = vec_to_float(r);
-            pr.emplace_back(move(cr));
-        }
-        c.emplace_back(move(pr));
-    }
-    return c;
-}
-
-json MultiPolygon::serialize() const
-{
-    using base64 = cppcodec::base64_rfc4648;
-    vector<vector<string>> vvspolygons;
-
-    for (const auto &polygon : polygons)
-    {
-        vector<string> vspolygon;
-        for (const auto &ring : polygon)
-        {
-            vector<uint8_t> ui8ring = vec_to_unit8(ring);
-            string sline = base64::encode(&ui8ring[0], ui8ring.size());
-            vspolygon.emplace_back(move(sline));
-        }
-        vvspolygons.emplace_back(move(vspolygon));
-    }
-
-    return {
-        {"polygons", vvspolygons},
-        {"vertices", vec_to_float(vertices)},
-        {"type", "polygon"},
-        {"tags", tags}};
-}
-
-void MultiPolygon::deserialize(const json data)
-{
-    const auto vvspolygon = data.at("polygons").get<vector<vector<string>>>();
-    data.at("tags").get_to(tags);
-    using base64 = cppcodec::base64_rfc4648;
-
-    for (const auto &vspolygon : vvspolygon)
-    {
-        vector<vector<tvec3>> vpolygon;
-        for (const auto &sring : vspolygon)
-        {
-            const vector<uint8_t> ui8ring = base64::decode(sring);
-            vpolygon.emplace_back(uint8_to_vec(ui8ring));
-        }
-        polygons.emplace_back(move(vpolygon));
-    }
-};
-
-void MultiPolygon::triangulate()
-{
-    Triangulator t;
-    t.triangulate(polygons, vertices);
+    // Mainly for demonstration purposes, i.e. works but is overly simple
+    // In the real world, use sth. like boost.hash_combine
+    return h1 ^ h2;
 }

@@ -16,14 +16,14 @@ def makeExtension(module: str, path: str, cfiles: List[str]):
     return Extension(
         module,
         cpppaths,
-        extra_compile_args=["-Wall", "-std=c++17", "-g"],
-        extra_link_args=[],#, '-ffast-math', '-O2'],
+        extra_compile_args=["-Wall", "-pedantic", "-std=c++17", "-g", "-fsanitize=address", "-fno-omit-frame-pointer", "-shared-libasan"],
+        extra_link_args=["-fsanitize=address", "-shared-libasan"],#, '-ffast-math', '-O2'],
         include_dirs = [pybind11.get_include()],
         language='c++',
         undef_macros=[ "NDEBUG" ]
         )
 
-dfiles = ["primitive", "primitives", "triangulation"]
+dfiles = ["primitive", "primitives", "points", "lines", "polygons", "triangulation", "slicing"]
 extension = [makeExtension("metacity.geometry.primitive", "geometry", dfiles)]
 
 # This call to setup() does all the work

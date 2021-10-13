@@ -1,14 +1,26 @@
+from typing import Callable, Dict, List
+from metacity.geometry.primitive import MultiPoint, MultiLine, MultiPolygon, Primitive
 
-
+types: Dict[str, Callable[[],Primitive]] = {
+    MultiPoint().type: MultiPoint,
+    MultiLine().type: MultiLine,
+    MultiPolygon().type: MultiPolygon
+}
 
 def desermodel(model):
-    return None
+    type = model["type"]
+    if model["type"] in types:
+        m = types[type]()
+    else:
+        raise RuntimeError(f"Unknown model type: {type}")
+    m.deserialize(model)
+    return m
 
 
 class Object:
     def __init__(self):
         self.meta = {}
-        self.models = []
+        self.models: List[Primitive] = []
 
     def serialize(self):
         models = []

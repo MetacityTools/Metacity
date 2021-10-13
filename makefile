@@ -9,7 +9,10 @@ all: build
 
 #environments
 build: clean
-	@python setup.py build_ext --inplace
+	@-( \
+		python setup.py build_ext --inplace; \
+		stubgen -m metacity.geometry.primitive -o .;\
+	)
 
 upload: 
 	@-( \

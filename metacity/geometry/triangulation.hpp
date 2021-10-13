@@ -13,11 +13,8 @@
 using namespace std;
 
 
-typedef vector<vector<tvec3>> Polygon;
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Surface_mesh<K::Point_3> Mesh;
-typedef vector<vector<tvec3>> Polygon;
-typedef vector<vector<vector<tvec3>>> Polygons;
 
 
 class Triangulator {
