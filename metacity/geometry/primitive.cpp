@@ -1,11 +1,16 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
+#include "json/pybind11_json.hpp"
 #include <filesystem>
 #include "primitives.hpp"
+#include "points.hpp"
+#include "lines.hpp"
+#include "polygons.hpp"
 
 namespace py = pybind11;
 using jsonref = const json;
+
 
 class PyPrimitive : public Primitive {
 public:
@@ -33,9 +38,9 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE_PURE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             Primitive,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -51,17 +56,74 @@ public:
             /* Argument(s) */
         );
     }
+};
+
+class PySimplePrimitive : public SimplePrimitive {
+public:
+    /* Inherit the constructors */
+    using SimplePrimitive::SimplePrimitive;
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
+    virtual json serialize() const override {
+        PYBIND11_OVERRIDE(
+            json,/* Return type */
+            SimplePrimitive,/* Parent class */
+            serialize,/* Name of function in C++ (must match Python name) */
+                      /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void deserialize(jsonref data) override {
+        PYBIND11_OVERRIDE(
+            void,/* Return type */
+            SimplePrimitive,/* Parent class */
+            deserialize,/* Name of function in C++ (must match Python name) */
+            data/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE_PURE(
-            vector<shared_ptr<Primitive>>,/* Return type */
-            Primitive,/* Parent class */
+            shared_ptr<SimplePrimitive>,/* Return type */
+            SimplePrimitive,/* Parent class */
+            transform,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual const char * type() const override {
+        PYBIND11_OVERRIDE_PURE(
+            const char *,/* Return type */
+            SimplePrimitive,/* Parent class */
+            type,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
+        PYBIND11_OVERRIDE_PURE(
+            vector<shared_ptr<SimplePrimitive>>,/* Return type */
+            SimplePrimitive,/* Parent class */
             slice_to_grid,/* Name of function in C++ (must match Python name) */
             tile_size/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> copy() const override {
+        PYBIND11_OVERRIDE_PURE(
+            shared_ptr<SimplePrimitive>,/* Return type */
+            SimplePrimitive,/* Parent class */
+            copy,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
 };
+
 
 class PyMultiPoint : public MultiPoint {
 public:
@@ -89,9 +151,9 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             MultiPoint,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -105,16 +167,6 @@ public:
             MultiPoint,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
-            MultiPoint,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
         );
     }
 };
@@ -125,9 +177,9 @@ public:
     using SimpleMultiPoint::SimpleMultiPoint;
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             SimpleMultiPoint,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -145,15 +197,27 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
         PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
+            vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiPoint,/* Parent class */
             slice_to_grid,/* Name of function in C++ (must match Python name) */
             tile_size/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> copy() const override {
+        PYBIND11_OVERRIDE(
+            shared_ptr<SimplePrimitive>,/* Return type */
+            SimpleMultiPoint,/* Parent class */
+            copy,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
 };
+
+
 
 class PyMultiLine : public MultiLine {
 public:
@@ -181,9 +245,9 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             MultiLine,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -197,16 +261,6 @@ public:
             MultiLine,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
-            MultiLine,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
         );
     }
 };
@@ -217,9 +271,9 @@ public:
     using SimpleMultiLine::SimpleMultiLine;
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             SimpleMultiLine,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -237,12 +291,22 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
         PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
+            vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiLine,/* Parent class */
             slice_to_grid,/* Name of function in C++ (must match Python name) */
             tile_size/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> copy() const override {
+        PYBIND11_OVERRIDE(
+            shared_ptr<SimplePrimitive>,/* Return type */
+            SimpleMultiLine,/* Parent class */
+            copy,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
         );
     }
 };
@@ -273,9 +337,9 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             MultiPolygon,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -289,16 +353,6 @@ public:
             MultiPolygon,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
-            MultiPolygon,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
         );
     }
 };
@@ -309,9 +363,9 @@ public:
     using SimpleMultiPolygon::SimpleMultiPolygon;
 
     /* Trampoline (need one for each virtual function) */
-    virtual void transform() override {
+    virtual shared_ptr<SimplePrimitive> transform() const override {
         PYBIND11_OVERRIDE(
-            void,/* Return type */
+            shared_ptr<SimplePrimitive>,/* Return type */
             SimpleMultiPolygon,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
@@ -329,12 +383,22 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Primitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
         PYBIND11_OVERRIDE(
-            vector<shared_ptr<Primitive>>,/* Return type */
+            vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiPolygon,/* Parent class */
             slice_to_grid,/* Name of function in C++ (must match Python name) */
             tile_size/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> copy() const override {
+        PYBIND11_OVERRIDE(
+            shared_ptr<SimplePrimitive>,/* Return type */
+            SimpleMultiPolygon,/* Parent class */
+            copy,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
         );
     }
 };
@@ -343,68 +407,71 @@ PYBIND11_MODULE(primitive, m) {
     py::class_<Primitive, std::shared_ptr<Primitive>, PyPrimitive>(m, "Primitive")
         .def(py::init<>())
         .def_property_readonly("type", &Primitive::type)
-        .def("slice_to_grid", &Primitive::slice_to_grid)
         .def("transform", &Primitive::transform)
         .def("serialize", &Primitive::serialize)
         .def("deserialize", &Primitive::deserialize);
 
 
+    py::class_<SimplePrimitive, std::shared_ptr<SimplePrimitive>, Primitive, PySimplePrimitive>(m, "SimplePrimitive")
+        .def(py::init<>())
+        .def_property_readonly("type", &SimplePrimitive::type)
+        .def_property_readonly("centroid", &SimplePrimitive::centroid)
+        .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&SimplePrimitive::add_attribute))
+        .def("slice_to_grid", &SimplePrimitive::slice_to_grid)
+        .def("join", &SimplePrimitive::join)
+        .def("copy", &SimplePrimitive::copy)
+        .def("transform", &SimplePrimitive::transform)
+        .def("serialize", &SimplePrimitive::serialize)
+        .def("deserialize", &SimplePrimitive::deserialize);
+
+
     py::class_<MultiPoint, std::shared_ptr<MultiPoint>, Primitive, PyMultiPoint>(m, "MultiPoint")
         .def(py::init<>())
         .def_property_readonly("type", &MultiPoint::type)
-        .def("slice_to_grid", &MultiPoint::slice_to_grid)
         .def("push_p2", &MultiPoint::push_p2)
         .def("push_p3", &MultiPoint::push_p3)
         .def("transform", &MultiPoint::transform)
-        .def("contents", &MultiPoint::contents)
         .def("serialize", &MultiPoint::serialize)
         .def("deserialize", &MultiPoint::deserialize);
 
 
-    py::class_<SimpleMultiPoint, std::shared_ptr<SimpleMultiPoint>, Primitive, PySimpleMultiPoint>(m, "SimpleMultiPoint")
-        .def(py::init<const MultiPoint &>())
+    py::class_<SimpleMultiPoint, std::shared_ptr<SimpleMultiPoint>, SimplePrimitive, PySimpleMultiPoint>(m, "SimpleMultiPoint")
+        .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiPoint::type)
-        .def("slice_to_grid", &SimpleMultiPoint::slice_to_grid)
-        .def("serialize", &SimpleMultiPoint::serialize)
-        .def("deserialize", &SimpleMultiPoint::deserialize);
+        .def("copy", &SimpleMultiPoint::copy)
+        .def("slice_to_grid", &SimpleMultiPoint::slice_to_grid);
 
 
     py::class_<MultiLine, std::shared_ptr<MultiLine>, Primitive, PyMultiLine>(m, "MultiLine")
         .def(py::init<>())
         .def_property_readonly("type", &MultiLine::type)
-        .def("slice_to_grid", &MultiLine::slice_to_grid)    
         .def("push_l2", &MultiLine::push_l2)
         .def("push_l3", &MultiLine::push_l3)
         .def("transform", &MultiLine::transform)
-        .def("contents", &MultiLine::contents)
         .def("serialize", &MultiLine::serialize)
         .def("deserialize", &MultiLine::deserialize);
 
 
-    py::class_<SimpleMultiLine, std::shared_ptr<SimpleMultiLine>, Primitive, PySimpleMultiLine>(m, "SimpleMultiLine")
-        .def(py::init<const MultiLine &>())
+    py::class_<SimpleMultiLine, std::shared_ptr<SimpleMultiLine>, SimplePrimitive, PySimpleMultiLine>(m, "SimpleMultiLine")
+        .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiLine::type)
-        .def("slice_to_grid", &SimpleMultiLine::slice_to_grid)
-        .def("serialize", &SimpleMultiLine::serialize)
-        .def("deserialize", &SimpleMultiLine::deserialize);
+        .def("copy", &SimpleMultiLine::copy)
+        .def("slice_to_grid", &SimpleMultiLine::slice_to_grid);
 
 
     py::class_<MultiPolygon, std::shared_ptr<MultiPolygon>, Primitive, PyMultiPolygon>(m, "MultiPolygon")
         .def(py::init<>())
         .def_property_readonly("type", &MultiPolygon::type)
-        .def("slice_to_grid", &MultiPolygon::slice_to_grid)
         .def("push_p2", &MultiPolygon::push_p2)
         .def("push_p3", &MultiPolygon::push_p3)
         .def("transform", &MultiPolygon::transform)
-        .def("contents", &MultiPolygon::contents)
         .def("serialize", &MultiPolygon::serialize)
         .def("deserialize", &MultiPolygon::deserialize);
 
 
-    py::class_<SimpleMultiPolygon, std::shared_ptr<SimpleMultiPolygon>, Primitive, PySimpleMultiPolygon>(m, "SimpleMultiPolygon")
-        .def(py::init<const MultiPolygon &>())
+    py::class_<SimpleMultiPolygon, std::shared_ptr<SimpleMultiPolygon>, SimplePrimitive, PySimpleMultiPolygon>(m, "SimpleMultiPolygon")
+        .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiPolygon::type)
-        .def("slice_to_grid", &SimpleMultiPolygon::slice_to_grid)
-        .def("serialize", &SimpleMultiPolygon::serialize)
-        .def("deserialize", &SimpleMultiPolygon::deserialize);
+        .def("copy", &SimpleMultiPolygon::copy)
+        .def("slice_to_grid", &SimpleMultiPolygon::slice_to_grid);
 }

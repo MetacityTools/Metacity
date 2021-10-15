@@ -1,27 +1,8 @@
 #include <stdexcept>
 #include <unordered_map>
-#include "primitives.hpp"
+#include "polygons.hpp"
 #include "triangulation.hpp"
-
-//===============================================================================
-
-SimpleMultiPolygon::SimpleMultiPolygon(const MultiPolygon & polygons)
-: Primitive(polygons) {}
-
-void SimpleMultiPolygon::transform()
-{
-    //nothing to do, already transformed
-}
-
-const char * SimpleMultiPolygon::type() const
-{
-    return "simplepolygon";
-}
-
-vector<shared_ptr<Primitive>> SimpleMultiPolygon::slice_to_grid(const float tile_size) const
-{
-    
-}
+#include "slicing.hpp"
 
 //===============================================================================
 
@@ -67,21 +48,6 @@ void MultiPolygon::push_p3(const vector<vector<tfloat>> ivertices)
     polygons.emplace_back(move(polygon));
 }
 
-vector<vector<vector<tfloat>>> MultiPolygon::contents() const
-{
-    vector<vector<vector<tfloat>>> c;
-    for (const auto &p : polygons)
-    {
-        vector<vector<tfloat>> pr;
-        for (const auto &r : p)
-        {
-            vector<tfloat> cr = vec_to_float(r);
-            pr.emplace_back(move(cr));
-        }
-        c.emplace_back(move(pr));
-    }
-    return c;
-}
 
 json MultiPolygon::serialize() const
 {
@@ -114,15 +80,73 @@ void MultiPolygon::deserialize(const json data)
     Primitive::deserialize(data);
 };
 
-void MultiPolygon::transform()
+shared_ptr<SimplePrimitive> MultiPolygon::transform() const
 {
-    vertices.clear();
+    vector<tvec3> vertices;
     Triangulator t;
     t.triangulate(polygons, vertices);
+    return make_shared<SimpleMultiPolygon>(move(vertices));
 }
 
-vector<shared_ptr<Primitive>> MultiPolygon::slice_to_grid(const float tile_size) const 
+//===============================================================================
+
+SimpleMultiPolygon::SimpleMultiPolygon() : SimplePrimitive() {}
+SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> & v) : SimplePrimitive(v) {}
+SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> && v) : SimplePrimitive(move(v)) {}
+
+shared_ptr<SimplePrimitive> SimpleMultiPolygon::copy() const
 {
-    SimpleMultiPolygon sp(*this);
-    return sp.slice_to_grid(tile_size);
+    auto cp = make_shared<SimpleMultiPolygon>();
+    copy_to(cp);
+    return cp;
+}
+
+shared_ptr<SimplePrimitive> SimpleMultiPolygon::transform() const
+{
+    return make_shared<SimpleMultiPolygon>(vertices);
+}
+
+const char * SimpleMultiPolygon::type() const
+{
+    return "simplepolygon";
+}
+
+inline tvec3 tcentroid(const tvec3 triangle[3])
+{
+    tvec3 c = triangle[0] + triangle[1] + triangle[2];
+    c /= 3;
+    return c;
+}
+
+void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const float tile_size, Tiles & tiles) const
+{
+    Tiles::iterator search;
+    pair<int, int> xy;
+
+    for (size_t p = 0; p < triangles.size(); p += 3)
+    {
+        grid_coords(tcentroid(&triangles[p]), tile_size, xy);
+        search = tiles.find(xy);
+        if (search == tiles.end())
+            search = tiles.insert({xy, make_shared<SimpleMultiPolygon>()}).first;
+        search->second->push_vert(&triangles[p], 3);
+    }
+}
+
+vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const float tile_size) const
+{
+    Tiles tiles;
+    TriangleSlicer slicer;
+
+    for (size_t i = 0; i < vertices.size(); i += 3)
+    {
+        slicer.grid_split(&vertices[i], tile_size);
+        to_tiles(slicer.data(), tile_size, tiles);
+    }
+
+    vector<shared_ptr<SimplePrimitive>> tiled;
+    for (const auto &tile : tiles)
+        tiled.push_back(tile.second);
+
+    return tiled;
 }

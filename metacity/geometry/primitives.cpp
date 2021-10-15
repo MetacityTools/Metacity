@@ -1,117 +1,144 @@
 #include <stdexcept>
-#include <unordered_map>
+#include <numeric>
 #include "primitives.hpp"
 #include "triangulation.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
+//===============================================================================
+//JSON merging 
+
+void merge_tags(json & ltags, const json & rtags)
+{
+    for (const auto & it : rtags.items())
+    {
+        const auto key = it.key();
+        if (ltags.contains(it.key()))
+        {
+            auto lv = ltags[key];
+            const auto rv = it.value();
+            if (lv.is_array() && rv.is_array())
+            {
+                for(const auto & v: rv)
+                {
+                    if(!lv.contains(v))
+                        lv.push_back(v);
+                }
+            } 
+            else if (lv.is_array() && !rv.is_array())
+            {
+                if(!lv.contains(rv))
+                    lv.push_back(rv);
+            }
+            else if (!lv.is_array() && rv.is_array())
+            {
+                lv = json::array({lv});
+                for(const auto & v: rv)
+                {
+                    if(!lv.contains(v))
+                        lv.push_back(v);
+                }
+            } else {
+                if (lv != rv)
+                    lv = json::array({lv, rv});
+            }
+
+            ltags[key] = lv;
+        } else {
+            ltags[key] = it.value();
+        }
+    }
+}
+
+//===============================================================================
 
 Primitive::~Primitive() {}
 
-vector<tfloat> Primitive::vec_to_float(const vector<tvec3> &vec) const
-{
-    vector<tfloat> c;
-    for (const auto &v : vec)
-    {
-        c.push_back(v.x);
-        c.push_back(v.y);
-        c.push_back(v.z);
-    }
-
-    return c;
-}
-
-void Primitive::append(vector<uint8_t> &vec, tfloat f) const
-{
-    uint8_t *d = (uint8_t *)&f;
-    vec.insert(vec.end(), d, d + 4);
-}
-
-void Primitive::grid_coords(const tvec3 &point, const float tile_size, pair<int, int> &coords) const
-{
-    coords.first = (point.x / tile_size);
-    coords.second = (point.y / tile_size);
-}
-
-vector<uint8_t> Primitive::vec_to_unit8(const vector<tvec3> &vec) const
-{
-    vector<uint8_t> bytes;
-    bytes.reserve(tvec3::length() * sizeof(tfloat) * vec.size());
-
-    for (const auto &v : vec)
-    {
-        append(bytes, v.x);
-        append(bytes, v.y);
-        append(bytes, v.z);
-    }
-
-    return bytes;
-}
-
-vector<tvec3> Primitive::uint8_to_vec(const vector<uint8_t> &bytes) const
-{
-    vector<tvec3> vec;
-    vec.resize(bytes.size() / (tvec3::length() * sizeof(tfloat)));
-    size_t fls = sizeof(tfloat);
-    size_t shift = fls * tvec3::length();
-
-    for (size_t i = 0, j = 0; i < bytes.size(); i += shift, ++j)
-    {
-        memcpy(&vec[j].x, &bytes[i], fls);
-        memcpy(&vec[j].y, &bytes[i + fls], fls);
-        memcpy(&vec[j].z, &bytes[i + fls + fls], fls);
-    }
-
-    return vec;
-}
-
-string Primitive::vec_to_string(const vector<tvec3> &vec) const
-{
-    vector<uint8_t> ui8 = vec_to_unit8(vec);
-    using base64 = cppcodec::base64_rfc4648;
-    return base64::encode(&ui8[0], ui8.size());
-}
-
-vector<tvec3> Primitive::string_to_vec(const string &s) const
-{
-    using base64 = cppcodec::base64_rfc4648;
-    const vector<uint8_t> ui8 = base64::decode(s);
-    return uint8_to_vec(ui8);
-}
-
-void Primitive::push_vert(const tvec3 &vec)
-{
-    vertices.emplace_back(vec);
-}
-void Primitive::push_vert(const tvec3 &vec1, const tvec3 &vec2)
-{
-    vertices.emplace_back(vec1);
-    vertices.emplace_back(vec2);
-}
-void Primitive::push_vert(const tvec3 &vec1, const tvec3 &vec2, const tvec3 &vec3)
-{
-    vertices.insert(vertices.end(), {vec1, vec2, vec3});
-}
-
 void Primitive::deserialize(const json data)
 {
-    const auto sverts = data.at("vertices").get<string>();
-    vertices = string_to_vec(sverts);
     data.at("tags").get_to(tags);
 }
 
 json Primitive::serialize() const
 {
     return {
-        {"vertices", vec_to_string(vertices)},
         {"tags", tags},
         {"type", type()}};
 }
 
-size_t pair_hash::operator()(const pair<int, int> &p) const
-{
-    auto h1 = hash<int>{}(p.first);
-    auto h2 = hash<int>{}(p.second);
+//===============================================================================
+SimplePrimitive::SimplePrimitive() : Primitive() {}
+SimplePrimitive::SimplePrimitive(const vector<tvec3> &v) : Primitive(), vertices(v) {}
+SimplePrimitive::SimplePrimitive(const vector<tvec3> &&v) : Primitive(), vertices(v) {}
 
-    // Mainly for demonstration purposes, i.e. works but is overly simple
-    // In the real world, use sth. like boost.hash_combine
-    return h1 ^ h2;
+tuple<tfloat, tfloat, tfloat> SimplePrimitive::centroid() const
+{
+    tvec3 c = accumulate(vertices.begin(), vertices.end(), tvec3(0));
+    c /= vertices.size();
+    return make_tuple(c.x, c.y, c.z);
+}
+
+void SimplePrimitive::join(const shared_ptr<SimplePrimitive> primitive)
+{
+    for (const auto & attr: attrib)
+    {
+        const auto it = primitive->attrib.find(attr.first);
+        if (primitive->attrib.end() == it)
+            throw runtime_error("RHS of SimplePrimitive join is missing attribute: " + attr.first);
+        attr.second->join(it->second);
+    }
+
+    vertices.insert(vertices.end(), primitive->vertices.begin(), primitive->vertices.end());
+    merge_tags(tags, primitive->tags);
+}
+
+void SimplePrimitive::push_vert(const tvec3 &vec)
+{
+    vertices.emplace_back(vec);
+}
+
+void SimplePrimitive::push_vert(const tvec3 *vec, size_t count)
+{
+    vertices.insert(vertices.end(), vec, vec + count);
+}
+
+void SimplePrimitive::deserialize(const json data)
+{
+    Primitive::deserialize(data);
+    const auto sverts = data.at("vertices").get<string>();
+    vertices = string_to_vec(sverts);
+
+    for (const auto &attr : data.at("attributes").items())
+        attrib[attr.key()] = attr_deserialize(attr.value());
+}
+
+json SimplePrimitive::serialize() const
+{
+    json data = Primitive::serialize();
+    data["vertices"] = vec_to_string(vertices);
+    json sattrib = json::object({});
+
+    for (const auto &attr : attrib)
+        sattrib.update({attr.first, attr.second->serialize()});
+
+    data["attributes"] = sattrib;
+    return data;
+}
+
+void SimplePrimitive::add_attribute(const string &name, const uint32_t value)
+{
+    auto attr = make_shared<TAttribute<uint32_t>>();
+    attr->fill(value, vertices.size());
+    attrib[name] = attr;
+}
+
+void SimplePrimitive::add_attribute(const string &name, const shared_ptr<Attribute> attr)
+{
+    attrib[name] = attr;
+}
+
+void SimplePrimitive::copy_to(shared_ptr<SimplePrimitive> cp) const
+{
+    cp->vertices = vertices;
+    cp->tags = tags;
+    for (const auto & a: attrib)
+        cp->attrib[a.first] = a.second->copy();
 }

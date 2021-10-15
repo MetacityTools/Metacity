@@ -2,10 +2,9 @@ from typing import Callable, Dict, List, Tuple
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as fs
-from metacity.geometry.primitive import MultiPoint, MultiLine, MultiPolygon, Primitive
+from metacity.geometry.primitive import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
+                                         SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
 from metacity.utils.persistable import Persistable
-
-
 
 
 class DataSet(Persistable):
@@ -47,7 +46,6 @@ class DataSet(Persistable):
         return {
             'capacity': self.capacity,
             'offset': self.offset,
-
         }
 
     def deserialize(self, data):
@@ -57,8 +55,11 @@ class DataSet(Persistable):
 
 types: Dict[str, Callable[[],Primitive]] = {
     MultiPoint().type: MultiPoint,
+    SimpleMultiPoint().type: SimpleMultiPoint,
     MultiLine().type: MultiLine,
-    MultiPolygon().type: MultiPolygon
+    SimpleMultiLine().type: SimpleMultiLine,
+    MultiPolygon().type: MultiPolygon,
+    SimpleMultiPolygon().type: SimpleMultiPolygon,
 }
 
 
@@ -144,8 +145,9 @@ class TileSet(DataSet):
     def serialize(self): 
         data = super().serialize()
         models = []
+        model: SimplePrimitive
         for model in self.data:
-            models.append(model)
+            models.append(model.serialize())
         data['models'] = models
         return data
 
@@ -154,9 +156,6 @@ class TileSet(DataSet):
         self.data = []
         for oid, model in data['models']:
             self.data.append([oid, desermodel(model)])
-
-    def add(self, oid, model):
-        super().add([oid, model])
 
 
 

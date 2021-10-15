@@ -63,8 +63,6 @@ class Layer(Persistable):
             for model in object.models:
                 grid.add(oid, model) 
 
-
-
     def serialize(self):
         return {
             'shift': self.shift,

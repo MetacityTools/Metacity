@@ -1,5 +1,5 @@
 Project:
-    ☐ Backend Metacity @2days
+    ☐ Backend Metacity @7days
     ☐ Metacity PIPY @1day
     ☐ Frontend Metacity @3days
 
@@ -29,7 +29,7 @@ Backend Metacity:
         - přidán check pro zpracování, aby se nepřidávaly null faces
     ✔ Transformace bodů do vertexů @done(21-10-12 13:30)
     ✔ Transformace linek do vertexů @done(21-10-12 13:30)
-    ☐ Třídění do dlaždic - dělení geometrie podle pravidelné mřížky, uložení do samostatných objektů, přidání objectid (stavba gridu) @started(21-10-12 14:41)
+    ✔ Třídění do dlaždic - dělení geometrie podle pravidelné mřížky, uložení do samostatných objektů, přidání objectid (stavba gridu) @started(21-10-12 14:41) @done(21-10-14 12:07) @lasted(1d21h26m7s)
          - co když neznám na začátku všechna data? - lepší předpokládat hustá data, kde v každé buňce něco je vzhledem k charakteru vstupních dat
          - předpoklad: na začátku znám všechna data pro která budu stavět
          - pro to, abych zjistil rozsah dat, musím všechna data projít
@@ -38,20 +38,16 @@ Backend Metacity:
         Postup:
             ✔ 0. vyrob prázdný grid @done(21-10-12 16:02)
             ✔ 1. object dostane grid @done(21-10-12 16:40)
-            2. object projde primitiva a ta rozřeže dle gridu - dle bounding boxu? - dle rozměrů gridu
+            ✔ 2. object projde primitiva a ta rozřeže dle gridu - dle bounding boxu? - dle rozměrů gridu @done(21-10-14 09:24)
                 ✔ body @done(21-10-13 22:09)
-                ✔ linky @done(21-10-13 22:09)
-                trojuhelniky
-            3. tyto rozřezané kousky předá gridu 
-            4. ten si je zařadí na správné místo do cache
-            5  pro každou tile se grid exportuje na disk
-            6. grid se vyexportuje na disk
-            7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30 x 30 x 100 objektů x 10 kB = 878 MB v paměti, což jde
-            8. po dozpracování se projde cache pro každou dlaždici a uloží se samostatně do jednoho souboru
+                ✔ linky @done(21-10-13 22:09) - optimalizovano 
+                ✔ trojuhelniky @done(21-10-14 09:23) - tohle je nakonec udelane tak jako v python demu, protoze jedina alternative byly arrangmenty... too complex ig
+            ✔ 3. tyto rozřezané kousky předá gridu @done(21-10-14 12:07)
+            ✔ 4. ten si je zařadí na správné místo do cache @done(21-10-14 12:07)
         Poznámky:
             - tile má tedy export cache do n souborů po k objektech a 1 soubor finální
             - adresace objektů v cache - lze uložit jako json, ale mohlo by být neefektivní, alternativy ale budou vyžadovat lineární průchod, jelikož ale není vyžadována funkcionalita mazání, nemělo by být tak moc problematické
-            - co musí být rchle u gridu: 
+            - co musí být rychle u gridu: 
                 - rozřezaní elementů
                 - spojování
         Z pohledu gridu:
@@ -60,17 +56,31 @@ Backend Metacity:
             - info pro primitivum kde řezat - tile size?
             - přidání primitiva (zařazení)
             - build z cache
-
-    ☐ Refactoring setů - dalo by se zjednodušit...
-    ☐ Stavba pravidelné mřížky pro skupinu meshe
-        - princip: mám sadu objektů (points, lines, facets) a chci je rozházet do mřížky
-        - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
-        - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
+    ✔ Export cache na disk do dlaždic @done(21-10-15 17:40)
+        ✔ 5  pro každou tile se grid exportuje na disk @done(21-10-15 17:40)
+            - vyžaduje doplnění ID pro objekty, musí být uloženo přímo u geometrie - je třeba připojit určitou formu atributů pro vertexy/elementy
+            - atributy: pro elementy, pro vertexy - elementem se myslí čára, polygon, bod, vertexem se myslí jeden vertex ve vertex bufferu
+            - atributy před provedením transformace - jsou atributy pro elementy
+            - atributy po transformaci - jsou atributy pro vertexy
+            - na disk se ukládá geometrie před transformací, po transformaci je uloženo v cache dlaždic (rozsekáno)
+            - pokud chci mapovat 2 vrstvy na sebe - z cache se načtou Simple primitiva s atributy, ty se pak mapují na sebe
+        ✔ 6. grid se vyexportuje na disk @done(21-10-15 17:40)
+        ✔ 7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30 x 30 x 100 objektů x 10 kB = 878 MB v paměti, což jde @done(21-10-15 17:40)
+        ✔ 8. po dozpracování se projde cache pro každou dlaždici a uloží se samostatně do jednoho souboru @done(21-10-15 17:40)
+    ✔ Refactoring setů - dalo by se zjednodušit... @done(21-10-15 17:40)
     ☐ Ořez dle polygonální sítě 
         - pomocí CGAL intersect pro trojúhelníky @link:https://doc.cgal.org/latest/Kernel_23/group__intersection__linear__grp.html
         - bude potřeba promítnout 3D data do 2D, pak najít průnik, pak zpětně dopočítat 3D souřadnice
-    ☐ Vytvoření proxy objektu pro linkování
+        - stavba pravidelné mřížky pro skupinu meshe
+            - princip: mám sadu objektů (points, lines, facets) a chci je rozházet do mřížky
+            - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
+            - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
     ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum
+        - nové primitivum pro linky, simple primitivum se bude dát reuse 
+    ☐ Upravit IO pro nové geometry api
+        1. geojson
+        2. shapefile
+        3. cityjson
     ☐ Otestovat, dopsat testy?
 
 Metacity PIPY:
