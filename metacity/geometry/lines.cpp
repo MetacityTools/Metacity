@@ -2,6 +2,9 @@
 #include <iostream>
 #include "slicing.hpp"
 #include "lines.hpp"
+#include "rtree.hpp"
+
+static K::Vector_3 z_axis(0, 0, 1);
 
 //===============================================================================
 
@@ -131,4 +134,87 @@ vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const float t
         tiled.push_back(tile.second);
 
     return tiled;
+}
+
+bool get_segment(const tvec3 triangle[3], const K::Plane_3 & plane, const K::Iso_cuboid_3 & cuboid, tvec3 & a, tvec3 & b)
+{
+    K::Triangle_3 t = to_triangle(triangle);
+    const auto res1 = CGAL::intersection(t, plane);
+
+    if (!res1.is_initialized())
+        return false;
+
+    if (const K::Segment_3 *s = boost::get<K::Segment_3>(&*res1))
+    {
+        const auto res2 = CGAL::intersection(*s, cuboid);
+
+        if (!res2.is_initialized())
+            return false;
+
+        if (const K::Segment_3 *s = boost::get<K::Segment_3>(&*res1))
+        {
+            a = to_vec(s->min());
+            b = to_vec(s->max());
+            return true;
+        }
+    }
+    return false;
+}
+
+void SimpleMultiLine::map(const shared_ptr<SimpleMultiPolygon> target) 
+{
+    if (!(mapping_ready() && target->mapping_ready()))
+        throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+
+    //helpers
+    tvec3 la, lb;
+    vector<size_t> indices;
+    BBox box;
+    uint32_t noidtmp;
+    RTree tree(target);
+
+    //data
+    vector<tvec3> nvertices;
+    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target->attribute("oid"));
+    const shared_ptr<TAttribute<uint32_t>> source_oid = static_pointer_cast<TAttribute<uint32_t>>(attrib["oid"]);
+    shared_ptr<TAttribute<uint32_t>> ntarget_oid = make_shared<TAttribute<uint32_t>>();
+    shared_ptr<TAttribute<uint32_t>> nsource_oid = make_shared<TAttribute<uint32_t>>();
+
+
+    for(size_t l = 0; l < vertices.size(); l += 2)
+    {
+        indices.clear();
+        la = vertices[l];
+        lb = vertices[l + 1];
+
+        //ignore vertical or degenerate lines
+        if (la.z == lb.z)
+            continue;
+
+        for_line(&vertices[l], box);
+        tree.range_query(box, indices);
+
+        if (indices.size() > 0)
+        {
+            K::Plane_3 plane(to_point3(la), to_point3(lb), to_point3(la) + z_axis);
+            K::Iso_cuboid_3 cuboid(K::Point_3(la.x, la.y, FLT_MIN), K::Point_3(lb.x, lb.y, FLT_MAX));
+            for(const auto & i : indices)
+            {
+                //caution, reusing la, lb to save registers...
+                if(get_segment(target->triangle(i), plane, cuboid, la, lb))
+                {
+                    nvertices.emplace_back(la);
+                    nvertices.emplace_back(lb);
+                    noidtmp = (*target_oid)[i * 3];
+                    ntarget_oid->emplace_back(noidtmp);
+                    ntarget_oid->emplace_back(noidtmp);
+                    noidtmp = (*source_oid)[l];
+                    nsource_oid->emplace_back(noidtmp);
+                    nsource_oid->emplace_back(noidtmp);
+                }
+            }
+        }
+    }
+
+    init_proxy(nsource_oid, ntarget_oid, nvertices);
 }

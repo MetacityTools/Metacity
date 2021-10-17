@@ -2,6 +2,7 @@ import metacity.geometry.primitive as p
 import metacity.utils.encoding as e
 from pprint import pprint as print
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 polygons = p.MultiPolygon()
 data = [[[0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1], [0.25, 0.25, 0.25, 0.75, 0.25, 0.25, 0.75, 0.75, 0.75, 0.25, 0.75, 0.75]]]
@@ -28,11 +29,13 @@ polygons2.deserialize(s)
 
 print("slicing")
 simples = polygons2.transform()
-slices = simples.slice_to_grid(0.5)
+for i in range(1000000):
+    slices = simples.slice_to_grid(0.25) 
 print(len(slices))
 for v in slices:
     print(v.centroid)
 
+quit()
 def get_cmap(n, name='hsv'):
     '''Returns a function that maps each index in 0, 1, ..., n-1 to a distinct 
     RGB color; the keyword argument name must be a standard mpl colormap name.'''

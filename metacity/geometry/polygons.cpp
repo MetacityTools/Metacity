@@ -1,12 +1,14 @@
 #include <stdexcept>
 #include <unordered_map>
 #include "polygons.hpp"
+#include "rtree.hpp"
 #include "triangulation.hpp"
 #include "slicing.hpp"
 
 //===============================================================================
 
-const char * MultiPolygon::type() const {
+const char *MultiPolygon::type() const
+{
     return "polygon";
 }
 
@@ -48,7 +50,6 @@ void MultiPolygon::push_p3(const vector<vector<tfloat>> ivertices)
     polygons.emplace_back(move(polygon));
 }
 
-
 json MultiPolygon::serialize() const
 {
     vector<vector<string>> vvspolygons;
@@ -64,7 +65,6 @@ json MultiPolygon::serialize() const
     data["polygons"] = vvspolygons;
     return data;
 }
-
 
 void MultiPolygon::deserialize(const json data)
 {
@@ -91,8 +91,8 @@ shared_ptr<SimplePrimitive> MultiPolygon::transform() const
 //===============================================================================
 
 SimpleMultiPolygon::SimpleMultiPolygon() : SimplePrimitive() {}
-SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> & v) : SimplePrimitive(v) {}
-SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> && v) : SimplePrimitive(move(v)) {}
+SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> &v) : SimplePrimitive(v) {}
+SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> &&v) : SimplePrimitive(move(v)) {}
 
 shared_ptr<SimplePrimitive> SimpleMultiPolygon::copy() const
 {
@@ -106,7 +106,7 @@ shared_ptr<SimplePrimitive> SimpleMultiPolygon::transform() const
     return make_shared<SimpleMultiPolygon>(vertices);
 }
 
-const char * SimpleMultiPolygon::type() const
+const char *SimpleMultiPolygon::type() const
 {
     return "simplepolygon";
 }
@@ -118,7 +118,7 @@ inline tvec3 tcentroid(const tvec3 triangle[3])
     return c;
 }
 
-void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const float tile_size, Tiles & tiles) const
+void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const float tile_size, Tiles &tiles) const
 {
     Tiles::iterator search;
     pair<int, int> xy;
@@ -149,4 +149,66 @@ vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const floa
         tiled.push_back(tile.second);
 
     return tiled;
+}
+
+const tvec3 * SimpleMultiPolygon::triangle(const size_t index) const
+{
+    return &(vertices[index * 3]);
+}
+
+const shared_ptr<Attribute> SimpleMultiPolygon::attribute(const string & name)
+{
+    const auto it = attrib.find(name);
+    if (it == attrib.end())
+        throw runtime_error("The primitive is missing attribute " + name);
+    return it->second;
+}
+
+void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target) 
+{
+    if (!(mapping_ready() && target->mapping_ready()))
+        throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+
+    //helpers
+    BBox box;
+    vector<size_t> indices;
+    uint32_t source_oid_value, target_oid_value;
+    RTree tree(target);
+    TriangleOverlay overlay;
+
+    //data
+    vector<tvec3> nvertices;
+    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target->attribute("oid"));
+    const shared_ptr<TAttribute<uint32_t>> source_oid = static_pointer_cast<TAttribute<uint32_t>>(attrib["oid"]);
+    shared_ptr<TAttribute<uint32_t>> ntarget_oid = make_shared<TAttribute<uint32_t>>();
+    shared_ptr<TAttribute<uint32_t>> nsource_oid = make_shared<TAttribute<uint32_t>>();
+
+
+    for(size_t t = 0; t < vertices.size(); t += 3)
+    {
+        indices.clear();
+        for_triangle(&vertices[t], box);
+        tree.range_query(box, indices);
+
+        if (indices.size() > 0)
+        {
+            overlay.set_source(&vertices[t]);
+            for(const auto & i : indices)
+            {
+                overlay.segment(to_triangle2(target->triangle(i)));
+                source_oid_value = (*source_oid)[t];
+                target_oid_value = (*target_oid)[i * 3];
+                
+                const auto & d = overlay.data();
+                if (d.size() >= 3)
+                {
+                    nvertices.insert(nvertices.end(), d.begin(), d.end());
+                    ntarget_oid->fill((*target_oid)[i * 3], d.size());
+                    nsource_oid->fill((*source_oid)[t], d.size());
+                }
+            }
+        }
+    }
+
+    init_proxy(nsource_oid, ntarget_oid, nvertices);
 }

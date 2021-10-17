@@ -122,6 +122,16 @@ public:
             /* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void map(const shared_ptr<SimpleMultiPolygon> target) override {
+        PYBIND11_OVERRIDE_PURE(
+            void,/* Return type */
+            SimplePrimitive,/* Parent class */
+            map,/* Name of function in C++ (must match Python name) */
+            target/* Argument(s) */
+        );
+    }
 };
 
 
@@ -213,6 +223,16 @@ public:
             SimpleMultiPoint,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void map(const shared_ptr<SimpleMultiPolygon> target) override {
+        PYBIND11_OVERRIDE(
+            void,/* Return type */
+            SimpleMultiPoint,/* Parent class */
+            map,/* Name of function in C++ (must match Python name) */
+            target/* Argument(s) */
         );
     }
 };
@@ -309,6 +329,16 @@ public:
             /* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void map(const shared_ptr<SimpleMultiPolygon> target) override {
+        PYBIND11_OVERRIDE(
+            void,/* Return type */
+            SimpleMultiLine,/* Parent class */
+            map,/* Name of function in C++ (must match Python name) */
+            target/* Argument(s) */
+        );
+    }
 };
 
 class PyMultiPolygon : public MultiPolygon {
@@ -399,6 +429,16 @@ public:
             SimpleMultiPolygon,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void map(const shared_ptr<SimpleMultiPolygon> target) override {
+        PYBIND11_OVERRIDE(
+            void,/* Return type */
+            SimpleMultiPolygon,/* Parent class */
+            map,/* Name of function in C++ (must match Python name) */
+            target/* Argument(s) */
         );
     }
 };

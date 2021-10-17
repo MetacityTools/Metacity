@@ -68,13 +68,66 @@ Backend Metacity:
         ✔ 7. paměťová optimalizace - takhle budou všechny dlaždice v paměti, cache v předchozí verzi ukládala každé dlaždici soubor na objekt, což je nepoužitelné. Každá dlaždic může mít ale limitovaný počet otevřených objektů, tedy např. rozlišení 30 x 30 x 100 objektů x 10 kB = 878 MB v paměti, což jde @done(21-10-15 17:40)
         ✔ 8. po dozpracování se projde cache pro každou dlaždici a uloží se samostatně do jednoho souboru @done(21-10-15 17:40)
     ✔ Refactoring setů - dalo by se zjednodušit... @done(21-10-15 17:40)
-    ☐ Ořez dle polygonální sítě 
+    ✔ Ořez dle polygonální sítě @done(21-10-17 17:55)
+        Co chci:
+            1. mapování NA SimpleMultiPolygon dlaždici - mapování 2D na 3D
+            2. mapování proxy - mám nějakou geometrii a tu chci otagovat jako padne do 2D dat
+
+            |                      |    |
+            |  co obarvuju         |    | SimpleMultiPoint    SimpleMultiLine     SimpleMultiPolygon
+            |  podle čeho obarvuju |    |                                         2D          3D
+            |----------------------|----|----------------------------------------------------------------
+            |  SimpleMultiPoint    |    | --                  --                  --          --
+            |  SimpleMultiLine     |    | --                  --                  --          --
+            |  SimpleMultiPolygon  | 2D | yes                 yes                 yes         yes
+            |                      | 3D | yes                 yes                 <- transformed to 2D yes
+            |                      |    |
+
+            proxy - vstup je řezán dle layoutu "Na" a otagován
+
+        pro input SimpleMultiPolygon:
+            0. postav DS nad podle čeho obarvuju
+            1. pro každý triangle který chci obarvit najdi trojúhelníky podle kterých obarvit (měl by být jen jeden) - tady výšku vůbec neřeš
+            2. najdi průniky
+            3. obarvi a ulož (mapování výšky nebude implementováno)
+        
+        pro SimpleMultiLine:
+            0. postav DS nad podle čeho chci obarvit
+            1. pro každou linku najdi podle čeho obarvit
+            2. nařež
+            3. obarvi a ulož NEBO mapuj výšku
+            
+            namapování Z bude samostatná operace s analogickým postupem - nejprve se nařeže podle sítě a pak pomocí raycastingu se najde topmost
+
+        pro SimpleMultiPoint:
+            1. postav DS nad podle čeho chci obarvit
+            2. pro každý bodík najdi triangle
+            3. obarvi a ulož NEBO mapuj výšku 
+
+        pro zadaný range (2D) najdi všechno co do této range padne
+            KD-stromy - optimální pro search, ale tri musí být reprezentován více než jednou, takže vyžaduje check zde už jsme nezpracoval
+            R-tree - https://dl.acm.org/doi/abs/10.1145/288692.288723  
+        
+        body:
+            se vyrosi jen jako rayshooting, all good
+        linky:
+            prunik trojuhelniku a 3Dcka
+        
+        trojuhelniky:
+            najdes prunik s trojuhelnikem - taddy to bude fungovat jen kdyz ten jeden bude 2D a nebude se tam nic protinat... prakticky potrebuju namapovat 2D dataset na 3D
+            mozna na to jit fakt debilne, kdyz se tam budou trojuhelniky prekryvat, tak to tak musim vzit - jako kdyby byly dve parcely pres sebe
+
+        //pro interpolaci linek - budou se interpolovat všechny atrbuty? - mám zatím jen využití pro linky, takže asi nemá smysl dělat něco extra obecného...
+
+        - u mapování linek a bodů 3D se musí mapovat na nejhořejší trojúhelník - takže nějaký raycasting?
         - pomocí CGAL intersect pro trojúhelníky @link:https://doc.cgal.org/latest/Kernel_23/group__intersection__linear__grp.html
         - bude potřeba promítnout 3D data do 2D, pak najít průnik, pak zpětně dopočítat 3D souřadnice
+        - dá se provádět na mřížce
         - stavba pravidelné mřížky pro skupinu meshe
             - princip: mám sadu objektů (points, lines, facets) a chci je rozházet do mřížky
             - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
             - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
+
     ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum
         - nové primitivum pro linky, simple primitivum se bude dát reuse 
     ☐ Upravit IO pro nové geometry api

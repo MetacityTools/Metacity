@@ -12,6 +12,7 @@ struct Attribute
     virtual void join(const shared_ptr<Attribute> a) = 0;
     virtual json serialize() const = 0;
     virtual void deserialize(const string & data) = 0;
+    virtual void clear() = 0;
 };
 
 template <typename T>
@@ -25,9 +26,20 @@ struct TAttribute : public Attribute
 
     virtual shared_ptr<Attribute> copy() const override;
     virtual const char * type() const override;
-    virtual void fill(const T v, const size_t count);
+    virtual void emplace_back(const T & v);
+    virtual void fill(const T & v, const size_t count);
     virtual json serialize() const override;
-    virtual void deserialize(const string & data) override;  
+    virtual void deserialize(const string & data) override;
+
+    const T& operator[](size_t index) const
+    {
+        return data[index];
+    };
+
+    virtual void clear() override
+    {
+        data.clear();
+    };
 
     vector<T> data;
 };
@@ -48,9 +60,14 @@ inline const char * TAttribute<uint32_t>::type() const
 };
 
 template <>
-inline void TAttribute<uint32_t>::fill(const uint32_t value, const size_t count)
+inline void TAttribute<uint32_t>::emplace_back(const uint32_t & value)
 {
-    data.clear();
+    data.emplace_back(value);
+};
+
+template <>
+inline void TAttribute<uint32_t>::fill(const uint32_t & value, const size_t count)
+{
     data.insert(data.end(), count, value);
 };
 

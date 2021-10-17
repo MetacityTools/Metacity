@@ -19,6 +19,7 @@ protected:
     json tags;
 };
 
+class SimpleMultiPolygon;
 
 class SimplePrimitive: public Primitive
 {
@@ -43,8 +44,12 @@ public:
     virtual shared_ptr<SimplePrimitive> transform() const override = 0;
     virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const = 0;
 
+    virtual void map(const shared_ptr<SimpleMultiPolygon> target) = 0;
+    bool mapping_ready() const;
+
 protected:
     void copy_to(shared_ptr<SimplePrimitive> cp) const;
+    void init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv);
 
     vector<tvec3> vertices;
     unordered_map<string, shared_ptr<Attribute>> attrib;

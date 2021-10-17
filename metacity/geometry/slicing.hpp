@@ -1,6 +1,7 @@
 #pragma once
 #include "cgal.hpp"
 #include "types.hpp"
+#include "triangulation.hpp"
 
 
 class LineSlicer
@@ -55,4 +56,33 @@ protected:
     pair<int, int> xrange;
     pair<int, int> yrange;
     tfloat tile_size;
+};
+
+
+class TriangleOverlay {
+public:
+    void set_source(const tvec3 triangle[3]);
+    void segment(const K::Triangle_2 & target_);
+    const vector<tvec3> & data();
+
+protected:
+    bool handle_general();
+    bool handle_degenerate();
+
+    K::Segment_2 to_segment2(const K::Triangle_2 & t2);
+    bool handle_triangle(const K::Triangle_3 & t);
+    bool handle_vertices(const vector<K::Point_3> & v);
+    bool handle_deg_2_to_3(const K::Segment_2 * ps);
+    
+    void project_vertices(const K::Point_2 * verts, size_t size, const K::Plane_3 & plane);
+    void project_triangle(const K::Triangle_2 & t, const K::Plane_3 & plane);
+    void project_point2(const K::Point_2 & point, const K::Plane_3 & plane);
+
+    K::Triangle_3 source;
+    K::Triangle_2 source_proj;
+    K::Segment_2 source_proj_segment;
+    K::Triangle_2 target;
+    Triangulator triangulator;
+    vector<K::Point_3> tmp_points;
+    vector<tvec3> out_triangles;
 };

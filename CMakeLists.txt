@@ -4,6 +4,7 @@ project(primitive LANGUAGES CXX)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/metacity/geometry)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/metacity/geometry)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/metacity/geometry)
+set(CMAKE_BUILD_TYPE Debug)
 
 set(pybind11_DIR "env/lib/python3.9/site-packages/pybind11/share/cmake/pybind11")
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
@@ -13,10 +14,11 @@ find_package(CGAL REQUIRED COMPONENTS)
 include_directories(metacity/geometry)
 link_directories(metacity/geometry)
 
-#add_compile_options(-std=c++17 -Wall -pedantic -g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
-add_compile_options(-std=c++17 -Wall -pedantic -O3)
-#add_link_options(-fsanitize=address -shared-libasan)
+add_compile_options(-std=c++17 -Wall -pedantic -g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+add_link_options(-fsanitize=address -shared-libasan)
 
+#add_compile_options(-std=c++17 -Wall -pedantic -O3)
+#add_executable(primitive metacity/geometry/main.cpp metacity/geometry/cgal.hpp)
 
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/primitive.cpp 
                                     metacity/geometry/primitives.cpp 
@@ -35,6 +37,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/geometry/primitive.cpp
                                     metacity/geometry/types.hpp
                                     metacity/geometry/attributes.cpp
                                     metacity/geometry/attributes.hpp
+                                    metacity/geometry/rtree.hpp
+                                    metacity/geometry/rtree.hpp
                                     metacity/geometry/cgal.hpp)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC)

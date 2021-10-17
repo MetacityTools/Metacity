@@ -126,6 +126,7 @@ json SimplePrimitive::serialize() const
 void SimplePrimitive::add_attribute(const string &name, const uint32_t value)
 {
     auto attr = make_shared<TAttribute<uint32_t>>();
+    attr->clear();
     attr->fill(value, vertices.size());
     attrib[name] = attr;
 }
@@ -141,4 +142,19 @@ void SimplePrimitive::copy_to(shared_ptr<SimplePrimitive> cp) const
     cp->tags = tags;
     for (const auto & a: attrib)
         cp->attrib[a.first] = a.second->copy();
+}
+
+bool SimplePrimitive::mapping_ready() const
+{
+    const auto it = attrib.find("oid");
+    return it != attrib.end();
+}
+
+void SimplePrimitive::init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv)
+{
+    attrib.clear();
+    attrib["source_oid"] = soid;
+    attrib["oid"] = toid;
+    tags["proxy"] = true;
+    vertices = nv;
 }
