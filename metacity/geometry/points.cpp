@@ -107,12 +107,12 @@ tfloat interpolate_z(const tvec3 triangle[3], const K::Line_3 & line)
     const auto res = CGAL::intersection(t, line);
 
     if (!res.is_initialized())
-        return -INFINITY;
+        return FLT_MIN;
 
     if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
         return p->z();
         
-    return -INFINITY;
+    return FLT_MIN;
 }
 
 void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target) 
@@ -140,7 +140,7 @@ void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target)
         v = vertices[p];
 
         tree.point_query(v, indices);
-        maxz = -INFINITY;
+        maxz = FLT_MIN;
 
         if (indices.size() > 0)
         {
@@ -155,7 +155,7 @@ void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target)
                 }
             }
 
-            if (maxz != -INFINITY)
+            if (maxz != FLT_MIN)
             {
                 v.z = maxz;
                 nvertices.emplace_back(v);

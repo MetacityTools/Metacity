@@ -14,11 +14,8 @@ find_package(CGAL REQUIRED COMPONENTS)
 include_directories(metacity/geometry)
 link_directories(metacity/geometry)
 
-add_compile_options(-std=c++17 -Wall -pedantic -g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
-add_link_options(-fsanitize=address -shared-libasan)
-
-#add_compile_options(-std=c++17 -Wall -pedantic -O3)
-#add_executable(primitive metacity/geometry/main.cpp metacity/geometry/cgal.hpp)
+add_compile_options(-std=c++17 -Wall -pedantic -g)# -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+#add_link_options(-fsanitize=address -shared-libasan)
 
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/primitive.cpp 
                                     metacity/geometry/primitives.cpp 
@@ -38,7 +35,7 @@ pybind11_add_module(${PROJECT_NAME} metacity/geometry/primitive.cpp
                                     metacity/geometry/attributes.cpp
                                     metacity/geometry/attributes.hpp
                                     metacity/geometry/rtree.hpp
-                                    metacity/geometry/rtree.hpp
+                                    metacity/geometry/rtree.cpp
                                     metacity/geometry/cgal.hpp)
 
 target_compile_definitions(${PROJECT_NAME} PUBLIC)

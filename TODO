@@ -128,7 +128,7 @@ Backend Metacity:
             - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
             - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
 
-    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum
+    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička
         - nové primitivum pro linky, simple primitivum se bude dát reuse 
     ☐ Upravit IO pro nové geometry api
         1. geojson

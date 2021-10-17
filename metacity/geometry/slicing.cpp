@@ -308,6 +308,9 @@ void TriangleOverlay::segment(const K::Triangle_2 &target_)
     target = target_;
     out_triangles.clear();
 
+    if (target.is_degenerate())
+        return;
+
     if (source_proj.is_degenerate())
         handle_degenerate();
     else

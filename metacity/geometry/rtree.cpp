@@ -47,8 +47,8 @@ bool inside(const BBox &b, const tvec3 &p)
 
 void set_empty(BBox &box)
 {
-    box.min = tvec3(INFINITY);
-    box.max = tvec3(-INFINITY);
+    box.min = tvec3(FLT_MAX);
+    box.max = tvec3(FLT_MIN);
 }
 
 void extend(BBox &b1, const BBox &b2)
@@ -137,7 +137,7 @@ size_t RTree::handle_special_case(BBox &left, BBox &right, const size_t start, c
     set_empty(left);
     set_empty(right);
 
-    tfloat minMid = INFINITY;
+    tfloat minMid = FLT_MAX;
     tfloat mid;
 
     for (size_t i = start; i < end; i++)

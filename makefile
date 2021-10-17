@@ -273,6 +273,30 @@ metacity/geometry/primitives.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/primitive.dir/build.make CMakeFiles/primitive.dir/metacity/geometry/primitives.cpp.s
 .PHONY : metacity/geometry/primitives.cpp.s
 
+metacity/geometry/rtree.o: metacity/geometry/rtree.cpp.o
+.PHONY : metacity/geometry/rtree.o
+
+# target to build an object file
+metacity/geometry/rtree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/primitive.dir/build.make CMakeFiles/primitive.dir/metacity/geometry/rtree.cpp.o
+.PHONY : metacity/geometry/rtree.cpp.o
+
+metacity/geometry/rtree.i: metacity/geometry/rtree.cpp.i
+.PHONY : metacity/geometry/rtree.i
+
+# target to preprocess a source file
+metacity/geometry/rtree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/primitive.dir/build.make CMakeFiles/primitive.dir/metacity/geometry/rtree.cpp.i
+.PHONY : metacity/geometry/rtree.cpp.i
+
+metacity/geometry/rtree.s: metacity/geometry/rtree.cpp.s
+.PHONY : metacity/geometry/rtree.s
+
+# target to generate assembly for a file
+metacity/geometry/rtree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/primitive.dir/build.make CMakeFiles/primitive.dir/metacity/geometry/rtree.cpp.s
+.PHONY : metacity/geometry/rtree.cpp.s
+
 metacity/geometry/slicing.o: metacity/geometry/slicing.cpp.o
 .PHONY : metacity/geometry/slicing.o
 
@@ -372,6 +396,9 @@ help:
 	@echo "... metacity/geometry/primitives.o"
 	@echo "... metacity/geometry/primitives.i"
 	@echo "... metacity/geometry/primitives.s"
+	@echo "... metacity/geometry/rtree.o"
+	@echo "... metacity/geometry/rtree.i"
+	@echo "... metacity/geometry/rtree.s"
 	@echo "... metacity/geometry/slicing.o"
 	@echo "... metacity/geometry/slicing.i"
 	@echo "... metacity/geometry/slicing.s"

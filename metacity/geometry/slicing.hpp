@@ -62,6 +62,19 @@ protected:
 class TriangleOverlay {
 public:
     void set_source(const tvec3 triangle[3]);
+    //now this is the reall stuff looking like it's nothing:
+    //a) set_source has to be called before you call segment
+    //b) it intersects 2D projection of source with the parameter of segment and projects the result back to 3D
+    //it handles degenerate cases, such as degenerate triangles, degenerate 
+    //2D projection (aka vetical source triangles), the 2D intersections are correctly 
+    //interpolated back to 3D in EVERY case I could think of, it's a freaking masterpiece
+    //
+    //the bad news is it's not really optimal implementation
+    //I tried to maximize the performance while still maintaining the code readable, 
+    //which is freaking difficult when you got million special cases
+    //anyone is more than welcome to optimize all of this
+    //I dare you to try
+    //and yes you have to use CGAL, we keep it robust here
     void segment(const K::Triangle_2 & target_);
     const vector<tvec3> & data();
 
