@@ -132,6 +132,16 @@ public:
             target/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual size_t to_obj(const string & path, const size_t offset) const override {
+        PYBIND11_OVERRIDE_PURE(
+            size_t,/* Return type */
+            SimplePrimitive,/* Parent class */
+            to_obj,/* Name of function in C++ (must match Python name) */
+            path, offset/* Argument(s) */
+        );
+    }
 };
 
 
@@ -233,6 +243,16 @@ public:
             SimpleMultiPoint,/* Parent class */
             map,/* Name of function in C++ (must match Python name) */
             target/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual size_t to_obj(const string & path, const size_t offset) const override {
+        PYBIND11_OVERRIDE(
+            size_t,/* Return type */
+            SimpleMultiPoint,/* Parent class */
+            to_obj,/* Name of function in C++ (must match Python name) */
+            path, offset/* Argument(s) */
         );
     }
 };
@@ -339,6 +359,16 @@ public:
             target/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual size_t to_obj(const string & path, const size_t offset) const override {
+        PYBIND11_OVERRIDE(
+            size_t,/* Return type */
+            SimpleMultiLine,/* Parent class */
+            to_obj,/* Name of function in C++ (must match Python name) */
+            path, offset/* Argument(s) */
+        );
+    }
 };
 
 class PyMultiPolygon : public MultiPolygon {
@@ -441,6 +471,16 @@ public:
             target/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual size_t to_obj(const string & path, const size_t offset) const override {
+        PYBIND11_OVERRIDE(
+            size_t,/* Return type */
+            SimpleMultiPolygon,/* Parent class */
+            to_obj,/* Name of function in C++ (must match Python name) */
+            path, offset/* Argument(s) */
+        );
+    }
 };
 
 PYBIND11_MODULE(primitive, m) {
@@ -456,10 +496,13 @@ PYBIND11_MODULE(primitive, m) {
         .def(py::init<>())
         .def_property_readonly("type", &SimplePrimitive::type)
         .def_property_readonly("centroid", &SimplePrimitive::centroid)
+        .def("shift", &SimplePrimitive::shift)
         .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&SimplePrimitive::add_attribute))
         .def("slice_to_grid", &SimplePrimitive::slice_to_grid)
         .def("join", &SimplePrimitive::join)
         .def("copy", &SimplePrimitive::copy)
+        .def("to_obj", &SimplePrimitive::to_obj)
+        .def("map", &SimplePrimitive::map)
         .def("transform", &SimplePrimitive::transform)
         .def("serialize", &SimplePrimitive::serialize)
         .def("deserialize", &SimplePrimitive::deserialize);
@@ -479,6 +522,8 @@ PYBIND11_MODULE(primitive, m) {
         .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiPoint::type)
         .def("copy", &SimpleMultiPoint::copy)
+        .def("to_obj", &SimpleMultiPoint::to_obj)
+        .def("map", &SimpleMultiPoint::map)
         .def("slice_to_grid", &SimpleMultiPoint::slice_to_grid);
 
 
@@ -496,6 +541,8 @@ PYBIND11_MODULE(primitive, m) {
         .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiLine::type)
         .def("copy", &SimpleMultiLine::copy)
+        .def("to_obj", &SimpleMultiLine::to_obj)
+        .def("map", &SimpleMultiLine::map)
         .def("slice_to_grid", &SimpleMultiLine::slice_to_grid);
 
 
@@ -513,5 +560,7 @@ PYBIND11_MODULE(primitive, m) {
         .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiPolygon::type)
         .def("copy", &SimpleMultiPolygon::copy)
+        .def("to_obj", &SimpleMultiPolygon::to_obj)
+        .def("map", &SimpleMultiPolygon::map)
         .def("slice_to_grid", &SimpleMultiPolygon::slice_to_grid);
 }

@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 
 class Layer(Persistable):
-    def __init__(self, layer_dir: str, group_by = 10000):
+    def __init__(self, layer_dir: str, group_by = 100000):
         super().__init__(fs.layer_config(layer_dir))
 
         self.dir = layer_dir
@@ -28,6 +28,10 @@ class Layer(Persistable):
     @property
     def name(self):
         return fs.layer_name(self.dir)
+
+    @property
+    def grid(self):
+        return Grid(self.dir)
 
     def add(self, object: Object):
         if not self.set.can_contain(self.size):

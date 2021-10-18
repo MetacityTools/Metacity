@@ -12,14 +12,14 @@ void for_triangle(const tvec3 t[3], BBox & box)
     box.max.z = max(t[0].z, max(t[1].z, t[2].z));
 }
 
-void for_line(const tvec3 t[2], BBox & box)
+void for_line(const tvec3 l[2], BBox & box)
 {
-    box.min.x = min(t[0].x, t[1].x);
-    box.min.y = min(t[0].y, t[1].y);
-    box.min.z = min(t[0].z, t[1].z);
-    box.max.x = max(t[0].x, t[1].x);
-    box.max.y = max(t[0].y, t[1].y);
-    box.max.z = max(t[0].z, t[1].z);
+    box.min.x = min(l[0].x, l[1].x);
+    box.min.y = min(l[0].y, l[1].y);
+    box.min.z = min(l[0].z, l[1].z);
+    box.max.x = max(l[0].x, l[1].x);
+    box.max.y = max(l[0].y, l[1].y);
+    box.max.z = max(l[0].z, l[1].z);
 }
 
 void for_bboxes(const BBox &b1, const BBox &b2, BBox & outb)
@@ -32,23 +32,21 @@ void for_bboxes(const BBox &b1, const BBox &b2, BBox & outb)
     outb.max.z = max(b1.max.z, b2.max.z);
 }
 
-#define OVERLAPS(a, b, axis) ((a.min.axis < b.max.axis) || (b.min.axis < a.max.axis))
-#define INSIDE(b, p, axis) ((b.min.axis <= p.axis) && (p.axis >= b.max.axis))
-
 bool overlaps(const BBox &b1, const BBox &b2)
 {
-    return OVERLAPS(b1, b2, x) && OVERLAPS(b1, b2, y);
+    // If one rectangle is on left side of other               or above
+    return !((b1.min.x >= b2.max.x || b2.min.x >= b1.max.x) || (b1.min.y >= b2.max.y || b2.min.y >= b1.max.y));
 }
 
 bool inside(const BBox &b, const tvec3 &p)
 {
-    return INSIDE(b, p, x) && INSIDE(b, p, y);
+    return ((b.min.x <= p.x) && (p.x >= b.max.x)) && ((b.min.y <= p.y) && (p.y >= b.max.y));
 }
 
 void set_empty(BBox &box)
 {
     box.min = tvec3(FLT_MAX);
-    box.max = tvec3(FLT_MIN);
+    box.max = tvec3(-FLT_MAX);
 }
 
 void extend(BBox &b1, const BBox &b2)
@@ -70,6 +68,7 @@ RTree::RTree(const shared_ptr<SimpleMultiPolygon> smp)
 {
 
     BBox main;
+    set_empty(main);
     for (size_t i = 0, j = 0; i < smp->vertices.size(); i += 3, ++j)
     {
         auto node = make_shared<RTreeLeafNode>();
@@ -162,6 +161,7 @@ shared_ptr<RTreeNode> RTree::build_general(const BBox &box, const size_t start, 
     tfloat split = midpoint(box, axis);
     size_t firstRight = classify(split, left, right, start, end, axis);
 
+
     // maybe?
     if (start == firstRight || end == firstRight)
         firstRight = handle_special_case(left, right, start, end, axis);
@@ -179,22 +179,23 @@ shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const si
         return nodes[start];
     if (size == 2)
         return build_two_nodes(box, start, end, axis);
+
     return build_general(box, start, end, axis);
 }
 
-void RTree::range_query(const BBox &range, vector<size_t> out) const
+void RTree::range_query(const BBox &range, vector<size_t> & out) const
 {
     if (overlaps(root->bbox, range))
         rquery(root, range, out);
 }
 
-void RTree::point_query(const tvec3 &point, vector<size_t> out) const
+void RTree::point_query(const tvec3 &point, vector<size_t> & out) const
 {
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }
 
-void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> out) const
+void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> & out) const
 {
     if (node->type == RTreeNodeType::leaf)
     {
@@ -212,7 +213,7 @@ void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<s
 }
 
 
-void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> out) const
+void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> & out) const
 {
     if (node->type == RTreeNodeType::leaf)
     {

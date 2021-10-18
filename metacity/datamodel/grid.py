@@ -1,7 +1,7 @@
 from collections import defaultdict
 from typing import DefaultDict, Dict, Tuple
 
-from metacity.datamodel.set import TileSet
+from metacity.datamodel.set import TileSet, Tile
 from metacity.filesystem import grid as fs
 from metacity.filesystem import file as fsf
 from metacity.geometry.primitive import Primitive, SimplePrimitive
@@ -61,6 +61,7 @@ class Grid(Persistable):
         super().__init__(fs.grid_config(self.dir))
 
         self.tile_size = 1000
+        self.init = False
         self.cache: Dict[Tuple[int, int], TileCache] = {}
 
         try:
@@ -86,14 +87,35 @@ class Grid(Persistable):
     def persist(self):
         for cache in self.cache.values():
             cache.to_tile()
+        self.init = True
         self.export()
 
+    @property
+    def tiles(self):
+        for tile in fs.grid_tiles(self.dir):
+            yield Tile(tile)
+
+    def __getitem__(self, xy):
+        path = fs.grid_tile(self.dir, fs.tile_name(*xy))
+        if fs.base.file_exists(path):
+            return Tile(path)
+        return None
+
+    def overlay(self, grid):
+        for tile_path in fs.grid_tiles(self.dir):
+            xy = fs.tile_xy(fs.base.filename(tile_path))
+            tile: Tile = grid[xy]
+            if tile is not None:
+                yield Tile(tile_path), tile
+        
     def serialize(self):
         return {
-            "tile_size": self.tile_size
+            "tile_size": self.tile_size,
+            "init": self.init
         }
 
     def deserialize(self, data):
         self.tile_size = data["tile_size"]
+        self.init = data["init"]
 
 

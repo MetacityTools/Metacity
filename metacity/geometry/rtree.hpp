@@ -43,13 +43,13 @@ class RTree
 {
 public:
     RTree(const shared_ptr<SimpleMultiPolygon> smp);
-    void range_query(const BBox &range, vector<size_t> indices) const;
-    void point_query(const tvec3 &point, vector<size_t> indices) const;
+    void range_query(const BBox &range, vector<size_t> & indices) const;
+    void point_query(const tvec3 &point, vector<size_t> & indices) const;
 
 protected:
     shared_ptr<RTreeNode> build(const BBox &box, const size_t start, const size_t end, const uint8_t axis);
-    void rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> indices) const;
-    void pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> indices) const;
+    void rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> & indices) const;
+    void pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> & indices) const;
 
     shared_ptr<RTreeNode> build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis);
     shared_ptr<RTreeNode> build_general(const BBox &box, const size_t start, const size_t end, const uint8_t axis);

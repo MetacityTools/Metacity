@@ -18,21 +18,6 @@ bool compare(const tvec3 &a, const tvec3 &b)
     return a.x < b.x;
 }
 
-ostream &operator<<(ostream &os, const tvec3 &vec)
-{
-    os << vec.x << " " << vec.y << " " << vec.z;
-    return os;
-}
-
-ostream &operator<<(ostream &os, const vector<tvec3> &vec)
-{
-    os << "[\n";
-    for (const auto &v : vec)
-        os << "   " << v << "\n";
-    os << "]";
-    return os;
-}
-
 //===============================================================================
 
 const vector<tvec3> &LineSlicer::data()
@@ -44,25 +29,37 @@ void LineSlicer::intersect(const K::Plane_3 &plane, const K::Line_3 &ll)
 {
     const auto res = CGAL::intersection(plane, ll);
 
-    if (!res.is_initialized())
-        return;
-
-    if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
+    if (res.is_initialized())
+    {
+        if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
         points.emplace_back(p->x(), p->y(), p->z());
+    } else {
+        points.emplace_back(0, 0, 0);
+    }
+
 }
 
 void LineSlicer::insert_boundry_points(const tvec3 line[2])
 {
     points.emplace_back(line[0]);
-    points.emplace_back(line[0]);
+    points.emplace_back(line[1]);
 }
 
-void LineSlicer::insert_along_axis(const pair<int, int> &range, size_t axis)
+bool LineSlicer::not_splitable(const tvec3 l[2], const tfloat &p, size_t axis) const
+{
+    return ((l[0][axis] <= p) && (l[1][axis] <= p)) ||
+           ((l[0][axis] >= p) && (l[1][axis] >= p));
+}
+
+void LineSlicer::insert_along_axis(const tvec3 line[2], const pair<int, int> &range, size_t axis)
 {
     tvec3 origin(0);
     for (int i = range.first; i <= range.second; ++i)
     {
         origin[axis] = i * tile_size;
+        if (not_splitable(line, origin[axis], axis))
+            continue;
+
         K::Plane_3 plane(to_point3(origin), axis_normal[axis]);
         intersect(plane, splitted_line);
     }
@@ -71,14 +68,8 @@ void LineSlicer::insert_along_axis(const pair<int, int> &range, size_t axis)
 pair<int, int> LineSlicer::setup_range(const tvec3 line[2], tfloat tile_size, size_t axis)
 {
     const auto range = minmax(line[0][axis], line[1][axis]);
-    int base = (range.first / tile_size) + 1;
+    int base = range.first / tile_size;
     int stop = range.second / tile_size;
-    tfloat upper = tile_size * stop;
-
-    // in case the upper point is on the upper boundries, do not use them
-    if (range.first <= upper && range.second <= upper)
-        stop--;
-
     return make_pair(base, stop);
 }
 
@@ -100,8 +91,8 @@ void LineSlicer::grid_split(const tvec3 line[2], const tfloat tile_size_)
     if (xrange.first > xrange.second && yrange.first > yrange.second)
         return;
 
-    insert_along_axis(xrange, 0);
-    insert_along_axis(yrange, 1);
+    insert_along_axis(line, xrange, 0);
+    insert_along_axis(line, yrange, 1);
     sort(points.begin(), points.end(), compare);
 }
 
@@ -115,18 +106,16 @@ const vector<tvec3> &TriangleSlicer::data()
 // copied almost from line spliter
 pair<int, int> TriangleSlicer::setup_range(const tvec3 t[3], const tfloat tile_size, const size_t axis)
 {
+
     pair<tfloat, tfloat> range;
+    //minimal axis
     range.first = min(t[0][axis], min(t[1][axis], t[2][axis]));
+    //maximal axis
     range.second = max(t[0][axis], max(t[1][axis], t[2][axis]));
-
-    int base = (range.first / tile_size) + 1;
+    
+    int base = range.first / tile_size;
     int stop = range.second / tile_size;
-    tfloat upper = tile_size * stop;
-
     // in case the upper point is on the upper boundries, do not use them
-    if (range.first <= upper && range.second <= upper)
-        stop--;
-
     return make_pair(base, stop);
 }
 
@@ -174,13 +163,13 @@ void TriangleSlicer::insert_triangle_split(const tvec3 &a, const tvec3 &b, const
     splited.emplace_back(c);
 }
 
-inline bool TriangleSlicer::not_splitable(const tvec3 t[3], const tfloat &p, size_t axis) const
+bool TriangleSlicer::not_splitable(const tvec3 t[3], const tfloat &p, size_t axis) const
 {
     return ((t[0][axis] <= p) && (t[1][axis] <= p) && (t[2][axis] <= p)) ||
            ((t[0][axis] >= p) && (t[1][axis] >= p) && (t[2][axis] >= p));
 }
 
-inline bool TriangleSlicer::point_on_plane(const tvec3 t[3], const tfloat p, const size_t axis) const
+bool TriangleSlicer::point_on_plane(const tvec3 t[3], const tfloat p, const size_t axis) const
 {
     return (t[0][axis] == p) || (t[1][axis] == p) || (t[2][axis] == p);
 }
@@ -192,7 +181,7 @@ void TriangleSlicer::one_on_plane_split(const tvec3 t[3], const K::Plane_3 &plan
     insert_triangle_split(t[0], mid, t[2]);
 }
 
-inline void TriangleSlicer::barrel_shift(tvec3 t[3]) const
+void TriangleSlicer::barrel_shift(tvec3 t[3]) const
 {
     tvec3 x = t[0];
     t[0] = t[1];
@@ -217,7 +206,7 @@ void TriangleSlicer::special_case_split(const tvec3 t[3], const tfloat p, const 
         return one_on_plane_split(copy, plane);
 }
 
-inline bool TriangleSlicer::bc_on_same_side(const tvec3 t[3], const tfloat p, const size_t axis) const
+bool TriangleSlicer::bc_on_same_side(const tvec3 t[3], const tfloat p, const size_t axis) const
 {
     bool b = (t[1][axis] < p);
     bool c = (t[2][axis] < p);
@@ -231,7 +220,7 @@ void TriangleSlicer::orinet(tvec3 t[3], const tfloat p, const size_t axis) const
     {
         ++i, barrel_shift(t);
         if (i > 3)
-            throw runtime_error("rolling triangles");
+            throw runtime_error("We've got here some rolling triangles...");
     }
 }
 
@@ -275,7 +264,7 @@ void TriangleSlicer::split_triangles_along_axis(const pair<int, int> &range, con
     for (int i = range.first; i <= range.second; ++i)
     {
         splited.clear();
-        origin[axis] = i * tile_size;
+        origin[axis] = (float)(i) * tile_size;
         K::Plane_3 plane(to_point3(origin), axis_normal[axis]);
         for (size_t i = 0; i < triangles.size(); i += 3)
             split_triangle_along_axis(&triangles[i], origin[axis], plane, axis);
@@ -288,8 +277,8 @@ void TriangleSlicer::grid_split(const tvec3 triangle[3], const tfloat tile_size_
     setup(triangle, tile_size_);
     insert_triangle(triangle);
 
-    // optimalization, check if there are any planes to intersect at all
-    if (xrange.first > xrange.second && yrange.first > yrange.second)
+    //optimalization, check if there are any planes to intersect at all
+    if (xrange.first == xrange.second && yrange.first == yrange.second)
         return;
 
     split_triangles_along_axis(xrange, 0);
@@ -364,11 +353,11 @@ bool TriangleOverlay::handle_deg_2_to_3(const K::Segment_2 *ps)
 {
     float x_offset = 0, y_offset = 0;
     if (ps->source().x() == ps->target().x())
-        x_offset = FLT_EPSILON;
+        x_offset = 1;
     else if (ps->source().y() == ps->target().y())
-        y_offset = FLT_EPSILON;
+        y_offset = 1;
 
-    K::Iso_cuboid_3 segment_box(K::Point_3(ps->source().x() - x_offset, ps->source().y() - y_offset, FLT_MIN),
+    K::Iso_cuboid_3 segment_box(K::Point_3(ps->source().x() - x_offset, ps->source().y() - y_offset, -FLT_MAX),
                                 K::Point_3(ps->target().x() + x_offset, ps->target().y() + y_offset, FLT_MAX));
 
     if (segment_box.is_degenerate())

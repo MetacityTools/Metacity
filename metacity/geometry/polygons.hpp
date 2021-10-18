@@ -35,6 +35,7 @@ public:
     const tvec3 * triangle(const size_t index) const;
     const shared_ptr<Attribute> attribute(const string & name);
 
+    virtual size_t to_obj(const string & path, const size_t offset) const override;
 protected:
     void to_tiles(const vector<tvec3> &triangles, const float tile_size, Tiles &tiles) const;
     friend class RTree;

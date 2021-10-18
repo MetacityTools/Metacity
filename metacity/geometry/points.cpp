@@ -79,6 +79,16 @@ const char * SimpleMultiPoint::type() const
     return "simplepoint";
 }
 
+size_t SimpleMultiPoint::to_obj(const string & path, const size_t offset) const 
+{
+    ofstream objfile(path, std::ios_base::app);
+    objfile << "o PointCloud" << offset << endl; 
+    for(const auto & v: vertices)
+        objfile << "v " << v.x << " " << v.y << " " << v.z << endl;
+    objfile.close();
+    return vertices.size();
+}
+
 vector<shared_ptr<SimplePrimitive>> SimpleMultiPoint::slice_to_grid(const float tile_size) const
 {
     Tiles tiles;
@@ -107,12 +117,12 @@ tfloat interpolate_z(const tvec3 triangle[3], const K::Line_3 & line)
     const auto res = CGAL::intersection(t, line);
 
     if (!res.is_initialized())
-        return FLT_MIN;
+        return -FLT_MAX;
 
     if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
         return p->z();
         
-    return FLT_MIN;
+    return -FLT_MAX;
 }
 
 void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target) 
@@ -140,7 +150,7 @@ void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target)
         v = vertices[p];
 
         tree.point_query(v, indices);
-        maxz = FLT_MIN;
+        maxz = -FLT_MAX;
 
         if (indices.size() > 0)
         {
@@ -155,7 +165,7 @@ void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target)
                 }
             }
 
-            if (maxz != FLT_MIN)
+            if (maxz != -FLT_MAX)
             {
                 v.z = maxz;
                 nvertices.emplace_back(v);

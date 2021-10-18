@@ -76,6 +76,13 @@ tuple<tfloat, tfloat, tfloat> SimplePrimitive::centroid() const
     return make_tuple(c.x, c.y, c.z);
 }
 
+void SimplePrimitive::shift(const tfloat sx, const tfloat sy, const tfloat sz)
+{   
+    const tvec3 shift(sx, sy, sz); 
+    for (tvec3 & v: vertices)
+        v += shift;
+}
+
 void SimplePrimitive::join(const shared_ptr<SimplePrimitive> primitive)
 {
     for (const auto & attr: attrib)

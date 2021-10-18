@@ -4,6 +4,7 @@ from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as gfs
 from metacity.geometry.primitive import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
                                          SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
+from metacity.filesystem.file import read_json
 from metacity.utils.persistable import Persistable
 
 
@@ -160,4 +161,19 @@ class TileSet(DataSet):
 
 
 
+class Tile:
+    def __init__(self, tile_file):
+        self.file = tile_file
+        self.x, self.y = gfs.tile_xy(fs.base.filename(tile_file))
+        self.objects: List[SimplePrimitive] = []
+        for model in read_json(self.file):
+            self.objects.append(desermodel(model))
 
+    @property
+    def polygon(self):
+        for o in self.objects:
+            if o.type == "simplepolygon":
+                return o
+        return None
+
+        

@@ -74,3 +74,18 @@ size_t pair_hash::operator()(const pair<int, int> &p) const
     // In the real world, use sth. like boost.hash_combine
     return h1 ^ h2;
 }
+
+ostream &operator<<(ostream &os, const tvec3 &vec)
+{
+    os << vec.x << " " << vec.y << " " << vec.z;
+    return os;
+}
+
+ostream &operator<<(ostream &os, const vector<tvec3> &vec)
+{
+    os << "[\n";
+    for (const auto &v : vec)
+        os << "   " << v << "\n";
+    os << "]";
+    return os;
+}

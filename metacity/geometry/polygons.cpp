@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <unordered_map>
+#include <fstream>
 #include "polygons.hpp"
 #include "rtree.hpp"
 #include "triangulation.hpp"
@@ -109,6 +110,20 @@ shared_ptr<SimplePrimitive> SimpleMultiPolygon::transform() const
 const char *SimpleMultiPolygon::type() const
 {
     return "simplepolygon";
+}
+
+size_t SimpleMultiPolygon::to_obj(const string & path, const size_t offset) const 
+{
+    ofstream objfile(path, std::ios_base::app);
+    objfile << "o Polygon" << offset << endl; 
+    for(const auto & v: vertices)
+        objfile << "v " << v.x << " " << v.y << " " << v.z << endl;
+
+    for(size_t i = offset + 1; i < offset + 1 + vertices.size(); i += 3)
+        objfile << "f " << i << " " << i + 1 << " " << i + 2 << endl;
+
+    objfile.close();
+    return vertices.size();
 }
 
 inline tvec3 tcentroid(const tvec3 triangle[3])

@@ -12,6 +12,10 @@ using json = nlohmann::json;
 
 using namespace std;
 
+ostream &operator<<(ostream &os, const tvec3 &vec);
+ostream &operator<<(ostream &os, const vector<tvec3> &vec);
+
+
 using Polygon = vector<vector<tvec3>>;
 using Polygons = vector<vector<vector<tvec3>>>;
 

@@ -139,6 +139,8 @@ Backend Metacity:
         ☐ export do stl, nebo nějaký jiný způsob ověření, že ty modely dávají smysl
     ☐ Otestovat mapování 2D na 3D
     ☐ Otestovat, dopsat testy?
+    ☐ Nebude fungovat indexování okolo nuly, všechno to spadne do jedné dlaždice, je to ok?
+    ☐ Refaktorování!!
 
 Metacity PIPY:
     ☐ Deploy stabilní verze backendu
