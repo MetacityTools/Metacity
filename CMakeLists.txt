@@ -14,8 +14,8 @@ find_package(CGAL REQUIRED COMPONENTS)
 include_directories(metacity/geometry)
 link_directories(metacity/geometry)
 
-add_compile_options(-std=c++17 -Wall -pedantic -g)# -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
-#add_link_options(-fsanitize=address -shared-libasan)
+add_compile_options(-std=c++17 -Wall -pedantic -g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+add_link_options(-fsanitize=address -shared-libasan)
 
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/primitive.cpp 
                                     metacity/geometry/primitives.cpp 

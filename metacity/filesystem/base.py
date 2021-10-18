@@ -3,6 +3,7 @@ import shutil
 import ntpath
 
 METADATA = "metadata"
+REGROUPED = "regrouped"
 MODELS = "models"
 GRID = "grid"
 ORIGINAL = "original"

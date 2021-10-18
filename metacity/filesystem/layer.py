@@ -20,6 +20,10 @@ def layer_metadata(layer_dir: str):
     return os.path.join(layer_dir, base.METADATA)
 
 
+def layer_regrouped(layer_dir: str):
+    return os.path.join(layer_dir, base.REGROUPED)
+
+
 def layer_models(layer_dir: str):
     return os.path.join(layer_dir, base.MODELS)
 
@@ -73,3 +77,21 @@ def non_coliding_layer_dir(project_dir: str, layer_name: str):
         layer_path = layer_dir(project_dir, f"{layer_name}-{i}")
         i += 1
     return layer_path
+
+
+def move_from_regrouped(layer_dir: str):
+    regrouped = layer_regrouped(layer_dir)
+    md = layer_metadata(layer_dir)
+    rmd = layer_metadata(regrouped)
+    mo = layer_models(layer_dir)
+    rmo = layer_models(regrouped)
+    shutil.rmtree(md)
+    shutil.rmtree(mo)
+    shutil.move(rmd, md)
+    shutil.move(rmo, mo)
+    shutil.rmtree(regrouped)
+
+
+def remove(path):
+    if os.path.exists(path):
+        shutil.rmtree(path)

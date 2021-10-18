@@ -117,7 +117,7 @@ json SimplePrimitive::serialize() const
     json sattrib = json::object({});
 
     for (const auto &attr : attrib)
-        sattrib.update({attr.first, attr.second->serialize()});
+        sattrib.update({{attr.first, attr.second->serialize()}});
 
     data["attributes"] = sattrib;
     return data;

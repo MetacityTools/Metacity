@@ -134,6 +134,10 @@ Backend Metacity:
         ✔ 1. geojson @done(21-10-18 11:26)
         ✔ 2. shapefile @done(21-10-18 11:26)
         3. cityjson
+    ☐ Otestovat tvorbu gridu
+        ☐ stavba gridu
+        ☐ export do stl, nebo nějaký jiný způsob ověření, že ty modely dávají smysl
+    ☐ Otestovat mapování 2D na 3D
     ☐ Otestovat, dopsat testy?
 
 Metacity PIPY:
@@ -155,3 +159,5 @@ Poznámky:
     Buildings - 5362859 objektů
 
     CRS
+
+    na zpracování cca 2GB dat je potřeba cca 200MB paměti

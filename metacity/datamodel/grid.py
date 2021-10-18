@@ -9,11 +9,11 @@ from metacity.utils.persistable import Persistable
 
 
 class TileCache:
-    def __init__(self, grid_dir: str, name: str):
+    def __init__(self, grid_dir: str, name: str, group_by=1000):
         self.name = name
         self.grid_dir = grid_dir
         self.size = 0
-        self.group_by = 1000
+        self.group_by = group_by
         self.set = TileSet(self.grid_dir, self.name, 0, self.group_by)
 
     def add(self, oid: int, model: SimplePrimitive):
@@ -26,6 +26,7 @@ class TileCache:
 
     def __getitem__(self, index: int):
         if not self.set.can_contain(index):
+            self.set.export()
             self.activate_set(index)
         obj: SimplePrimitive = self.set[index]
         return obj
@@ -40,7 +41,7 @@ class TileCache:
             yield self[i]
 
     def to_tile(self):
-        output = fs.grid_tiles_dir(self.grid_dir)
+        output = fs.grid_tile(self.grid_dir, self.name)
         aggregate_models : Dict[str, SimplePrimitive] = {}
         
         for model in self.models:
@@ -49,19 +50,18 @@ class TileCache:
             else:
                 aggregate_models[model.type].join(model)
                 
-        serialized = [ m.serialize() for m in aggregate_models.values() ]
+        serialized = [m.serialize() for m in aggregate_models.values()]
         fsf.write_json(output, serialized)
-
 
 
 class Grid(Persistable):
     def __init__(self, layer_dir: str):
         self.dir = fs.grid_dir(layer_dir)
+        fs.base.create_dir_if_not_exists(self.dir)
         super().__init__(fs.grid_config(self.dir))
 
         self.tile_size = 1000
-        gen_tile = lambda x, y: TileCache(self.dir, fs.tile_name(x, y))
-        self.cache: DefaultDict[Tuple[int, int], TileCache] = defaultdict(gen_tile)
+        self.cache: Dict[Tuple[int, int], TileCache] = {}
 
         try:
             self.load()
@@ -75,15 +75,17 @@ class Grid(Persistable):
         submodel = model.transform()
         submodels = submodel.slice_to_grid(self.tile_size)
         for model in submodels:
-            xy = self.v_to_xy(model.centroid)
-            self.cache[xy].add(oid, model)
+            x, y = self.v_to_xy(model.centroid)
+            if (x, y) not in self.cache:
+                self.cache[x, y] = TileCache(self.dir, fs.tile_name(x, y))
+            self.cache[x, y].add(oid, model)
 
     def v_to_xy(self, vertex):
-        return (vertex[0] // self.tile_size, vertex[1] // self.tile_size)
+        return (int(vertex[0] // self.tile_size), int(vertex[1] // self.tile_size))
 
     def persist(self):
         for cache in self.cache.values():
-            cache.to_tile(self.dir)
+            cache.to_tile()
         self.export()
 
     def serialize(self):

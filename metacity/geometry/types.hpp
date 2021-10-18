@@ -3,6 +3,7 @@
 #include "cppcodec/base64_rfc4648.hpp"
 #include "json/json.hpp"
 #include <vector>
+#include <iostream>
 
 using tvec3 = glm::vec3;
 using tvec2 = glm::vec2;
@@ -56,8 +57,8 @@ vector<T> uint8_to_T(const vector<uint8_t> &bytes)
     vec.resize(bytes.size() / (sizeof(T)));
     size_t tls = sizeof(T);
 
-    for (size_t i = 0; i < bytes.size(); i += tls)
-        memcpy(&vec[i], &bytes[i], tls);
+    for (size_t i = 0, j = 0; i < bytes.size(); i += tls, ++j)
+        memcpy(&vec[j], &bytes[i], tls);
 
     return vec;
 };

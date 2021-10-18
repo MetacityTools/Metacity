@@ -154,8 +154,8 @@ class TileSet(DataSet):
     def deserialize(self, data):
         super().deserialize(data)
         self.data = []
-        for oid, model in data['models']:
-            self.data.append([oid, desermodel(model)])
+        for model in data['models']:
+            self.data.append(desermodel(model))
 
 
 
