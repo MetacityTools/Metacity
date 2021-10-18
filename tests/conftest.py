@@ -1,15 +1,8 @@
-from metacity.grid.build import generate_layout
 import os
 
 import metacity.utils.bbox as bbox
 import numpy as np
 import pytest
-from metacity.datamodel.grid.grid import RegularGrid
-from metacity.datamodel.layer.layer import Layer
-
-from metacity.datamodel.primitives import facets
-from metacity.datamodel.primitives import lines
-from metacity.datamodel.primitives import points
 
 
 ######################################
@@ -337,47 +330,37 @@ def railway_dataset_stats():
     yield stats
 
 
-@pytest.fixture(scope="function")
-def layer(layer_tree):
-    yield Layer(layer_tree)
-
-
-@pytest.fixture(scope="function")
-def grid(layer):
-    rg = RegularGrid(layer.dir)
-    yield rg
-
 ######################################
 # MODLES
 ######################################
 
-@pytest.fixture(scope="function")
-def random_facet_model(random_vertices_normals, random_semantics, random_semantic_meta):
-    model = facets.FacetModel()
-    vertices, normals = random_vertices_normals
-    model.vertices = vertices.flatten()
-    model.normals = normals.flatten()
-    model.semantics = random_semantics
-    model.meta = random_semantic_meta
-    return model
-
-
-@pytest.fixture(scope="function")
-def random_line_model(random_vertices, random_semantics, random_semantic_meta):
-    model = lines.LineModel()
-    model.vertices = random_vertices.flatten()
-    model.semantics = random_semantics
-    model.meta = random_semantic_meta
-    return model
-
-
-@pytest.fixture(scope="function")
-def random_point_model(random_vertices, random_semantics, random_semantic_meta):
-    model = points.PointModel()
-    model.vertices = random_vertices.flatten()
-    model.semantics = random_semantics
-    model.meta = random_semantic_meta
-    return model
+#@pytest.fixture(scope="function")
+#def random_facet_model(random_vertices_normals, random_semantics, random_semantic_meta):
+#    model = facets.FacetModel()
+#    vertices, normals = random_vertices_normals
+#    model.vertices = vertices.flatten()
+#    model.normals = normals.flatten()
+#    model.semantics = random_semantics
+#    model.meta = random_semantic_meta
+#    return model
+#
+#
+#@pytest.fixture(scope="function")
+#def random_line_model(random_vertices, random_semantics, random_semantic_meta):
+#    model = lines.LineModel()
+#    model.vertices = random_vertices.flatten()
+#    model.semantics = random_semantics
+#    model.meta = random_semantic_meta
+#    return model
+#
+#
+#@pytest.fixture(scope="function")
+#def random_point_model(random_vertices, random_semantics, random_semantic_meta):
+#    model = points.PointModel()
+#    model.vertices = random_vertices.flatten()
+#    model.semantics = random_semantics
+#    model.meta = random_semantic_meta
+#    return model
 
 
 ######################################

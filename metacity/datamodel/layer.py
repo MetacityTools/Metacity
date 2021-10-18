@@ -13,7 +13,7 @@ class Layer(Persistable):
         self.dir = layer_dir
         self.shift = [0., 0., 0.]
         self.size = 0
-        self.group_by = 1000
+        self.group_by = 10000
         self.set = ObjectSet(self.dir, 0, self.group_by)
 
         fs.create_layer(layer_dir)

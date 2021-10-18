@@ -128,11 +128,11 @@ Backend Metacity:
             - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
             - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
 
-    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička
+    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička?
         - nové primitivum pro linky, simple primitivum se bude dát reuse 
     ☐ Upravit IO pro nové geometry api
-        1. geojson
-        2. shapefile
+        ✔ 1. geojson @done(21-10-18 11:26)
+        ✔ 2. shapefile @done(21-10-18 11:26)
         3. cityjson
     ☐ Otestovat, dopsat testy?
 
@@ -146,5 +146,12 @@ Frontend Metacity:
     ☐ Načítání dlaždic
     ☐ Rozmyslet zbytek vizualizace
 
+Future:
+    ☐ Přepsat triangulace atd do jednoho stylu a používat jednotnou strukturu
+
 Poznámky:
     https://github.com/tobywf/python-ext-asan - debug na linuxu
+    Terrain - 4502183 objektů - 450 souborů
+    Buildings - 5362859 objektů
+
+    CRS

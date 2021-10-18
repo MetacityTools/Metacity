@@ -1,7 +1,7 @@
 from typing import Callable, Dict, List, Tuple
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
-from metacity.filesystem import grid as fs
+from metacity.filesystem import grid as gfs
 from metacity.geometry.primitive import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
                                          SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
 from metacity.utils.persistable import Persistable
@@ -140,7 +140,7 @@ class ObjectSet:
 
 class TileSet(DataSet):
     def __init__(self, grid_dir: str, tile_name: str, offset: int, capacity: int):        
-        super().__init__(fs.grid_cache_tile_dir(grid_dir, tile_name), offset, capacity)
+        super().__init__(gfs.grid_cache_tile_dir(grid_dir, tile_name), offset, capacity)
 
     def serialize(self): 
         data = super().serialize()
