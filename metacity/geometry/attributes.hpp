@@ -28,6 +28,7 @@ struct TAttribute : public Attribute
     virtual const char * type() const override;
     virtual void emplace_back(const T & v);
     virtual void fill(const T & v, const size_t count);
+    virtual void insert(const vector<T> & data);
     virtual json serialize() const override;
     virtual void deserialize(const string & data) override;
 
@@ -69,6 +70,12 @@ template <>
 inline void TAttribute<uint32_t>::fill(const uint32_t & value, const size_t count)
 {
     data.insert(data.end(), count, value);
+};
+
+template <>
+inline void TAttribute<uint32_t>::insert(const vector<uint32_t> & data_)
+{
+    data.insert(data.end(), data_.begin(), data_.end());
 };
 
 template <>

@@ -1,12 +1,12 @@
 #include "types.hpp"
 
-void grid_coords(const tvec3 &point, const float tile_size, pair<int, int> &coords)
+void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coords)
 {
     coords.first = (point.x / tile_size);
     coords.second = (point.y / tile_size);
 }
 
-vector<tfloat> vec_to_float(const vector<tvec3> &vec)
+vector<tfloat> vec_to_tfloat(const vector<tvec3> &vec)
 {
     vector<tfloat> c;
     for (const auto &v : vec)

@@ -8,7 +8,7 @@ namespace mapbox
         template <>
         struct nth<0, K::Point_2>
         {
-            inline static double get(const K::Point_2 &t)
+            inline static tfloat get(const K::Point_2 &t)
             {
                 return t.x();
             };
@@ -16,7 +16,7 @@ namespace mapbox
         template <>
         struct nth<1, K::Point_2>
         {
-            inline static double get(const K::Point_2 &t)
+            inline static tfloat get(const K::Point_2 &t)
             {
                 return t.y();
             };

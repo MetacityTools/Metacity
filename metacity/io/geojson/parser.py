@@ -123,9 +123,9 @@ class GJMultiPolygon(GJPolygon):
         dim = self.dim
         for polygon in self.coordinates:
             if dim == 2:
-                model.push_p2(flatten(polygon))
+                model.push_p2(flatten_polygon(polygon))
             elif dim == 3:
-                model.push_p3(flatten(polygon))
+                model.push_p3(flatten_polygon(polygon))
         return [model]
 
 

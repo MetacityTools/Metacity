@@ -5,6 +5,7 @@ Project:
 
 Side:
     ☐ Koupit lampičku do kanclu
+    ☐ Anička - klíče a čip zařídit - KUBA
 
 Backend Metacity: 
     ✔ Serializace @done(21-10-11 10:09)
@@ -134,12 +135,16 @@ Backend Metacity:
         ✔ 1. geojson @done(21-10-18 11:26)
         ✔ 2. shapefile @done(21-10-18 11:26)
         3. cityjson
-    ☐ Otestovat tvorbu gridu
-        ☐ stavba gridu
-        ☐ export do stl, nebo nějaký jiný způsob ověření, že ty modely dávají smysl
+    ✔ Otestovat tvorbu gridu @done(21-10-20 12:38)
+        ✔ stavba gridu @done(21-10-20 12:38)
+        ✔ export do stl, nebo nějaký jiný způsob ověření, že ty modely dávají smysl @done(21-10-20 12:38)
     ☐ Otestovat mapování 2D na 3D
+        - body
+        ✔ linky @done(21-10-20 12:38) - otestováno na síti ulic prahy
+        ✔ trojuhelniky @done(21-10-20 17:31)
     ☐ Otestovat, dopsat testy?
     ☐ Nebude fungovat indexování okolo nuly, všechno to spadne do jedné dlaždice, je to ok?
+    ☐ Hraniční trojúhelníky se špatně zařazují, pokud došlo k tenkému rozřezu?
     ☐ Refaktorování!!
 
 Metacity PIPY:
@@ -154,12 +159,16 @@ Frontend Metacity:
 
 Future:
     ☐ Přepsat triangulace atd do jednoho stylu a používat jednotnou strukturu
+    ☐ Transformace datasetů podle CRS
 
 Poznámky:
-    https://github.com/tobywf/python-ext-asan - debug na linuxu
-    Terrain - 4502183 objektů - 450 souborů
-    Buildings - 5362859 objektů
+    - https://github.com/tobywf/python-ext-asan - debug na linuxu
+    Statistiky:
+        Terrain - 4502183 objektů - 450 souborů
+        Buildings - 5362859 objektů
+        na zpracování cca 2GB dat je potřeba cca 200MB paměti
+    - multipatch reprezentuje budovy jako celek bez identifikace jednotlivých částí budov, polygonZ je reprezentuje po částech s přiadným atributem popisující TYP (popis je česky)
 
-    CRS
-
-    na zpracování cca 2GB dat je potřeba cca 200MB paměti
+    
+    
+    

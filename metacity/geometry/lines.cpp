@@ -104,12 +104,12 @@ const char *SimpleMultiLine::type() const
 inline tvec3 lcentroid(const tvec3 line[2])
 {
     tvec3 c = line[0] + line[1];
-    c /= 2;
+    c /= 2.0;
     return c;
 }
 
 
-void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const float tile_size, Tiles &tiles) const
+void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const tfloat tile_size, Tiles &tiles) const
 {
     Tiles::iterator search;
     pair<int, int> xy;
@@ -125,7 +125,7 @@ void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const float til
     }
 }
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const float tile_size) const
+vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     LineSlicer slicer;
@@ -217,7 +217,7 @@ void SimpleMultiLine::map(const shared_ptr<SimpleMultiPolygon> target)
         {
             K::Plane_3 plane(to_point3(la), to_point3(lb), to_point3(la) + z_axis);
 
-            float x_offset = 0, y_offset = 0;
+            tfloat x_offset = 0, y_offset = 0;
             if (la.x == lb.x)
                 x_offset = 1;
             else if (la.y == lb.y)

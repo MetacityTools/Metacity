@@ -104,7 +104,7 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override {
         PYBIND11_OVERRIDE_PURE(
             vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimplePrimitive,/* Parent class */
@@ -217,7 +217,7 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override {
         PYBIND11_OVERRIDE(
             vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiPoint,/* Parent class */
@@ -331,7 +331,7 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override {
         PYBIND11_OVERRIDE(
             vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiLine,/* Parent class */
@@ -443,7 +443,7 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const override {
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override {
         PYBIND11_OVERRIDE(
             vector<shared_ptr<SimplePrimitive>>,/* Return type */
             SimpleMultiPolygon,/* Parent class */

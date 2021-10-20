@@ -3,7 +3,7 @@
 #include "slicing.hpp"
 
 static K::Vector_3 axis_normal[2] = {K::Vector_3(1.0, 0, 0), K::Vector_3(0, 1.0, 0)};
-static K::Vector_3 z_axis(1.0, 0, 0);
+static K::Vector_3 z_axis(0, 0, 1.0);
 
 //===============================================================================
 
@@ -29,13 +29,11 @@ void LineSlicer::intersect(const K::Plane_3 &plane, const K::Line_3 &ll)
 {
     const auto res = CGAL::intersection(plane, ll);
 
-    if (res.is_initialized())
-    {
-        if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
+    if (!res.is_initialized())
+        return;
+        
+    if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
         points.emplace_back(p->x(), p->y(), p->z());
-    } else {
-        points.emplace_back(0, 0, 0);
-    }
 
 }
 
@@ -124,11 +122,11 @@ tvec3 TriangleSlicer::cross_point(const tvec3 &a, const tvec3 &b, const K::Plane
     K::Line_3 ab(to_point3(a), to_point3(b));
     const auto res = CGAL::intersection(plane, ab);
 
-    if (res.is_initialized())
-    {
-        if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
-            return to_vec(*p);
-    }
+    if (!res.is_initialized())
+        throw runtime_error("No intersection: cross_point");
+
+    if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
+        return to_vec(*p);
 
     // in case all fails, use colinear point as backup
     // all fails usually means a and b lie both in the plane
@@ -264,7 +262,7 @@ void TriangleSlicer::split_triangles_along_axis(const pair<int, int> &range, con
     for (int i = range.first; i <= range.second; ++i)
     {
         splited.clear();
-        origin[axis] = (float)(i) * tile_size;
+        origin[axis] = (tfloat)(i) * tile_size;
         K::Plane_3 plane(to_point3(origin), axis_normal[axis]);
         for (size_t i = 0; i < triangles.size(); i += 3)
             split_triangle_along_axis(&triangles[i], origin[axis], plane, axis);
@@ -297,13 +295,40 @@ void TriangleOverlay::segment(const K::Triangle_2 &target_)
     target = target_;
     out_triangles.clear();
 
-    if (target.is_degenerate())
+    cout << "intersect " << source << 
+          "\n          " << target << endl;
+
+    if (source.is_degenerate() || target.is_degenerate())
         return;
 
     if (source_proj.is_degenerate())
         handle_degenerate();
     else
         handle_general();
+}
+
+bool TriangleOverlay::handle_general()
+{
+
+    const auto res = CGAL::intersection(source_proj, target);
+    tmp_points.clear();
+
+    if (!res.is_initialized())
+        return false;
+
+    if (const vector<K::Point_2> *v = boost::get<vector<K::Point_2>>(&*res))
+    {
+        project_vertices(v->data(), v->size(), source.supporting_plane());
+        return handle_vertices(tmp_points);
+    }
+
+    if (const K::Triangle_2 *t = boost::get<K::Triangle_2>(&*res))
+    {
+        project_triangle(*t, source.supporting_plane());
+        return handle_vertices(tmp_points);
+    }
+
+    return false;
 }
 
 void TriangleOverlay::set_source(const tvec3 triangle[3])
@@ -351,30 +376,41 @@ bool TriangleOverlay::handle_vertices(const vector<K::Point_3> &v)
 
 bool TriangleOverlay::handle_deg_2_to_3(const K::Segment_2 *ps)
 {
-    float x_offset = 0, y_offset = 0;
-    if (ps->source().x() == ps->target().x())
-        x_offset = 1;
-    else if (ps->source().y() == ps->target().y())
-        y_offset = 1;
+    const K::Point_3 a = to_point3(ps->min());
+    const K::Point_3 b = to_point3(ps->max());
+    K::Vector_3 ab_normal(a, b);
+    K::Vector_3 ba_normal(b, a);
+    const K::Plane_3 ab(a, ba_normal); //negative side to the middle
+    const K::Plane_3 ba(b, ab_normal);
 
-    K::Iso_cuboid_3 segment_box(K::Point_3(ps->source().x() - x_offset, ps->source().y() - y_offset, -FLT_MAX),
-                                K::Point_3(ps->target().x() + x_offset, ps->target().y() + y_offset, FLT_MAX));
+    Mesh m;
+    m.add_face(m.add_vertex(source[0]), m.add_vertex(source[1]), m.add_vertex(source[2]));
+    //cout << "added face" << endl;
+    //cout << source[0] << "\n " << source[1] << "\n" << source[2] << endl;
+    //cout << ab.point() << " " << ab.orthogonal_vector() << endl;
+    CGAL::Polygon_mesh_processing::clip(m, ab);
 
-    if (segment_box.is_degenerate())
-        return false;
+    //cout << "clipped face" << endl;
+    //cout << "edges    " << m.number_of_edges() << endl;
+    //cout << "vertices " << m.number_of_vertices() << endl;
+    //cout << "faces    " << m.number_of_faces() << endl;
+    
+    //cout << ba.point() << " " << ba.orthogonal_vector() << endl;
+    CGAL::Polygon_mesh_processing::remove_degenerate_faces(m);
+    CGAL::Polygon_mesh_processing::clip(m, ba);
+    CGAL::Polygon_mesh_processing::remove_degenerate_faces(m);
 
-    const auto res = CGAL::intersection(source, segment_box);
 
-    if (!res.is_initialized())
-        return false;
+    for (const Mesh::Face_index & face_index : m.faces()) {
+        CGAL::Vertex_around_face_circulator<Mesh> vcirc(m.halfedge(face_index), m);
+        CGAL::Vertex_around_face_circulator<Mesh> done(vcirc);
+        do {
+            out_triangles.emplace_back(to_vec(m.point(*vcirc++)));
+            //cout << *vcirc << " " << *done << endl;
+        }  while (vcirc != done);
+    }
 
-    if (const vector<K::Point_3> *v = boost::get<vector<K::Point_3>>(&*res))
-        return handle_vertices(*v);
-
-    if (const K::Triangle_3 *t = boost::get<K::Triangle_3>(&*res))
-        return handle_triangle(*t);
-
-    return false;
+    return true;
 }
 
 bool TriangleOverlay::handle_degenerate()
@@ -382,6 +418,7 @@ bool TriangleOverlay::handle_degenerate()
     const auto res = CGAL::intersection(source_proj_segment, target);
     if (!res.is_initialized())
         return false;
+
     if (const K::Segment_2 *projected_intersection = boost::get<K::Segment_2>(&*res))
         return handle_deg_2_to_3(projected_intersection);
     return false;
@@ -391,8 +428,9 @@ void TriangleOverlay::project_point2(const K::Point_2 &point, const K::Plane_3 &
 {
     K::Line_3 line(to_point3(point), z_axis);
     const auto res = CGAL::intersection(plane, line);
+
     if (!res.is_initialized())
-        return;
+        throw runtime_error("No intersection: project_point2");
 
     if (const K::Point_3 *v = boost::get<K::Point_3>(&*res))
         tmp_points.push_back(*v);
@@ -409,27 +447,4 @@ void TriangleOverlay::project_triangle(const K::Triangle_2 &t, const K::Plane_3 
     project_point2(t[0], plane);
     project_point2(t[1], plane);
     project_point2(t[2], plane);
-}
-
-bool TriangleOverlay::handle_general()
-{
-    const auto res = CGAL::intersection(source_proj, target);
-    tmp_points.clear();
-
-    if (!res.is_initialized())
-        return false;
-
-    if (const vector<K::Point_2> *v = boost::get<vector<K::Point_2>>(&*res))
-    {
-        project_vertices(v->data(), v->size(), source.supporting_plane());
-        return handle_vertices(tmp_points);
-    }
-
-    if (const K::Triangle_2 *t = boost::get<K::Triangle_2>(&*res))
-    {
-        project_triangle(*t, source.supporting_plane());
-        return handle_vertices(tmp_points);
-    }
-
-    return false;
 }

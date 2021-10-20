@@ -71,10 +71,17 @@ SimplePrimitive::SimplePrimitive(const vector<tvec3> &&v) : Primitive(), vertice
 
 tuple<tfloat, tfloat, tfloat> SimplePrimitive::centroid() const
 {
-    tvec3 c = accumulate(vertices.begin(), vertices.end(), tvec3(0));
-    c /= vertices.size();
+    tvec3 c = centroidvec();
     return make_tuple(c.x, c.y, c.z);
 }
+
+tvec3 SimplePrimitive::centroidvec() const
+{
+    tvec3 c = accumulate(vertices.begin(), vertices.end(), tvec3(0));
+    c /= vertices.size();
+    return c;
+}
+
 
 void SimplePrimitive::shift(const tfloat sx, const tfloat sy, const tfloat sz)
 {   

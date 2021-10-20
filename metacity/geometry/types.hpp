@@ -5,9 +5,9 @@
 #include <vector>
 #include <iostream>
 
-using tvec3 = glm::vec3;
-using tvec2 = glm::vec2;
-using tfloat = float;
+using tvec3 = glm::highp_f64vec3;
+using tvec2 = glm::highp_f64vec2;
+using tfloat = double;
 using json = nlohmann::json;
 
 using namespace std;
@@ -20,9 +20,9 @@ using Polygon = vector<vector<tvec3>>;
 using Polygons = vector<vector<vector<tvec3>>>;
 
 // fully defined
-void grid_coords(const tvec3 &point, const float tile_size, pair<int, int> &coords);
+void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coords);
 
-vector<tfloat> vec_to_float(const vector<tvec3> &vec);
+vector<tfloat> vec_to_tfloat(const vector<tvec3> &vec);
 vector<uint8_t> vec_to_uint8(const vector<tvec3> &vec);
 vector<tvec3> uint8_to_vec(const vector<uint8_t> &bytes);
 string vec_to_string(const vector<tvec3> &vec);

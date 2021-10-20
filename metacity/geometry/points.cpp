@@ -89,7 +89,7 @@ size_t SimpleMultiPoint::to_obj(const string & path, const size_t offset) const
     return vertices.size();
 }
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiPoint::slice_to_grid(const float tile_size) const
+vector<shared_ptr<SimplePrimitive>> SimpleMultiPoint::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     Tiles::iterator search;

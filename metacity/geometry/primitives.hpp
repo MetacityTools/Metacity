@@ -32,6 +32,7 @@ public:
     void push_vert(const tvec3 &vec);
     void push_vert(const tvec3 * vec, size_t count);
     tuple<tfloat, tfloat, tfloat> centroid() const;
+    tvec3 centroidvec() const;
     void shift(const tfloat sx, const tfloat sy, const tfloat sz);
 
     virtual json serialize() const override;
@@ -43,7 +44,7 @@ public:
     virtual shared_ptr<SimplePrimitive> copy() const = 0;
     virtual const char * type() const override = 0;
     virtual shared_ptr<SimplePrimitive> transform() const override = 0;
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const float tile_size) const = 0;
+    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const = 0;
 
     virtual void map(const shared_ptr<SimpleMultiPolygon> target) = 0;
     bool mapping_ready() const;

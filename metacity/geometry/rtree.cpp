@@ -161,7 +161,6 @@ shared_ptr<RTreeNode> RTree::build_general(const BBox &box, const size_t start, 
     tfloat split = midpoint(box, axis);
     size_t firstRight = classify(split, left, right, start, end, axis);
 
-
     // maybe?
     if (start == firstRight || end == firstRight)
         firstRight = handle_special_case(left, right, start, end, axis);

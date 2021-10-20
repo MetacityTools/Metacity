@@ -21,7 +21,7 @@ void MultiPolygon::push_p2(const vector<vector<tfloat>> ivertices)
         if (iring.size() % tvec2::length())
             throw runtime_error("Unexpected number of elements in input array");
 
-        if (iring.size() / tvec2::length() < 3) // only a single point or a line
+        if ((iring.size() / tvec2::length()) < 3) // only a single point or a line
             continue;
 
         vector<tvec3> ring;
@@ -40,7 +40,7 @@ void MultiPolygon::push_p3(const vector<vector<tfloat>> ivertices)
         if (iring.size() % tvec3::length())
             throw runtime_error("Unexpected number of elements in input array");
 
-        if (iring.size() / tvec3::length() < 3) // only a single point or a line
+        if ((iring.size() / tvec3::length()) < 3) // only a single point or a line
             continue;
 
         vector<tvec3> ring;
@@ -129,11 +129,11 @@ size_t SimpleMultiPolygon::to_obj(const string & path, const size_t offset) cons
 inline tvec3 tcentroid(const tvec3 triangle[3])
 {
     tvec3 c = triangle[0] + triangle[1] + triangle[2];
-    c /= 3;
+    c /= 3.0;
     return c;
 }
 
-void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const float tile_size, Tiles &tiles) const
+void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const tfloat tile_size, Tiles &tiles) const
 {
     Tiles::iterator search;
     pair<int, int> xy;
@@ -148,7 +148,7 @@ void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const flo
     }
 }
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const float tile_size) const
+vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     TriangleSlicer slicer;
@@ -179,51 +179,93 @@ const shared_ptr<Attribute> SimpleMultiPolygon::attribute(const string & name)
     return it->second;
 }
 
-void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target) 
+
+bool with_idential_oid(const vector<uint32_t> & oids)
 {
-    if (!(mapping_ready() && target->mapping_ready()))
+    if (oids.size() == 0)
+        return true;
+
+    uint32_t id = oids[0];
+    for(const auto & i : oids)
+        if (id != i)
+            return false;
+    return true;
+}
+
+
+void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> otarget2D) 
+{
+    if (!(mapping_ready() && otarget2D->mapping_ready()))
         throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+
+    auto target2D = static_pointer_cast<SimpleMultiPolygon>(otarget2D->copy());
+    const tvec3 center = centroidvec();
+    target2D->shift(-center.x, -center.y, -center.z);
+    shift(-center.x, -center.y, -center.z);
 
     //helpers
     BBox box;
     vector<size_t> indices;
     uint32_t source_oid_value, target_oid_value;
-    RTree tree(target);
+    RTree tree(target2D);
     TriangleOverlay overlay;
 
     //data
     vector<tvec3> nvertices;
-    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target->attribute("oid"));
+    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target2D->attribute("oid"));
     const shared_ptr<TAttribute<uint32_t>> source_oid = static_pointer_cast<TAttribute<uint32_t>>(attrib["oid"]);
     shared_ptr<TAttribute<uint32_t>> ntarget_oid = make_shared<TAttribute<uint32_t>>();
     shared_ptr<TAttribute<uint32_t>> nsource_oid = make_shared<TAttribute<uint32_t>>();
-
+    vector<uint32_t> target_oid_buffer;
+    vector<tvec3> vertex_buffer;
 
     for(size_t t = 0; t < vertices.size(); t += 3)
     {
         indices.clear();
+        vertex_buffer.clear();
+        target_oid_buffer.clear();
         for_triangle(&vertices[t], box);
         tree.range_query(box, indices);
 
         if (indices.size() > 0)
         {
+
             overlay.set_source(&vertices[t]);
             for(const auto & i : indices)
             {
-                overlay.segment(to_triangle2(target->triangle(i)));
-                source_oid_value = (*source_oid)[t];
-                target_oid_value = (*target_oid)[i * 3];
-                
+                overlay.segment(to_triangle2(target2D->triangle(i)));
+
                 const auto & d = overlay.data();
+
                 if (d.size() >= 3)
                 {
-                    nvertices.insert(nvertices.end(), d.begin(), d.end());
-                    ntarget_oid->fill((*target_oid)[i * 3], d.size());
-                    nsource_oid->fill((*source_oid)[t], d.size());
+                    target_oid_value = (*target_oid)[i * 3];   
+                    vertex_buffer.insert(vertex_buffer.end(), d.begin(), d.end());
+                    target_oid_buffer.insert(target_oid_buffer.end(), d.size(), target_oid_value);
                 }
             }
+
+            if (vertex_buffer.size() > 0)
+            {
+                source_oid_value = (*source_oid)[t];
+                //if (!with_idential_oid(target_oid_buffer))
+                //{
+                    nvertices.insert(nvertices.end(), vertex_buffer.begin(), vertex_buffer.end());
+                    nsource_oid->fill(source_oid_value, target_oid_buffer.size());
+                    ntarget_oid->insert(target_oid_buffer);
+                /*} else {
+                    nvertices.emplace_back(vertices[t]);
+                    nvertices.emplace_back(vertices[t + 1]);
+                    nvertices.emplace_back(vertices[t + 2]);
+
+                    nsource_oid->fill(source_oid_value, 3);
+                    ntarget_oid->fill(target_oid_buffer[0], 3);
+                }*/
+            }
+
         }
     }
 
     init_proxy(nsource_oid, ntarget_oid, nvertices);
+    shift(center.x, center.y, center.z);
 }
