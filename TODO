@@ -142,10 +142,6 @@ Backend Metacity:
         - body
         ✔ linky @done(21-10-20 12:38) - otestováno na síti ulic prahy
         ✔ trojuhelniky @done(21-10-20 17:31)
-    ☐ Otestovat, dopsat testy?
-    ☐ Nebude fungovat indexování okolo nuly, všechno to spadne do jedné dlaždice, je to ok?
-    ☐ Hraniční trojúhelníky se špatně zařazují, pokud došlo k tenkému rozřezu?
-    ☐ Refaktorování!!
 
 Metacity PIPY:
     ☐ Deploy stabilní verze backendu
@@ -154,8 +150,25 @@ Metacity PIPY:
     ☐ Doplnit funkcionality chybějící
 
 Frontend Metacity:
-    ☐ Načítání dlaždic
-    ☐ Rozmyslet zbytek vizualizace
+    ☐ Přidání projektu
+    ☐ Nahrání zdorjových souborů
+    ☐ Zobrazení gridu
+        ☐ Zobrazení bodů
+        ☐ Zobrazení linek
+    ☐ Obarvování dle OID
+    ☐ UI pro mapování 2D na 3D - párování a overlay
+    ☐ Obarvování dle dvojice OID
+    ☐ Prohlížení metadat nějak hromadně?
+
+=================================================================================================================
+
+Později před odevzdáním:
+    ☐ Otestovat, dopsat testy?
+    ☐ Refaktorování!!
+    
+Potenciální Issues:
+    ☐ Nebude fungovat indexování okolo nuly, všechno to spadne do jedné dlaždice, je to ok?
+    ☐ Hraniční trojúhelníky se špatně zařazují, pokud došlo k tenkému rozřezu?
 
 Future:
     ☐ Přepsat triangulace atd do jednoho stylu a používat jednotnou strukturu
@@ -171,4 +184,202 @@ Poznámky:
 
     
     
-    
+Statistiky pro dlaždice z tvorby overlay pro budoy a využití
+size 35928
+avg  16.84
+max  193
+size 6560
+avg  10.2825
+max  93
+size 30369
+avg  9.95568
+max  136
+size 23161
+avg  16.8149
+max  115
+size 10262
+avg  20.2627
+max  89
+size 38322
+avg  15.4158
+max  254
+size 31992
+avg  23.6549
+max  188
+size 654
+avg  65.7508
+max  122
+size 9822
+avg  14.2739
+max  201
+size 1280
+avg  17.4352
+max  48
+size 11101
+avg  17.7522
+max  254
+size 1946
+avg  10.0293
+max  67
+size 16317
+avg  24.1823
+max  118
+size 82008
+avg  17.4284
+max  1155
+size 1887
+avg  20.9491
+max  64
+size 14394
+avg  11.7698
+max  290
+size 55596
+avg  16.7355
+max  191
+size 20536
+avg  29.772
+max  290
+size 21198
+avg  17.6797
+max  86
+size 92
+avg  19.4565
+max  38
+size 38126
+avg  17.3402
+max  243
+size 72104
+avg  19.3972
+max  602
+size 34
+avg  9.55882
+max  14
+size 33151
+avg  19.7237
+max  260
+size 9450
+avg  12.6732
+max  82
+size 35082
+avg  19.4361
+max  147
+size 12737
+avg  13.4799
+max  62
+size 8197
+avg  17.4697
+max  171
+size 45166
+avg  13.2502
+max  224
+size 8553
+avg  19.7496
+max  139
+size 49959
+avg  18.641
+max  143
+size 9166
+avg  16.7642
+max  79
+size 10098
+avg  15.6843
+max  79
+size 29358
+avg  14.3347
+max  100
+size 54
+avg  12.037
+max  25
+size 41462
+avg  26.4989
+max  161
+size 6089
+avg  15.8854
+max  136
+size 22073
+avg  24.7045
+max  537
+size 74298
+avg  15.9282
+max  118
+size 477
+avg  8.74214
+max  39
+size 4597
+avg  20.132
+max  246
+size 5974
+avg  15.5616
+max  77
+size 62338
+avg  16.0446
+max  90
+size 24293
+avg  26.3303
+max  250
+size 24400
+avg  15.2123
+max  289
+size 41013
+avg  12.5886
+max  162
+size 27479
+avg  17.5148
+max  91
+size 22132
+avg  18.4128
+max  132
+size 25552
+avg  20.7426
+max  206
+size 148
+avg  18.3311
+max  52
+size 59326
+avg  18.2366
+max  243
+size 6336
+avg  10.0197
+max  110
+size 16531
+avg  17.2895
+max  200
+size 42830
+avg  25.9953
+max  249
+size 35189
+avg  17.8552
+max  410
+size 16037
+avg  15.5636
+max  96
+size 129
+avg  5.05426
+max  10
+size 10040
+avg  29.2875
+max  117
+size 2184
+avg  12.8072
+max  44
+size 3125
+avg  12.2774
+max  67
+size 18537
+avg  25.1561
+max  118
+size 51336
+avg  15.0186
+max  193
+size 27515
+avg  33.7052
+max  1297
+size 208373
+avg  20.5007
+max  503
+size 56896
+avg  23.4217
+max  136
+size 150377
+avg  18.6637
+max  292

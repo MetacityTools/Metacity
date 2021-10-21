@@ -12,7 +12,6 @@ class Layer(Persistable):
         super().__init__(fs.layer_config(layer_dir))
 
         self.dir = layer_dir
-        self.shift = [0., 0., 0.]
         self.size = 0
         self.group_by = group_by
 
@@ -87,12 +86,64 @@ class Layer(Persistable):
 
     def serialize(self):
         return {
-            'shift': self.shift,
+            'type': 'layer',
             'size': self.size,
             'group_by': self.group_by
         }
 
     def deserialize(self, data):
-        self.shift = data['shift']
         self.size = data['size']
         self.group_by = data['group_by']
+
+
+class LayerOverlay(Persistable):
+    def __init__(self, overlay_dir: str):
+        super().__init__(fs.layer_config(overlay_dir))
+        self.source_layer = None
+        self.target_layer = None
+        self.dir = overlay_dir
+        fs.create_overlay(overlay_dir)
+
+        try:
+            self.load()
+        except IOError:
+            self.export()
+
+    @property
+    def grid(self):
+        return Grid(self.dir)
+
+    def setup(self, source: Layer, target: Layer):
+        tg = target.grid
+        sg = source.grid
+
+        grid = self.grid
+
+        for source_tile, target_tile in sg.overlay(tg):
+            pol = target_tile.polygon
+            if pol is None:
+                continue
+            for source_model in source_tile.objects:
+                source_copy = source_model.copy()
+                source_copy.map(pol)
+                grid.tile_from_single_model(source_copy, source_tile.name)
+
+        grid.persist() #persist with empy cache
+        self.source_layer = source.name
+        self.target_layer = target.name
+
+    def serialize(self):
+        return {
+            'type': 'overlay',
+            'source': self.source_layer,
+            'target': self.target_layer
+        }
+
+    def deserialize(self, data):
+        self.source_layer = data['source']
+        self.target_layer = data['target']
+
+
+
+
+

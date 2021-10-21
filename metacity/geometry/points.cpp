@@ -68,12 +68,6 @@ shared_ptr<SimplePrimitive> SimpleMultiPoint::copy() const
     return cp;
 }
 
-shared_ptr<SimplePrimitive> SimpleMultiPoint::transform() const
-{
-    //nothing to do, already transformed
-    return make_shared<SimpleMultiPoint>(vertices);
-}
-
 const char * SimpleMultiPoint::type() const
 {
     return "simplepoint";

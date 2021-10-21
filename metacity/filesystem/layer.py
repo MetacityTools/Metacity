@@ -16,6 +16,14 @@ def create_layer(layer_dir):
             base.create_dir_if_not_exists(path)
 
 
+def create_overlay(overlay_dir):
+    if not os.path.exists(overlay_dir):
+        base.recreate_dir(overlay_dir)
+        for dir in base.OVERLAY_DIRS:
+            path = os.path.join(layer_dir, dir)
+            base.create_dir_if_not_exists(path)
+
+
 def layer_metadata(layer_dir: str):
     return os.path.join(layer_dir, base.METADATA)
 

@@ -176,4 +176,8 @@ class Tile:
                 return o
         return None
 
+    @property
+    def name(self):
+        return gfs.tile_name(self.x, self.y)
+
         

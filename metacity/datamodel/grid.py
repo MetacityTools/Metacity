@@ -107,7 +107,11 @@ class Grid(Persistable):
             tile: Tile = grid[xy]
             if tile is not None:
                 yield Tile(tile_path), tile
-        
+
+    def tile_from_single_model(self, model: SimplePrimitive, tile_name):
+        output = fs.grid_tile(self.dir, tile_name)
+        fsf.write_json(output, [model.serialize()])
+
     def serialize(self):
         return {
             "tile_size": self.tile_size,

@@ -102,11 +102,6 @@ shared_ptr<SimplePrimitive> SimpleMultiPolygon::copy() const
     return cp;
 }
 
-shared_ptr<SimplePrimitive> SimpleMultiPolygon::transform() const
-{
-    return make_shared<SimpleMultiPolygon>(vertices);
-}
-
 const char *SimpleMultiPolygon::type() const
 {
     return "simplepolygon";
@@ -193,15 +188,12 @@ bool with_idential_oid(const vector<uint32_t> & oids)
 }
 
 
-void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> otarget2D) 
+void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target2D) 
 {
-    if (!(mapping_ready() && otarget2D->mapping_ready()))
+    if (!(mapping_ready() && target2D->mapping_ready()))
         throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
 
-    auto target2D = static_pointer_cast<SimpleMultiPolygon>(otarget2D->copy());
-    const tvec3 center = centroidvec();
-    target2D->shift(-center.x, -center.y, -center.z);
-    shift(-center.x, -center.y, -center.z);
+    vector<size_t> stats;
 
     //helpers
     BBox box;
@@ -226,6 +218,7 @@ void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> otarget2D)
         target_oid_buffer.clear();
         for_triangle(&vertices[t], box);
         tree.range_query(box, indices);
+        stats.emplace_back(indices.size());
 
         if (indices.size() > 0)
         {
@@ -248,24 +241,35 @@ void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> otarget2D)
             if (vertex_buffer.size() > 0)
             {
                 source_oid_value = (*source_oid)[t];
-                //if (!with_idential_oid(target_oid_buffer))
-                //{
+                if (!with_idential_oid(target_oid_buffer))
+                {
                     nvertices.insert(nvertices.end(), vertex_buffer.begin(), vertex_buffer.end());
                     nsource_oid->fill(source_oid_value, target_oid_buffer.size());
                     ntarget_oid->insert(target_oid_buffer);
-                /*} else {
+                } else {
                     nvertices.emplace_back(vertices[t]);
                     nvertices.emplace_back(vertices[t + 1]);
                     nvertices.emplace_back(vertices[t + 2]);
 
                     nsource_oid->fill(source_oid_value, 3);
                     ntarget_oid->fill(target_oid_buffer[0], 3);
-                }*/
+                }
             }
 
         }
     }
 
+
+    size_t maximum = 0, sum = 0;
+
+    for (const auto & i : stats){
+        sum += i;
+        maximum = max(maximum, i);
+    }
+
+    cout << "size " << stats.size() << endl;
+    cout << "avg  " << ((double) sum) / stats.size() << endl;
+    cout << "max  " << maximum << endl;
+
     init_proxy(nsource_oid, ntarget_oid, nvertices);
-    shift(center.x, center.y, center.z);
 }

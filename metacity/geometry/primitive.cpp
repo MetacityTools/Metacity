@@ -85,7 +85,7 @@ public:
 
     /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<SimplePrimitive> transform() const override {
-        PYBIND11_OVERRIDE_PURE(
+        PYBIND11_OVERRIDE(
             shared_ptr<SimplePrimitive>,/* Return type */
             SimplePrimitive,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
@@ -197,16 +197,6 @@ public:
     using SimpleMultiPoint::SimpleMultiPoint;
 
     /* Trampoline (need one for each virtual function) */
-    virtual shared_ptr<SimplePrimitive> transform() const override {
-        PYBIND11_OVERRIDE(
-            shared_ptr<SimplePrimitive>,/* Return type */
-            SimpleMultiPoint,/* Parent class */
-            transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE(
             const char *,/* Return type */
@@ -311,16 +301,6 @@ public:
     using SimpleMultiLine::SimpleMultiLine;
 
     /* Trampoline (need one for each virtual function) */
-    virtual shared_ptr<SimplePrimitive> transform() const override {
-        PYBIND11_OVERRIDE(
-            shared_ptr<SimplePrimitive>,/* Return type */
-            SimpleMultiLine,/* Parent class */
-            transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE(
             const char *,/* Return type */
@@ -421,16 +401,6 @@ class PySimpleMultiPolygon : public SimpleMultiPolygon {
 public:
     /* Inherit the constructors */
     using SimpleMultiPolygon::SimpleMultiPolygon;
-
-    /* Trampoline (need one for each virtual function) */
-    virtual shared_ptr<SimplePrimitive> transform() const override {
-        PYBIND11_OVERRIDE(
-            shared_ptr<SimplePrimitive>,/* Return type */
-            SimpleMultiPolygon,/* Parent class */
-            transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
 
     /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {

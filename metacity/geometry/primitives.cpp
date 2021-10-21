@@ -150,6 +150,10 @@ void SimplePrimitive::add_attribute(const string &name, const shared_ptr<Attribu
     attrib[name] = attr;
 }
 
+shared_ptr<SimplePrimitive> SimplePrimitive::transform() const {
+    return copy();
+}
+
 void SimplePrimitive::copy_to(shared_ptr<SimplePrimitive> cp) const
 {
     cp->vertices = vertices;

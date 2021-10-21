@@ -91,11 +91,6 @@ shared_ptr<SimplePrimitive> SimpleMultiLine::copy() const
     return cp;
 }
 
-shared_ptr<SimplePrimitive> SimpleMultiLine::transform() const
-{
-    return make_shared<SimpleMultiLine>(vertices);
-}
-
 const char *SimpleMultiLine::type() const
 {
     return "simpleline";

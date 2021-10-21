@@ -295,9 +295,6 @@ void TriangleOverlay::segment(const K::Triangle_2 &target_)
     target = target_;
     out_triangles.clear();
 
-    cout << "intersect " << source << 
-          "\n          " << target << endl;
-
     if (source.is_degenerate() || target.is_degenerate())
         return;
 
@@ -385,17 +382,8 @@ bool TriangleOverlay::handle_deg_2_to_3(const K::Segment_2 *ps)
 
     Mesh m;
     m.add_face(m.add_vertex(source[0]), m.add_vertex(source[1]), m.add_vertex(source[2]));
-    //cout << "added face" << endl;
-    //cout << source[0] << "\n " << source[1] << "\n" << source[2] << endl;
-    //cout << ab.point() << " " << ab.orthogonal_vector() << endl;
-    CGAL::Polygon_mesh_processing::clip(m, ab);
 
-    //cout << "clipped face" << endl;
-    //cout << "edges    " << m.number_of_edges() << endl;
-    //cout << "vertices " << m.number_of_vertices() << endl;
-    //cout << "faces    " << m.number_of_faces() << endl;
-    
-    //cout << ba.point() << " " << ba.orthogonal_vector() << endl;
+    CGAL::Polygon_mesh_processing::clip(m, ab);
     CGAL::Polygon_mesh_processing::remove_degenerate_faces(m);
     CGAL::Polygon_mesh_processing::clip(m, ba);
     CGAL::Polygon_mesh_processing::remove_degenerate_faces(m);
@@ -406,7 +394,6 @@ bool TriangleOverlay::handle_deg_2_to_3(const K::Segment_2 *ps)
         CGAL::Vertex_around_face_circulator<Mesh> done(vcirc);
         do {
             out_triangles.emplace_back(to_vec(m.point(*vcirc++)));
-            //cout << *vcirc << " " << *done << endl;
         }  while (vcirc != done);
     }
 
