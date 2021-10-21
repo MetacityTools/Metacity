@@ -5,7 +5,7 @@ Project:
 
 Side:
     ☐ Koupit lampičku do kanclu
-    ☐ Anička - klíče a čip zařídit - KUBA
+    ✔ Anička - klíče a čip zařídit - KUBA @done(21-10-21 18:56)
 
 Backend Metacity: 
     ✔ Serializace @done(21-10-11 10:09)
@@ -144,7 +144,7 @@ Backend Metacity:
         ✔ trojuhelniky @done(21-10-20 17:31)
 
 Metacity PIPY:
-    ☐ Deploy stabilní verze backendu
+    ✔ Deploy stabilní verze backendu @done(21-10-21 18:56)
     
 Frontend Metacity:
     ☐ Přidání projektu
