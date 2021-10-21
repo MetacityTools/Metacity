@@ -2,7 +2,7 @@ from typing import Callable, Dict, List, Tuple
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as gfs
-from metacity.geometry.primitive import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
+from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
                                          SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
 from metacity.filesystem.file import read_json
 from metacity.utils.persistable import Persistable

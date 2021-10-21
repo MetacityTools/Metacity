@@ -2,5 +2,7 @@
 
 #python setup.py sdist bdist_wheel; \
 #rm dist/metacity*; \
-python setup.py sdist; \
+rm -rf dist;
+rm -rf metacity.egg*;
+python setup.py sdist; 
 python -m twine upload dist/*;

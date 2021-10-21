@@ -4,7 +4,7 @@ from typing import DefaultDict, Dict, Tuple
 from metacity.datamodel.set import TileSet, Tile
 from metacity.filesystem import grid as fs
 from metacity.filesystem import file as fsf
-from metacity.geometry.primitive import Primitive, SimplePrimitive
+from metacity.geometry import Primitive, SimplePrimitive
 from metacity.utils.persistable import Persistable
 
 

@@ -1,5 +1,5 @@
 from typing import Callable, Dict, List
-from metacity.geometry.primitive import MultiPoint, MultiLine, MultiPolygon, Primitive
+from metacity.geometry import MultiPoint, MultiLine, MultiPolygon, Primitive
 
 types: Dict[str, Callable[[],Primitive]] = {
     MultiPoint().type: MultiPoint,

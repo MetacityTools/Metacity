@@ -453,7 +453,7 @@ public:
     }
 };
 
-PYBIND11_MODULE(primitive, m) {
+PYBIND11_MODULE(geometry, m) {
     py::class_<Primitive, std::shared_ptr<Primitive>, PyPrimitive>(m, "Primitive")
         .def(py::init<>())
         .def_property_readonly("type", &Primitive::type)
