@@ -95,6 +95,20 @@ class Layer(Persistable):
         self.size = data['size']
         self.group_by = data['group_by']
 
+    def build_layout(self):
+        grid = self.grid
+        if grid.init:
+            return {
+                'name': self.name,
+                'layout': grid.build_layout(),
+                'init': True
+            }
+        else:
+            return {
+                'name': self.name,
+                'init': False
+            }
+
 
 class LayerOverlay(Persistable):
     def __init__(self, overlay_dir: str):

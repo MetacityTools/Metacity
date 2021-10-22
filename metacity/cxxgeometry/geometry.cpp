@@ -466,6 +466,7 @@ PYBIND11_MODULE(geometry, m) {
         .def(py::init<>())
         .def_property_readonly("type", &SimplePrimitive::type)
         .def_property_readonly("centroid", &SimplePrimitive::centroid)
+        .def_property_readonly("bounding_box", &SimplePrimitive::bounding_box)
         .def("shift", &SimplePrimitive::shift)
         .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&SimplePrimitive::add_attribute))
         .def("slice_to_grid", &SimplePrimitive::slice_to_grid)

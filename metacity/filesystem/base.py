@@ -44,3 +44,7 @@ def remove_dirtree(dir):
 def remove_file(path):
     if os.path.exists(path):  
         os.remove(path)
+
+
+def project_layout(project_dir):
+    return os.path.join(project_dir, 'layout.json')

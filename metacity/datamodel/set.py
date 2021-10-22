@@ -3,7 +3,7 @@ from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as gfs
 from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
-                                         SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
+                               SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
 from metacity.filesystem.file import read_json
 from metacity.utils.persistable import Persistable
 
@@ -159,6 +159,8 @@ class TileSet(DataSet):
             self.data.append(desermodel(model))
 
 
+def join_boxes(boxes):
+    return [[ min([ box[0][i] for box in boxes ]) for i in range(3) ], [ max([ box[1][i] for box in boxes ]) for i in range(3) ]]
 
 
 class Tile:
@@ -179,5 +181,14 @@ class Tile:
     @property
     def name(self):
         return gfs.tile_name(self.x, self.y)
+
+    def build_layout(self):
+        box = join_boxes([o.bounding_box for o in self.objects])
+        return {
+            'box': box,
+            'x': self.x,
+            'y': self.y,
+            'file': fs.base.filename(self.file)
+        }
 
         

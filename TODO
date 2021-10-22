@@ -147,11 +147,17 @@ Metacity PIPY:
     ✔ Deploy stabilní verze backendu @done(21-10-21 18:56)
     
 Frontend Metacity:
-    ☐ Přidání projektu
-    ☐ Nahrání zdorjových souborů
+    ✔ Přidání projektu @done(21-10-22 09:45)
+    ✔ Nahrání zdorjových souborů @done(21-10-22 09:45)
+        - nefunguje prozatím cityjson, protože ale nemáme žádná data tady v tomto formátu, není to priorita 
+    ☐ Souhrný json pro projekt
+        - ten si stáhne vizualizér a bude vědět jaké soubory kde hledat, případně kdy je načítat
+    ☐ Sáhnout souhrn pro projekt a naparsovat data
     ☐ Zobrazení gridu
         ☐ Zobrazení bodů
         ☐ Zobrazení linek
+        ☐ Zobrazení polygonů
+        ☐ Zobrazení proxy
     ☐ Obarvování dle OID
     ☐ UI pro mapování 2D na 3D - párování a overlay
     ☐ Obarvování dle dvojice OID

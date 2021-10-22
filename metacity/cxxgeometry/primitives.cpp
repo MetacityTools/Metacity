@@ -2,9 +2,12 @@
 #include <numeric>
 #include "primitives.hpp"
 #include "triangulation.hpp"
+#include "bbox.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
 //===============================================================================
 //JSON merging 
+//did I actually finish this?
+//contains does not work
 
 void merge_tags(json & ltags, const json & rtags)
 {
@@ -80,6 +83,15 @@ tvec3 SimplePrimitive::centroidvec() const
     tvec3 c = accumulate(vertices.begin(), vertices.end(), tvec3(0));
     c /= vertices.size();
     return c;
+}
+
+tuple<tuple<tfloat, tfloat, tfloat>, tuple<tfloat, tfloat, tfloat>> SimplePrimitive::bounding_box() const
+{
+    BBox box;
+    set_empty(box);
+    for (const tvec3 & v: vertices)
+        extend(box, v);
+    return make_tuple(make_tuple(box.min.x, box.min.y, box.min.z), make_tuple(box.max.x, box.max.y, box.max.z));
 }
 
 

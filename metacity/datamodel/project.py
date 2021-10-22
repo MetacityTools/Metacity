@@ -1,4 +1,5 @@
 from metacity.filesystem import layer as fs
+from metacity.filesystem import file as fsf
 from metacity.datamodel.layer import Layer, LayerOverlay
 
 
@@ -33,6 +34,12 @@ class Project:
 
     def delete_overlay(self, layer_name: str):
         self.delete_layer(layer_name)
+
+    def build_layout(self):
+        layout = []
+        for layer in self.layers:
+            layout.append(layer.build_layout())
+        fsf.write_json(fs.base.project_layout(self.dir), layout)
 
     @property
     def layer_names(self):

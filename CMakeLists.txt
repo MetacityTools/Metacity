@@ -24,6 +24,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp
                                     metacity/cxxgeometry/triangulation.hpp
                                     metacity/cxxgeometry/slicing.cpp
                                     metacity/cxxgeometry/slicing.hpp
+                                    metacity/cxxgeometry/bbox.hpp
+                                    metacity/cxxgeometry/bbox.cpp
                                     metacity/cxxgeometry/types.cpp
                                     metacity/cxxgeometry/types.hpp
                                     metacity/cxxgeometry/attributes.cpp

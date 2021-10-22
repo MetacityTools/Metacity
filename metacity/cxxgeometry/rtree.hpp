@@ -1,18 +1,7 @@
 #pragma once
 #include "types.hpp"
+#include "bbox.hpp"
 #include "polygons.hpp"
-
-
-struct BBox
-{
-    tvec3 min;
-    tvec3 max;
-
-    inline tvec3 centroid() const
-    {
-        return (min + max) * tvec3(0.5);
-    }
-};
 
 enum RTreeNodeType
 {
@@ -59,6 +48,3 @@ protected:
 
     vector<shared_ptr<RTreeNode>> nodes;
 };
-
-void for_triangle(const tvec3 t[3], BBox & b);
-void for_line(const tvec3 t[2], BBox & b);

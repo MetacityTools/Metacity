@@ -33,6 +33,7 @@ public:
     void push_vert(const tvec3 * vec, size_t count);
 
     tuple<tfloat, tfloat, tfloat> centroid() const;
+    tuple<tuple<tfloat, tfloat, tfloat>, tuple<tfloat, tfloat, tfloat>> bounding_box() const;
     tvec3 centroidvec() const;
     
     void shift(const tfloat sx, const tfloat sy, const tfloat sz);

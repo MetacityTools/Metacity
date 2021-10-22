@@ -2,7 +2,7 @@ import json
 from typing import List, Union
 from metacity.datamodel.object import Object
 from abc import ABC, abstractmethod
-from metacity.geometry import primitive as p
+import metacity.geometry as p
 
 
 def flatten(data):

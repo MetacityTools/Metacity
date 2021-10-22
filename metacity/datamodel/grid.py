@@ -122,4 +122,9 @@ class Grid(Persistable):
         self.tile_size = data["tile_size"]
         self.init = data["init"]
 
+    def build_layout(self):
+        if not self.init:
+            return None
+        return [ tile.build_layout() for tile in self.tiles ]
+
 
