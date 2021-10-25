@@ -41,6 +41,12 @@ class Project:
             layout.append(layer.build_layout())
         fsf.write_json(fs.base.project_layout(self.dir), layout)
 
+    def get_layout(self):
+        file = fs.base.project_layout(self.dir)
+        if fs.base.file_exists(file):
+            return fsf.read_json(file)
+        return []
+
     @property
     def layer_names(self):
         return fs.layer_names(self.dir)

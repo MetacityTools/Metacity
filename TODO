@@ -150,14 +150,16 @@ Frontend Metacity:
     ✔ Přidání projektu @done(21-10-22 09:45)
     ✔ Nahrání zdorjových souborů @done(21-10-22 09:45)
         - nefunguje prozatím cityjson, protože ale nemáme žádná data tady v tomto formátu, není to priorita 
-    ☐ Souhrný json pro projekt
-        - ten si stáhne vizualizér a bude vědět jaké soubory kde hledat, případně kdy je načítat
-    ☐ Sáhnout souhrn pro projekt a naparsovat data
+    ✔ Souhrný json pro projekt @done(21-10-25 18:40)
+        ✔ ten si stáhne vizualizér a bude vědět jaké soubory kde hledat, případně kdy je načítat @done(21-10-25 18:40)
+    ✔ Sáhnout souhrn pro projekt a naparsovat data @done(21-10-25 18:40)
     ☐ Zobrazení gridu
         ☐ Zobrazení bodů
         ☐ Zobrazení linek
-        ☐ Zobrazení polygonů
+        ✔ Zobrazení polygonů @done(21-10-25 18:40)
         ☐ Zobrazení proxy
+    ☐ Vizuální kraviny
+        ✔ stíny @done(21-10-25 18:41)
     ☐ Obarvování dle OID
     ☐ UI pro mapování 2D na 3D - párování a overlay
     ☐ Obarvování dle dvojice OID

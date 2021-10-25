@@ -76,7 +76,7 @@ def layer_source_path(layer_dir: str, file_name: str):
 
 def layer_names(project_dir: str):
     #ommit hidden folders
-    return [d for d in os.listdir(project_dir) if d[0] != '.']
+    return [d for d in os.listdir(project_dir) if (d[0] != '.' and d != 'layout.json')]
 
 
 def non_coliding_layer_dir(project_dir: str, layer_name: str):
