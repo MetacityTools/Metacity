@@ -20,7 +20,7 @@ def create_overlay(overlay_dir):
     if not os.path.exists(overlay_dir):
         base.recreate_dir(overlay_dir)
         for dir in base.OVERLAY_DIRS:
-            path = os.path.join(layer_dir, dir)
+            path = os.path.join(overlay_dir, dir)
             base.create_dir_if_not_exists(path)
 
 

@@ -153,14 +153,29 @@ Frontend Metacity:
     ✔ Souhrný json pro projekt @done(21-10-25 18:40)
         ✔ ten si stáhne vizualizér a bude vědět jaké soubory kde hledat, případně kdy je načítat @done(21-10-25 18:40)
     ✔ Sáhnout souhrn pro projekt a naparsovat data @done(21-10-25 18:40)
+    ☐ UI/UX stuff
+        ✔ úprava orbital controls na styl google earth @done(21-10-26 12:14)
     ☐ Zobrazení gridu
         ☐ Zobrazení bodů
         ☐ Zobrazení linek
+            ✔ samotné linky @done(21-10-27 19:37)
+            - picking
         ✔ Zobrazení polygonů @done(21-10-25 18:40)
         ☐ Zobrazení proxy
     ☐ Vizuální kraviny
         ✔ stíny @done(21-10-25 18:41)
-    ☐ Obarvování dle OID
+            - je u nich problém s biasem, bude potřeba trochu lépe nastavit...
+        - UI pro skrytí/zobrazení vrstvy
+        ✔ vlastní shader pro obarvení dle ID @done(21-10-26 18:13)
+        - UI pro přiřazení metadato - barva
+        - linky budou mít nějakou tlušťku
+            ✔ globální tloušťka @done(21-10-27 19:37)
+            ☐ parametrizovatelná tloušťka
+    ✔ Vybírání (vlastní shader) @done(21-10-26 18:13)
+    ☐ Metadata
+        - stáhnout metadata 
+        - postavit nad nimi nějakou datovou strukturu, aby se to dalo dobře prohlížet
+        - přiřazení barviček různým kategoriím
     ☐ UI pro mapování 2D na 3D - párování a overlay
     ☐ Obarvování dle dvojice OID
     ☐ Prohlížení metadat nějak hromadně?

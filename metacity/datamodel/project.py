@@ -54,4 +54,8 @@ class Project:
     @property
     def layers(self):
         names = self.layer_names
-        return [self.get_layer(name) for name in names]
+        for name in names:
+            try:
+                yield self.get_layer(name)
+            except:
+                yield self.get_overlay(name)

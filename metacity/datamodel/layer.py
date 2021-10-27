@@ -101,12 +101,14 @@ class Layer(Persistable):
             return {
                 'name': self.name,
                 'layout': grid.build_layout(),
-                'init': True
+                'init': True,
+                'type': 'layer'
             }
         else:
             return {
                 'name': self.name,
-                'init': False
+                'init': False,
+                'type': 'layer'
             }
 
 
@@ -127,6 +129,10 @@ class LayerOverlay(Persistable):
     def grid(self):
         return Grid(self.dir)
 
+    @property
+    def name(self):
+        return fs.layer_name(self.dir)
+
     def setup(self, source: Layer, target: Layer):
         tg = target.grid
         sg = source.grid
@@ -146,6 +152,9 @@ class LayerOverlay(Persistable):
         self.source_layer = source.name
         self.target_layer = target.name
 
+    def persist(self):
+        self.export()
+
     def serialize(self):
         return {
             'type': 'overlay',
@@ -156,6 +165,26 @@ class LayerOverlay(Persistable):
     def deserialize(self, data):
         self.source_layer = data['source']
         self.target_layer = data['target']
+
+    def build_layout(self):
+        grid = self.grid
+        if grid.init:
+            return {
+                'name': self.name,
+                'source': self.source_layer,
+                'target': self.target_layer,
+                'layout': grid.build_layout(),
+                'init': True,
+                'type': 'overlay'
+            }
+        else:
+            return {
+                'name': self.name,
+                'source': self.source_layer,
+                'target': self.target_layer,
+                'init': False,
+                'type': 'overlay'
+            }
 
 
 
