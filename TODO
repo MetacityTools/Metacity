@@ -1,11 +1,8 @@
-Project:
-    ☐ Backend Metacity @7days
-    ☐ Metacity PIPY @1day
-    ☐ Frontend Metacity @3days
-
 Side:
-    ☐ Koupit lampičku do kanclu
-    ✔ Anička - klíče a čip zařídit - KUBA @done(21-10-21 18:56)
+    ☐ Koupit lampičku do kanclu - https://www.ikea.com/cz/cs/p/hektar-prac-lampa-s-bezdr-dobijeni-tmave-seda-60323436/
+    ☐ Ještě 1 stůl místo černého 
+    ☐ židle - asi ta o vedle? 1 nebo 2 - objedá se z Alzy ta Zdeňkova
+    ✔ Anička - klíče a čip zařídit - Kuba o tom ví @done(21-10-21 18:56)
 
 Backend Metacity: 
     ✔ Serializace @done(21-10-11 10:09)
@@ -129,62 +126,114 @@ Backend Metacity:
             - query bude vypadat jako trojúhelník - chci všechno co do něj padne - dalo by se zjednodušit na obdélník? - dalo
             - v mřížce logicky budou trojúhelníky vícekrát, pokud budou ležet ve více buňkách, musí se tedy kontrolovat, zda jsem je už navštívil - jak efektivně?
 
-    ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička?
-        - nové primitivum pro linky, simple primitivum se bude dát reuse 
-    ☐ Upravit IO pro nové geometry api
+
+    ✔ Upravit IO pro nové geometry api @done(21-11-02 16:56)
         ✔ 1. geojson @done(21-10-18 11:26)
         ✔ 2. shapefile @done(21-10-18 11:26)
-        3. cityjson
+        ✘ 3. cityjson @cancelled(21-11-02 16:56) - no input data
     ✔ Otestovat tvorbu gridu @done(21-10-20 12:38)
         ✔ stavba gridu @done(21-10-20 12:38)
         ✔ export do stl, nebo nějaký jiný způsob ověření, že ty modely dávají smysl @done(21-10-20 12:38)
-    ☐ Otestovat mapování 2D na 3D
-        - body
+    ✔ Otestovat mapování 2D na 3D @done(21-11-02 16:55)
+        ✔ body @done(21-11-02 16:55)
         ✔ linky @done(21-10-20 12:38) - otestováno na síti ulic prahy
         ✔ trojuhelniky @done(21-10-20 17:31)
 
 Metacity PIPY:
     ✔ Deploy stabilní verze backendu @done(21-10-21 18:56)
     
-Frontend Metacity:
+Frontend Metacity iterace 0:
     ✔ Přidání projektu @done(21-10-22 09:45)
     ✔ Nahrání zdorjových souborů @done(21-10-22 09:45)
-        - nefunguje prozatím cityjson, protože ale nemáme žádná data tady v tomto formátu, není to priorita 
     ✔ Souhrný json pro projekt @done(21-10-25 18:40)
         ✔ ten si stáhne vizualizér a bude vědět jaké soubory kde hledat, případně kdy je načítat @done(21-10-25 18:40)
     ✔ Sáhnout souhrn pro projekt a naparsovat data @done(21-10-25 18:40)
-    ☐ UI/UX stuff
+    ✔ UI/UX stuff @done(21-11-02 16:55)
         ✔ úprava orbital controls na styl google earth @done(21-10-26 12:14)
+        ✔ celkově nějaký styl: @done(21-11-02 16:55)
+            ✔ hlavní obrazovka - tam seznam projektů + odkaz na login do administrace @done(21-11-02 16:52)
+            ✔ konfigurace vrstev @done(21-11-02 16:52)
+            ✔ prohlížení vizualizace @done(21-11-02 16:52)
+            ✔ běžící procesy na pozadí @done(21-11-02 16:52)
+            ✔ logy @done(21-11-02 16:52)
+    ✔ Vizuální kraviny @done(21-11-02 16:54)
+        ✔ stíny @done(21-10-25 18:41)
+        ✔ vlastní shader pro obarvení dle ID @done(21-10-26 18:13)
+        ✔ linky budou mít nějakou tlušťku @done(21-10-28 14:58)
+            ✔ globální tloušťka @done(21-10-27 19:37)
+    ✔ Vybírání (vlastní shader) @done(21-10-26 18:13)
+    ✔ Picking - pro více vrstev úprava @done(21-10-28 12:38)
+    ✔ Vypnutí pickingu u vrstev @done(21-10-28 14:53)
+    ✔ Cancel precessingu během stahování @done(21-10-29 16:55)
+    ✘ Chybějící trojúhleník pod kanceláří - chyba je už ve vstupních datech @cancelled(21-10-29 16:44)
+    
+    Layout:
+        ✔ titulní strana @done(21-10-30 22:37)
+        ✔ login @done(21-10-30 22:37)
+        ✔ management projektů @done(21-10-30 22:37)
+        ✔ info o probíhajícím zpracování @done(21-10-31 12:24)
+        ✔ navigace @done(21-10-31 13:51)
+        ✔ nastavitelná adresa @done(21-10-31 14:00)
+        ✔ management vrstev @done(21-11-02 16:52)
+            ✔ přejmenovat vrstvu @done(21-11-02 16:52)
+            ✔ přidat vrstvu @done(21-10-31 14:11)
+            ✔ smazat vrstvu @done(21-11-02 16:52)
+
+Frontend Metacity iterace 1:
     ☐ Zobrazení gridu
         ☐ Zobrazení bodů
         ☐ Zobrazení linek
             ✔ samotné linky @done(21-10-27 19:37)
             - picking
         ✔ Zobrazení polygonů @done(21-10-25 18:40)
-        ☐ Zobrazení proxy
-    ☐ Vizuální kraviny
-        ✔ stíny @done(21-10-25 18:41)
-            - je u nich problém s biasem, bude potřeba trochu lépe nastavit...
-        - UI pro skrytí/zobrazení vrstvy
-        ✔ vlastní shader pro obarvení dle ID @done(21-10-26 18:13)
-        - UI pro přiřazení metadato - barva
-        - linky budou mít nějakou tlušťku
-            ✔ globální tloušťka @done(21-10-27 19:37)
-            ☐ parametrizovatelná tloušťka
-    ✔ Vybírání (vlastní shader) @done(21-10-26 18:13)
-    ☐ Metadata
+        ✔ Zobrazení proxy @done(21-11-02 16:54)
+
+    ☐ Prohlížení metadat
         - stáhnout metadata 
         - postavit nad nimi nějakou datovou strukturu, aby se to dalo dobře prohlížet
         - přiřazení barviček různým kategoriím
+
     ☐ UI pro mapování 2D na 3D - párování a overlay
-    ☐ Obarvování dle dvojice OID
-    ☐ Prohlížení metadat nějak hromadně?
+        - Obarvování dle dvojice OID
+
+    ☐ CSS-like styly pro obarvování, zobrazení, skrývání, reprezentace pomocí jsonu
+        - bude se zpracovávat na pozadí a vyrobí se buffery s barvami, aby byly připravené, ty se pak pošlou na frontend
+        - pravidla pro zobrazení:
+            entity project, layer, object, meta class, meta value
+            layer: 
+                - viditelnost
+            object, class, value:
+                - barva, (colormap jako speciální případ)
+                barva:
+                    - pomocí barvy lze označit objekt podle OID, podle toho že má definovaný atribut v metadatech, nebo pokud atribut v metadataech má určitou hodnotu
+                    - colormap: pokud hodnota v metadatech je číselné hodnoty a je definovaná barevná škála (např pomocí 5 klíčových barev), pak je možné barvy přiřazovat na základě tét o hodnoty
+        - mechanismus přiřazování je proveden:
+            - pro dané OID se zacachuje barva na základě vyhodnocení pravidel, aby při opakovaném přiřazení bylo nalezení barvy urychleno
+            - bude potřeba: načíst celá metadata pro verstvu při zpracování, ve chvíli kdy se vyhodnocují OID (načítání z bufferu) se vyhodnocují pravidla
+
+    Minor tasks and issues:
+        ☐ Třes během maximálního přiblížení kvůli velikým souřadnicím - lze opravit změnou měřítka
+        ☐ created job přejmenovat na queued nebo waiting
+        ☐ nějak zvážit disable projektu při zpracování
+        ☐ guide jak nahrávat soubory (shapefile všechny soubory)
+        ☐ popsat workflow, jak funguje zpracování na serveru
+        ☐ zvážit oddělaní 
+        ☐ Google analytics
+        ☐ Log serveru neobsahuje čas ani usera
+        ☐ Přidat usera pro Cesnet
+        
+    Delegated:
+        ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička?
+        - nové primitivum pro linky, simple primitivum se bude dát reuse 
+        
+    Later:
+        ☐ orientace v mapě?
+        ☐ statistika buildu nebo možnost procházet soubory na serveru
 
 =================================================================================================================
 
 Později před odevzdáním:
     ☐ Otestovat, dopsat testy?
-    ☐ Refaktorování!!
     
 Potenciální Issues:
     ☐ Nebude fungovat indexování okolo nuly, všechno to spadne do jedné dlaždice, je to ok?

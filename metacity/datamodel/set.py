@@ -115,28 +115,45 @@ class MetaSet(DataSet):
 
 
 class ObjectSet:
-    def __init__(self, layer_dir: str, offset: int, capacity: int):   
-        self.models = ModelSet(layer_dir, offset, capacity)
-        self.meta = MetaSet(layer_dir, offset, capacity)
+    def __init__(self, layer_dir: str, offset: int, capacity: int, load_meta=True, load_model=True):  
+        self.readonly = not (load_meta and load_model)
+        if not (load_meta or load_model):
+            raise Exception("Cannot instantiate ObjectSet without any models or meta")
+
+        self.load_meta = load_meta
+        self.load_model = load_model
+
+        if load_model: 
+            self.models = ModelSet(layer_dir, offset, capacity)
+        if load_meta:
+            self.meta = MetaSet(layer_dir, offset, capacity)
 
     def can_contain(self, index: int):
-        return self.models.can_contain(index) 
+        if self.load_model:
+            return self.models.can_contain(index) 
+        return self.meta.can_contain(index) 
 
     def add(self, object: Object):
-        self.models.add(object.models)
-        self.meta.add(object.meta)
+        if not self.readonly:
+            self.models.add(object.models)
+            self.meta.add(object.meta)
+        else:
+            raise Exception("Cannot object to ObjectSet in readonly mode")
 
     def __getitem__(self, index: int):
         if not self.models.contains(index):
             raise IndexError(f"No object at index {index}")
         obj = Object()
-        obj.models = self.models[index]
-        obj.meta = self.meta[index] 
+        if self.load_model: 
+            obj.models = self.models[index]
+        if self.load_meta:
+            obj.meta = self.meta[index] 
         return obj
 
     def export(self):
-        self.models.export()
-        self.meta.export()
+        if not self.readonly:
+            self.models.export()
+            self.meta.export()
 
 
 class TileSet(DataSet):

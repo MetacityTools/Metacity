@@ -25,7 +25,6 @@ def create_dir_if_not_exists(dir):
         os.makedirs(dir)
 
 
-# TODO remove function
 def recreate_dir(dir):
     if os.path.exists(dir):
         shutil.rmtree(dir)
@@ -34,6 +33,13 @@ def recreate_dir(dir):
 
 def file_exists(file):
     return os.path.exists(file)
+
+
+def rename(old, new):
+    if file_exists(old) and not file_exists(new):
+        os.rename(old, new)
+        return True
+    return False
 
 
 def remove_dirtree(dir):

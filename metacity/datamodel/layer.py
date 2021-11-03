@@ -8,7 +8,7 @@ from tqdm import tqdm
 
 
 class Layer(Persistable):
-    def __init__(self, layer_dir: str, group_by = 100000):
+    def __init__(self, layer_dir: str, group_by = 100000, load_set=True):
         super().__init__(fs.layer_config(layer_dir))
 
         self.dir = layer_dir
@@ -22,7 +22,10 @@ class Layer(Persistable):
         except IOError:
             self.export()
 
-        self.set = ObjectSet(self.dir, 0, self.group_by)
+        if load_set:
+            self.set = ObjectSet(self.dir, 0, self.group_by)
+        else:
+            self.set = None
     
     @property
     def name(self):
@@ -101,6 +104,7 @@ class Layer(Persistable):
             return {
                 'name': self.name,
                 'layout': grid.build_layout(),
+                'size': self.size,
                 'init': True,
                 'type': 'layer'
             }
