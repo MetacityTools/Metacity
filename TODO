@@ -221,6 +221,9 @@ Frontend Metacity iterace 1:
         ☐ Google analytics
         ☐ Log serveru neobsahuje čas ani usera
         ☐ Přidat usera pro Cesnet
+
+    Threejs:
+        ☐ Order by program? aby se minimalizovalo přepínání na GPU
         
     Delegated:
         ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička?
@@ -229,6 +232,12 @@ Frontend Metacity iterace 1:
     Later:
         ☐ orientace v mapě?
         ☐ statistika buildu nebo možnost procházet soubory na serveru
+
+    Diplomka:
+        ☐ 3D modely export
+            - extrude dlaždic do 3D
+            - lego - do 3D mřížky vyplnit a pak záplavovým algoritmem dořešit
+            - problém asi bude jak to vyplnit? - zahlazení děr
 
 =================================================================================================================
 

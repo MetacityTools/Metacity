@@ -3,32 +3,66 @@ from metacity.filesystem import base
 import shutil
 
 
-def create_project(project_dir):
-    if not os.path.exists(project_dir): 
-        os.mkdir(project_dir)
+def create_project(project_dir: str):
+    """
+    Creates a new project directory and all the necessary subdirectories.
+
+    Args:
+        project_dir (str): The path to the project directory.
+    """
+    base.create_dir_if_not_exists(project_dir)
+    base.create_dir_if_not_exists(os.path.join(project_dir, base.STYLES))
 
 
-def create_layer(layer_dir):
-    if not os.path.exists(layer_dir):
-        base.recreate_dir(layer_dir)
-        for dir in base.BASE_DIRS:
-            path = os.path.join(layer_dir, dir)
-            base.create_dir_if_not_exists(path)
+def create_layer(layer_dir: str):
+    """
+    Creates a new layer directory. If the directory already exists, it won't be overwritten. 
+
+    Args:
+        layer_dir (str): The path to the layer directory.
+    """
+    base.create_dir_if_not_exists(layer_dir)
+    for dir in base.BASE_DIRS:
+        path = os.path.join(layer_dir, dir)
+        base.create_dir_if_not_exists(path)
 
 
-def create_overlay(overlay_dir):
-    if not os.path.exists(overlay_dir):
-        base.recreate_dir(overlay_dir)
-        for dir in base.OVERLAY_DIRS:
-            path = os.path.join(overlay_dir, dir)
-            base.create_dir_if_not_exists(path)
+def create_overlay(overlay_dir: str):
+    """
+    Creates a new overlay directory. If the directory already exists, it won't be overwritten.
+
+    Args:
+        overlay_dir (str): The path to the overlay directory.
+    """
+    base.create_dir_if_not_exists(overlay_dir)
+    for dir in base.OVERLAY_DIRS:
+        path = os.path.join(overlay_dir, dir)
+        base.create_dir_if_not_exists(path)
 
 
 def layer_metadata(layer_dir: str):
+    """
+    Returns the path to the metadata directory of the layer.
+
+    Args:
+        layer_dir (str): The path to the layer directory.
+
+    Returns:
+        str: The path to the metadata directory of the layer.
+    """
     return os.path.join(layer_dir, base.METADATA)
 
 
 def layer_regrouped(layer_dir: str):
+    """
+    Returns the path to the regrouped layer directory.
+
+    Args:
+        layer_dir (str): The path to the layer directory.
+    
+    Returns:
+        str: The path to the regrouped layer directory.
+    """
     return os.path.join(layer_dir, base.REGROUPED)
 
 
@@ -56,6 +90,10 @@ def layer_dir(project_dir: str, layer_name: str):
     return os.path.join(project_dir, layer_name)
 
 
+def overlay_dir(project_dir: str, overlay_name: str):
+    return layer_dir(project_dir, overlay_name)
+
+
 def layer_name(layer_dir: str):
     return os.path.basename(layer_dir)
 
@@ -76,7 +114,11 @@ def layer_source_path(layer_dir: str, file_name: str):
 
 def layer_names(project_dir: str):
     #ommit hidden folders
-    return [d for d in os.listdir(project_dir) if (d[0] != '.' and d != 'layout.json')]
+    return [d for d in os.listdir(project_dir) if (os.path.isdir(os.path.join(project_dir, d)) and d[0] != '.' and d not in base.RESERVED)]
+
+
+def project_styles(project_dir: str):
+    return os.path.join(project_dir, base.STYLES)
 
 
 def non_coliding_layer_dir(project_dir: str, layer_name: str):

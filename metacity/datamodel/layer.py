@@ -2,7 +2,6 @@ from metacity.datamodel.grid import Grid
 from metacity.datamodel.object import Object
 from metacity.datamodel.set import ObjectSet
 from metacity.filesystem import layer as fs
-from metacity.utils.bbox import bboxes_bbox
 from metacity.utils.persistable import Persistable
 from tqdm import tqdm
 
@@ -15,11 +14,11 @@ class Layer(Persistable):
         self.size = 0
         self.group_by = group_by
 
-        fs.create_layer(layer_dir)
+        fs.create_layer(self.dir)
 
         try:
             self.load()
-        except IOError:
+        except FileNotFoundError:
             self.export()
 
         if load_set:
@@ -41,6 +40,10 @@ class Layer(Persistable):
             self.activate_set(self.size)
         self.set.add(object)
         self.size += 1
+
+    def add_style(self, colors):
+        fs.export
+
 
     def persist(self):
         self.export()
@@ -70,6 +73,9 @@ class Layer(Persistable):
         self.group_by = group_by
         self.export()
 
+    @property
+    def meta(self):
+        return LayerMetaIterator(self)
 
     @property
     def objects(self):
@@ -116,17 +122,43 @@ class Layer(Persistable):
             }
 
 
+class LayerMetaIterator:
+    def __init__(self, layer: Layer):
+        self.dir = layer.dir
+        self.size = layer.size
+        self.group_by = layer.group_by
+        self.index = 0
+        self.set = ObjectSet(self.dir, 0, layer.group_by, load_model=False)
+
+    def activate_set(self, index):
+        offset = (index // self.group_by) * self.group_by
+        self.set = ObjectSet(self.dir, offset, self.group_by, load_model=False)
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.index >= self.size:
+            raise StopIteration
+        if not self.set.can_contain(self.index):
+            self.activate_set(self.index)
+        obj = self.set[self.index]
+        self.index += 1
+        return obj
+
+
+
 class LayerOverlay(Persistable):
     def __init__(self, overlay_dir: str):
         super().__init__(fs.layer_config(overlay_dir))
         self.source_layer = None
         self.target_layer = None
         self.dir = overlay_dir
-        fs.create_overlay(overlay_dir)
+        fs.create_overlay(self.dir)
 
         try:
             self.load()
-        except IOError:
+        except FileNotFoundError:
             self.export()
 
     @property

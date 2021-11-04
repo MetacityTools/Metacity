@@ -3,7 +3,6 @@ from typing import DefaultDict, Dict, Tuple
 
 from metacity.datamodel.set import TileSet, Tile
 from metacity.filesystem import grid as fs
-from metacity.filesystem import file as fsf
 from metacity.geometry import Primitive, SimplePrimitive
 from metacity.utils.persistable import Persistable
 
@@ -51,7 +50,7 @@ class TileCache:
                 aggregate_models[model.type].join(model)
                 
         serialized = [m.serialize() for m in aggregate_models.values()]
-        fsf.write_json(output, serialized)
+        fs.base.write_json(output, serialized)
 
 
 class Grid(Persistable):
@@ -66,7 +65,7 @@ class Grid(Persistable):
 
         try:
             self.load()
-        except IOError:
+        except FileNotFoundError:
             self.export()
 
     def clear(self):
@@ -110,7 +109,7 @@ class Grid(Persistable):
 
     def tile_from_single_model(self, model: SimplePrimitive, tile_name):
         output = fs.grid_tile(self.dir, tile_name)
-        fsf.write_json(output, [model.serialize()])
+        fs.base.write_json(output, [model.serialize()])
 
     def serialize(self):
         return {

@@ -1,4 +1,4 @@
-from metacity.filesystem.file import read_json, write_json
+from metacity.filesystem.base import read_json, write_json
 from abc import ABC, abstractmethod
 
 

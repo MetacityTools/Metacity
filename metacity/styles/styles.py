@@ -1,29 +1,37 @@
 from metacity.datamodel.layer import Layer, LayerOverlay
+from metacity.datamodel.project import Project
+from metacity.filesystem import styles as fs
 from typing import Union
 from typing import Dict
 from lark import Lark, Transformer
 from functools import reduce
-import collections
+from typing import  Hashable
+import numpy as np
+
 
 
 STYLEGRAMMAR = r"""
     layer_rule_list: (layer_rules)*
-    layer_rules: (string "{" [(rule)*] "}")
-    rule: visibility | mapping | meta_rules
+    layer_rules: ("@layer(" string ")" "{" [(rule)*] "}")
+    rule: visibility | layer_color | mapping | meta_rules
 
-    visibility: ("visible" ":" boolean ";")
+    visibility: ("@visible" ":" boolean ";")
 
-    mapping: ("mapping" "{" (mapping_rule)* "}")
-    mapping_rule: source_rule | target_rule
-    source_rule: ("source.meta" "[" name_link "]" "{" [key_style ";"]* "}")
-    target_rule: ("target.meta" "[" name_link "]" "{" [key_style ";"]* "}")
+    layer_color: ("@color" ":" color ";")
+
+    mapping: source | target
+    source: ("@source" "{" [ (meta_rule)* ] "}")
+    target: ("@target" "{" [ (meta_rule)* ] "}")
 
     meta_rules: (meta_rule)* 
-    meta_rule: ("meta" "[" name_link "]" "{" [key_style ";"]* "}")
+    meta_rule: ("@meta" "(" name_link ")" "{" [key_style ";"]* "}")
 
     name_link: (string [("." string)*])
-    key_style: (string ":" color)
+    key_style: (key ":" color)
     
+    key: string | any
+
+    any: "@default"
     boolean: "true" -> true | "false" -> false
     string: NAME | ESCAPED_STRING
     color: COLOR
@@ -51,6 +59,9 @@ def merge(a, b, path=None):
     return a
 
 
+ANYKEY = "@default"
+
+
 class TreeToStyle(Transformer):
     def layer_rule_list(self, layer_rule_list_):
         return dict(layer_rule_list_)
@@ -58,14 +69,17 @@ class TreeToStyle(Transformer):
     def layer_rules(self, layer_rules_):
         name, *rrules = layer_rules_
         output = {}
-        reduce(merge, [output] + [dict(r) for r in rrules])
+        reduce(merge, [output] + [r[0] for r in rrules])
         return (name, output)
 
     def rule(self, rule_):
         return rule_
 
     def visibility(self, v_):
-        return ('visible', v_)
+        return {"visible": v_[0]}
+
+    def layer_color(self, layer_color_):
+        return {"color": layer_color_[0]}
 
     def mapping(self, mapping_):
         output = {
@@ -73,23 +87,19 @@ class TreeToStyle(Transformer):
             "target": {}
         }
 
-        print(mapping_)
-        reduce(merge, [output] + [{t: {k: r}} for t, (k, r)  in mapping_])
-        return ("mapping", output)
+        reduce(merge, [output, mapping_[0]])
+        return output
 
-    def source_rule(self, source_rule_):
-        key, *styles = source_rule_
-        return ("source", (key, dict(styles)))
+    def source(self, source_rule_):
+        _, *styles = source_rule_
+        return {"source": dict(styles)}
 
-    def target_rule(self, target_rule_):
-        key, *styles = target_rule_
-        return ("target", (key, dict(styles)))
-
-    def mapping_rule(self, mapping_rule_):
-        return mapping_rule_[0]
+    def target(self, target_rule_):
+        _, *styles = target_rule_
+        return {"target": dict(styles)}
 
     def meta_rules(self, o):
-        return ('meta_rules', dict(o))
+        return {'meta_rules': dict(o)}
 
     def meta_rule(self, meta_rule_):
         key, *styles = meta_rule_
@@ -100,6 +110,12 @@ class TreeToStyle(Transformer):
 
     def key_style(self, key_style_):
         return key_style_
+
+    def key(self, key_):
+        return key_[0]
+
+    def any(self, any_):
+        return ANYKEY
 
     def NAME(self, name_):
         return str(name_)
@@ -121,13 +137,13 @@ class TreeToStyle(Transformer):
     false = lambda self, _: False
 
 
-class LayerStyle:
+class LayerStyler:
     def __init__(self, style = None):
         self.style = style if style is not None else {}
         if style is not None:
             self.meta_rules = style['meta_rules']
-            self.source = style['mapping']['source']
-            self.target = style['mapping']['target']
+            self.source = style['source']
+            self.target = style['target']
         else:
             self.meta_rules = {}
             self.source = {}
@@ -139,6 +155,12 @@ class LayerStyle:
             return self.style['visible']
         return True
 
+    @property
+    def default_color(self):
+        if 'color' in self.style:
+            return self.style['color']
+        return 255, 255, 255
+
     def source_object_color(self, object_meta):
         return self.apply_rules(object_meta, self.source)
 
@@ -146,46 +168,97 @@ class LayerStyle:
         return self.apply_rules(object_meta, self.target)
 
     def object_color(self, object_meta):
-        print("rules", self.meta_rules)
         return self.apply_rules(object_meta, self.meta_rules)
 
     def apply_rules(self, object_meta, rules: Dict):
-        print(rules, object_meta)
         for key, value_style in rules.items():
-            matched, value = self.get_value(object_meta, key)
+            matched, meta_subtree = self.get_value(object_meta, key)
+            if matched:
+                if (isinstance(meta_subtree, Hashable) and meta_subtree in value_style):
+                    return value_style[meta_subtree]
+                if ANYKEY in value_style:
+                    return value_style[ANYKEY]
 
-            if matched and isinstance(value, collections.Hashable) and value in value_style:
-                return value_style[value]
-        return (255, 255, 255) # white is default for now
+        return self.default_color
 
     def get_value(self, meta_subtree, key):
         match = True
         for part in key:
-            print("      ", part, " in ", meta_subtree)
             if part in meta_subtree:
                 meta_subtree = meta_subtree[part]
             else:
                 match = False
                 break
         if match:
-            return True, meta_subtree # meta_subtree is now value
+            return True, meta_subtree # meta_subtree is now value in metadata
         return False, None
+
+def parse(raw_styles):
+    parser = Lark(STYLEGRAMMAR, start='layer_rule_list', lexer='dynamic_complete')
+    tree = parser.parse(raw_styles)
+    return TreeToStyle().transform(tree)
+
+
+def layer_style(layer: Union[Layer, LayerOverlay], parsed_styles):
+    name = layer.name
+    if name in parsed_styles:
+        return LayerStyler(parsed_styles[name])
+    else:
+        return LayerStyler()
+
+
+def compute_layer_colors(layer, color_function):
+    colors = np.empty((layer.size, 3), dtype=np.uint8)
+    for i, metaobject in enumerate(layer.meta):
+        colors[i] = color_function(metaobject)
+    return colors
+
+
+def apply_layer_style(style: LayerStyler, style_name: str, project: Project, layer: Layer):
+    colors = compute_layer_colors(layer, style.object_color)
+    project.styles.add_style(style_name, layer.name, colors)
+
+
+def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, overlay: LayerOverlay):
+    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_set=False), style.source_object_color) 
+    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_set=False), style.target_object_color)
+    project.styles.add_overlay_style(style_name, overlay.name, color_source, color_target)
+
+
+def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
+    if isinstance(layer, Layer):
+        apply_layer_style(style, style_name, layer)
+    elif isinstance(layer, LayerOverlay):
+        apply_overlay_style(style, style_name, project, layer)
+    else:
+        raise Exception("Unknown layer type")
 
 
 class Style:
-    def __init__(self, styles=""):
-        self.parser = Lark(STYLEGRAMMAR, start='layer_rule_list', lexer='dynamic_complete')
-        self.raw_styles = styles
-        self.tree = self.parser.parse(self.raw_styles)
-        print(self.tree.pretty())
-        self.styles = TreeToStyle().transform(self.tree)
+    def __init__(self, project: Project, style_name: str):
+        self.project = project
+        self.name = style_name
+        self.mss_file = fs.style_mss(project.dir, style_name)
+        self.parsed = None
 
-    def get_layer_style(self, layer):
-        if layer in self.styles:
-            return LayerStyle(self.styles[layer])
-        return LayerStyle()
+    def parse(self):
+        styles = self.get_styles()
+        self.parsed = parse(styles)
+
+    def apply(self):
+        if self.parsed is None:
+            self.parse()
+            
+        for layer in self.project.ilayers:
+            style = layer_style(layer, self.parsed)
+            apply_style(style, self, self.project, layer)
+
+    def get_styles(self):
+        styles = fs.base.read_mss(self.mss_file)
+        return styles
 
 
-def style_layer(layer: Union[LayerOverlay, Layer], styles: str):
-    styles = Style(styles)
 
+
+
+ 

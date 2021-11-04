@@ -1,5 +1,6 @@
 import os
 import shutil
+import json
 import ntpath
 
 METADATA = "metadata"
@@ -9,11 +10,15 @@ GRID = "grid"
 ORIGINAL = "original"
 GRID_TILES = "tiles"
 GRID_CACHE = "cache"
+STYLES = "styles"
 
-BASE_DIRS = [METADATA, MODELS, ORIGINAL,
+
+RESERVED = [STYLES]
+
+BASE_DIRS = [METADATA, MODELS, ORIGINAL, STYLES,
              os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
-OVERLAY_DIRS = [os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
+OVERLAY_DIRS = [STYLES, os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
 # basics
 def filename(file_path):
@@ -42,15 +47,60 @@ def rename(old, new):
     return False
 
 
-def remove_dirtree(dir):
+def project_layout(project_dir):
+    return os.path.join(project_dir, 'layout.json')
+
+
+def readable(file):
+    f = open(file, "r")
+    return f.readable()
+
+
+def writable(file):
+    f = open(file, "w")
+    return f.writable()
+
+
+def delete_file(file):
+    if os.path.exists(file):
+        os.remove(file)
+
+
+def delete_dir(dir):
     if os.path.exists(dir):
         shutil.rmtree(dir)
 
 
-def remove_file(path):
-    if os.path.exists(path):  
-        os.remove(path)
+def write_json(filename, data):
+    delete_file(filename)
+
+    with open(filename, 'w') as file:
+        json.dump(data, file, indent=4)
 
 
-def project_layout(project_dir):
-    return os.path.join(project_dir, 'layout.json')
+def read_json(filename):
+    with open(filename, 'r') as file:
+        return json.load(file)
+
+
+def write_mss(filename, data):
+    with open(filename, 'w') as file:
+        file.write(data)
+
+
+def read_mss(filename):
+    with open(filename, 'r') as file:
+        return file.read()
+
+
+def dir_from_path(path):
+    return os.path.dirname(path)
+
+
+def change_suffix(path, suffix):
+    base = os.path.splitext(path)[0]
+    return f"{base}.{suffix}"
+
+
+def get_suffix(path):
+    return os.path.splitext(path)[1][1:]

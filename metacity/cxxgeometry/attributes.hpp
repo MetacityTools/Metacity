@@ -94,4 +94,53 @@ inline void TAttribute<uint32_t>::deserialize(const string & data_)
 };
 
 //===============================================================================
+//uint8
+
+template <>
+inline  shared_ptr<Attribute> TAttribute<uint8_t>::copy() const
+{
+    return make_shared<TAttribute<uint8_t>>(TAttribute<uint8_t>(*this));
+};
+
+template <>
+inline const char * TAttribute<uint8_t>::type() const
+{
+    return "uint8";
+};
+
+template <>
+inline void TAttribute<uint8_t>::emplace_back(const uint8_t & value)
+{
+    data.emplace_back(value);
+};
+
+template <>
+inline void TAttribute<uint8_t>::fill(const uint8_t & value, const size_t count)
+{
+    data.insert(data.end(), count, value);
+};
+
+template <>
+inline void TAttribute<uint8_t>::insert(const vector<uint8_t> & data_)
+{
+    data.insert(data.end(), data_.begin(), data_.end());
+};
+
+template <>
+inline json TAttribute<uint8_t>::serialize() const 
+{
+    return { 
+        { "type", type() },
+        { "data", T_to_string<uint8_t>(data)}
+    };
+};
+
+template <>
+inline void TAttribute<uint8_t>::deserialize(const string & data_)
+{
+    data = string_to_T<uint8_t>(data_);
+};
+
+
+//===============================================================================
 shared_ptr<Attribute> attr_deserialize(const json & attrib);

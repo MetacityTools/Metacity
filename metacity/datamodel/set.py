@@ -1,10 +1,10 @@
-from typing import Callable, Dict, List, Tuple
+from typing import Callable, Dict, List
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as gfs
 from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
                                SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
-from metacity.filesystem.file import read_json
+from metacity.filesystem.base import read_json
 from metacity.utils.persistable import Persistable
 
 
@@ -22,7 +22,7 @@ class DataSet(Persistable):
 
         try:
             self.load()
-        except IOError:
+        except FileNotFoundError:
             self.export()
 
     @property
@@ -207,5 +207,3 @@ class Tile:
             'y': self.y,
             'file': fs.base.filename(self.file)
         }
-
-        
