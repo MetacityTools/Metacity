@@ -27,6 +27,10 @@ class Layer(Persistable):
             self.set = None
     
     @property
+    def type(self):
+        return "layer"
+
+    @property
     def name(self):
         return fs.layer_name(self.dir)
 
@@ -40,10 +44,6 @@ class Layer(Persistable):
             self.activate_set(self.size)
         self.set.add(object)
         self.size += 1
-
-    def add_style(self, colors):
-        fs.export
-
 
     def persist(self):
         self.export()
@@ -144,7 +144,7 @@ class LayerMetaIterator:
             self.activate_set(self.index)
         obj = self.set[self.index]
         self.index += 1
-        return obj
+        return obj.meta
 
 
 
@@ -160,6 +160,10 @@ class LayerOverlay(Persistable):
             self.load()
         except FileNotFoundError:
             self.export()
+
+    @property
+    def type(self):
+        return "overlay"
 
     @property
     def grid(self):

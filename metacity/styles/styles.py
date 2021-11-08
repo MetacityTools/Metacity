@@ -12,7 +12,7 @@ import numpy as np
 
 STYLEGRAMMAR = r"""
     layer_rule_list: (layer_rules)*
-    layer_rules: ("@layer(" string ")" "{" [(rule)*] "}")
+    layer_rules: ("@layer" "(" string ")" "{" [(rule)*] "}")
     rule: visibility | layer_color | mapping | meta_rules
 
     visibility: ("@visible" ":" boolean ";")
@@ -137,13 +137,18 @@ class TreeToStyle(Transformer):
     false = lambda self, _: False
 
 
+def default(dict, key):
+    if key in dict:
+        return dict[key]
+    return {}
+
 class LayerStyler:
     def __init__(self, style = None):
         self.style = style if style is not None else {}
         if style is not None:
-            self.meta_rules = style['meta_rules']
-            self.source = style['source']
-            self.target = style['target']
+            self.meta_rules = default(style, 'meta_rules')
+            self.source = default(style, 'source')
+            self.target = default(style, 'target')
         else:
             self.meta_rules = {}
             self.source = {}
@@ -207,7 +212,7 @@ def layer_style(layer: Union[Layer, LayerOverlay], parsed_styles):
         return LayerStyler()
 
 
-def compute_layer_colors(layer, color_function):
+def compute_layer_colors(layer: Layer, color_function):
     colors = np.empty((layer.size, 3), dtype=np.uint8)
     for i, metaobject in enumerate(layer.meta):
         colors[i] = color_function(metaobject)
@@ -216,6 +221,7 @@ def compute_layer_colors(layer, color_function):
 
 def apply_layer_style(style: LayerStyler, style_name: str, project: Project, layer: Layer):
     colors = compute_layer_colors(layer, style.object_color)
+    print(colors.shape)
     project.styles.add_style(style_name, layer.name, colors)
 
 
@@ -227,7 +233,7 @@ def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, o
 
 def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
     if isinstance(layer, Layer):
-        apply_layer_style(style, style_name, layer)
+        apply_layer_style(style, style_name, project, layer)
     elif isinstance(layer, LayerOverlay):
         apply_overlay_style(style, style_name, project, layer)
     else:
@@ -251,7 +257,7 @@ class Style:
             
         for layer in self.project.ilayers:
             style = layer_style(layer, self.parsed)
-            apply_style(style, self, self.project, layer)
+            apply_style(style, self.name, self.project, layer)
 
     def get_styles(self):
         styles = fs.base.read_mss(self.mss_file)

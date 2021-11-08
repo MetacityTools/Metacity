@@ -5,11 +5,21 @@ from metacity.utils.encoding import npuint8_to_buffer
 class ProjectStyleSet:
     def __init__(self, project_dir: str):
         self.project_dir = project_dir
-        self.layer_sets = {}
 
     def get_style(self, name: str):
         file = fs.style_mss(self.project_dir, name)
         return fs.base.read_mss(file)
+
+    def create_style(self, name: str):
+        file = fs.style_mss(self.project_dir, name)
+        dir = fs.style_dir(self.project_dir, name)
+
+        if fs.base.file_exists(file):
+            return False
+
+        fs.base.write_mss(file, '')
+        fs.base.recreate_dir(dir)
+        return True
 
     def update_style(self, name: str, mss: str):
         file = fs.style_mss(self.project_dir, name)
@@ -35,13 +45,16 @@ class ProjectStyleSet:
         }
         fs.base.write_json(file, style)
 
-    def rename_style(self, name: str, new_name: str):
-        file = fs.style_mss(self.project_dir, name)
-        dir = fs.style_dir(self.project_dir, name)
+    def rename_style(self, old_name: str, new_name: str):
+        file = fs.style_mss(self.project_dir, old_name)
+        dir = fs.style_dir(self.project_dir, old_name)
         new_file = fs.style_mss(self.project_dir, new_name)
         new_dir = fs.style_dir(self.project_dir, new_name)
-        fs.base.rename(file, new_file)
-        fs.base.rename(dir, new_dir)
+        if fs.base.rename(file, new_file):
+            fs.base.rename(dir, new_dir)
+            return True
+        return False
+
 
     def delete_style(self, name: str):
         file = fs.style_mss(self.project_dir, name)

@@ -59,7 +59,7 @@ class Grid(Persistable):
         fs.base.create_dir_if_not_exists(self.dir)
         super().__init__(fs.grid_config(self.dir))
 
-        self.tile_size = 100
+        self.tile_size = 1000
         self.init = False
         self.cache: Dict[Tuple[int, int], TileCache] = {}
 

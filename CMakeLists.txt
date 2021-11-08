@@ -8,7 +8,7 @@ find_package(Python COMPONENTS Interpreter Development REQUIRED)
 include_directories(metacity/cxxgeometry)
 link_directories(metacity/cxxgeometry)
 
-#add_compile_options(-std=c++17 -Wall -pedantic -O3) #-g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+add_compile_options(-std=c++17 -Wall -pedantic -O3)# -g -fsanitize=address -fno-omit-frame-pointer -shared-libasan)
 #add_link_options(-fsanitize=address -shared-libasan)
 
 pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp 
@@ -32,6 +32,12 @@ pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp
                                     metacity/cxxgeometry/attributes.hpp
                                     metacity/cxxgeometry/rtree.hpp
                                     metacity/cxxgeometry/rtree.cpp
+                                    metacity/cxxgeometry/bvh.hpp
+                                    metacity/cxxgeometry/bvh.cpp
+                                    metacity/cxxgeometry/png.hpp
+                                    metacity/cxxgeometry/png.cpp
+                                    metacity/cxxgeometry/legobuilder.hpp
+                                    metacity/cxxgeometry/legobuilder.cpp
                                     metacity/cxxgeometry/cgal.hpp)
 
 

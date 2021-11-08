@@ -7,6 +7,7 @@
 #include "points.hpp"
 #include "lines.hpp"
 #include "polygons.hpp"
+#include "legobuilder.hpp"
 
 namespace py = pybind11;
 using jsonref = const json;
@@ -453,6 +454,9 @@ public:
     }
 };
 
+
+
+
 PYBIND11_MODULE(geometry, m) {
     py::class_<Primitive, std::shared_ptr<Primitive>, PyPrimitive>(m, "Primitive")
         .def(py::init<>())
@@ -534,4 +538,11 @@ PYBIND11_MODULE(geometry, m) {
         .def("to_obj", &SimpleMultiPolygon::to_obj)
         .def("map", &SimpleMultiPolygon::map)
         .def("slice_to_grid", &SimpleMultiPolygon::slice_to_grid);
+
+    py::class_<LegoBuilder, std::shared_ptr<LegoBuilder>>(m, "LegoBuilder")
+        .def(py::init<>())
+        .def("insert_model", &LegoBuilder::insert_model)
+        .def("build_heightmap", &LegoBuilder::build_heightmap)
+        .def("legofy", &LegoBuilder::legofy)
+        .def("lego_to_png", &LegoBuilder::lego_to_png);
 }

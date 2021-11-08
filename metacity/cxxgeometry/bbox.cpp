@@ -47,6 +47,14 @@ void set_empty(BBox &box)
     box.max = tvec3(-FLT_MAX);
 }
 
+BBox empty_bbox()
+{
+    BBox box;
+    box.min = tvec3(FLT_MAX);
+    box.max = tvec3(-FLT_MAX);
+    return box;
+}
+
 void extend(BBox &b1, const BBox &b2)
 {
     b1.min.x = min(b1.min.x, b2.min.x);
