@@ -174,6 +174,9 @@ class LayerOverlay(Persistable):
         return fs.layer_name(self.dir)
 
     def setup(self, source: Layer, target: Layer):
+        if source.type != "layer" or target.type != "layer":
+            raise Exception(f"Cannot map type {source.type} to {target.type}, only layer to layer is supported")
+
         tg = target.grid
         sg = source.grid
 

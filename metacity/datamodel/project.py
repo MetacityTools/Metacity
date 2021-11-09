@@ -120,6 +120,8 @@ class Project:
         """
         old_layer_dir = fs.layer_dir(self.dir, old_name)
         new_layer_dir = fs.layer_dir(self.dir, new_name)
+        if not fs.base.valid_name(new_name):
+            return False
         return fs.base.rename(old_layer_dir, new_layer_dir)            
 
     def delete(self):

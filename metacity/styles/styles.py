@@ -13,9 +13,10 @@ import numpy as np
 STYLEGRAMMAR = r"""
     layer_rule_list: (layer_rules)*
     layer_rules: ("@layer" "(" string ")" "{" [(rule)*] "}")
-    rule: visibility | layer_color | mapping | meta_rules
+    rule: visibility | pickability | layer_color | mapping | meta_rules
 
     visibility: ("@visible" ":" boolean ";")
+    pickability: ("@pickable" ":" boolean ";")
 
     layer_color: ("@color" ":" color ";")
 
@@ -75,8 +76,11 @@ class TreeToStyle(Transformer):
     def rule(self, rule_):
         return rule_
 
-    def visibility(self, v_):
-        return {"visible": v_[0]}
+    def visibility(self, v):
+        return {"visible": v[0]}
+
+    def pickability(self, p):
+        return {"pickability": p[0]}
 
     def layer_color(self, layer_color_):
         return {"color": layer_color_[0]}
@@ -161,6 +165,12 @@ class LayerStyler:
         return True
 
     @property
+    def pickable(self):
+        if 'pickable' in self.style:
+            return self.style['pickable']
+        return True
+
+    @property
     def default_color(self):
         if 'color' in self.style:
             return self.style['color']
@@ -221,14 +231,13 @@ def compute_layer_colors(layer: Layer, color_function):
 
 def apply_layer_style(style: LayerStyler, style_name: str, project: Project, layer: Layer):
     colors = compute_layer_colors(layer, style.object_color)
-    print(colors.shape)
-    project.styles.add_style(style_name, layer.name, colors)
+    project.styles.add_layer_style(style_name, layer.name, style, colors)
 
 
 def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, overlay: LayerOverlay):
     color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_set=False), style.source_object_color) 
     color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_set=False), style.target_object_color)
-    project.styles.add_overlay_style(style_name, overlay.name, color_source, color_target)
+    project.styles.add_overlay_style(style_name, overlay.name, style, color_source, color_target)
 
 
 def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):

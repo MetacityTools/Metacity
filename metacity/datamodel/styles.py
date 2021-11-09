@@ -30,18 +30,20 @@ class ProjectStyleSet:
     def list_styles(self):
         return fs.list_styles(self.project_dir)
 
-    def add_style(self, name: str, layer_name: str, buffer):
+    def add_layer_style(self, name: str, layer_name: str, styler, buffer):
         file = fs.style_buffer(self.project_dir, layer_name, name)
         style = {
-            'buffer': npuint8_to_buffer(buffer)
+            'buffer': npuint8_to_buffer(buffer),
+            'visible': styler.visible,
         }
         fs.base.write_json(file, style)
 
-    def add_overlay_style(self, name: str, layer_name: str, buffer_source, buffer_target):
+    def add_overlay_style(self, name: str, layer_name: str, styler, buffer_source, buffer_target):
         file = fs.style_buffer(self.project_dir, layer_name, name)
         style = {
             'buffer_source': npuint8_to_buffer(buffer_source),
-            'buffer_target': npuint8_to_buffer(buffer_target)
+            'buffer_target': npuint8_to_buffer(buffer_target),
+            'visible': styler.visible,
         }
         fs.base.write_json(file, style)
 

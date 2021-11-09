@@ -82,8 +82,10 @@ void LegoBuilder::build_heightmap(const tfloat xmin, const tfloat ymin, const tf
     hmin = box.min.z;
     hmax = box.max.z;
 
-    int ixmin = xmin;
-    int iymin = ymin;
+    ixmin = xmin * resolution_;
+    ixmax = xmax * resolution_;
+    iymin = ymin * resolution_;
+    iymax = ymax * resolution_;
 
     tfloat unit_frag = 1.0 / resolution_;  
 
@@ -93,10 +95,12 @@ void LegoBuilder::build_heightmap(const tfloat xmin, const tfloat ymin, const tf
     heightmap.clear();
     heightmap.reserve(xdim * ydim);
 
+
+
     for(int y = ydim - 1; y >= 0; --y)
     {
         for(int x = 0; x < xdim; ++x)
-            heightmap.push_back(ORIGIN - bvh.traceDownRegualarRay(ixmin + x * unit_frag, iymin + y * unit_frag, ORIGIN));
+            heightmap.push_back(ORIGIN - bvh.traceDownRegualarRay((ixmin + x) * unit_frag, (iymin + y) * unit_frag, ORIGIN));
     }
     
     denoise(heightmap.data(), xdim, ydim, hmin, hmax);
@@ -118,7 +122,9 @@ tfloat median_func(vector<tfloat> & tile)
     return tile[n];
 }
 
-void LegoBuilder::legofy(const int box_size)
+#define LEGODIM 8
+
+json LegoBuilder::legofy(const int box_size)
 {
     lego_dimx = xdim / box_size;
     lego_dimy = ydim / box_size;
@@ -137,6 +143,29 @@ void LegoBuilder::legofy(const int box_size)
 
             legomap.push_back(median_func(tile));
         }
+
+    tfloat vmin = FLT_MAX, vmax = FLT_MIN;
+    uint8_t byte; 
+    for(const auto & t: legomap)
+        vmin = min(t, vmin), vmax = max(t, vmax);
+    tfloat range = vmax - vmin;
+
+    //tfloat scale = 
+    //size_t z_dim = 
+
+
+    return {
+        {"real size", {
+            {"x", lego_dimx * LEGODIM},
+            {"y", lego_dimy * LEGODIM},
+            {"z"}
+        }},
+        {"dims", {
+            {"x", lego_dimx},
+            {"y", lego_dimy},
+            
+        }}
+    };
 }
 
 void LegoBuilder::lego_to_png(const string & name) const

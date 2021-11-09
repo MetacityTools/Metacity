@@ -15,8 +15,7 @@ STYLES = "styles"
 
 RESERVED = [STYLES]
 
-BASE_DIRS = [METADATA, MODELS, ORIGINAL, STYLES,
-             os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
+BASE_DIRS = [METADATA, MODELS, ORIGINAL, os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
 OVERLAY_DIRS = [STYLES, os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
@@ -104,3 +103,6 @@ def change_suffix(path, suffix):
 
 def get_suffix(path):
     return os.path.splitext(path)[1][1:]
+
+def valid_name(name):
+    return not (name in RESERVED)
