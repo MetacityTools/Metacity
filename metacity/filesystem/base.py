@@ -17,7 +17,7 @@ RESERVED = [STYLES]
 
 BASE_DIRS = [METADATA, MODELS, ORIGINAL, os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
-OVERLAY_DIRS = [STYLES, os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
+OVERLAY_DIRS = [os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE)]
 
 # basics
 def filename(file_path):

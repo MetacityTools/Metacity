@@ -21,8 +21,8 @@ STYLEGRAMMAR = r"""
     layer_color: ("@color" ":" color ";")
 
     mapping: source | target
-    source: ("@source" "{" [ (meta_rule)* ] "}")
-    target: ("@target" "{" [ (meta_rule)* ] "}")
+    source: ("@source" "{" [ meta_rules ] "}")
+    target: ("@target" "{" [ meta_rules ] "}")
 
     meta_rules: (meta_rule)* 
     meta_rule: ("@meta" "(" name_link ")" "{" [key_style ";"]* "}")
@@ -95,12 +95,10 @@ class TreeToStyle(Transformer):
         return output
 
     def source(self, source_rule_):
-        _, *styles = source_rule_
-        return {"source": dict(styles)}
+        return {"source": source_rule_[0]}
 
     def target(self, target_rule_):
-        _, *styles = target_rule_
-        return {"target": dict(styles)}
+        return {"target": target_rule_[0]}
 
     def meta_rules(self, o):
         return {'meta_rules': dict(o)}
@@ -151,8 +149,8 @@ class LayerStyler:
         self.style = style if style is not None else {}
         if style is not None:
             self.meta_rules = default(style, 'meta_rules')
-            self.source = default(style, 'source')
-            self.target = default(style, 'target')
+            self.source = default(default(style, 'source'), 'meta_rules')
+            self.target = default(default(style, 'target'), 'meta_rules')
         else:
             self.meta_rules = {}
             self.source = {}
@@ -224,8 +222,8 @@ def layer_style(layer: Union[Layer, LayerOverlay], parsed_styles):
 
 def compute_layer_colors(layer: Layer, color_function):
     colors = np.empty((layer.size, 3), dtype=np.uint8)
-    for i, metaobject in enumerate(layer.meta):
-        colors[i] = color_function(metaobject)
+    for i, object in enumerate(layer.objects):
+        colors[i] = color_function(object.meta)
     return colors
 
 
@@ -235,8 +233,10 @@ def apply_layer_style(style: LayerStyler, style_name: str, project: Project, lay
 
 
 def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, overlay: LayerOverlay):
-    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_set=False), style.source_object_color) 
-    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_set=False), style.target_object_color)
+    print(style.source)
+    print(style.target)
+    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_model=False), style.source_object_color) 
+    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_model=False), style.target_object_color)
     project.styles.add_overlay_style(style_name, overlay.name, style, color_source, color_target)
 
 
@@ -264,7 +264,7 @@ class Style:
         if self.parsed is None:
             self.parse()
             
-        for layer in self.project.ilayers:
+        for layer in self.project.clayers(load_model=False):
             style = layer_style(layer, self.parsed)
             apply_style(style, self.name, self.project, layer)
 

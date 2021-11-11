@@ -32,6 +32,7 @@ class RTree
 {
 public:
     RTree(const shared_ptr<SimpleMultiPolygon> smp);
+    RTree(const SimpleMultiPolygon * smp);
     void range_query(const BBox &range, vector<size_t> & indices) const;
     void point_query(const tvec3 &point, vector<size_t> & indices) const;
 
