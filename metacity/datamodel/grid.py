@@ -1,5 +1,4 @@
-from collections import defaultdict
-from typing import DefaultDict, Dict, Tuple
+from typing import Dict, Tuple
 
 from metacity.datamodel.set import TileSet, Tile
 from metacity.filesystem import grid as fs
@@ -53,6 +52,11 @@ class TileCache:
         fs.base.write_json(output, serialized)
 
 
+    @staticmethod
+    def is_valid(grid_dir, tile_name):
+        dir = fs.grid_cache_tile_dir(grid_dir, tile_name)
+        return fs.base.is_path_exists_or_creatable(dir)
+
 class Grid(Persistable):
     def __init__(self, layer_dir: str):
         self.dir = fs.grid_dir(layer_dir)
@@ -76,8 +80,13 @@ class Grid(Persistable):
         submodels = submodel.slice_to_grid(self.tile_size)
         for model in submodels:
             x, y = self.v_to_xy(model.centroid)
+            name = fs.tile_name(x, y)
+
+            if not TileCache.is_valid(self.dir, name):
+                continue
+
             if (x, y) not in self.cache:
-                self.cache[x, y] = TileCache(self.dir, fs.tile_name(x, y))
+                self.cache[x, y] = TileCache(self.dir, name)
             self.cache[x, y].add(oid, model)
 
     def v_to_xy(self, vertex):
