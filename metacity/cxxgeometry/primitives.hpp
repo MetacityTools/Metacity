@@ -39,6 +39,7 @@ public:
     void shift(const tfloat sx, const tfloat sy, const tfloat sz);
 
     virtual json serialize() const override;
+    json serialize_stream() const;
     virtual void deserialize(const json data) override;
 
     virtual void add_attribute(const string & name, const uint32_t value);

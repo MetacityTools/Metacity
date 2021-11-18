@@ -34,6 +34,21 @@ vector<uint8_t> vec_to_unit8(const vector<tvec3> &vec)
     return bytes;
 }
 
+vector<uint8_t> vec_to_f_to_uint8(const vector<tvec3> &vec)
+{
+    vector<uint8_t> bytes;
+    bytes.reserve(tvec3::length() * sizeof(float_t) * vec.size());
+
+    for (const auto &v : vec)
+    {
+        append(bytes, (float_t) v.x);
+        append(bytes, (float_t) v.y);
+        append(bytes, (float_t) v.z);
+    }
+
+    return bytes;
+}
+
 vector<tvec3> uint8_to_vec(const vector<uint8_t> &bytes)
 {
     vector<tvec3> vec;
@@ -51,9 +66,33 @@ vector<tvec3> uint8_to_vec(const vector<uint8_t> &bytes)
     return vec;
 }
 
+vector<tvec3> uint8_to_vec2_to_vec3(const vector<uint8_t> &bytes)
+{
+    vector<tvec3> vec;
+    vec.resize(bytes.size() / (tvec3::length() * sizeof(tfloat)));
+    size_t fls = sizeof(tfloat);
+    size_t shift = fls * tvec2::length();
+
+    for (size_t i = 0, j = 0; i < bytes.size(); i += shift, ++j)
+    {
+        memcpy(&vec[j].x, &bytes[i], fls);
+        memcpy(&vec[j].y, &bytes[i + fls], fls);
+        vec[j].z = 0;
+    }
+
+    return vec;
+}
+
 string vec_to_string(const vector<tvec3> &vec)
 {
     vector<uint8_t> ui8 = vec_to_unit8(vec);
+    using base64 = cppcodec::base64_rfc4648;
+    return base64::encode(&ui8[0], ui8.size());
+}
+
+string vec_to_f_to_string(const vector<tvec3> &vec)
+{
+    vector<uint8_t> ui8 = vec_to_f_to_uint8(vec);
     using base64 = cppcodec::base64_rfc4648;
     return base64::encode(&ui8[0], ui8.size());
 }
@@ -63,6 +102,13 @@ vector<tvec3> string_to_vec(const string &s)
     using base64 = cppcodec::base64_rfc4648;
     const vector<uint8_t> ui8 = base64::decode(s);
     return uint8_to_vec(ui8);
+}
+
+vector<tvec3> string_to_vec2_to_vec3(const string &s) 
+{
+    using base64 = cppcodec::base64_rfc4648;
+    const vector<uint8_t> ui8 = base64::decode(s);
+    return uint8_to_vec2_to_vec3(ui8);
 }
 
 size_t pair_hash::operator()(const pair<int, int> &p) const

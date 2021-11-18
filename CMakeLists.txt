@@ -14,6 +14,8 @@ add_compile_options(-std=c++17 -Wall -pedantic -O3)# -g -fsanitize=address -fno-
 pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp 
                                     metacity/cxxgeometry/primitives.cpp 
                                     metacity/cxxgeometry/primitives.hpp 
+                                    metacity/cxxgeometry/timepoints.cpp
+                                    metacity/cxxgeometry/timepoints.hpp
                                     metacity/cxxgeometry/points.cpp
                                     metacity/cxxgeometry/points.hpp
                                     metacity/cxxgeometry/lines.cpp

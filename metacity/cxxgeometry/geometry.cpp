@@ -7,6 +7,7 @@
 #include "points.hpp"
 #include "lines.hpp"
 #include "polygons.hpp"
+#include "timepoints.hpp"
 #include "legobuilder.hpp"
 
 namespace py = pybind11;
@@ -143,6 +144,16 @@ public:
             path, offset/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void add_attribute(const string & name, const uint32_t value) override {
+        PYBIND11_OVERRIDE_PURE(
+            void,/* Return type */
+            SimplePrimitive,/* Parent class */
+            add_attribute,/* Name of function in C++ (must match Python name) */
+            name, value/* Argument(s) */
+        );
+    }
 };
 
 
@@ -244,6 +255,16 @@ public:
             SimpleMultiPoint,/* Parent class */
             to_obj,/* Name of function in C++ (must match Python name) */
             path, offset/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void add_attribute(const string & name, const uint32_t value) override {
+        PYBIND11_OVERRIDE_PURE(
+            void,/* Return type */
+            SimpleMultiPoint,/* Parent class */
+            add_attribute,/* Name of function in C++ (must match Python name) */
+            name, value/* Argument(s) */
         );
     }
 };
@@ -350,6 +371,16 @@ public:
             path, offset/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void add_attribute(const string & name, const uint32_t value) override {
+        PYBIND11_OVERRIDE_PURE(
+            void,/* Return type */
+            SimpleMultiLine,/* Parent class */
+            add_attribute,/* Name of function in C++ (must match Python name) */
+            name, value/* Argument(s) */
+        );
+    }
 };
 
 class PyMultiPolygon : public MultiPolygon {
@@ -452,6 +483,62 @@ public:
             path, offset/* Argument(s) */
         );
     }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void add_attribute(const string & name, const uint32_t value) override {
+        PYBIND11_OVERRIDE_PURE(
+            void,/* Return type */
+            SimpleMultiPolygon,/* Parent class */
+            add_attribute,/* Name of function in C++ (must match Python name) */
+            name, value/* Argument(s) */
+        );
+    }
+};
+
+class PyMultiTimePoint : public MultiTimePoint {
+public:
+    /* Inherit the constructors */
+    using MultiTimePoint::MultiTimePoint;
+
+    /* Trampoline (need one for each virtual function) */
+    virtual json serialize() const override {
+        PYBIND11_OVERRIDE(
+            json,/* Return type */
+            MultiTimePoint,/* Parent class */
+            serialize,/* Name of function in C++ (must match Python name) */
+                      /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual void deserialize(jsonref data) override {
+        PYBIND11_OVERRIDE(
+            void,/* Return type */
+            MultiTimePoint,/* Parent class */
+            deserialize,/* Name of function in C++ (must match Python name) */
+            data/* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual shared_ptr<SimplePrimitive> transform() const override {
+        PYBIND11_OVERRIDE(
+            shared_ptr<SimplePrimitive>,/* Return type */
+            MultiTimePoint,/* Parent class */
+            transform,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
+
+    /* Trampoline (need one for each virtual function) */
+    virtual const char * type() const override {
+        PYBIND11_OVERRIDE(
+            const char *,/* Return type */
+            MultiTimePoint,/* Parent class */
+            type,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
+        );
+    }
 };
 
 
@@ -480,6 +567,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("map", &SimplePrimitive::map)
         .def("transform", &SimplePrimitive::transform)
         .def("serialize", &SimplePrimitive::serialize)
+        .def("serialize_stream", &SimplePrimitive::serialize_stream)
         .def("deserialize", &SimplePrimitive::deserialize);
 
 
@@ -515,6 +603,7 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<SimpleMultiLine, std::shared_ptr<SimpleMultiLine>, SimplePrimitive, PySimpleMultiLine>(m, "SimpleMultiLine")
         .def(py::init<>())
         .def_property_readonly("type", &SimpleMultiLine::type)
+        .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&SimpleMultiLine::add_attribute))
         .def("copy", &SimpleMultiLine::copy)
         .def("to_obj", &SimpleMultiLine::to_obj)
         .def("map", &SimpleMultiLine::map)
@@ -538,6 +627,15 @@ PYBIND11_MODULE(geometry, m) {
         .def("to_obj", &SimpleMultiPolygon::to_obj)
         .def("map", &SimpleMultiPolygon::map)
         .def("slice_to_grid", &SimpleMultiPolygon::slice_to_grid);
+
+    py::class_<MultiTimePoint, std::shared_ptr<MultiTimePoint>, Primitive, PyMultiTimePoint>(m, "MultiTimePoint")
+        .def(py::init<>())
+        .def_property_readonly("type", &MultiTimePoint::type)
+        .def("set_points_from_b64", &MultiTimePoint::set_points_from_b64)
+        .def("set_start_time", &MultiTimePoint::set_start_time)
+        .def("transform", &MultiTimePoint::transform)
+        .def("serialize", &MultiTimePoint::serialize)
+        .def("deserialize", &MultiTimePoint::deserialize);
 
     py::class_<LegoBuilder, std::shared_ptr<LegoBuilder>>(m, "LegoBuilder")
         .def(py::init<>())

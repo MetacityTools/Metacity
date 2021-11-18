@@ -120,6 +120,15 @@ void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const tfloat ti
     }
 }
 
+void SimpleMultiLine::add_attribute(const string &name, const uint32_t value)
+{
+    auto attr = make_shared<TAttribute<uint32_t>>();
+    attr->clear();
+    attr->fill(value, vertices.size() / 2);
+    attrib[name] = attr;
+}
+
+
 vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
@@ -230,9 +239,7 @@ void SimpleMultiLine::map(const shared_ptr<SimpleMultiPolygon> target)
                     nvertices.emplace_back(lb);
                     noidtmp = (*target_oid)[i * 3];
                     ntarget_oid->emplace_back(noidtmp);
-                    ntarget_oid->emplace_back(noidtmp);
-                    noidtmp = (*source_oid)[l];
-                    nsource_oid->emplace_back(noidtmp);
+                    noidtmp = (*source_oid)[l / 2];
                     nsource_oid->emplace_back(noidtmp);
                 }
             }

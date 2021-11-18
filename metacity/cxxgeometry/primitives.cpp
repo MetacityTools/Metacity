@@ -149,6 +149,19 @@ json SimplePrimitive::serialize() const
     return data;
 }
 
+json SimplePrimitive::serialize_stream() const
+{
+    json data = Primitive::serialize();
+    data["vertices"] = vec_to_f_to_string(vertices);
+    json sattrib = json::object({});
+
+    for (const auto &attr : attrib)
+        sattrib.update({{attr.first, attr.second->serialize()}});
+
+    data["attributes"] = sattrib;
+    return data;
+}
+
 void SimplePrimitive::add_attribute(const string &name, const uint32_t value)
 {
     auto attr = make_shared<TAttribute<uint32_t>>();

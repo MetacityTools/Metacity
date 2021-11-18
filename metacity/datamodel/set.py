@@ -214,3 +214,4 @@ class Tile:
             'y': self.y,
             'file': fs.base.filename(self.file)
         }
+
