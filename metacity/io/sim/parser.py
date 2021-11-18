@@ -1,18 +1,22 @@
 import json
-from typing import List, Union
+from typing import List
 from metacity.datamodel.object import Object
 import metacity.geometry as p
 
 class MultiTimePoint():
     def __init__(self):
-        self.coordinates = []
-
+        self.geometry = ""
+        self.start_time = 0
+    
     def parse(self, data):
-        ...
+        self.geometry = data["geometry"]
+        self.start_time = data["meta"]["start"]
 
     def to_models(self):
-        ...
-
+        model = p.MultiTimePoint()
+        model.set_points_from_b64(self.geometry)
+        model.set_start_time(self.start_time)
+        return [model]
 
 
 class Series:
@@ -26,6 +30,7 @@ class Series:
         o.meta = self.meta
         return o
 
+
 class SeriesList:
     def __init__(self):
         self.series: List[Series] = []
@@ -33,6 +38,7 @@ class SeriesList:
     def to_objectlist(self):
         objects = [s.to_object() for s in self.series]
         return objects
+
 
 def parse_multi_time_point(data):
     model = MultiTimePoint()
@@ -42,11 +48,10 @@ def parse_multi_time_point(data):
 
 def parse_series(data):
     srs = Series()
-    if "meta" in data:
-        srs.meta = data["meta"]
-    if "geometry" in data:
-        srs.geometry = parse_multi_time_point(data["geometry"])
+    srs.geometry = parse_multi_time_point(data)
+    srs.meta = data["meta"]
     return srs
+
 
 def parse_data(data):
     sl = SeriesList()
@@ -61,11 +66,3 @@ def parse(input_file: str):
     with open(input_file, 'r') as file:
         contents = json.load(file)
     return parse_data(contents)
-
-def main():
-    input_file = "/home/metakocour/Projects/Metacity/metacity/io/sim/subway_sec_0.json"
-    with open(input_file, 'r') as file:
-        contents = json.load(file)
-    
-if __name__ == "__main__":
-    main()
