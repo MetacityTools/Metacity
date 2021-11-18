@@ -80,6 +80,9 @@ class Grid(Persistable):
 
     def add(self, oid: int, model: Primitive):
         submodel = model.transform()
+        if submodel is None:
+            return
+             
         submodels = submodel.slice_to_grid(self.tile_size)
         for model in submodels:
             x, y = self.v_to_xy(model.centroid)
