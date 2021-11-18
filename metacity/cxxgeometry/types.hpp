@@ -24,9 +24,13 @@ void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coo
 
 vector<tfloat> vec_to_tfloat(const vector<tvec3> &vec);
 vector<uint8_t> vec_to_uint8(const vector<tvec3> &vec);
+vector<uint8_t> vec_to_f_to_uint8(const vector<tvec3> &vec);
 vector<tvec3> uint8_to_vec(const vector<uint8_t> &bytes);
+vector<tvec2> uint8_to_vec2(const vector<uint8_t> &bytes);
 string vec_to_string(const vector<tvec3> &vec);
+string vec_to_f_to_string(const vector<tvec3> &vec);
 vector<tvec3> string_to_vec(const string &s);
+vector<tvec3> string_to_vec2_to_vec3(const string &s);
 
 struct pair_hash
 {

@@ -187,72 +187,73 @@ bool with_idential_oid(const vector<uint32_t> & oids)
     return true;
 }
 
-
-void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target2D) 
+//the mapping is a sort of inverse of the alternatives for lines and points, 
+//the target is supposed to get splitted according *this
+void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target3D) 
 {
-    if (!(mapping_ready() && target2D->mapping_ready()))
+    if (!(mapping_ready() && target3D->mapping_ready()))
         throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
 
-    vector<size_t> stats;
+    //vector<size_t> stats;
 
     //helpers
     BBox box;
     vector<size_t> indices;
     uint32_t source_oid_value, target_oid_value;
-    RTree tree(target2D);
+    RTree tree(this);
     TriangleOverlay overlay;
 
     //data
     vector<tvec3> nvertices;
-    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target2D->attribute("oid"));
+    const shared_ptr<TAttribute<uint32_t>> target_oid = static_pointer_cast<TAttribute<uint32_t>>(target3D->attribute("oid"));
     const shared_ptr<TAttribute<uint32_t>> source_oid = static_pointer_cast<TAttribute<uint32_t>>(attrib["oid"]);
     shared_ptr<TAttribute<uint32_t>> ntarget_oid = make_shared<TAttribute<uint32_t>>();
     shared_ptr<TAttribute<uint32_t>> nsource_oid = make_shared<TAttribute<uint32_t>>();
-    vector<uint32_t> target_oid_buffer;
+    vector<uint32_t> source_oid_buffer;
     vector<tvec3> vertex_buffer;
 
-    for(size_t t = 0; t < vertices.size(); t += 3)
+    for(size_t t = 0; t < target3D->vertices.size(); t += 3)
     {
         indices.clear();
         vertex_buffer.clear();
-        target_oid_buffer.clear();
-        for_triangle(&vertices[t], box);
+        source_oid_buffer.clear();
+        for_triangle(&target3D->vertices[t], box);
         tree.range_query(box, indices);
-        stats.emplace_back(indices.size());
+        //stats.emplace_back(indices.size());
 
         if (indices.size() > 0)
         {
 
-            overlay.set_source(&vertices[t]);
+            overlay.set_source(&target3D->vertices[t]);
             for(const auto & i : indices)
             {
-                overlay.segment(to_triangle2(target2D->triangle(i)));
+                overlay.segment(to_triangle2(triangle(i)));
 
                 const auto & d = overlay.data();
 
                 if (d.size() >= 3)
                 {
-                    target_oid_value = (*target_oid)[i * 3];   
+                    source_oid_value = (*source_oid)[i * 3];   
                     vertex_buffer.insert(vertex_buffer.end(), d.begin(), d.end());
-                    target_oid_buffer.insert(target_oid_buffer.end(), d.size(), target_oid_value);
+                    source_oid_buffer.insert(source_oid_buffer.end(), d.size(), source_oid_value);
                 }
             }
 
             if (vertex_buffer.size() > 0)
             {
-                source_oid_value = (*source_oid)[t];
-                if (!with_idential_oid(target_oid_buffer))
+                target_oid_value = (*target_oid)[t];
+                if (!with_idential_oid(source_oid_buffer))
                 {
                     nvertices.insert(nvertices.end(), vertex_buffer.begin(), vertex_buffer.end());
-                    nsource_oid->fill(source_oid_value, target_oid_buffer.size());
-                    ntarget_oid->insert(target_oid_buffer);
+                    ntarget_oid->fill(target_oid_value, source_oid_buffer.size());
+                    nsource_oid->insert(source_oid_buffer);
                 } else {
-                    nvertices.emplace_back(vertices[t]);
-                    nvertices.emplace_back(vertices[t + 1]);
-                    nvertices.emplace_back(vertices[t + 2]);
+                    nvertices.emplace_back(target3D->vertices[t]);
+                    nvertices.emplace_back(target3D->vertices[t + 1]);
+                    nvertices.emplace_back(target3D->vertices[t + 2]);
 
-                    nsource_oid->fill(source_oid_value, 3);
-                    ntarget_oid->fill(target_oid_buffer[0], 3);
+                    ntarget_oid->fill(target_oid_value, 3);
+                    nsource_oid->fill(source_oid_buffer[0], 3);
                 }
             }
 
@@ -260,16 +261,15 @@ void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target2D)
     }
 
 
-    size_t maximum = 0, sum = 0;
+    //size_t maximum = 0, sum = 0;
+    //for (const auto & i : stats){
+    //    sum += i;
+    //    maximum = max(maximum, i);
+    //}
 
-    for (const auto & i : stats){
-        sum += i;
-        maximum = max(maximum, i);
-    }
-
-    cout << "size " << stats.size() << endl;
-    cout << "avg  " << ((double) sum) / stats.size() << endl;
-    cout << "max  " << maximum << endl;
+    //cout << "size " << stats.size() << endl;
+    //cout << "avg  " << ((double) sum) / stats.size() << endl;
+    //cout << "max  " << maximum << endl;
 
     init_proxy(nsource_oid, ntarget_oid, nvertices);
 }

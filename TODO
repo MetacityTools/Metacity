@@ -194,22 +194,24 @@ Frontend Metacity iterace 1:
         - přiřazení barviček různým kategoriím
 
     ☐ UI pro mapování 2D na 3D - párování a overlay
-        - Obarvování dle dvojice OID
 
-    ☐ CSS-like styly pro obarvování, zobrazení, skrývání, reprezentace pomocí jsonu
-        - bude se zpracovávat na pozadí a vyrobí se buffery s barvami, aby byly připravené, ty se pak pošlou na frontend
-        - pravidla pro zobrazení:
-            entity project, layer, object, meta class, meta value
-            layer: 
-                - viditelnost
-            object, class, value:
-                - barva, (colormap jako speciální případ)
-                barva:
-                    - pomocí barvy lze označit objekt podle OID, podle toho že má definovaný atribut v metadatech, nebo pokud atribut v metadataech má určitou hodnotu
-                    - colormap: pokud hodnota v metadatech je číselné hodnoty a je definovaná barevná škála (např pomocí 5 klíčových barev), pak je možné barvy přiřazovat na základě tét o hodnoty
-        - mechanismus přiřazování je proveden:
-            - pro dané OID se zacachuje barva na základě vyhodnocení pravidel, aby při opakovaném přiřazení bylo nalezení barvy urychleno
-            - bude potřeba: načíst celá metadata pro verstvu při zpracování, ve chvíli kdy se vyhodnocují OID (načítání z bufferu) se vyhodnocují pravidla
+    CSS:
+        - Obarvování dle dvojice OID
+        ✔ CSS-like styly pro obarvování, zobrazení, skrývání, reprezentace pomocí jsonu @done(21-11-08 10:51)
+            ✔ bude se zpracovávat na pozadí a vyrobí se buffery s barvami, aby byly připravené, ty se pak pošlou na frontend @done(21-11-08 10:52)
+            ✔ pravidla pro zobrazení: @done(21-11-08 10:52)
+                entity project, layer, object, meta class, meta value
+                layer: 
+                    ✔ viditelnost @done(21-11-08 10:52)
+                object, class, value:
+                    ✔ barva, (colormap jako speciální případ) @done(21-11-08 10:52)
+                    barva:
+                        ✔ pomocí barvy lze označit objekt podle OID, podle toho že má definovaný atribut v metadatech, nebo pokud atribut v metadataech má určitou hodnotu @done(21-11-08 10:52)
+                        - colormap: pokud hodnota v metadatech je číselné hodnoty a je definovaná barevná škála (např pomocí 5 klíčových barev), pak je možné barvy přiřazovat na základě tét o hodnoty
+        ✔ Obarvení modelů podle OID a spočítaných barev @done(21-11-10 10:35)
+            ✔ mechanismus přiřazování je proveden: @done(21-11-10 10:35)
+                ✔ pro dané OID se zacachuje barva na základě vyhodnocení pravidel, aby při opakovaném přiřazení bylo nalezení barvy urychleno @done(21-11-10 10:35)
+                ✔ bude potřeba: načíst celá metadata pro verstvu při zpracování, ve chvíli kdy se vyhodnocují OID (načítání z bufferu) se vyhodnocují pravidla @done(21-11-10 10:35)
 
     Minor tasks and issues:
         ☐ Třes během maximálního přiblížení kvůli velikým souřadnicím - lze opravit změnou měřítka
@@ -217,14 +219,17 @@ Frontend Metacity iterace 1:
         ☐ nějak zvážit disable projektu při zpracování
         ☐ guide jak nahrávat soubory (shapefile všechny soubory)
         ☐ popsat workflow, jak funguje zpracování na serveru
-        ☐ zvážit oddělaní 
         ☐ Google analytics
         ☐ Log serveru neobsahuje čas ani usera
-        ☐ Přidat usera pro Cesnet
+        ☐ Přidat usera pro cesnet
+
+    Lego:
+        ☐ UI pro vybrání oblasti
 
     Threejs:
-        ☐ Order by program? aby se minimalizovalo přepínání na GPU
-        
+        ✔ Order by program? aby se minimalizovalo přepínání na GPU @done(21-11-08 10:54)
+            - dělá threejs by default
+
     Delegated:
         ☐ Parsování XMP po matsimu - přidání časové složky, nové primitivum - anička?
         - nové primitivum pro linky, simple primitivum se bude dát reuse 
@@ -235,9 +240,9 @@ Frontend Metacity iterace 1:
 
     Diplomka:
         ☐ 3D modely export
-            - extrude dlaždic do 3D
-            - lego - do 3D mřížky vyplnit a pak záplavovým algoritmem dořešit
-            - problém asi bude jak to vyplnit? - zahlazení děr
+            ✘ extrude dlaždic do 3D @cancelled(21-11-08 10:54)
+            ✔ lego - do 3D mřížky vyplnit a pak záplavovým algoritmem dořešit @done(21-11-08 10:55)
+            ✔ problém asi bude jak to vyplnit? - zahlazení děr @done(21-11-08 10:55)
 
 =================================================================================================================
 

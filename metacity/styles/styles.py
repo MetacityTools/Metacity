@@ -12,16 +12,17 @@ import numpy as np
 
 STYLEGRAMMAR = r"""
     layer_rule_list: (layer_rules)*
-    layer_rules: ("@layer(" string ")" "{" [(rule)*] "}")
-    rule: visibility | layer_color | mapping | meta_rules
+    layer_rules: ("@layer" "(" string ")" "{" [(rule)*] "}")
+    rule: visibility | pickability | layer_color | mapping | meta_rules
 
     visibility: ("@visible" ":" boolean ";")
+    pickability: ("@pickable" ":" boolean ";")
 
     layer_color: ("@color" ":" color ";")
 
     mapping: source | target
-    source: ("@source" "{" [ (meta_rule)* ] "}")
-    target: ("@target" "{" [ (meta_rule)* ] "}")
+    source: ("@source" "{" [ meta_rules ] "}")
+    target: ("@target" "{" [ meta_rules ] "}")
 
     meta_rules: (meta_rule)* 
     meta_rule: ("@meta" "(" name_link ")" "{" [key_style ";"]* "}")
@@ -75,8 +76,11 @@ class TreeToStyle(Transformer):
     def rule(self, rule_):
         return rule_
 
-    def visibility(self, v_):
-        return {"visible": v_[0]}
+    def visibility(self, v):
+        return {"visible": v[0]}
+
+    def pickability(self, p):
+        return {"pickability": p[0]}
 
     def layer_color(self, layer_color_):
         return {"color": layer_color_[0]}
@@ -91,12 +95,10 @@ class TreeToStyle(Transformer):
         return output
 
     def source(self, source_rule_):
-        _, *styles = source_rule_
-        return {"source": dict(styles)}
+        return {"source": source_rule_[0]}
 
     def target(self, target_rule_):
-        _, *styles = target_rule_
-        return {"target": dict(styles)}
+        return {"target": target_rule_[0]}
 
     def meta_rules(self, o):
         return {'meta_rules': dict(o)}
@@ -137,13 +139,18 @@ class TreeToStyle(Transformer):
     false = lambda self, _: False
 
 
+def default(dict, key):
+    if key in dict:
+        return dict[key]
+    return {}
+
 class LayerStyler:
     def __init__(self, style = None):
         self.style = style if style is not None else {}
         if style is not None:
-            self.meta_rules = style['meta_rules']
-            self.source = style['source']
-            self.target = style['target']
+            self.meta_rules = default(style, 'meta_rules')
+            self.source = default(default(style, 'source'), 'meta_rules')
+            self.target = default(default(style, 'target'), 'meta_rules')
         else:
             self.meta_rules = {}
             self.source = {}
@@ -153,6 +160,12 @@ class LayerStyler:
     def visible(self):
         if 'visible' in self.style:
             return self.style['visible']
+        return True
+
+    @property
+    def pickable(self):
+        if 'pickable' in self.style:
+            return self.style['pickable']
         return True
 
     @property
@@ -207,27 +220,29 @@ def layer_style(layer: Union[Layer, LayerOverlay], parsed_styles):
         return LayerStyler()
 
 
-def compute_layer_colors(layer, color_function):
+def compute_layer_colors(layer: Layer, color_function):
     colors = np.empty((layer.size, 3), dtype=np.uint8)
-    for i, metaobject in enumerate(layer.meta):
-        colors[i] = color_function(metaobject)
+    for i, object in enumerate(layer.objects):
+        colors[i] = color_function(object.meta)
     return colors
 
 
 def apply_layer_style(style: LayerStyler, style_name: str, project: Project, layer: Layer):
     colors = compute_layer_colors(layer, style.object_color)
-    project.styles.add_style(style_name, layer.name, colors)
+    project.styles.add_layer_style(style_name, layer.name, style, colors)
 
 
 def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, overlay: LayerOverlay):
-    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_set=False), style.source_object_color) 
-    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_set=False), style.target_object_color)
-    project.styles.add_overlay_style(style_name, overlay.name, color_source, color_target)
+    print(style.source)
+    print(style.target)
+    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_model=False), style.source_object_color) 
+    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_model=False), style.target_object_color)
+    project.styles.add_overlay_style(style_name, overlay.name, style, color_source, color_target)
 
 
 def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
     if isinstance(layer, Layer):
-        apply_layer_style(style, style_name, layer)
+        apply_layer_style(style, style_name, project, layer)
     elif isinstance(layer, LayerOverlay):
         apply_overlay_style(style, style_name, project, layer)
     else:
@@ -249,9 +264,9 @@ class Style:
         if self.parsed is None:
             self.parse()
             
-        for layer in self.project.ilayers:
+        for layer in self.project.clayers(load_model=False):
             style = layer_style(layer, self.parsed)
-            apply_style(style, self, self.project, layer)
+            apply_style(style, self.name, self.project, layer)
 
     def get_styles(self):
         styles = fs.base.read_mss(self.mss_file)

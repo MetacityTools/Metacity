@@ -26,6 +26,7 @@ public:
 
     virtual shared_ptr<SimplePrimitive> copy() const override;
     virtual const char * type() const override;
+    virtual void add_attribute(const string & name, const uint32_t value) override;
     virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override;
     virtual void map(const shared_ptr<SimpleMultiPolygon> target) override;
 

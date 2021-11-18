@@ -141,8 +141,15 @@ class ObjectSet:
             raise Exception("Cannot object to ObjectSet in readonly mode")
 
     def __getitem__(self, index: int):
-        if not self.models.contains(index):
-            raise IndexError(f"No object at index {index}")
+        if self.load_model: 
+            if not self.models.contains(index):
+                raise IndexError(f"No object at index {index}")
+        elif self.load_meta:
+            if not self.meta.contains(index):
+                raise IndexError(f"No object at index {index}")
+        else: 
+            raise Exception("Cannot instantiate ObjectSet without any models or meta")
+            
         obj = Object()
         if self.load_model: 
             obj.models = self.models[index]
@@ -207,3 +214,4 @@ class Tile:
             'y': self.y,
             'file': fs.base.filename(self.file)
         }
+

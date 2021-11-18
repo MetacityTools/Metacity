@@ -18,6 +18,7 @@ protected:
 };
 
 class RTree;
+class LegoBuilder;
 
 class SimpleMultiPolygon : public SimplePrimitive
 {
@@ -37,5 +38,7 @@ public:
     virtual size_t to_obj(const string & path, const size_t offset) const override;
 protected:
     void to_tiles(const vector<tvec3> &triangles, const tfloat tile_size, Tiles &tiles) const;
+    
     friend class RTree;
+    friend class LegoBuilder;
 };
