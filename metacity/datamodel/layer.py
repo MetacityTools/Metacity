@@ -1,4 +1,5 @@
 from metacity.datamodel.grid import Grid
+from metacity.datamodel.timeline import Timeline
 from metacity.datamodel.object import Object
 from metacity.datamodel.set import ObjectSet
 from metacity.filesystem import layer as fs
@@ -90,6 +91,18 @@ class Layer(Persistable):
             for model in object.models:
                 grid.add(oid, model) 
         return grid
+
+    def build_timeline(self):
+        secs_in_hour = 60 * 60
+        timeline = Timeline(self.dir, secs_in_hour)
+        timeline.clear()
+
+        for oid, object in enumerate(self.objects):
+            for model in object.models:
+                timeline.add(oid, model)
+                
+        return timeline
+
 
     def serialize(self):
         return {
