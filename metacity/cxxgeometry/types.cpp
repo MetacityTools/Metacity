@@ -69,7 +69,7 @@ vector<tvec3> uint8_to_vec(const vector<uint8_t> &bytes)
 vector<tvec3> uint8_to_vec2_to_vec3(const vector<uint8_t> &bytes)
 {
     vector<tvec3> vec;
-    vec.resize(bytes.size() / (tvec3::length() * sizeof(tfloat)));
+    vec.resize(bytes.size() / (tvec2::length() * sizeof(tfloat)));
     size_t fls = sizeof(tfloat);
     size_t shift = fls * tvec2::length();
 
