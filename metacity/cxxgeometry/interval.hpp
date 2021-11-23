@@ -4,6 +4,11 @@
 
 using namespace std;
 
+struct Movement {
+    vec3 from;
+    vec3 to;
+    int32_t oid;
+};
 
 class Interval {
 public:
@@ -13,7 +18,5 @@ public:
 
 protected:
     //TODO
-
-
-    vector<vector<...>> buffers;
+    vector<vector<Movement>> buffers;
 };
