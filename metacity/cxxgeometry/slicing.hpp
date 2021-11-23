@@ -40,7 +40,7 @@ protected:
     void insert_triangle_split(const tvec3 triangle[3]);
     void insert_triangle_split(const tvec3 &a, const tvec3 &b, const tvec3 &c);
     void one_on_plane_split(const tvec3 t[3], const K::Plane_3 &plane);
-    void orinet(tvec3 t[3], const tfloat p, const size_t axis) const;
+    void orient(tvec3 t[3], const tfloat p, const size_t axis) const;
     void barrel_shift(tvec3 t[3]) const;
     // split routines
     void split_triangles_along_axis(const pair<int, int> &range, const size_t axis);

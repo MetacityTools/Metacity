@@ -31,8 +31,8 @@ struct RTreeInternalNode : public RTreeNode
 class RTree
 {
 public:
-    RTree(const shared_ptr<SimpleMultiPolygon> smp);
-    RTree(const SimpleMultiPolygon * smp);
+    RTree(const shared_ptr<TriangularMesh> mesh);
+    RTree(const TriangularMesh * mesh);
     void range_query(const BBox &range, vector<size_t> & indices) const;
     void point_query(const tvec3 &point, vector<size_t> & indices) const;
 

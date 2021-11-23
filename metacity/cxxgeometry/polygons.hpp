@@ -1,7 +1,7 @@
 #pragma once
-#include "primitives.hpp"
+#include "models.hpp"
 
-class MultiPolygon : public Primitive
+class MultiPolygon : public BaseModel
 {
 public:
     void push_p2(const vector<vector<tfloat>> ivertices);
@@ -11,7 +11,7 @@ public:
     virtual void deserialize(const json data) override;
 
     virtual const char *type() const override;
-    virtual shared_ptr<SimplePrimitive> transform() const override;
+    virtual shared_ptr<Model> transform() const override;
 
 protected:
     vector<vector<vector<tvec3>>> polygons;
@@ -20,17 +20,17 @@ protected:
 class RTree;
 class LegoBuilder;
 
-class SimpleMultiPolygon : public SimplePrimitive
+class TriangularMesh : public Model
 {
 public:
-    SimpleMultiPolygon();
-    SimpleMultiPolygon(const vector<tvec3> &v);
-    SimpleMultiPolygon(const vector<tvec3> &&v);
+    TriangularMesh();
+    TriangularMesh(const vector<tvec3> &v);
+    TriangularMesh(const vector<tvec3> &&v);
 
-    virtual shared_ptr<SimplePrimitive> copy() const override;
+    virtual shared_ptr<Model> copy() const override;
     virtual const char *type() const override;
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override;
-    virtual void map(const shared_ptr<SimpleMultiPolygon> target2D) override;
+    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override;
+    virtual void map(const shared_ptr<TriangularMesh> target2D) override;
 
     const tvec3 * triangle(const size_t index) const;
     const shared_ptr<Attribute> attribute(const string & name);

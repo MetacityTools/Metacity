@@ -1,6 +1,6 @@
 #include <stdexcept>
 #include <numeric>
-#include "primitives.hpp"
+#include "models.hpp"
 #include "triangulation.hpp"
 #include "bbox.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
@@ -53,14 +53,14 @@ void merge_tags(json & ltags, const json & rtags)
 
 //===============================================================================
 
-Primitive::~Primitive() {}
+BaseModel::~BaseModel() {}
 
-void Primitive::deserialize(const json data)
+void BaseModel::deserialize(const json data)
 {
     data.at("tags").get_to(tags);
 }
 
-json Primitive::serialize() const
+json BaseModel::serialize() const
 {
     return {
         {"tags", tags},
@@ -68,24 +68,24 @@ json Primitive::serialize() const
 }
 
 //===============================================================================
-SimplePrimitive::SimplePrimitive() : Primitive() {}
-SimplePrimitive::SimplePrimitive(const vector<tvec3> &v) : Primitive(), vertices(v) {}
-SimplePrimitive::SimplePrimitive(const vector<tvec3> &&v) : Primitive(), vertices(v) {}
+Model::Model() : BaseModel() {}
+Model::Model(const vector<tvec3> &v) : BaseModel(), vertices(v) {}
+Model::Model(const vector<tvec3> &&v) : BaseModel(), vertices(v) {}
 
-tuple<tfloat, tfloat, tfloat> SimplePrimitive::centroid() const
+tuple<tfloat, tfloat, tfloat> Model::centroid() const
 {
     tvec3 c = centroidvec();
     return make_tuple(c.x, c.y, c.z);
 }
 
-tvec3 SimplePrimitive::centroidvec() const
+tvec3 Model::centroidvec() const
 {
     tvec3 c = accumulate(vertices.begin(), vertices.end(), tvec3(0));
     c /= vertices.size();
     return c;
 }
 
-tuple<tuple<tfloat, tfloat, tfloat>, tuple<tfloat, tfloat, tfloat>> SimplePrimitive::bounding_box() const
+tuple<tuple<tfloat, tfloat, tfloat>, tuple<tfloat, tfloat, tfloat>> Model::bounding_box() const
 {
     BBox box;
     set_empty(box);
@@ -95,40 +95,40 @@ tuple<tuple<tfloat, tfloat, tfloat>, tuple<tfloat, tfloat, tfloat>> SimplePrimit
 }
 
 
-void SimplePrimitive::shift(const tfloat sx, const tfloat sy, const tfloat sz)
+void Model::shift(const tfloat sx, const tfloat sy, const tfloat sz)
 {   
     const tvec3 shift(sx, sy, sz); 
     for (tvec3 & v: vertices)
         v += shift;
 }
 
-void SimplePrimitive::join(const shared_ptr<SimplePrimitive> primitive)
+void Model::join(const shared_ptr<Model> model)
 {
     for (const auto & attr: attrib)
     {
-        const auto it = primitive->attrib.find(attr.first);
-        if (primitive->attrib.end() == it)
-            throw runtime_error("RHS of SimplePrimitive join is missing attribute: " + attr.first);
+        const auto it = model->attrib.find(attr.first);
+        if (model->attrib.end() == it)
+            throw runtime_error("RHS of Model Join is missing attribute: " + attr.first);
         attr.second->join(it->second);
     }
 
-    vertices.insert(vertices.end(), primitive->vertices.begin(), primitive->vertices.end());
-    merge_tags(tags, primitive->tags);
+    vertices.insert(vertices.end(), model->vertices.begin(), model->vertices.end());
+    merge_tags(tags, model->tags);
 }
 
-void SimplePrimitive::push_vert(const tvec3 &vec)
+void Model::push_vert(const tvec3 &vec)
 {
     vertices.emplace_back(vec);
 }
 
-void SimplePrimitive::push_vert(const tvec3 *vec, size_t count)
+void Model::push_vert(const tvec3 *vec, size_t count)
 {
     vertices.insert(vertices.end(), vec, vec + count);
 }
 
-void SimplePrimitive::deserialize(const json data)
+void Model::deserialize(const json data)
 {
-    Primitive::deserialize(data);
+    BaseModel::deserialize(data);
     const auto sverts = data.at("vertices").get<string>();
     vertices = string_to_vec(sverts);
 
@@ -136,9 +136,9 @@ void SimplePrimitive::deserialize(const json data)
         attrib[attr.key()] = attr_deserialize(attr.value());
 }
 
-json SimplePrimitive::serialize() const
+json Model::serialize() const
 {
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["vertices"] = vec_to_string(vertices);
     json sattrib = json::object({});
 
@@ -149,9 +149,9 @@ json SimplePrimitive::serialize() const
     return data;
 }
 
-json SimplePrimitive::serialize_stream() const
+json Model::serialize_stream() const
 {
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["vertices"] = vec_to_f_to_string(vertices);
     json sattrib = json::object({});
 
@@ -162,7 +162,7 @@ json SimplePrimitive::serialize_stream() const
     return data;
 }
 
-void SimplePrimitive::add_attribute(const string &name, const uint32_t value)
+void Model::add_attribute(const string &name, const uint32_t value)
 {
     auto attr = make_shared<TAttribute<uint32_t>>();
     attr->clear();
@@ -170,16 +170,16 @@ void SimplePrimitive::add_attribute(const string &name, const uint32_t value)
     attrib[name] = attr;
 }
 
-void SimplePrimitive::add_attribute(const string &name, const shared_ptr<Attribute> attr)
+void Model::add_attribute(const string &name, const shared_ptr<Attribute> attr)
 {
     attrib[name] = attr;
 }
 
-shared_ptr<SimplePrimitive> SimplePrimitive::transform() const {
+shared_ptr<Model> Model::transform() const {
     return copy();
 }
 
-void SimplePrimitive::copy_to(shared_ptr<SimplePrimitive> cp) const
+void Model::copy_to(shared_ptr<Model> cp) const
 {
     cp->vertices = vertices;
     cp->tags = tags;
@@ -187,13 +187,13 @@ void SimplePrimitive::copy_to(shared_ptr<SimplePrimitive> cp) const
         cp->attrib[a.first] = a.second->copy();
 }
 
-bool SimplePrimitive::mapping_ready() const
+bool Model::mapping_ready() const
 {
     const auto it = attrib.find("oid");
     return it != attrib.end();
 }
 
-void SimplePrimitive::init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv)
+void Model::init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv)
 {
     attrib.clear();
     attrib["source_oid"] = soid;

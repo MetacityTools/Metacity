@@ -1,8 +1,8 @@
 #pragma once
-#include "primitives.hpp"
+#include "models.hpp"
 
 
-class MultiTimePoint : public Primitive {
+class MultiTimePoint : public BaseModel {
 public: 
     void set_points_from_b64(const string & data);
     void set_start_time(const uint32_t & start_time);
@@ -11,7 +11,7 @@ public:
     virtual void deserialize(const json data) override;
 
     virtual const char * type() const override;
-    virtual shared_ptr<SimplePrimitive> transform() const override;
+    virtual shared_ptr<Model> transform() const override;
     
 protected:
     uint32_t start;

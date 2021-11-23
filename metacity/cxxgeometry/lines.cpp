@@ -42,7 +42,7 @@ json MultiLine::serialize() const
     for (const auto &line : lines)
         vsline.emplace_back(vec_to_string(line));
 
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["lines"] = vsline;
     return data;
 }
@@ -52,10 +52,10 @@ void MultiLine::deserialize(const json data)
     const auto vslines = data.at("lines").get<vector<string>>();
     for (const auto &sline : vslines)
         lines.emplace_back(string_to_vec(sline));
-    Primitive::deserialize(data);
+    BaseModel::deserialize(data);
 };
 
-shared_ptr<SimplePrimitive> MultiLine::transform() const
+shared_ptr<Model> MultiLine::transform() const
 {
     vector<tvec3> vertices;
     for (const auto &line : lines)
@@ -75,23 +75,23 @@ shared_ptr<SimplePrimitive> MultiLine::transform() const
         vertices.emplace_back(line[line.size() - 1]);
     }
 
-    return make_shared<SimpleMultiLine>(move(vertices));
+    return make_shared<SegmentCloud>(move(vertices));
 }
 
 //===============================================================================
 
-SimpleMultiLine::SimpleMultiLine() : SimplePrimitive() {}
-SimpleMultiLine::SimpleMultiLine(const vector<tvec3> &v) : SimplePrimitive(v) {}
-SimpleMultiLine::SimpleMultiLine(const vector<tvec3> &&v) : SimplePrimitive(move(v)) {}
+SegmentCloud::SegmentCloud() : Model() {}
+SegmentCloud::SegmentCloud(const vector<tvec3> &v) : Model(v) {}
+SegmentCloud::SegmentCloud(const vector<tvec3> &&v) : Model(move(v)) {}
 
-shared_ptr<SimplePrimitive> SimpleMultiLine::copy() const
+shared_ptr<Model> SegmentCloud::copy() const
 {
-    auto cp = make_shared<SimpleMultiLine>();
+    auto cp = make_shared<SegmentCloud>();
     copy_to(cp);
     return cp;
 }
 
-const char *SimpleMultiLine::type() const
+const char *SegmentCloud::type() const
 {
     return "simpleline";
 }
@@ -104,7 +104,7 @@ inline tvec3 lcentroid(const tvec3 line[2])
 }
 
 
-void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const tfloat tile_size, Tiles &tiles) const
+void SegmentCloud::to_tiles(const std::vector<tvec3> &points, const tfloat tile_size, Tiles &tiles) const
 {
     Tiles::iterator search;
     pair<int, int> xy;
@@ -114,13 +114,13 @@ void SimpleMultiLine::to_tiles(const std::vector<tvec3> &points, const tfloat ti
         grid_coords(lcentroid(&points[p]), tile_size, xy);
         search = tiles.find(xy);
         if (search == tiles.end())
-            search = tiles.insert({xy, make_shared<SimpleMultiLine>()}).first;
+            search = tiles.insert({xy, make_shared<SegmentCloud>()}).first;
 
         search->second->push_vert(&points[p], 2);
     }
 }
 
-void SimpleMultiLine::add_attribute(const string &name, const uint32_t value)
+void SegmentCloud::add_attribute(const string &name, const uint32_t value)
 {
     auto attr = make_shared<TAttribute<uint32_t>>();
     attr->clear();
@@ -129,7 +129,7 @@ void SimpleMultiLine::add_attribute(const string &name, const uint32_t value)
 }
 
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const tfloat tile_size) const
+vector<shared_ptr<Model>> SegmentCloud::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     LineSlicer slicer;
@@ -140,14 +140,14 @@ vector<shared_ptr<SimplePrimitive>> SimpleMultiLine::slice_to_grid(const tfloat 
         to_tiles(slicer.data(), tile_size, tiles);
     }
 
-    vector<shared_ptr<SimplePrimitive>> tiled;
+    vector<shared_ptr<Model>> tiled;
     for (const auto &tile : tiles)
         tiled.push_back(tile.second);
 
     return tiled;
 }
 
-size_t SimpleMultiLine::to_obj(const string &path, const size_t offset) const
+size_t SegmentCloud::to_obj(const string &path, const size_t offset) const
 {
     ofstream objfile(path, std::ios_base::app);
     objfile << "o Line" << offset << endl;
@@ -185,10 +185,10 @@ bool get_segment(const tvec3 triangle[3], const K::Plane_3 &plane, const K::Iso_
     return false;
 }
 
-void SimpleMultiLine::map(const shared_ptr<SimpleMultiPolygon> target)
+void SegmentCloud::map(const shared_ptr<TriangularMesh> target)
 {
     if (!(mapping_ready() && target->mapping_ready()))
-        throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+        throw runtime_error("Either mapped model are not ready for mapping (most likely miss the attribute OID.");
 
     // helpers
     tvec3 la, lb;

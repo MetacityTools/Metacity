@@ -4,7 +4,7 @@
 class LegoBuilder {
 public:
     LegoBuilder();
-    void insert_model(const shared_ptr<SimpleMultiPolygon> model);
+    void insert_model(const shared_ptr<TriangularMesh> model);
     void build_heightmap(const tfloat xmin, const tfloat ymin, const tfloat xmax, const tfloat ymax, const uint32_t xresolution);
     json legofy(const int box_size);
     void lego_to_png(const string & name) const;

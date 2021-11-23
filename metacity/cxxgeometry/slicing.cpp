@@ -211,7 +211,7 @@ bool TriangleSlicer::bc_on_same_side(const tvec3 t[3], const tfloat p, const siz
     return (b && c) || !(b || c);
 }
 
-void TriangleSlicer::orinet(tvec3 t[3], const tfloat p, const size_t axis) const
+void TriangleSlicer::orient(tvec3 t[3], const tfloat p, const size_t axis) const
 {
     size_t i = 0;
     while (!bc_on_same_side(t, p, axis))
@@ -225,7 +225,7 @@ void TriangleSlicer::orinet(tvec3 t[3], const tfloat p, const size_t axis) const
 void TriangleSlicer::general_case_split(const tvec3 t[3], const tfloat p, const K::Plane_3 &plane, const size_t axis)
 {
     tvec3 c[3] = {t[0], t[1], t[2]};
-    orinet(c, p, axis);
+    orient(c, p, axis);
     tvec3 mid_ab = cross_point(c[0], c[1], plane);
     tvec3 mid_ac = cross_point(c[0], c[2], plane);
     tfloat dist_ab_c = glm::length2(c[2] - mid_ab);

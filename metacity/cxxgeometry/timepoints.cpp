@@ -15,7 +15,7 @@ const char * MultiTimePoint::type() const {
 
 json MultiTimePoint::serialize() const
 {
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["points"] = vec_to_string(points);
     data["start"] = start;
     return data;
@@ -27,11 +27,11 @@ void MultiTimePoint::deserialize(const json data)
     points = string_to_vec(spoints);
 
     start = data.at("start").get<uint32_t>();
-    Primitive::deserialize(data);
+    BaseModel::deserialize(data);
 };
 
 
-shared_ptr<SimplePrimitive> MultiTimePoint::transform() const
+shared_ptr<Model> MultiTimePoint::transform() const
 {
     return nullptr;
 };

@@ -16,9 +16,6 @@ ostream &operator<<(ostream &os, const tvec3 &vec);
 ostream &operator<<(ostream &os, const vector<tvec3> &vec);
 
 
-using Polygon = vector<vector<tvec3>>;
-using Polygons = vector<vector<vector<tvec3>>>;
-
 // fully defined
 void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coords);
 

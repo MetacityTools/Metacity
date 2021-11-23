@@ -14,6 +14,11 @@
 typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
 typedef CGAL::Surface_mesh<K::Point_3> Mesh;
 
+using TPolygon = vector<vector<tvec3>>;
+using TPolygons = vector<vector<vector<tvec3>>>;
+using TCGALFlatPolygon = vector<K::Point_3>;
+
+
 inline K::Point_3 to_point3(const K::Point_2 &p)
 {
     return K::Point_3(p.x(), p.y(), 0);

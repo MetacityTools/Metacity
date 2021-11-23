@@ -62,7 +62,7 @@ json MultiPolygon::serialize() const
         vvspolygons.emplace_back(move(vspolygon));
     }
 
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["polygons"] = vvspolygons;
     return data;
 }
@@ -78,36 +78,36 @@ void MultiPolygon::deserialize(const json data)
         polygons.emplace_back(move(vpolygon));
     }
 
-    Primitive::deserialize(data);
+    BaseModel::deserialize(data);
 };
 
-shared_ptr<SimplePrimitive> MultiPolygon::transform() const
+shared_ptr<Model> MultiPolygon::transform() const
 {
     vector<tvec3> vertices;
     Triangulator t;
     t.triangulate(polygons, vertices);
-    return make_shared<SimpleMultiPolygon>(move(vertices));
+    return make_shared<TriangularMesh>(move(vertices));
 }
 
 //===============================================================================
 
-SimpleMultiPolygon::SimpleMultiPolygon() : SimplePrimitive() {}
-SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> &v) : SimplePrimitive(v) {}
-SimpleMultiPolygon::SimpleMultiPolygon(const vector<tvec3> &&v) : SimplePrimitive(move(v)) {}
+TriangularMesh::TriangularMesh() : Model() {}
+TriangularMesh::TriangularMesh(const vector<tvec3> &v) : Model(v) {}
+TriangularMesh::TriangularMesh(const vector<tvec3> &&v) : Model(move(v)) {}
 
-shared_ptr<SimplePrimitive> SimpleMultiPolygon::copy() const
+shared_ptr<Model> TriangularMesh::copy() const
 {
-    auto cp = make_shared<SimpleMultiPolygon>();
+    auto cp = make_shared<TriangularMesh>();
     copy_to(cp);
     return cp;
 }
 
-const char *SimpleMultiPolygon::type() const
+const char *TriangularMesh::type() const
 {
     return "simplepolygon";
 }
 
-size_t SimpleMultiPolygon::to_obj(const string & path, const size_t offset) const 
+size_t TriangularMesh::to_obj(const string & path, const size_t offset) const 
 {
     ofstream objfile(path, std::ios_base::app);
     objfile << "o Polygon" << offset << endl; 
@@ -128,7 +128,7 @@ inline tvec3 tcentroid(const tvec3 triangle[3])
     return c;
 }
 
-void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const tfloat tile_size, Tiles &tiles) const
+void TriangularMesh::to_tiles(const std::vector<tvec3> &triangles, const tfloat tile_size, Tiles &tiles) const
 {
     Tiles::iterator search;
     pair<int, int> xy;
@@ -138,12 +138,12 @@ void SimpleMultiPolygon::to_tiles(const std::vector<tvec3> &triangles, const tfl
         grid_coords(tcentroid(&triangles[p]), tile_size, xy);
         search = tiles.find(xy);
         if (search == tiles.end())
-            search = tiles.insert({xy, make_shared<SimpleMultiPolygon>()}).first;
+            search = tiles.insert({xy, make_shared<TriangularMesh>()}).first;
         search->second->push_vert(&triangles[p], 3);
     }
 }
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const tfloat tile_size) const
+vector<shared_ptr<Model>> TriangularMesh::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     TriangleSlicer slicer;
@@ -154,23 +154,23 @@ vector<shared_ptr<SimplePrimitive>> SimpleMultiPolygon::slice_to_grid(const tflo
         to_tiles(slicer.data(), tile_size, tiles);
     }
 
-    vector<shared_ptr<SimplePrimitive>> tiled;
+    vector<shared_ptr<Model>> tiled;
     for (const auto &tile : tiles)
         tiled.push_back(tile.second);
 
     return tiled;
 }
 
-const tvec3 * SimpleMultiPolygon::triangle(const size_t index) const
+const tvec3 * TriangularMesh::triangle(const size_t index) const
 {
     return &(vertices[index * 3]);
 }
 
-const shared_ptr<Attribute> SimpleMultiPolygon::attribute(const string & name)
+const shared_ptr<Attribute> TriangularMesh::attribute(const string & name)
 {
     const auto it = attrib.find(name);
     if (it == attrib.end())
-        throw runtime_error("The primitive is missing attribute " + name);
+        throw runtime_error("The model is missing attribute " + name);
     return it->second;
 }
 
@@ -189,10 +189,10 @@ bool with_idential_oid(const vector<uint32_t> & oids)
 
 //the mapping is a sort of inverse of the alternatives for lines and points, 
 //the target is supposed to get splitted according *this
-void SimpleMultiPolygon::map(const shared_ptr<SimpleMultiPolygon> target3D) 
+void TriangularMesh::map(const shared_ptr<TriangularMesh> target3D) 
 {
     if (!(mapping_ready() && target3D->mapping_ready()))
-        throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+        throw runtime_error("Either mapped models are not ready for mapping (most likely miss the attribute OID.");
 
     //vector<size_t> stats;
 

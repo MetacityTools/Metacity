@@ -65,7 +65,7 @@ void denoise(tfloat * height, unsigned int x, unsigned int y, tfloat low, tfloat
 
 LegoBuilder::LegoBuilder() {}
 
-void LegoBuilder::insert_model(const shared_ptr<SimpleMultiPolygon> model)
+void LegoBuilder::insert_model(const shared_ptr<TriangularMesh> model)
 {
     vertices.insert(vertices.end(), model->vertices.begin(), model->vertices.end());
 }

@@ -25,7 +25,7 @@ namespace mapbox
     } // namespace util
 } // namespace mapbox
 
-void Triangulator::triangulate(const Polygons &in_polygons, vector<tvec3> &out_vertices)
+void Triangulator::triangulate(const TPolygons &in_polygons, vector<tvec3> &out_vertices)
 {
     if (in_polygons.size() == 0)
         return;
@@ -51,7 +51,7 @@ void Triangulator::triangulate(const Polygons &in_polygons, vector<tvec3> &out_v
     }
 }
 
-void Triangulator::triangulate(const SimplePolygon &in_polygon, vector<tvec3> &out_vertices)
+void Triangulator::triangulate(const TCGALFlatPolygon &in_polygon, vector<tvec3> &out_vertices)
 {
     mesh.clear();
     tmp_faces.clear();
@@ -71,7 +71,7 @@ void Triangulator::triangulate(const SimplePolygon &in_polygon, vector<tvec3> &o
         out_vertices.emplace_back(vertexrefs[i]);
 }
 
-bool Triangulator::to_cgal_mesh(const Polygon &polygon)
+bool Triangulator::to_cgal_mesh(const TPolygon &polygon)
 {
     tmp_faces.clear();
     Mesh::Face_index fi;
@@ -93,7 +93,7 @@ bool Triangulator::to_cgal_mesh(const Polygon &polygon)
     return true;
 }
 
-bool Triangulator::to_cgal_mesh(const SimplePolygon &polygon)
+bool Triangulator::to_cgal_mesh(const TCGALFlatPolygon &polygon)
 {
     tmp_faces.clear();
     tmp_points.clear();
@@ -116,7 +116,7 @@ void Triangulator::compute_normal(const Mesh::Face_index fi)
     normal = CGAL::Polygon_mesh_processing::compute_face_normal(fi, mesh);
 }
 
-void Triangulator::project_pair(const Polygon &polygon)
+void Triangulator::project_pair(const TPolygon &polygon)
 {
     const tvec3 &p = polygon[0][0];
     const K::Point_3 point = K::Point_3(p.x, p.y, p.z);
@@ -134,7 +134,7 @@ void Triangulator::project_pair(const Polygon &polygon)
     }
 }
 
-void Triangulator::project_pair(const SimplePolygon &polygon)
+void Triangulator::project_pair(const TCGALFlatPolygon &polygon)
 {
     const K::Point_3 &point = polygon[0];
     CGAL::Plane_3<K> plane(point, normal);

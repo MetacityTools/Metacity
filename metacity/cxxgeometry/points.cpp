@@ -32,7 +32,7 @@ void MultiPoint::push_p3(const vector<tfloat> iv)
 
 json MultiPoint::serialize() const
 {
-    json data = Primitive::serialize();
+    json data = BaseModel::serialize();
     data["points"] = vec_to_string(points);
     return data;
 }
@@ -41,39 +41,39 @@ void MultiPoint::deserialize(const json data)
 {
     const auto spoints = data.at("points").get<string>();
     points = string_to_vec(spoints);
-    Primitive::deserialize(data);
+    BaseModel::deserialize(data);
 };
 
-shared_ptr<SimplePrimitive> MultiPoint::transform() const
+shared_ptr<Model> MultiPoint::transform() const
 {
 
     vector<tvec3> vertices;
     for(const auto & point : points)
         vertices.emplace_back(point);
 
-    return make_shared<SimpleMultiPoint>(move(vertices));
+    return make_shared<PointCloud>(move(vertices));
 }
 
 
 //===============================================================================
 
-SimpleMultiPoint::SimpleMultiPoint() : SimplePrimitive() {}
-SimpleMultiPoint::SimpleMultiPoint(const vector<tvec3> & v) : SimplePrimitive(v) {}
-SimpleMultiPoint::SimpleMultiPoint(const vector<tvec3> && v) : SimplePrimitive(move(v)) {}
+PointCloud::PointCloud() : Model() {}
+PointCloud::PointCloud(const vector<tvec3> & v) : Model(v) {}
+PointCloud::PointCloud(const vector<tvec3> && v) : Model(move(v)) {}
 
-shared_ptr<SimplePrimitive> SimpleMultiPoint::copy() const
+shared_ptr<Model> PointCloud::copy() const
 {
-    auto cp = make_shared<SimpleMultiPoint>();
+    auto cp = make_shared<PointCloud>();
     copy_to(cp);
     return cp;
 }
 
-const char * SimpleMultiPoint::type() const
+const char * PointCloud::type() const
 {
     return "simplepoint";
 }
 
-size_t SimpleMultiPoint::to_obj(const string & path, const size_t offset) const 
+size_t PointCloud::to_obj(const string & path, const size_t offset) const 
 {
     ofstream objfile(path, std::ios_base::app);
     objfile << "o PointCloud" << offset << endl; 
@@ -83,7 +83,7 @@ size_t SimpleMultiPoint::to_obj(const string & path, const size_t offset) const
     return vertices.size();
 }
 
-vector<shared_ptr<SimplePrimitive>> SimpleMultiPoint::slice_to_grid(const tfloat tile_size) const
+vector<shared_ptr<Model>> PointCloud::slice_to_grid(const tfloat tile_size) const
 {
     Tiles tiles;
     Tiles::iterator search;
@@ -94,11 +94,11 @@ vector<shared_ptr<SimplePrimitive>> SimpleMultiPoint::slice_to_grid(const tfloat
         grid_coords(v, tile_size, xy);
         search = tiles.find(xy);
         if (search == tiles.end())
-            search = tiles.insert({xy, make_shared<SimpleMultiPoint>()}).first;
+            search = tiles.insert({xy, make_shared<PointCloud>()}).first;
         search->second->push_vert(v);
     }
 
-    vector<shared_ptr<SimplePrimitive>> tiled;
+    vector<shared_ptr<Model>> tiled;
     for (const auto & tile : tiles) 
         tiled.push_back(tile.second);
 
@@ -119,10 +119,10 @@ tfloat interpolate_z(const tvec3 triangle[3], const K::Line_3 & line)
     return -FLT_MAX;
 }
 
-void SimpleMultiPoint::map(const shared_ptr<SimpleMultiPolygon> target) 
+void PointCloud::map(const shared_ptr<TriangularMesh> target) 
 {
     if (!(mapping_ready() && target->mapping_ready()))
-        throw runtime_error("Either mapped primitives are not ready for mapping (most likely miss the attribute OID.");
+        throw runtime_error("Either mapped models are not ready for mapping (most likely miss the attribute OID.");
 
     //helpers
     tfloat z, maxz;

@@ -12,8 +12,8 @@ add_compile_options(-std=c++17 -Wall -pedantic -O3)#-g -fsanitize=address -fno-o
 #add_link_options(-fsanitize=address -shared-libasan)
 
 pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp 
-                                    metacity/cxxgeometry/primitives.cpp 
-                                    metacity/cxxgeometry/primitives.hpp 
+                                    metacity/cxxgeometry/models.cpp 
+                                    metacity/cxxgeometry/models.hpp 
                                     metacity/cxxgeometry/timepoints.cpp
                                     metacity/cxxgeometry/timepoints.hpp
                                     metacity/cxxgeometry/points.cpp

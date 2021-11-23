@@ -1,8 +1,8 @@
 #pragma once
-#include "primitives.hpp"
+#include "models.hpp"
 
 
-class MultiLine : public Primitive
+class MultiLine : public BaseModel
 {
 public:
     void push_l2(const vector<tfloat> ivertices);
@@ -12,23 +12,24 @@ public:
     virtual void deserialize(const json data) override;
 
     virtual const char * type() const override;
-    virtual shared_ptr<SimplePrimitive> transform() const override;
+    virtual shared_ptr<Model> transform() const override;
 protected:
     vector<vector<tvec3>> lines;
 };
 
-class SimpleMultiLine : public SimplePrimitive
+
+class SegmentCloud : public Model
 {
 public:
-    SimpleMultiLine();
-    SimpleMultiLine(const vector<tvec3> & v);
-    SimpleMultiLine(const vector<tvec3> && v);
+    SegmentCloud();
+    SegmentCloud(const vector<tvec3> & v);
+    SegmentCloud(const vector<tvec3> && v);
 
-    virtual shared_ptr<SimplePrimitive> copy() const override;
+    virtual shared_ptr<Model> copy() const override;
     virtual const char * type() const override;
     virtual void add_attribute(const string & name, const uint32_t value) override;
-    virtual vector<shared_ptr<SimplePrimitive>> slice_to_grid(const tfloat tile_size) const override;
-    virtual void map(const shared_ptr<SimpleMultiPolygon> target) override;
+    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override;
+    virtual void map(const shared_ptr<TriangularMesh> target) override;
 
     virtual size_t to_obj(const string & path, const size_t offset) const override;
 

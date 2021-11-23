@@ -2,15 +2,15 @@
 
 //===============================================================================
 
-RTree::RTree(const shared_ptr<SimpleMultiPolygon> smp)
+RTree::RTree(const shared_ptr<TriangularMesh> mesh)
 {
 
     BBox main;
     set_empty(main);
-    for (size_t i = 0, j = 0; i < smp->vertices.size(); i += 3, ++j)
+    for (size_t i = 0, j = 0; i < mesh->vertices.size(); i += 3, ++j)
     {
         auto node = make_shared<RTreeLeafNode>();
-        for_triangle(&(smp->vertices[i]), node->bbox);
+        for_triangle(&(mesh->vertices[i]), node->bbox);
         extend(main, node->bbox);
         node->index = j;
         node->type = RTreeNodeType::leaf;
@@ -20,15 +20,15 @@ RTree::RTree(const shared_ptr<SimpleMultiPolygon> smp)
     root = build(main, 0, nodes.size(), 0);
 }
 
-RTree::RTree(const SimpleMultiPolygon * smp)
+RTree::RTree(const TriangularMesh * mesh)
 {
 
     BBox main;
     set_empty(main);
-    for (size_t i = 0, j = 0; i < smp->vertices.size(); i += 3, ++j)
+    for (size_t i = 0, j = 0; i < mesh->vertices.size(); i += 3, ++j)
     {
         auto node = make_shared<RTreeLeafNode>();
-        for_triangle(&(smp->vertices[i]), node->bbox);
+        for_triangle(&(mesh->vertices[i]), node->bbox);
         extend(main, node->bbox);
         node->index = j;
         node->type = RTreeNodeType::leaf;
