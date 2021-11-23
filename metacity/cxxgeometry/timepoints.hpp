@@ -8,6 +8,7 @@ public:
     void set_start_time(const uint32_t & start_time);
 
     uint32_t const get_start_time();
+    uint32_t const get_end_time();
     uint32_t const size();
 
     const tvec3 & operator[] (const size_t t) const;

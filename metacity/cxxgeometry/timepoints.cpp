@@ -13,6 +13,10 @@ const uint32_t MultiTimePoint::get_start_time(){
     return(start);
 }
 
+const uint32_t MultiTimePoint::get_end_time(){
+    return get_start_time() + size();
+}
+
 const uint32_t MultiTimePoint::size(){
     return(points.size());
 }
