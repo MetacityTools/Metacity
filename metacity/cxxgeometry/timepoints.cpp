@@ -9,11 +9,11 @@ void MultiTimePoint::set_start_time(const uint32_t & start_time) {
     start = start_time;
 }
 
-const uint32_t MultiTimePoint::get_start_time(){
+const uint32_t MultiTimePoint::get_start_time() const{
     return(start);
 }
 
-const uint32_t MultiTimePoint::size(){
+const uint32_t MultiTimePoint::size() const{
     return(points.size());
 }
 

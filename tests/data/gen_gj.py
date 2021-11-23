@@ -1,6 +1,7 @@
 import numpy as np
 import json
 
+SCALE = 10000
 
 def point(dim=2):
     verts = gen_point(dim)
@@ -21,7 +22,7 @@ def get_point_gj(verts, dims):
 
 
 def gen_point(dim):
-    verts = np.random.rand(dim).astype(np.float32) * 100
+    verts = np.random.rand(dim).astype(np.float32) * SCALE
     return verts
 
 
@@ -44,7 +45,7 @@ def get_multipoint_gj(verts, dims):
 
 
 def gen_points(dim, count=20):
-    verts = np.random.rand(count, dim).astype(np.float32) * 100
+    verts = np.random.rand(count, dim).astype(np.float32) * SCALE
     return verts
 
 

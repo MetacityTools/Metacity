@@ -45,8 +45,5 @@ pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp
                                     metacity/cxxgeometry/cgal.hpp)
 
 
-find_package(Eigen3 CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE Eigen3::Eigen)
-
 find_package(CGAL CONFIG COMPONENTS REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE CGAL::CGAL)

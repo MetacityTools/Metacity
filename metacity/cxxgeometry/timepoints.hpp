@@ -7,10 +7,13 @@ public:
     void set_points_from_b64(const string & data);
     void set_start_time(const uint32_t & start_time);
 
-    uint32_t const get_start_time();
-    uint32_t const size();
+    const uint32_t get_start_time() const;
+    const uint32_t size() const;
 
-    const tvec3 & operator[] (const size_t t) const;
+    inline const tvec3 & operator[] (const size_t t) const {
+        return points[t];
+    };
+
 
     virtual json serialize() const override;
     virtual void deserialize(const json data) override;
@@ -23,8 +26,5 @@ protected:
     vector<tvec3> points;
 };
 
-inline const tvec3 & MultiTimePoint::operator[] (const size_t t) const{
-    return points[t];
-}
 
 
