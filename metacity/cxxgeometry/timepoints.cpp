@@ -40,10 +40,10 @@ void MultiTimePoint::deserialize(const json data)
 
     start = data.at("start").get<uint32_t>();
     BaseModel::deserialize(data);
-};
+}
 
 
 shared_ptr<Model> MultiTimePoint::transform() const
 {
     return nullptr;
-};
+}
