@@ -20,8 +20,13 @@ class Timeline(Persistable):
         fs.clear_timeline(self.dir)
 
     def add(self, oid: int, model: Primitive):
-        pass
-        #TODO
+        if model.type != "timepoint":
+            return
+
+        
+        
+
+
 
     def serialize(self):
         return {

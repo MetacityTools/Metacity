@@ -40,6 +40,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/cxxgeometry/geometry.cpp
                                     metacity/cxxgeometry/png.cpp
                                     metacity/cxxgeometry/legobuilder.hpp
                                     metacity/cxxgeometry/legobuilder.cpp
+                                    metacity/cxxgeometry/interval.cpp
+                                    metacity/cxxgeometry/interval.hpp
                                     metacity/cxxgeometry/cgal.hpp)
 
 
