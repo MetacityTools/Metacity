@@ -41,7 +41,7 @@ void append(vector<uint8_t> &vec, T f)
 {
     uint8_t *d = (uint8_t *)&f;
     vec.insert(vec.end(), d, d + sizeof(T));
-};
+}
 
 template <typename T>
 vector<uint8_t> T_to_uint8(const vector<T> &vec)
@@ -53,7 +53,7 @@ vector<uint8_t> T_to_uint8(const vector<T> &vec)
         append(bytes, v);
 
     return bytes;
-};
+}
 
 template <typename T>
 vector<T> uint8_to_T(const vector<uint8_t> &bytes)
@@ -66,7 +66,7 @@ vector<T> uint8_to_T(const vector<uint8_t> &bytes)
         memcpy(&vec[j], &bytes[i], tls);
 
     return vec;
-};
+}
 
 template <typename T>
 string T_to_string(const vector<T> &vec)
@@ -74,7 +74,7 @@ string T_to_string(const vector<T> &vec)
     vector<uint8_t> ui8 = T_to_uint8<T>(vec);
     using base64 = cppcodec::base64_rfc4648;
     return base64::encode(&ui8[0], ui8.size());
-};
+}
 
 template <typename T>
 vector<T> string_to_T(const string &s)
@@ -82,4 +82,4 @@ vector<T> string_to_T(const string &s)
     using base64 = cppcodec::base64_rfc4648;
     const vector<uint8_t> ui8 = base64::decode(s);
     return uint8_to_T<T>(ui8);
-};
+}
