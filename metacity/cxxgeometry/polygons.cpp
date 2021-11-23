@@ -79,7 +79,7 @@ void MultiPolygon::deserialize(const json data)
     }
 
     BaseModel::deserialize(data);
-};
+}
 
 shared_ptr<Model> MultiPolygon::transform() const
 {

@@ -42,7 +42,7 @@ void MultiPoint::deserialize(const json data)
     const auto spoints = data.at("points").get<string>();
     points = string_to_vec(spoints);
     BaseModel::deserialize(data);
-};
+}
 
 shared_ptr<Model> MultiPoint::transform() const
 {

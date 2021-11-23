@@ -53,7 +53,7 @@ void MultiLine::deserialize(const json data)
     for (const auto &sline : vslines)
         lines.emplace_back(string_to_vec(sline));
     BaseModel::deserialize(data);
-};
+}
 
 shared_ptr<Model> MultiLine::transform() const
 {
