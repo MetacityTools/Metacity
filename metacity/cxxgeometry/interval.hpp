@@ -5,8 +5,8 @@
 using namespace std;
 
 struct Movement {
-    vec3 from;
-    vec3 to;
+    tvec3 from;
+    tvec3 to;
     int32_t oid;
 };
 

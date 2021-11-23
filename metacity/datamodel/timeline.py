@@ -1,5 +1,5 @@
 import metacity.filesystem.timeline as fs
-from metacity.geometry import Primitive
+from metacity.geometry import BaseModel
 from metacity.utils.persistable import Persistable
 
 
@@ -19,10 +19,11 @@ class Timeline(Persistable):
     def clear(self):
         fs.clear_timeline(self.dir)
 
-    def add(self, oid: int, model: Primitive):
+    def add(self, oid: int, model: BaseModel):
         if model.type != "timepoint":
             return
 
+        #TODO
         
         
 

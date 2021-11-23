@@ -2,7 +2,7 @@ from typing import Dict, Tuple
 
 from metacity.datamodel.set import TileSet, Tile
 from metacity.filesystem import grid as fs
-from metacity.geometry import Primitive, SimplePrimitive
+from metacity.geometry import BaseModel, Model
 from metacity.utils.persistable import Persistable
 
 
@@ -14,7 +14,7 @@ class TileCache:
         self.group_by = group_by
         self.set = TileSet(self.grid_dir, self.name, 0, self.group_by)
 
-    def add(self, oid: int, model: SimplePrimitive):
+    def add(self, oid: int, model: Model):
         if not self.set.can_contain(self.size):
             self.set.export()
             self.activate_set(self.size)
@@ -26,7 +26,7 @@ class TileCache:
         if not self.set.can_contain(index):
             self.set.export()
             self.activate_set(index)
-        obj: SimplePrimitive = self.set[index]
+        obj: Model = self.set[index]
         return obj
 
     def activate_set(self, index):
@@ -41,7 +41,7 @@ class TileCache:
     def to_tile(self):
         output = fs.grid_tile(self.grid_dir, self.name)
         output_stream = fs.grid_stream(self.grid_dir, self.name)
-        aggregate_models : Dict[str, SimplePrimitive] = {}
+        aggregate_models : Dict[str, Model] = {}
         
         for model in self.models:
             if model.type not in aggregate_models:
@@ -78,7 +78,7 @@ class Grid(Persistable):
     def clear(self):
         fs.clear_grid(self.dir)
 
-    def add(self, oid: int, model: Primitive):
+    def add(self, oid: int, model: BaseModel):
         submodel = model.transform()
         if submodel is None:
             return
@@ -122,7 +122,7 @@ class Grid(Persistable):
             if tile is not None:
                 yield Tile(tile_path), tile
 
-    def tile_from_single_model(self, model: SimplePrimitive, tile_name):
+    def tile_from_single_model(self, model: Model, tile_name):
         output = fs.grid_tile(self.dir, tile_name)
         fs.base.write_json(output, [model.serialize()])
 

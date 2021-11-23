@@ -2,8 +2,8 @@ from typing import Callable, Dict, List
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.filesystem import grid as gfs
-from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
-                               SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
+from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, BaseModel, Model,
+                               SegmentCloud, PointCloud, TriangularMesh, MultiTimePoint)
 from metacity.filesystem.base import read_json
 from metacity.utils.persistable import Persistable
 
@@ -54,13 +54,15 @@ class DataSet(Persistable):
         self.offset = data['offset']
 
 
-types: Dict[str, Callable[[],Primitive]] = {
+types: Dict[str, Callable[[], BaseModel]] = {
     MultiPoint().type: MultiPoint,
-    SimpleMultiPoint().type: SimpleMultiPoint,
+    PointCloud().type: PointCloud,
     MultiLine().type: MultiLine,
-    SimpleMultiLine().type: SimpleMultiLine,
+    SegmentCloud().type: SegmentCloud,
     MultiPolygon().type: MultiPolygon,
-    SimpleMultiPolygon().type: SimpleMultiPolygon,
+    TriangularMesh().type: TriangularMesh,
+    MultiTimePoint().type: MultiTimePoint,
+
 }
 
 
@@ -79,7 +81,7 @@ class ModelSet(DataSet):
         super().__init__(fs.layer_models(layer_dir), offset, capacity)
 
     def serialize(self): 
-        model: Primitive
+        model: BaseModel
         data = super().serialize()
         objects = []
         for object in self.data:
@@ -170,7 +172,7 @@ class TileSet(DataSet):
     def serialize(self): 
         data = super().serialize()
         models = []
-        model: SimplePrimitive
+        model: Model
         for model in self.data:
             models.append(model.serialize())
         data['models'] = models
@@ -191,15 +193,15 @@ class Tile:
     def __init__(self, tile_file):
         self.file = tile_file
         self.x, self.y = gfs.tile_xy(fs.base.filename(tile_file))
-        self.objects: List[SimplePrimitive] = []
+        self.models: List[Model] = []
         for model in read_json(self.file):
-            self.objects.append(desermodel(model))
+            self.models.append(desermodel(model))
 
     @property
     def polygon(self):
-        for o in self.objects:
-            if o.type == "simplepolygon":
-                return o
+        for m in self.models:
+            if m.type == "simplepolygon":
+                return m
         return None
 
     @property
@@ -207,7 +209,7 @@ class Tile:
         return gfs.tile_name(self.x, self.y)
 
     def build_layout(self):
-        box = join_boxes([o.bounding_box for o in self.objects])
+        box = join_boxes([o.bounding_box for o in self.models])
         return {
             'box': box,
             'x': self.x,
