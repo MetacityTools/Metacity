@@ -59,8 +59,7 @@ types: Dict[str, Callable[[], BaseModel]] = {
     SegmentCloud().type: SegmentCloud,
     MultiPolygon().type: MultiPolygon,
     TriangularMesh().type: TriangularMesh,
-    MultiTimePoint().type: MultiTimePoint,
-
+    MultiTimePoint().type: MultiTimePoint
 }
 
 

@@ -1,3 +1,4 @@
+from metacity.core.styles.style import Style
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.datamodel.project import Project
 from metacity.filesystem import styles as fs
@@ -206,6 +207,7 @@ class LayerStyler:
             return True, meta_subtree # meta_subtree is now value in metadata
         return False, None
 
+
 def parse(raw_styles):
     parser = Lark(STYLEGRAMMAR, start='layer_rule_list', lexer='dynamic_complete')
     tree = parser.parse(raw_styles)
@@ -227,24 +229,22 @@ def compute_layer_colors(layer: Layer, color_function):
     return colors
 
 
-def apply_layer_style(style: LayerStyler, style_name: str, project: Project, layer: Layer):
-    colors = compute_layer_colors(layer, style.object_color)
-    project.styles.add_layer_style(style_name, layer.name, style, colors)
+def apply_layer_style(styler: LayerStyler, style: Style, layer: Layer):
+    colors = compute_layer_colors(layer, styler.object_color)
+    style.write_colors(layer.name, buffer=colors)
 
 
-def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, overlay: LayerOverlay):
-    print(style.source)
-    print(style.target)
-    color_source = compute_layer_colors(project.get_layer(overlay.source_layer, load_model=False), style.source_object_color) 
-    color_target = compute_layer_colors(project.get_layer(overlay.target_layer, load_model=False), style.target_object_color)
-    project.styles.add_overlay_style(style_name, overlay.name, style, color_source, color_target)
+def apply_overlay_style(styler: LayerStyler, style: Style, overlay: LayerOverlay):
+    color_source = compute_layer_colors(style.project.get_layer(overlay.source_layer, load_model=False), styler.source_object_color) 
+    color_target = compute_layer_colors(style.project.get_layer(overlay.target_layer, load_model=False), styler.target_object_color)
+    style.write_colors(overlay.name, buffer_cource=color_source, buffer_target=color_target)
 
 
-def apply_style_to_layer(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
+def apply_style_to_layer(styler: LayerStyler, style: Style, layer: Union[Layer, LayerOverlay]):
     if isinstance(layer, Layer):
-        apply_layer_style(style, style_name, project, layer)
+        apply_layer_style(styler, style, layer)
     elif isinstance(layer, LayerOverlay):
-        apply_overlay_style(style, style_name, project, layer)
+        apply_overlay_style(styler, style, layer)
     else:
         raise Exception("Unknown layer type")
 
@@ -253,10 +253,11 @@ def apply_style(project: Project, style_name: str):
     mss_file = fs.style_mss(project.dir, style_name)
     styles = fs.base.read_mss(mss_file)
     parsed = parse(styles)
+    style = Style(project, style_name)
 
     for layer in project.clayers(load_model=False):
-        style = layer_style(layer, parsed)
-        apply_style_to_layer(style, style_name, project, layer)
+        styler = layer_style(layer, parsed)
+        apply_style_to_layer(styler, style, layer)
 
 
 

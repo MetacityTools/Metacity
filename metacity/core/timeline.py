@@ -15,7 +15,7 @@ class Timeline(Persistable):
         try:
             self.load()
         except FileNotFoundError:
-            self.export()
+            pass
 
     def clear(self):
         fs.clear_timeline(self.dir)

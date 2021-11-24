@@ -27,10 +27,6 @@ class TileSet(DataSet):
             self.data.append(desermodel(model))
 
 
-def join_boxes(boxes):
-    return [[ min([ box[0][i] for box in boxes ]) for i in range(3) ], [ max([ box[1][i] for box in boxes ]) for i in range(3) ]]
-
-
 class Tile:
     def __init__(self, tile_file):
         self.file = tile_file
@@ -39,6 +35,7 @@ class Tile:
         for model in read_json(self.file):
             self.models.append(desermodel(model))
 
+    #this should get refactored out later
     @property
     def polygon(self):
         for m in self.models:
@@ -50,11 +47,3 @@ class Tile:
     def name(self):
         return gfs.tile_name(self.x, self.y)
 
-    def build_layout(self):
-        box = join_boxes([o.bounding_box for o in self.models])
-        return {
-            'box': box,
-            'x': self.x,
-            'y': self.y,
-            'file': fs.base.filename(self.file)
-        }

@@ -1,12 +1,13 @@
 from metacity.io.parse import parse
 from tests.conftest import project_tree, geojson_dataset
 from metacity.core.grid.grid import build_grid
+from metacity.core.layout import build_layout
 from metacity.datamodel import project
 from metacity.filesystem import base as fs 
 import os
 
 
-def test_grid(project_tree: str, geojson_dataset: str):
+def test_layout(project_tree: str, geojson_dataset: str):
     objects = parse(geojson_dataset)
     assert len(objects) == 14
     project_dir = os.path.join(project_tree, 'test_project')
@@ -24,6 +25,13 @@ def test_grid(project_tree: str, geojson_dataset: str):
     tiles = os.listdir(grid_dir)
     assert len(tiles) == 100
 
+    build_layout(p)
+
+    path = fs.project_layout(p.dir)
+    layout = fs.read_json(path)
+
+    assert len(layout['layers']) == 1
+    assert len(layout['styles']) == 0
 
 
 

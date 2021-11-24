@@ -5,6 +5,7 @@ from metacity.datamodel.project import Project
 
 class Style:
     def __init__(self, project: Project, name: str):
+        self.project = project
         self.project_dir = project.dir
         self.name = name
 
@@ -54,5 +55,3 @@ class Style:
         fs.base.delete_file(file)
         fs.base.delete_dir(dir)
 
-    def build_layout(self):
-        return self.list(self.project_dir)

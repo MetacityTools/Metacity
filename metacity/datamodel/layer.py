@@ -91,25 +91,6 @@ class Layer(Persistable):
         self.group_by = data['group_by']
         self.disabled = data['disabled']
 
-    def build_layout(self):
-        grid = self.grid
-        if grid.init and not self.disabled:
-            return {
-                'name': self.name,
-                'layout': grid.build_layout(),
-                'size': self.size,
-                'init': grid.init,
-                'disabled': self.disabled,
-                'type': 'layer'
-            }
-        else:
-            return {
-                'name': self.name,
-                'init': grid.init,
-                'disabled': self.disabled,
-                'type': 'layer'
-            }
-
 
 class LayerOverlay(Persistable):
     def __init__(self, overlay_dir: str):
@@ -158,32 +139,4 @@ class LayerOverlay(Persistable):
         self.disabled = data['disabled']
         self.size_source = data['size_source']
         self.size_target = data['size_target']
-
-    def build_layout(self):
-        grid = self.grid
-        if grid.init and not self.disabled:
-            return {
-                'name': self.name,
-                'source': self.source_layer,
-                'target': self.target_layer,
-                'size': self.size,
-                'layout': grid.build_layout(),
-                'init': grid.init,
-                'disabled': self.disabled,
-                'type': 'overlay'
-            }
-        else:
-            return {
-                'name': self.name,
-                'source': self.source_layer,
-                'target': self.target_layer,
-                'size': self.size,
-                'init': grid.init,
-                'disabled': self.disabled,
-                'type': 'overlay'
-            }
-
-
-
-
 

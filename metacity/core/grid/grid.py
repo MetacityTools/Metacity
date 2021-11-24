@@ -1,7 +1,7 @@
-from typing import Dict, Tuple
-from metacity.datamodel.layer import Layer
+from typing import Dict, Tuple, Union
+from metacity.datamodel.layer import Layer, LayerOverlay
 
-from metacity.grid.set import TileSet, Tile
+from metacity.core.grid.set import TileSet, Tile
 from metacity.filesystem import grid as fs
 from metacity.geometry import BaseModel, Model
 from metacity.utils.persistable import Persistable
@@ -62,9 +62,8 @@ class TileCache:
 
 
 class Grid(Persistable):
-    def __init__(self, layer_dir: str):
-        self.dir = fs.grid_dir(layer_dir)
-        fs.base.create_dir_if_not_exists(self.dir)
+    def __init__(self, layer: Union[Layer, LayerOverlay]):
+        self.dir = fs.grid_dir(layer.dir)
         super().__init__(fs.grid_config(self.dir))
 
         self.tile_size = 1000
@@ -74,7 +73,7 @@ class Grid(Persistable):
         try:
             self.load()
         except FileNotFoundError:
-            self.export()
+            pass
 
     def clear(self):
         fs.clear_grid(self.dir)
@@ -137,21 +136,12 @@ class Grid(Persistable):
         self.tile_size = data["tile_size"]
         self.init = data["init"]
 
-    def build_layout(self):
-        if not self.init:
-            return None
-        return {
-            'tile_size': self.tile_size,
-            'tiles': [ tile.build_layout() for tile in self.tiles ]
-        }
-
 
 def build_grid(layer: Layer):
-    grid = Grid(layer.dir)
+    grid = Grid(layer)
     grid.clear()
     for oid, object in enumerate(layer.objects):
         for model in object.models:
             grid.add(oid, model) 
-    
     grid.persist()
     return grid

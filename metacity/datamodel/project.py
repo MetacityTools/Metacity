@@ -89,21 +89,7 @@ class Project:
             overlay_name (str): The name of the overlay.
         """
         self.delete_layer(overlay_name)
-
-    def build_layout(self):
-        """
-        Builds the layout of the project.
-        """
-        layout_layers = []
-        for layer in self.layers:
-            layout_layers.append(layer.build_layout())
-
-        layout = {
-            "layers": layout_layers,
-            "styles": self.styles.build_layout()
-        }
-
-        fs.base.write_json(fs.base.project_layout(self.dir), layout)
+        
 
     def rename_layer(self, old_name: str, new_name: str):
         """
