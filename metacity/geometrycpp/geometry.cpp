@@ -646,7 +646,10 @@ PYBIND11_MODULE(geometry, m) {
         .def("lego_to_png", &LegoBuilder::lego_to_png);
 
     py::class_<Interval, std::shared_ptr<Interval>>(m, "Interval")
+        .def(py::init<>())
         .def(py::init<uint32_t, uint32_t>())
         .def("insert", &Interval::insert)
-        .def("can_contain", &Interval::can_contain);
+        .def("can_contain", &Interval::can_contain)
+        .def("serialize", &Interval::serialize)
+        .def("deserialize", &Interval::deserialize);
 }
