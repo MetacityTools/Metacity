@@ -1,3 +1,4 @@
+from metacity.datamodel.layer import Layer
 import metacity.filesystem.timeline as fs
 from metacity.geometry import BaseModel
 from metacity.utils.persistable import Persistable
@@ -24,10 +25,6 @@ class Timeline(Persistable):
             return
 
         #TODO
-        
-        
-
-
 
     def serialize(self):
         return {
@@ -39,3 +36,14 @@ class Timeline(Persistable):
         self.group_by = data["group_by"]
         self.init = data["init"]
 
+
+def build_timeline(layer: Layer):
+    secs_in_hour = 60 * 60
+    timeline = Timeline(layer.dir, secs_in_hour)
+    timeline.clear()
+
+    for oid, object in enumerate(layer.objects):
+        for model in object.models:
+            timeline.add(oid, model)
+            
+    return timeline

@@ -1,5 +1,3 @@
-from metacity.datamodel.grid import Grid
-from metacity.datamodel.timeline import Timeline
 from metacity.datamodel.object import Object
 from metacity.datamodel.set import ObjectSet
 from metacity.filesystem import layer as fs
@@ -36,10 +34,6 @@ class Layer(Persistable):
     @property
     def name(self):
         return fs.layer_name(self.dir)
-
-    @property
-    def grid(self):
-        return Grid(self.dir)
 
     def add(self, object: Object):
         if not self.set.can_contain(self.size):
@@ -83,26 +77,6 @@ class Layer(Persistable):
 
     def add_source_file(self, source_file_path: str):
         return fs.copy_to_layer(self.dir, source_file_path)
-
-    def build_grid(self):
-        grid = Grid(self.dir)
-        grid.clear()
-        for oid, object in enumerate(self.objects):
-            for model in object.models:
-                grid.add(oid, model) 
-        return grid
-
-    def build_timeline(self):
-        secs_in_hour = 60 * 60
-        timeline = Timeline(self.dir, secs_in_hour)
-        timeline.clear()
-
-        for oid, object in enumerate(self.objects):
-            for model in object.models:
-                timeline.add(oid, model)
-                
-        return timeline
-
 
     def serialize(self):
         return {
@@ -158,46 +132,12 @@ class LayerOverlay(Persistable):
         return "overlay"
 
     @property
-    def grid(self):
-        return Grid(self.dir)
-
-    @property
     def name(self):
         return fs.layer_name(self.dir)
 
     @property
     def size(self):
         return [self.size_source, self.size_target]
-
-    def setup(self, source: Layer, target: Layer, iterationCallback=None):
-        if source.type != "layer" or target.type != "layer":
-            raise Exception(f"Cannot map type {source.type} to {target.type}, only layer to layer is supported")
-
-        tg = target.grid
-        sg = source.grid
-
-        grid = self.grid
-
-        it = 0
-        for source_tile, target_tile in sg.overlay(tg):
-            pol = target_tile.polygon
-            if pol is None:
-                continue
-            
-            for source_model in source_tile.objects:
-                source_copy = source_model.copy()
-                source_copy.map(pol)
-                grid.tile_from_single_model(source_copy, source_tile.name)
-
-            if iterationCallback is not None:
-                iterationCallback(it)
-                it += 1
-
-        grid.persist() #persist with empy cache
-        self.source_layer = source.name
-        self.target_layer = target.name
-        self.size_source = source.size
-        self.size_target = target.size
 
     def persist(self):
         self.export()

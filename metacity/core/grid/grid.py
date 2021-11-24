@@ -1,6 +1,7 @@
 from typing import Dict, Tuple
+from metacity.datamodel.layer import Layer
 
-from metacity.datamodel.set import TileSet, Tile
+from metacity.grid.set import TileSet, Tile
 from metacity.filesystem import grid as fs
 from metacity.geometry import BaseModel, Model
 from metacity.utils.persistable import Persistable
@@ -145,3 +146,12 @@ class Grid(Persistable):
         }
 
 
+def build_grid(layer: Layer):
+    grid = Grid(layer.dir)
+    grid.clear()
+    for oid, object in enumerate(layer.objects):
+        for model in object.models:
+            grid.add(oid, model) 
+    
+    grid.persist()
+    return grid
