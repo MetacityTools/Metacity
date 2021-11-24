@@ -23,9 +23,8 @@ class Timeline(Persistable):
     def add(self, oid: int, model: BaseModel):
         if model.type != "timepoint":
             return
+        #todo
 
-        #TODO
-        
         
 
     def serialize(self):
