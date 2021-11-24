@@ -308,6 +308,11 @@ def railway_dataset():
 
 
 @pytest.fixture(scope='function')
+def carsim_dataset():
+    dataset_path = os.path.join(data_dir(), 'data', 'car_sec_3962.json')
+    yield dataset_path
+
+@pytest.fixture(scope='function')
 def geojson_dataset():
     dataset_path = os.path.join(data_dir(), 'data', 'gjdata.json')
     yield dataset_path
