@@ -9,6 +9,7 @@
 #include "polygons.hpp"
 #include "timepoints.hpp"
 #include "legobuilder.hpp"
+#include "interval.hpp"
 
 namespace py = pybind11;
 using jsonref = const json;
@@ -643,4 +644,9 @@ PYBIND11_MODULE(geometry, m) {
         .def("build_heightmap", &LegoBuilder::build_heightmap)
         .def("legofy", &LegoBuilder::legofy)
         .def("lego_to_png", &LegoBuilder::lego_to_png);
+
+    py::class_<Interval, std::shared_ptr<Interval>>(m, "Interval")
+        .def(py::init<uint32_t, uint32_t>())
+        .def("insert", &Interval::insert)
+        .def("can_contain", &Interval::can_contain);
 }
