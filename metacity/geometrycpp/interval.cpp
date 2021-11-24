@@ -1,7 +1,10 @@
 #include "interval.hpp"
 
 
-Interval::Interval(uint32_t interval_start_time, uint32_t interval_length): start_time(interval_start_time), end_time(interval_start_time + interval_length), length(interval_length){}
+Interval::Interval(uint32_t interval_start_time, uint32_t interval_length): start_time(interval_start_time), 
+                    end_time(interval_start_time + interval_length), length(interval_length){
+                        buffers = vector<vector<Movement>>(length);
+                    }
 
 
 void Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid){
