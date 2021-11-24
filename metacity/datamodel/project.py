@@ -1,4 +1,3 @@
-from metacity.datamodel.styles import ProjectStyleSet
 from metacity.filesystem import layer as fs
 from metacity.datamodel.layer import Layer, LayerOverlay
 
@@ -14,7 +13,6 @@ class Project:
             Project: The project.
         """
         self.dir = directory
-        self.styles = ProjectStyleSet(self.dir)
         fs.create_project(self.dir)
 
     def create_layer(self, layer_name: str):

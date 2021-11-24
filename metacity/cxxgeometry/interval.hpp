@@ -1,3 +1,4 @@
+#pragma once
 #include <vector>
 #include "types.hpp"
 #include "timepoints.hpp"
@@ -5,11 +6,11 @@
 using namespace std;
 
 struct Movement {
+    Movement(const tvec3 & x, const tvec3 & y, const int32_t id): from(x), to(y), oid(id) {}
+
     tvec3 from;
     tvec3 to;
     int32_t oid;
-
-    Movement(tvec3 a, tvec3 b, int32_t id): from(a), to(b), oid(id){}
 };
 
 class Interval {
@@ -20,6 +21,7 @@ public:
 
 protected:
     uint32_t start_time;
+    uint32_t end_time;
     uint32_t length;
     vector<vector<Movement>> buffers;
 };

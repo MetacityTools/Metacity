@@ -1,6 +1,7 @@
 #pragma once
 #include "models.hpp"
 
+class Interval;
 
 class MultiTimePoint : public BaseModel {
 public: 
@@ -9,12 +10,6 @@ public:
 
     const uint32_t get_start_time() const;
     const uint32_t get_end_time() const;
-    const uint32_t size() const;
-
-    inline const tvec3 & operator[] (const size_t t) const {
-        return points[t];
-    };
-
 
     virtual json serialize() const override;
     virtual void deserialize(const json data) override;
@@ -25,6 +20,8 @@ public:
 protected:
     uint32_t start;
     vector<tvec3> points;
+
+    friend class Interval;
 };
 
 

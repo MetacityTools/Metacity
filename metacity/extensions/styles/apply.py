@@ -240,7 +240,7 @@ def apply_overlay_style(style: LayerStyler, style_name: str, project: Project, o
     project.styles.add_overlay_style(style_name, overlay.name, style, color_source, color_target)
 
 
-def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
+def apply_style_to_layer(style: LayerStyler, style_name: str, project: Project, layer: Union[Layer, LayerOverlay]):
     if isinstance(layer, Layer):
         apply_layer_style(style, style_name, project, layer)
     elif isinstance(layer, LayerOverlay):
@@ -249,29 +249,14 @@ def apply_style(style: LayerStyler, style_name: str, project: Project, layer: Un
         raise Exception("Unknown layer type")
 
 
-class Style:
-    def __init__(self, project: Project, style_name: str):
-        self.project = project
-        self.name = style_name
-        self.mss_file = fs.style_mss(project.dir, style_name)
-        self.parsed = None
+def apply_style(project: Project, style_name: str):
+    mss_file = fs.style_mss(project.dir, style_name)
+    styles = fs.base.read_mss(mss_file)
+    parsed = parse(styles)
 
-    def parse(self):
-        styles = self.get_styles()
-        self.parsed = parse(styles)
-
-    def apply(self):
-        if self.parsed is None:
-            self.parse()
-            
-        for layer in self.project.clayers(load_model=False):
-            style = layer_style(layer, self.parsed)
-            apply_style(style, self.name, self.project, layer)
-
-    def get_styles(self):
-        styles = fs.base.read_mss(self.mss_file)
-        return styles
-
+    for layer in project.clayers(load_model=False):
+        style = layer_style(layer, parsed)
+        apply_style_to_layer(style, style_name, project, layer)
 
 
 
