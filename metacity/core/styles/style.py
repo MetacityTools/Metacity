@@ -13,6 +13,14 @@ class Style:
     def list(project: Project):
         return fs.list_styles(project.dir)
 
+    @staticmethod
+    def create(project: Project, name: str):
+        if fs.base.file_exists(fs.style_mss(project.dir, name)):
+            return False
+        style = Style(project, name)
+        style.update('')
+        return True
+
     @property
     def style_file(self):
         file = fs.style_mss(self.project_dir, self.name)
@@ -39,19 +47,20 @@ class Style:
             }
             fs.base.write_json(file, style)
 
-    def rename(self, old_name: str, new_name: str):
-        file = fs.style_mss(self.project_dir, old_name)
-        dir = fs.style_dir(self.project_dir, old_name)
+    def rename(self, new_name: str):
+        file = fs.style_mss(self.project_dir, self.name)
+        dir = fs.style_dir(self.project_dir, self.name)
         new_file = fs.style_mss(self.project_dir, new_name)
         new_dir = fs.style_dir(self.project_dir, new_name)
         if fs.base.rename(file, new_file):
             fs.base.rename(dir, new_dir)
+            self.name = new_name
             return True
         return False
 
-    def delete(self, name: str):
-        file = fs.style_mss(self.project_dir, name)
-        dir = fs.style_dir(self.project_dir, name)
+    def delete(self):
+        file = fs.style_mss(self.project_dir, self.name)
+        dir = fs.style_dir(self.project_dir, self.name)
         fs.base.delete_file(file)
         fs.base.delete_dir(dir)
 
