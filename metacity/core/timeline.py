@@ -58,7 +58,7 @@ class Timeline(Persistable):
         interval_start_time = self.time_to_interval_start(start_time)
         if self.interval.start_time != interval_start_time:
             self.export_interval()
-            self.load_interval(interval_start_time)
+            self.interval = self.load_interval(interval_start_time)
         
 
     def add(self, oid: int, model: BaseModel):
