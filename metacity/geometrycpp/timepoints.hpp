@@ -10,6 +10,7 @@ public:
 
     const uint32_t get_start_time() const;
     const uint32_t get_end_time() const;
+    const bool empty() const;
 
     virtual json serialize() const override;
     virtual void deserialize(const json data) override;

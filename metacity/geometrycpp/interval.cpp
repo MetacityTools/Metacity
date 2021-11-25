@@ -13,9 +13,9 @@ Interval::Interval(uint32_t interval_start_time, uint32_t interval_length)
 }
 
 
-void Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
+uint32_t Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
     if(!can_contain(timepoints))
-        return;
+        return 0;
 
     uint32_t trip_start_time = timepoints->get_start_time();
     uint32_t trip_end_time = timepoints->get_end_time() - 1;
@@ -24,13 +24,16 @@ void Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
     uint32_t t_max = min(end_time, trip_end_time);
 
     uint32_t trip_idx, interval_idx;
+    size_t movements = 0;
     for(uint32_t t = t_min; t < t_max; ++t){
         trip_idx = t - trip_start_time;
         interval_idx = t - start_time;
         from[interval_idx].emplace_back(timepoints->points[trip_idx]);
         to[interval_idx].emplace_back(timepoints->points[trip_idx + 1]);
         oid[interval_idx].emplace_back(oid_);
+        movements++;
     }
+    return movements;
 }
 
 
@@ -42,6 +45,11 @@ bool Interval::can_contain(shared_ptr<MultiTimePoint> timepoints) const{
         return false;
     return true;
 }
+
+uint32_t Interval::get_start_time() const{
+    return start_time;
+}
+
 
 json Interval::serialize() const
 {

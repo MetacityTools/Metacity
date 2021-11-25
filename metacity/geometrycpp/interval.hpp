@@ -10,9 +10,10 @@ class Interval {
 public:
     Interval();
     Interval(uint32_t interval_start_time, uint32_t interval_length);
-    void insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid);
+    uint32_t insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid);
     bool can_contain(shared_ptr<MultiTimePoint> timepoints) const;
 
+    uint32_t get_start_time() const;
     json serialize() const;
     void deserialize(const json data);
 

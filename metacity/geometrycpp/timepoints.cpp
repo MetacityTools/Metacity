@@ -17,6 +17,10 @@ const uint32_t MultiTimePoint::get_end_time() const {
     return get_start_time() + points.size();
 }
 
+const bool MultiTimePoint::empty() const{
+    return points.size() == 0;
+}
+
 const char * MultiTimePoint::type() const {
     return "timepoint";
 }
