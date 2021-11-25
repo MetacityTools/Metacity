@@ -308,6 +308,11 @@ def railway_dataset():
 
 
 @pytest.fixture(scope='function')
+def carsim_dataset():
+    dataset_path = os.path.join(data_dir(), 'data', 'car_sec_3962.json')
+    yield dataset_path
+
+@pytest.fixture(scope='function')
 def geojson_dataset():
     dataset_path = os.path.join(data_dir(), 'data', 'gjdata.json')
     yield dataset_path
@@ -369,19 +374,8 @@ def railway_dataset_stats():
 
 
 @pytest.fixture(scope="function")
-def geometry_tree(tmpdir_factory):
+def project_tree(tmpdir_factory):
     root = tmpdir_factory.mktemp("geometry")
     yield root
 
-
-@pytest.fixture(scope="function")
-def layer_tree(tmpdir_factory):
-    root = tmpdir_factory.mktemp("layer")
-    yield root
-
-
-@pytest.fixture(scope="function")
-def grid_tree(tmpdir_factory):
-    root = tmpdir_factory.mktemp("grid")
-    yield root
 

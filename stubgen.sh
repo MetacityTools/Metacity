@@ -1,3 +1,3 @@
 #!/bin/bash
 
-stubgen -m metacity.geometry.primitive -o .
+stubgen -m metacity.geometry -o .

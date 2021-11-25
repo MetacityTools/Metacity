@@ -1,10 +1,8 @@
-from typing import Callable, Dict, List
+from typing import Callable, Dict
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
-from metacity.filesystem import grid as gfs
-from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, Primitive, SimplePrimitive,
-                               SimpleMultiLine, SimpleMultiPoint, SimpleMultiPolygon)
-from metacity.filesystem.base import read_json
+from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, BaseModel,
+                               SegmentCloud, PointCloud, TriangularMesh, MultiTimePoint)
 from metacity.utils.persistable import Persistable
 
 
@@ -54,13 +52,14 @@ class DataSet(Persistable):
         self.offset = data['offset']
 
 
-types: Dict[str, Callable[[],Primitive]] = {
+types: Dict[str, Callable[[], BaseModel]] = {
     MultiPoint().type: MultiPoint,
-    SimpleMultiPoint().type: SimpleMultiPoint,
+    PointCloud().type: PointCloud,
     MultiLine().type: MultiLine,
-    SimpleMultiLine().type: SimpleMultiLine,
+    SegmentCloud().type: SegmentCloud,
     MultiPolygon().type: MultiPolygon,
-    SimpleMultiPolygon().type: SimpleMultiPolygon,
+    TriangularMesh().type: TriangularMesh,
+    MultiTimePoint().type: MultiTimePoint
 }
 
 
@@ -79,7 +78,7 @@ class ModelSet(DataSet):
         super().__init__(fs.layer_models(layer_dir), offset, capacity)
 
     def serialize(self): 
-        model: Primitive
+        model: BaseModel
         data = super().serialize()
         objects = []
         for object in self.data:
@@ -141,8 +140,15 @@ class ObjectSet:
             raise Exception("Cannot object to ObjectSet in readonly mode")
 
     def __getitem__(self, index: int):
-        if not self.models.contains(index):
-            raise IndexError(f"No object at index {index}")
+        if self.load_model: 
+            if not self.models.contains(index):
+                raise IndexError(f"No object at index {index}")
+        elif self.load_meta:
+            if not self.meta.contains(index):
+                raise IndexError(f"No object at index {index}")
+        else: 
+            raise Exception("Cannot instantiate ObjectSet without any models or meta")
+            
         obj = Object()
         if self.load_model: 
             obj.models = self.models[index]
@@ -155,55 +161,3 @@ class ObjectSet:
             self.models.export()
             self.meta.export()
 
-
-class TileSet(DataSet):
-    def __init__(self, grid_dir: str, tile_name: str, offset: int, capacity: int):        
-        super().__init__(gfs.grid_cache_tile_dir(grid_dir, tile_name), offset, capacity)
-
-    def serialize(self): 
-        data = super().serialize()
-        models = []
-        model: SimplePrimitive
-        for model in self.data:
-            models.append(model.serialize())
-        data['models'] = models
-        return data
-
-    def deserialize(self, data):
-        super().deserialize(data)
-        self.data = []
-        for model in data['models']:
-            self.data.append(desermodel(model))
-
-
-def join_boxes(boxes):
-    return [[ min([ box[0][i] for box in boxes ]) for i in range(3) ], [ max([ box[1][i] for box in boxes ]) for i in range(3) ]]
-
-
-class Tile:
-    def __init__(self, tile_file):
-        self.file = tile_file
-        self.x, self.y = gfs.tile_xy(fs.base.filename(tile_file))
-        self.objects: List[SimplePrimitive] = []
-        for model in read_json(self.file):
-            self.objects.append(desermodel(model))
-
-    @property
-    def polygon(self):
-        for o in self.objects:
-            if o.type == "simplepolygon":
-                return o
-        return None
-
-    @property
-    def name(self):
-        return gfs.tile_name(self.x, self.y)
-
-    def build_layout(self):
-        box = join_boxes([o.bounding_box for o in self.objects])
-        return {
-            'box': box,
-            'x': self.x,
-            'y': self.y,
-            'file': fs.base.filename(self.file)
-        }

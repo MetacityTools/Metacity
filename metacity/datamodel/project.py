@@ -1,4 +1,3 @@
-from metacity.datamodel.styles import ProjectStyleSet
 from metacity.filesystem import layer as fs
 from metacity.datamodel.layer import Layer, LayerOverlay
 
@@ -14,7 +13,6 @@ class Project:
             Project: The project.
         """
         self.dir = directory
-        self.styles = ProjectStyleSet(self.dir)
         fs.create_project(self.dir)
 
     def create_layer(self, layer_name: str):
@@ -44,7 +42,7 @@ class Project:
         layer = LayerOverlay(layer_dir)
         return layer
 
-    def get_layer(self, layer_name: str, load_set=True):
+    def get_layer(self, layer_name: str, load_set=True, load_meta=True, load_model=True):
         """
         Gets a layer by its name. If the layer does not exist, it is created. 
 
@@ -56,7 +54,7 @@ class Project:
             Layer: The layer.
         """
         layer_dir = fs.layer_dir(self.dir, layer_name)
-        layer = Layer(layer_dir, load_set=load_set)
+        layer = Layer(layer_dir, load_set=load_set, load_meta=load_meta, load_model=load_model)
         return layer
 
     def get_overlay(self, overlay_name: str):
@@ -91,21 +89,7 @@ class Project:
             overlay_name (str): The name of the overlay.
         """
         self.delete_layer(overlay_name)
-
-    def build_layout(self):
-        """
-        Builds the layout of the project.
-        """
-        layout_layers = []
-        for layer in self.layers:
-            layout_layers.append(layer.build_layout())
-
-        layout = {
-            "layers": layout_layers,
-            "styles": self.styles.build_layout()
-        }
-
-        fs.base.write_json(fs.base.project_layout(self.dir), layout)
+        
 
     def rename_layer(self, old_name: str, new_name: str):
         """
@@ -120,6 +104,8 @@ class Project:
         """
         old_layer_dir = fs.layer_dir(self.dir, old_name)
         new_layer_dir = fs.layer_dir(self.dir, new_name)
+        if not fs.base.valid_name(new_name):
+            return False
         return fs.base.rename(old_layer_dir, new_layer_dir)            
 
     def delete(self):
@@ -153,15 +139,15 @@ class Project:
             except:
                 yield self.get_overlay(name)
 
-    @property
-    def ilayers(self):
+
+    def clayers(self, load_set=True, load_meta=True, load_model=True):
         """
         Generator, yields all layers without the object set loaded.
         """
         names = self.layer_names
         for name in names:
             try:
-                yield self.get_layer(name, load_set=False)
+                yield self.get_layer(name, load_set=load_set, load_meta=load_meta, load_model=load_model)
             except:
                 yield self.get_overlay(name)
 

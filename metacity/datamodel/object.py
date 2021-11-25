@@ -1,7 +1,7 @@
 from typing import Callable, Dict, List
-from metacity.geometry import MultiPoint, MultiLine, MultiPolygon, Primitive
+from metacity.geometry import MultiPoint, MultiLine, MultiPolygon, BaseModel
 
-types: Dict[str, Callable[[],Primitive]] = {
+types: Dict[str, Callable[[],BaseModel]] = {
     MultiPoint().type: MultiPoint,
     MultiLine().type: MultiLine,
     MultiPolygon().type: MultiPolygon
@@ -20,7 +20,7 @@ def desermodel(model):
 class Object:
     def __init__(self):
         self.meta = {}
-        self.models: List[Primitive] = []
+        self.models: List[BaseModel] = []
 
     def serialize(self):
         models = []

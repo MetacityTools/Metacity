@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python -m pytest --cov=metacity --cov-report term-missing -v
+python -m pytest tests/* --cov=metacity --cov-report term-missing -s

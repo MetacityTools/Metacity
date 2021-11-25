@@ -20,3 +20,5 @@ def bboxes_bbox(bboxes: List[np.ndarray]):
                      np.amax(vertices[1::2, :], axis=0)])
 
 
+def join_boxes(boxes):
+    return [[ min([ box[0][i] for box in boxes ]) for i in range(3) ], [ max([ box[1][i] for box in boxes ]) for i in range(3) ]]

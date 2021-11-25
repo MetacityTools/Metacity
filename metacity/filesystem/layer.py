@@ -74,14 +74,6 @@ def data_set(set_dir: str, offset: int):
     return os.path.join(set_dir, str(offset))
 
 
-def layer_cache(layer_dir: str):
-    return os.path.join(layer_dir, base.GRID_CACHE)
-
-
-def layer_tile_cache(layer_dir: str, tile_name: str):
-    return os.path.join(layer_dir, base.GRID_CACHE, tile_name)
-
-
 def layer_config(layer_dir: str):
     return os.path.join(layer_dir, 'config.json')
 
