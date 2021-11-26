@@ -14,7 +14,7 @@ from metacity.utils.bbox import join_boxes
 def interval_layout(timeline: Timeline, interval: Interval):
     return {
         'start_time': interval.start_time,
-        'file': tfs.interval(timeline.dir, interval.start_time)
+        'file': fs.base.filename(tfs.interval(timeline.dir, interval.start_time))
     }
 
 
@@ -22,7 +22,7 @@ def timeline_layout(timeline: Timeline):
     if not timeline.init:
         return None
 
-    intervals = [ fs.base.filename(interval_layout(timeline, interval)) for interval in timeline.intervals ]
+    intervals = [ interval_layout(timeline, interval) for interval in timeline.intervals ]
 
     if len(intervals) == 0:
         return None
