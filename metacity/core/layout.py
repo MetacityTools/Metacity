@@ -51,7 +51,7 @@ def grid_layout(grid: Grid):
 def layer_layout(layer: Layer):
     grid = Grid(layer)
     timeline = Timeline(layer)
-    base = {
+    return {
         'name': layer.name,
         'disabled': layer.disabled,
         'type': 'layer',
@@ -63,27 +63,18 @@ def layer_layout(layer: Layer):
 
 def overlay_layout(overlay: LayerOverlay):
     grid = Grid(overlay)
-    if grid.init and not overlay.disabled:
-        return {
-            'name': overlay.name,
-            'source': overlay.source_layer,
-            'target': overlay.target_layer,
-            'size': overlay.size,
-            'layout': grid_layout(grid),
-            'init': grid.init,
-            'disabled': overlay.disabled,
-            'type': 'overlay'
-        }
-    else:
-        return {
-            'name': overlay.name,
-            'source': overlay.source_layer,
-            'target': overlay.target_layer,
-            'size': overlay.size,
-            'init': grid.init,
-            'disabled': overlay.disabled,
-            'type': 'overlay'
-        }
+    timeline = Timeline(overlay)
+    return {
+        'name': overlay.name,
+        'source': overlay.source_layer,
+        'target': overlay.target_layer,
+        'size': overlay.size,
+        'grid': grid_layout(grid),
+        'timeline': timeline_layout(timeline),
+        'disabled': overlay.disabled,
+        'type': 'overlay'
+    }
+
 
 
 def element_layout(layer: Union[Layer, LayerOverlay]):

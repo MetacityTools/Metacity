@@ -74,10 +74,33 @@ json Interval::serialize() const
     };
 }
 
+json Interval::serialize_stream() const
+{
+    vector<string> vsfrom;
+    vector<string> vsto;
+    vector<string> vsoid;
+
+    for (size_t i = 0; i < length; ++i)
+    {
+        vsfrom.emplace_back(vec_to_f_to_string(from[i]));
+        vsto.emplace_back(vec_to_f_to_string(to[i]));
+        vsoid.emplace_back(T_to_string<int32_t>(oid[i]));
+    }
+
+    return {
+        {"start_time", start_time},
+        {"length", length},
+        {"end_time", end_time},
+        {"from", vsfrom},
+        {"to", vsto},
+        {"oid", vsoid}
+    };  
+}
+
 void Interval::deserialize(const json data)
 {
     start_time = data.at("start_time").get<uint32_t>();
-    end_time = data.at("start_time").get<uint32_t>();
+    end_time = data.at("end_time").get<uint32_t>();
     length = data.at("length").get<uint32_t>();
 
     const auto vsfrom = data.at("from").get<vector<string>>();

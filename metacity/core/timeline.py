@@ -1,12 +1,12 @@
 from metacity.datamodel.layer import Layer
 import metacity.filesystem.timeline as fs
-from metacity.geometry import BaseModel
+from metacity.geometry import BaseModel, MultiTimePoint
 from metacity.geometry import Interval
 from metacity.utils.persistable import Persistable
 
 
 class Timeline(Persistable):
-    def __init__(self, layer: Layer, group_by: int):
+    def __init__(self, layer: Layer, group_by: int = 3600):
         self.dir = fs.timeline_dir(layer.dir)
         self.group_by = group_by
         self.init = False
@@ -74,10 +74,16 @@ class Timeline(Persistable):
     def persist(self):
         if self.interval is not None:
             self.export_interval()
+
+            for interval in self.intervals:
+                interval_file = fs.interval_stream(self.dir, interval.start_time)
+                data = interval.serialize_stream()
+                fs.base.write_json(interval_file, data)
+
             self.init = True
             self.export()
 
-    def affected_intervals(self, model):
+    def affected_intervals(self, model: MultiTimePoint):
         trip_start = model.start_time
         trip_end = model.end_time - 1
         start_interval = self.time_to_interval_start(trip_start)
@@ -111,3 +117,4 @@ def build_timeline(layer: Layer, interval_length: int = 3600):
 
     timeline.persist()
     return timeline
+

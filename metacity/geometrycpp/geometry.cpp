@@ -655,5 +655,6 @@ PYBIND11_MODULE(geometry, m) {
         .def("insert", &Interval::insert)
         .def("can_contain", &Interval::can_contain)
         .def("serialize", &Interval::serialize)
+        .def("serialize_stream", &Interval::serialize_stream)
         .def("deserialize", &Interval::deserialize);
 }
