@@ -5,9 +5,9 @@ name: pytesting
 
 on:
   push:
-    branches: [ main, simparser ]
+    branches: [ main, dev ]
   pull_request:
-    branches: [ main, simparser ]
+    branches: [ main, dev ]
 
 jobs:
   build:
