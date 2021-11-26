@@ -67,6 +67,16 @@ json BaseModel::serialize() const
         {"type", type()}};
 }
 
+void BaseModel::add_tag(const string key, const int32_t value)
+{
+    tags[key] = value;
+}
+
+json BaseModel::get_tags() const
+{
+    return tags;
+}
+
 //===============================================================================
 Model::Model() : BaseModel() {}
 Model::Model(const vector<tvec3> &v) : BaseModel(), vertices(v) {}

@@ -11,6 +11,9 @@ def timeline_intervals_dir(timeline_dir):
 def timeline_stream_dir(timeline_dir):
     return os.path.join(timeline_dir, base.TIMELINE_STREAM)  
 
+def timeline_cache_dir(timeline_dir):
+    return os.path.join(timeline_dir, base.TIMELINE_CACHE)  
+
 def timeline_config(timeline_dir):
     return os.path.join(timeline_dir, "timeline.json")
 
@@ -26,8 +29,12 @@ def interval_stream(timeline_dir: str, start_time: int):
 def interval_list(timeline_dir: str):
     return os.listdir(timeline_intervals_dir(timeline_dir))
 
+def timeline_cache_interval_dir(timeline_dir: str, start_time: int):
+    return os.path.join(timeline_cache_dir(timeline_dir), str(start_time))
+
 def clear_timeline(timeline_dir):
     shutil.rmtree(timeline_dir)
     os.mkdir(timeline_dir)
     os.mkdir(timeline_intervals_dir(timeline_dir))
     os.mkdir(timeline_stream_dir(timeline_dir))
+    os.mkdir(timeline_cache_dir(timeline_dir))
