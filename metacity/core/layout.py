@@ -11,16 +11,6 @@ from metacity.geometry import Interval
 from metacity.utils.bbox import join_boxes
 
 
-def tile_layout(tile: Tile):
-    box = join_boxes([o.bounding_box for o in tile.models])
-    return {
-        'box': box,
-        'x': tile.x,
-        'y': tile.y,
-        'file': fs.base.filename(tile.file)
-    }
-
-
 def interval_layout(timeline: Timeline, interval: Interval):
     return {
         'start_time': interval.start_time,
@@ -32,19 +22,38 @@ def timeline_layout(timeline: Timeline):
     if not timeline.init:
         return None
 
+    intervals = [ fs.base.filename(interval_layout(timeline, interval)) for interval in timeline.intervals ]
+
+    if len(intervals) == 0:
+        return None
+
     return {
         'interval_length': timeline.group_by,
-        'intervals': [ interval_layout(timeline, interval) for interval in timeline.intervals ]
+        'intervals': intervals
     }
 
+
+def tile_layout(tile: Tile):
+    box = join_boxes([o.bounding_box for o in tile.models])
+    return {
+        'box': box,
+        'x': tile.x,
+        'y': tile.y,
+        'file': fs.base.filename(tile.file)
+    }
 
 def grid_layout(grid: Grid):
     if not grid.init:
         return None
 
+    tiles = [ tile_layout(tile) for tile in grid.tiles ]
+
+    if len(tiles) == 0:
+        return None
+
     return {
         'tile_size': grid.tile_size,
-        'tiles': [ tile_layout(tile) for tile in grid.tiles ]
+        'tiles': tiles
     }
 
 
