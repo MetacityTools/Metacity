@@ -74,6 +74,8 @@ class Timeline(Persistable):
     def persist(self):
         if self.interval is not None:
             self.export_interval()
+            self.init = True
+            self.export()
 
     def affected_intervals(self, model):
         trip_start = model.start_time
