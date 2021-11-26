@@ -10,8 +10,8 @@ class Timeline(Persistable):
         self.dir = fs.timeline_dir(layer.dir)
         self.group_by = group_by
         self.init = False
-        self.interval = self.load_interval(0)
         self.movement_count = 0
+        self.interval = None
 
         super().__init__(fs.timeline_config(self.dir))
 
@@ -56,7 +56,9 @@ class Timeline(Persistable):
 
     def activate_interval(self, start_time: int):
         interval_start_time = self.time_to_interval_start(start_time)
-        if self.interval.start_time != interval_start_time:
+        if self.interval is None:
+            self.interval = self.load_interval(interval_start_time)
+        elif self.interval.start_time != interval_start_time:
             self.export_interval()
             self.interval = self.load_interval(interval_start_time)
         
@@ -70,7 +72,8 @@ class Timeline(Persistable):
             self.movement_count += self.interval.insert(model, oid)
 
     def persist(self):
-        self.export_interval()
+        if self.interval is not None:
+            self.export_interval()
 
     def affected_intervals(self, model):
         trip_start = model.start_time

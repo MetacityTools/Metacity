@@ -1,10 +1,13 @@
 from typing import Union
 from metacity.core.grid.grid import Grid
+from metacity.core.timeline import Timeline
 from metacity.core.grid.set import Tile
 from metacity.core.styles.style import Style
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.filesystem import layer as fs
+from metacity.filesystem import timeline as tfs
 from metacity.datamodel.project import Project
+from metacity.geometry import Interval
 from metacity.utils.bbox import join_boxes
 
 
@@ -18,9 +21,27 @@ def tile_layout(tile: Tile):
     }
 
 
+def interval_layout(timeline: Timeline, interval: Interval):
+    return {
+        'start_time': interval.start_time,
+        'file': tfs.interval(timeline.dir, interval.start_time)
+    }
+
+
+def timeline_layout(timeline: Timeline):
+    if not timeline.init:
+        return None
+
+    return {
+        'interval_length': timeline.group_by,
+        'intervals': [ interval_layout(timeline, interval) for interval in timeline.intervals ]
+    }
+
+
 def grid_layout(grid: Grid):
     if not grid.init:
         return None
+
     return {
         'tile_size': grid.tile_size,
         'tiles': [ tile_layout(tile) for tile in grid.tiles ]
@@ -29,22 +50,15 @@ def grid_layout(grid: Grid):
 
 def layer_layout(layer: Layer):
     grid = Grid(layer)
-    if grid.init and not layer.disabled:
-        return {
-            'name': layer.name,
-            'layout': grid_layout(grid),
-            'size': layer.size,
-            'init': grid.init,
-            'disabled': layer.disabled,
-            'type': 'layer'
-        }
-    else:
-        return {
-            'name': layer.name,
-            'init': grid.init,
-            'disabled': layer.disabled,
-            'type': 'layer'
-        }
+    timeline = Timeline(layer)
+    base = {
+        'name': layer.name,
+        'disabled': layer.disabled,
+        'type': 'layer',
+        'size': layer.size,
+        'grid': grid_layout(grid),
+        'timeline': timeline_layout(timeline)
+    }
 
 
 def overlay_layout(overlay: LayerOverlay):
