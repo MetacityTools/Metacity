@@ -15,6 +15,7 @@ public:
 
     uint32_t get_start_time() const;
     json serialize() const;
+    json serialize_stream() const;
     void deserialize(const json data);
 
 protected:

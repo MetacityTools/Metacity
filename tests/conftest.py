@@ -309,7 +309,7 @@ def railway_dataset():
 
 @pytest.fixture(scope='function')
 def carsim_dataset():
-    dataset_path = os.path.join(data_dir(), 'data', 'car_sec_3962.json')
+    dataset_path = os.path.join(data_dir(), 'data', 'car_sec_3962.sim')
     yield dataset_path
 
 @pytest.fixture(scope='function')

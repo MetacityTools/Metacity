@@ -1,17 +1,93 @@
+from typing import Dict, List
 from metacity.datamodel.layer import Layer
+from metacity.datamodel.set import desermodel
+from metacity.datamodel.set import DataSet
 import metacity.filesystem.timeline as fs
-from metacity.geometry import BaseModel
+from metacity.geometry import BaseModel, MultiTimePoint
 from metacity.geometry import Interval
 from metacity.utils.persistable import Persistable
+from tqdm import tqdm
+
+
+
+class IntervalSet(DataSet):
+    def __init__(self, timeline_dir: str, start_time: int, offset: int, capacity: int):        
+        super().__init__(fs.timeline_cache_interval_dir(timeline_dir, start_time), offset, capacity)
+
+    def serialize(self): 
+        data = super().serialize()
+        models = []
+        model: MultiTimePoint
+        for model in self.data:
+            models.append(model.serialize())
+        data['models'] = models
+        return data
+
+    def deserialize(self, data):
+        super().deserialize(data)
+        self.data = []
+        for model in data['models']:
+            self.data.append(desermodel(model))
+
+
+
+class IntervalCache:
+    def __init__(self, timeline_dir: str, start_time: int, end_time: int, group_by=100):
+        self.start_time = start_time
+        self.end_time = end_time
+        self.timeline_dir = timeline_dir
+        self.size = 0
+        self.group_by = group_by
+        self.set = IntervalSet(self.timeline_dir, self.start_time, 0, self.group_by)
+
+    def add(self, oid: int, model: MultiTimePoint):
+        if not self.set.can_contain(self.size):
+            self.set.export()
+            self.activate_set(self.size)
+        model.add_tag("oid", oid)
+        self.set.add(model)
+        self.size += 1
+
+    def __getitem__(self, index: int):
+        if not self.set.can_contain(index):
+            self.set.export()
+            self.activate_set(index)
+        obj: MultiTimePoint = self.set[index]
+        return obj
+
+    def activate_set(self, index):
+        offset = (index // self.group_by) * self.group_by
+        self.set = IntervalSet(self.timeline_dir, self.start_time, offset, self.group_by)
+
+    @property
+    def models(self):
+        for i in range(self.size):
+            yield self[i]
+
+    def to_interval(self):
+        movement_count = 0
+        output = fs.interval(self.timeline_dir, self.start_time)
+        output_stream = fs.interval_stream(self.timeline_dir, self.start_time)
+        interval = Interval(self.start_time, self.end_time - self.start_time)
+        
+        for model in self.models:
+            movement_count += interval.insert(model, model.tags["oid"])
+                
+        fs.base.write_json(output, interval.serialize())
+        fs.base.write_json(output_stream, interval.serialize_stream())
+        return movement_count
+
 
 
 class Timeline(Persistable):
-    def __init__(self, layer: Layer, group_by: int):
+    def __init__(self, layer: Layer, group_by: int = 3600):
         self.dir = fs.timeline_dir(layer.dir)
         self.group_by = group_by
         self.init = False
-        self.interval = self.load_interval(0)
         self.movement_count = 0
+        self.interval = None
+
+        self.cache: Dict[int, IntervalCache] = {}
 
         super().__init__(fs.timeline_config(self.dir))
 
@@ -38,49 +114,29 @@ class Timeline(Persistable):
         i.deserialize(data)
         return i
 
-    def load_interval(self, interval_start_time: int):
-        interval_file = fs.interval(self.dir, interval_start_time)
-        if fs.base.file_exists(interval_file):
-            return self.load_existing_interval(interval_file)
-        else:
-            return Interval(interval_start_time, self.group_by)
-
     def time_to_interval_start(self, start_time):
         interval_start_time = (start_time // self.group_by) * self.group_by
         return interval_start_time
 
-    def export_interval(self):
-        interval_file = fs.interval(self.dir, self.interval.start_time)
-        data = self.interval.serialize()
-        fs.base.write_json(interval_file, data)
 
-    def activate_interval(self, start_time: int):
-        interval_start_time = self.time_to_interval_start(start_time)
-        if self.interval.start_time != interval_start_time:
-            self.export_interval()
-            self.interval = self.load_interval(interval_start_time)
-        
-
-    def add(self, oid: int, model: BaseModel):
+    def add(self, oid: int, model: MultiTimePoint):
         if model.type != "timepoint":
             return
-        s, e = self.affected_intervals(model)
-        for i in range(s, e + self.group_by, self.group_by):
-            self.activate_interval(i)
-            self.movement_count += self.interval.insert(model, oid)
+
+        submodels = model.slice_to_timeline(self.group_by)
+
+        for model in submodels:
+            interval_start = self.time_to_interval_start(model.start_time)
+            if interval_start not in self.cache:
+                self.cache[interval_start] = IntervalCache(self.dir, interval_start, interval_start + self.group_by)
+
+            self.cache[interval_start].add(oid, model)
 
     def persist(self):
-        self.export_interval()
-
-    def affected_intervals(self, model):
-        trip_start = model.start_time
-        trip_end = model.end_time - 1
-        start_interval = self.time_to_interval_start(trip_start)
-        end_interval = self.time_to_interval_start(trip_end) 
-
-        if start_interval > end_interval:
-            end_interval = start_interval
-        return start_interval, end_interval
+        for cache in self.cache.values():
+            self.movement_count += cache.to_interval()
+        self.init = True
+        self.export()
 
 
     def serialize(self):
@@ -96,14 +152,14 @@ class Timeline(Persistable):
         self.movement_count = data["movement_count"]
 
 
-def build_timeline(layer: Layer):
-    secs_in_hour = 60 * 60
-    timeline = Timeline(layer, secs_in_hour)
+def build_timeline(layer: Layer, interval_length: int = 60):
+    timeline = Timeline(layer, interval_length)
     timeline.clear()
 
-    for oid, object in enumerate(layer.objects):
+    for oid, object in tqdm(enumerate(layer.objects)):
         for model in object.models:
             timeline.add(oid, model)
 
     timeline.persist()
     return timeline
+

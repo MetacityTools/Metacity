@@ -125,6 +125,13 @@ class Grid(Persistable):
     def tile_from_single_model(self, model: Model, tile_name):
         output = fs.grid_tile(self.dir, tile_name)
         fs.base.write_json(output, [model.serialize()])
+        output_stream = fs.grid_stream(self.dir, tile_name)
+        fs.base.write_json(output_stream, [model.serialize_stream()])   
+
+    def rebuild_stream_data(self):
+        for tile in self.tiles:
+            output_stream = fs.grid_stream(self.dir, tile.name)
+            fs.base.write_json(output_stream, [model.serialize_stream() for model in tile.models])         
 
     def serialize(self):
         return {

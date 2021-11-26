@@ -237,7 +237,7 @@ def apply_layer_style(styler: LayerStyler, style: Style, layer: Layer):
 def apply_overlay_style(styler: LayerStyler, style: Style, overlay: LayerOverlay):
     color_source = compute_layer_colors(style.project.get_layer(overlay.source_layer, load_model=False), styler.source_object_color) 
     color_target = compute_layer_colors(style.project.get_layer(overlay.target_layer, load_model=False), styler.target_object_color)
-    style.write_colors(overlay.name, buffer_cource=color_source, buffer_target=color_target)
+    style.write_colors(overlay.name, buffer_source=color_source, buffer_target=color_target)
 
 
 def apply_style_to_layer(styler: LayerStyler, style: Style, layer: Union[Layer, LayerOverlay]):

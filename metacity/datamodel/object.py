@@ -1,10 +1,13 @@
 from typing import Callable, Dict, List
-from metacity.geometry import MultiPoint, MultiLine, MultiPolygon, BaseModel
+from metacity.geometry import MultiPoint, MultiLine, MultiPolygon, BaseModel, MultiTimePoint
 
+
+#TODO this can be all removed, since serialization is handeled insets
 types: Dict[str, Callable[[],BaseModel]] = {
     MultiPoint().type: MultiPoint,
     MultiLine().type: MultiLine,
-    MultiPolygon().type: MultiPolygon
+    MultiPolygon().type: MultiPolygon,
+    MultiTimePoint().type: MultiTimePoint
 }
 
 def desermodel(model):
