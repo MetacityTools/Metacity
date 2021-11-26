@@ -101,9 +101,8 @@ class Timeline(Persistable):
         self.movement_count = data["movement_count"]
 
 
-def build_timeline(layer: Layer):
-    secs_in_hour = 60 * 60
-    timeline = Timeline(layer, secs_in_hour)
+def build_timeline(layer: Layer, interval_length: int = 3600):
+    timeline = Timeline(layer, interval_length)
     timeline.clear()
 
     for oid, object in enumerate(layer.objects):

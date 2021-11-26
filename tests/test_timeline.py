@@ -18,6 +18,6 @@ def test_timeline(carsim_dataset: str, project_tree: str):
         l.add(o)
     l.persist()
 
-    tl = build_timeline(l)
+    tl = build_timeline(l, 3600)
 
 
