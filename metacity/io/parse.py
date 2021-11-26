@@ -37,5 +37,5 @@ def parse(input_file: str):
     elif suffix == 'shp':
         return parse_shapefile(input_file)
     elif suffix == 'sim':
-        return 
+        return parse_simfile(input_file)
     return []
