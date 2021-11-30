@@ -18,7 +18,7 @@ uint32_t Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
         return 0;
 
     uint32_t trip_start_time = timepoints->get_start_time();
-    uint32_t trip_end_time = timepoints->get_end_time() - 1;
+    uint32_t trip_end_time = timepoints->get_end_time();
     
     uint32_t t_min = max(start_time, trip_start_time);
     uint32_t t_max = min(end_time, trip_end_time);
