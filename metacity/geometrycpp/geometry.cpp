@@ -549,8 +549,10 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<BaseModel, std::shared_ptr<BaseModel>, PyBaseModel>(m, "BaseModel")
         .def(py::init<>())
         .def_property_readonly("type", &BaseModel::type)
+        .def_property_readonly("tags", &BaseModel::get_tags)
         .def("transform", &BaseModel::transform)
         .def("serialize", &BaseModel::serialize)
+        .def("add_tag", &BaseModel::add_tag)
         .def("deserialize", &BaseModel::deserialize);
 
 
@@ -637,6 +639,7 @@ PYBIND11_MODULE(geometry, m) {
         .def_property_readonly("empty", &MultiTimePoint::empty)
         .def("set_points_from_b64", &MultiTimePoint::set_points_from_b64)
         .def("set_start_time", &MultiTimePoint::set_start_time)
+        .def("slice_to_timeline", &MultiTimePoint::slice_to_timeline)
         .def("transform", &MultiTimePoint::transform)
         .def("serialize", &MultiTimePoint::serialize)
         .def("deserialize", &MultiTimePoint::deserialize);
@@ -655,5 +658,6 @@ PYBIND11_MODULE(geometry, m) {
         .def("insert", &Interval::insert)
         .def("can_contain", &Interval::can_contain)
         .def("serialize", &Interval::serialize)
+        .def("serialize_stream", &Interval::serialize_stream)
         .def("deserialize", &Interval::deserialize);
 }

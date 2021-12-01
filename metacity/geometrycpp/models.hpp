@@ -13,6 +13,9 @@ public:
     virtual json serialize() const;
     virtual void deserialize(const json data);
 
+    void add_tag(const string key, const int32_t value);
+    json get_tags() const;
+
     virtual const char * type() const = 0;
     virtual shared_ptr<Model> transform() const = 0;
 protected:

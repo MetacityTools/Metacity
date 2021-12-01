@@ -15,16 +15,19 @@ GRID_STREAM = "stream"
 GRID_CACHE = "cache"
 STYLES = "styles"
 TIMELINE = "timeline"
+TIMELINE_INTERVALS = "intervals"
+TIMELINE_STREAM = "stream"
+TIMELINE_CACHE = "cache"
 
 
 RESERVED = [STYLES]
 
 BASE_DIRS = [METADATA, MODELS, ORIGINAL, 
              os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE), os.path.join(GRID, GRID_STREAM),
-             TIMELINE]
+             TIMELINE, os.path.join(TIMELINE, TIMELINE_STREAM), os.path.join(TIMELINE, TIMELINE_INTERVALS), os.path.join(TIMELINE, TIMELINE_CACHE)]
 
 OVERLAY_DIRS = [os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE), os.path.join(GRID, GRID_STREAM),
-                TIMELINE]
+                TIMELINE, os.path.join(TIMELINE, TIMELINE_STREAM), os.path.join(TIMELINE, TIMELINE_INTERVALS), os.path.join(TIMELINE, TIMELINE_CACHE)]
 
 
 # basics
