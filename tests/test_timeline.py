@@ -19,5 +19,7 @@ def test_timeline(carsim_dataset: str, project_tree: str):
     l.persist()
 
     tl = build_timeline(l, 3600)
+    for interval in tl.intervals:
+        pass
 
 
