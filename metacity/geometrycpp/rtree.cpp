@@ -148,6 +148,8 @@ shared_ptr<RTreeNode> RTree::build_general(const BBox &box, const size_t start, 
 shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     size_t size = end - start;
+    if(size == 0)
+        return nullptr;
     if (size == 1)
         return nodes[start];
     if (size == 2)
@@ -158,18 +160,24 @@ shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const si
 
 void RTree::range_query(const BBox &range, vector<size_t> & out) const
 {
+    if(root == nullptr)
+        return;
     if (overlaps(root->bbox, range))
         rquery(root, range, out);
 }
 
 void RTree::point_query(const tvec3 &point, vector<size_t> & out) const
 {
+    if(root == nullptr)
+        return;
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }
 
 void RTree::point_query(const tvec3 &point, vector<const tvec3 *> & out) const
 {
+    if(root == nullptr)
+        return;
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }

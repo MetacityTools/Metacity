@@ -23,8 +23,6 @@ def create_timeline(dataset_dir: str, project_tree: str):
     layer_name = 'test_layer'
 
     p = project.Project(project_dir)
-    p.delete()
-    p = project.Project(project_dir)
     l = p.create_layer(layer_name)
     for o in objects:
         l.add(o)
@@ -34,11 +32,9 @@ def create_timeline(dataset_dir: str, project_tree: str):
 
 
 def main():
-
-    dataset_dir = "subway"
+    dataset_dir = "data/car-10k"
     project_tree = "projects"
     tl = create_timeline(dataset_dir, project_tree)
-    tl.persist()
 
 if __name__ == "__main__":
     main()

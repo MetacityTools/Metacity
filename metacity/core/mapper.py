@@ -1,6 +1,6 @@
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.core.grid.grid import Grid
-from metacity.core.timeline import build_timeline
+from metacity.core.timeline import Timeline
 
 
 def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback=None):
@@ -14,13 +14,14 @@ def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iteration
     overlay.size_source = source.size
     overlay.size_target = target.size
 
+
 def build_overlay_timeline(overlay, source, target, iterationCallback):
     tg = Grid(target)
     polygons = [tile.polygon for tile in tg.tiles if tile.polygon is not None]
-    tl = build_timeline(overlay)
+    tl = Timeline(overlay)
 
     it = 0
-    for oid, object in source.objects:
+    for oid, object in enumerate(source.objects):
         for model in object.models:
             if model.type == "timepoint":
                 model.map(polygons)
