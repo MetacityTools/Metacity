@@ -36,7 +36,7 @@ vector<shared_ptr<MultiTimePoint>> MultiTimePoint::slice_to_timeline(const uint3
     for (; start_interval_time <= end_interval_time; start_interval_time += interval_size)
     {
         uint32_t segment_start = max(start_trip_time, start_interval_time) - start_trip_time;
-        uint32_t segment_end = min(end_trip_time, start_interval_time + interval_size + 1) - start_trip_time;
+        uint32_t segment_end = min(end_trip_time, start_interval_time + interval_size + 2) - start_trip_time;
 
         auto segment = make_shared<MultiTimePoint>();
         segment->set_start_time(segment_start + start_trip_time);

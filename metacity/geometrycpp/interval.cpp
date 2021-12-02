@@ -18,7 +18,7 @@ uint32_t Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
         return 0;
 
     uint32_t trip_start_time = timepoints->get_start_time();
-    uint32_t trip_end_time = timepoints->get_end_time() - 1;
+    uint32_t trip_end_time = timepoints->get_end_time() - 2;
     
     uint32_t t_min = max(start_time, trip_start_time);
     uint32_t t_max = min(end_time, trip_end_time);
@@ -28,6 +28,8 @@ uint32_t Interval::insert(shared_ptr<MultiTimePoint> timepoints, int32_t oid_){
     for(uint32_t t = t_min; t < t_max; ++t){
         trip_idx = t - trip_start_time;
         interval_idx = t - start_time;
+        from_speed[interval_idx].push_back(glm::length(timepoints->points[trip_idx] - timepoints->points[trip_idx + 1]));
+        to_speed[interval_idx].push_back(glm::length(timepoints->points[trip_idx + 1] - timepoints->points[trip_idx + 2]));
         from[interval_idx].emplace_back(timepoints->points[trip_idx]);
         to[interval_idx].emplace_back(timepoints->points[trip_idx + 1]);
         oid[interval_idx].emplace_back(oid_);

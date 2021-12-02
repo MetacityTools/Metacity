@@ -24,5 +24,7 @@ protected:
     uint32_t length;
     vector<vector<tvec3>> from;
     vector<vector<tvec3>> to;
+    vector<tfloat> from_speed;
+    vector<tfloat> to_speed;
     vector<vector<int32_t>> oid;
 };
