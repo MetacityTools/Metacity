@@ -1,8 +1,8 @@
+from metacity.io.parse import parse
 from metacity.core.timeline import build_timeline
 from metacity.datamodel import project
 from metacity.filesystem.timeline import interval
 from tests.conftest import carsim_dataset, project_tree
-from metacity.io.sim.parser import parse
 from metacity.geometry import Interval
 import os
 
