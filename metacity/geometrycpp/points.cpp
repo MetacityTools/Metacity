@@ -105,20 +105,6 @@ vector<shared_ptr<Model>> PointCloud::slice_to_grid(const tfloat tile_size) cons
     return tiled;
 }
 
-tfloat interpolate_z(const tvec3 triangle[3], const K::Line_3 & line)
-{
-    K::Triangle_3 t = to_triangle(triangle);
-    const auto res = CGAL::intersection(t, line);
-
-    if (!res.is_initialized())
-        return -FLT_MAX;
-
-    if (const K::Point_3 *p = boost::get<K::Point_3>(&*res))
-        return p->z();
-        
-    return -FLT_MAX;
-}
-
 void PointCloud::map(const shared_ptr<TriangularMesh> target) 
 {
     if (!(mapping_ready() && target->mapping_ready()))
@@ -169,5 +155,5 @@ void PointCloud::map(const shared_ptr<TriangularMesh> target)
         }
     }
 
-    init_proxy(nsource_oid, ntarget_oid, nvertices);
+    init_proxy(nsource_oid, ntarget_oid, move(nvertices));
 }
