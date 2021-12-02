@@ -1,4 +1,6 @@
 #include "timepoints.hpp"
+#include "rtree.hpp"
+
 
 
 void MultiTimePoint::set_points_from_b64(const string & data){
@@ -68,4 +70,9 @@ void MultiTimePoint::deserialize(const json data)
 shared_ptr<Model> MultiTimePoint::transform() const
 {
     return nullptr;
+}
+
+void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
+    RTree tree(target);
+
 }

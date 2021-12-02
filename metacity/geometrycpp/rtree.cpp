@@ -38,6 +38,24 @@ RTree::RTree(const TriangularMesh * mesh)
     root = build(main, 0, nodes.size(), 0);
 }
 
+RTree::RTree(const vector<shared_ptr<TriangularMesh>> mesh){
+    BBox main;
+    set_empty(main);
+
+    for (auto k = mesh.begin(); k != mesh.end(); ++k){
+        for (size_t i = 0, j = 0; i < (*k)->vertices.size(); i += 3, ++j){
+        auto node = make_shared<RTreeLeafNode>();
+        for_triangle(&((*k)->vertices[i]), node->bbox);
+        extend(main, node->bbox);
+        node->index = j;
+        node->type = RTreeNodeType::leaf;
+        nodes.push_back(node);
+        }
+    }
+    root = build(main, 0, nodes.size(), 0);
+}
+
+
 shared_ptr<RTreeNode> RTree::build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     auto node = make_shared<RTreeInternalNode>();
