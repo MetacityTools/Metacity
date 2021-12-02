@@ -640,6 +640,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("set_points_from_b64", &MultiTimePoint::set_points_from_b64)
         .def("set_start_time", &MultiTimePoint::set_start_time)
         .def("slice_to_timeline", &MultiTimePoint::slice_to_timeline)
+        .def("map", &MultiTimePoint::map)
         .def("transform", &MultiTimePoint::transform)
         .def("serialize", &MultiTimePoint::serialize)
         .def("deserialize", &MultiTimePoint::deserialize);

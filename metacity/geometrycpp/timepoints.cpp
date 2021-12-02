@@ -1,4 +1,8 @@
 #include "timepoints.hpp"
+#include "rtree.hpp"
+#include "cgal.hpp"
+
+static K::Vector_3 z_axis(0, 0, 1.0);
 
 
 void MultiTimePoint::set_points_from_b64(const string & data){
@@ -36,13 +40,13 @@ vector<shared_ptr<MultiTimePoint>> MultiTimePoint::slice_to_timeline(const uint3
     for (; start_interval_time <= end_interval_time; start_interval_time += interval_size)
     {
         uint32_t segment_start = max(start_trip_time, start_interval_time) - start_trip_time;
-        uint32_t segment_end = min(end_trip_time, start_interval_time + interval_size + 1) - start_trip_time;
+        uint32_t segment_end = min(end_trip_time, start_interval_time + interval_size + 2) - start_trip_time;
 
         auto segment = make_shared<MultiTimePoint>();
         segment->set_start_time(segment_start + start_trip_time);
         segment->points.insert(segment->points.end(), points.begin() + segment_start, points.begin() + segment_end);
         submodels.push_back(segment);
-    }    
+    }
 
     return submodels;
 }
@@ -68,4 +72,34 @@ void MultiTimePoint::deserialize(const json data)
 shared_ptr<Model> MultiTimePoint::transform() const
 {
     return nullptr;
+}
+
+void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
+    //helpers
+    tfloat z, maxz;
+    tvec3 v;
+    vector<const tvec3 *> tri_ptrs;
+    RTree tree(target);
+
+    for(size_t p = 0; p < points.size(); ++p)
+    {   
+        tri_ptrs.clear();
+        v = points[p];
+
+        tree.point_query(v, tri_ptrs);
+        maxz = -FLT_MAX;
+
+        if (tri_ptrs.size() > 0){
+
+            K::Line_3 line(to_point3(v), z_axis);
+            for(const auto & ptr : tri_ptrs){
+                z = interpolate_z(ptr, line);
+                if (z > maxz){
+                    maxz = z;
+                }
+            }
+        }
+        v.z = maxz;
+    }
+
 }

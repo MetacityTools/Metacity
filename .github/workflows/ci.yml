@@ -1,6 +1,7 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
+
 name: Metacity CI
 
 on:
@@ -10,8 +11,29 @@ on:
     branches: [ dev ]
 
 jobs:
+  is-skippable:
+    runs-on: ubuntu-latest
+    outputs:
+      out-run: ${{ steps.norun.outputs.run }}
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: Check for no-run commit
+      id: norun
+      run: |
+        log=$(git log --pretty=oneline --max-count=1)
+        case "$log" in
+            *#norun* ) run=0;;
+            * ) run=1;;
+        esac
+        echo "::set-output name=run::$run"
+
   test:
     runs-on: ubuntu-latest
+    needs: is-skippable
+    if: needs.is-skippable.outputs.out-run == 1
     steps:
     - uses: actions/checkout@v2
       with:
@@ -107,7 +129,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-
+        
     - name: Prepare for dist
       run: |
         python setup.py sdist
@@ -117,4 +139,4 @@ jobs:
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
-    
+

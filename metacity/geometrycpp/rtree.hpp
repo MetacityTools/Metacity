@@ -19,7 +19,10 @@ struct RTreeNode
 
 struct RTreeLeafNode : public RTreeNode
 {
-    size_t index;
+    union {
+        size_t index;
+        const tvec3 * ptr;
+    };
 };
 
 struct RTreeInternalNode : public RTreeNode
@@ -33,13 +36,16 @@ class RTree
 public:
     RTree(const shared_ptr<TriangularMesh> mesh);
     RTree(const TriangularMesh * mesh);
+    RTree(const vector<shared_ptr<TriangularMesh>> meshes);
     void range_query(const BBox &range, vector<size_t> & indices) const;
     void point_query(const tvec3 &point, vector<size_t> & indices) const;
+    void point_query(const tvec3 &point, vector<const tvec3 *> & ptrs) const;
 
 protected:
     shared_ptr<RTreeNode> build(const BBox &box, const size_t start, const size_t end, const uint8_t axis);
     void rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> & indices) const;
     void pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> & indices) const;
+    void pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<const tvec3 *> & ptrs) const;
 
     shared_ptr<RTreeNode> build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis);
     shared_ptr<RTreeNode> build_general(const BBox &box, const size_t start, const size_t end, const uint8_t axis);
@@ -49,3 +55,4 @@ protected:
 
     vector<shared_ptr<RTreeNode>> nodes;
 };
+

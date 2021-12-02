@@ -19,6 +19,8 @@ public:
     virtual const char * type() const override;
     virtual shared_ptr<Model> transform() const override;
     
+    void map(const vector<shared_ptr<TriangularMesh>> target);
+    
 protected:
     uint32_t start;
     vector<tvec3> points;
