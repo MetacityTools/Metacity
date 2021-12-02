@@ -203,11 +203,11 @@ bool Model::mapping_ready() const
     return it != attrib.end();
 }
 
-void Model::init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv)
+void Model::init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, vector<tvec3> && nv)
 {
     attrib.clear();
     attrib["source_oid"] = soid;
     attrib["oid"] = toid;
     tags["proxy"] = true;
-    vertices = nv;
+    vertices = move(nv);
 }
