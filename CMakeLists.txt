@@ -42,7 +42,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/geometrycpp/geometry.cpp
                                     metacity/geometrycpp/legobuilder.cpp
                                     metacity/geometrycpp/interval.cpp
                                     metacity/geometrycpp/interval.hpp
-                                    metacity/geometrycpp/cgal.hpp)
+                                    metacity/geometrycpp/cgal.hpp
+                                    metacity/geometrycpp/cgal.cpp)
 
 
 find_package(CGAL CONFIG COMPONENTS REQUIRED)

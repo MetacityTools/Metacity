@@ -246,5 +246,5 @@ void SegmentCloud::map(const shared_ptr<TriangularMesh> target)
         }
     }
 
-    init_proxy(nsource_oid, ntarget_oid, nvertices);
+    init_proxy(nsource_oid, ntarget_oid, move(nvertices));
 }

@@ -1,4 +1,8 @@
 #include "timepoints.hpp"
+#include "rtree.hpp"
+#include "cgal.hpp"
+
+static K::Vector_3 z_axis(0, 0, 1.0);
 
 
 void MultiTimePoint::set_points_from_b64(const string & data){
@@ -68,4 +72,34 @@ void MultiTimePoint::deserialize(const json data)
 shared_ptr<Model> MultiTimePoint::transform() const
 {
     return nullptr;
+}
+
+void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
+
+    //helpers
+    tfloat z, maxz;
+    tvec3 v;
+    vector<const tvec3 *> tri_ptrs;
+    RTree tree(target);
+
+    for(size_t p = 0; p < points.size(); ++p)
+    {   
+        tri_ptrs.clear();
+        v = points[p];
+
+        tree.point_query(v, tri_ptrs);
+        maxz = -FLT_MAX;
+
+        if (tri_ptrs.size() > 0){
+            K::Line_3 line(to_point3(v), z_axis);
+            for(const auto & ptr : tri_ptrs){
+                z = interpolate_z(ptr, line);
+                if (z > maxz){
+                    maxz = z;
+                }
+            }
+            v.z = maxz;
+        }
+    }
+
 }

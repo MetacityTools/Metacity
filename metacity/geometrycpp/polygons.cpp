@@ -271,5 +271,5 @@ void TriangularMesh::map(const shared_ptr<TriangularMesh> target3D)
     //cout << "avg  " << ((double) sum) / stats.size() << endl;
     //cout << "max  " << maximum << endl;
 
-    init_proxy(nsource_oid, ntarget_oid, nvertices);
+    init_proxy(nsource_oid, ntarget_oid, move(nvertices));
 }
