@@ -53,3 +53,5 @@ inline tvec3 to_vec(const K::Point_2 &p)
 {
     return tvec3(p.x(), p.y(), 0);
 }
+
+tfloat interpolate_z(const tvec3 triangle[3], const K::Line_3 & line);

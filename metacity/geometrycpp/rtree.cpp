@@ -38,6 +38,24 @@ RTree::RTree(const TriangularMesh * mesh)
     root = build(main, 0, nodes.size(), 0);
 }
 
+RTree::RTree(const vector<shared_ptr<TriangularMesh>> meshes){
+    BBox main;
+    set_empty(main);
+
+    for (const auto & m : meshes){
+        for (size_t i = 0; i < m->vertices.size(); i += 3){
+        auto node = make_shared<RTreeLeafNode>();
+        for_triangle(&(m->vertices[i]), node->bbox);
+        extend(main, node->bbox);
+        node->ptr = &(m->vertices[i]);
+        node->type = RTreeNodeType::leaf;
+        nodes.push_back(node);
+        }
+    }
+    root = build(main, 0, nodes.size(), 0);
+}
+
+
 shared_ptr<RTreeNode> RTree::build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     auto node = make_shared<RTreeInternalNode>();
@@ -130,6 +148,8 @@ shared_ptr<RTreeNode> RTree::build_general(const BBox &box, const size_t start, 
 shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     size_t size = end - start;
+    if(size == 0)
+        return nullptr;
     if (size == 1)
         return nodes[start];
     if (size == 2)
@@ -140,12 +160,24 @@ shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const si
 
 void RTree::range_query(const BBox &range, vector<size_t> & out) const
 {
+    if(root == nullptr)
+        return;
     if (overlaps(root->bbox, range))
         rquery(root, range, out);
 }
 
 void RTree::point_query(const tvec3 &point, vector<size_t> & out) const
 {
+    if(root == nullptr)
+        return;
+    if (inside(root->bbox, point))
+        pquery(root, point, out);
+}
+
+void RTree::point_query(const tvec3 &point, vector<const tvec3 *> & out) const
+{
+    if(root == nullptr)
+        return;
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }
@@ -174,6 +206,24 @@ void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<
     {
         const auto leaf = static_pointer_cast<RTreeLeafNode>(node);
         out.emplace_back(leaf->index);
+    }
+    else
+    {
+        const auto internal = static_pointer_cast<RTreeInternalNode>(node);
+        if (inside(internal->L->bbox, point))
+            pquery(internal->L, point, out);
+        if (inside(internal->R->bbox, point))
+            pquery(internal->R, point, out);
+    }
+}
+
+//todo refactor    
+void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<const tvec3 *> & out) const
+{
+    if (node->type == RTreeNodeType::leaf)
+    {
+        const auto leaf = static_pointer_cast<RTreeLeafNode>(node);
+        out.emplace_back(leaf->ptr);
     }
     else
     {

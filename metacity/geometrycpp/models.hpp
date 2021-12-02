@@ -60,7 +60,7 @@ public:
 
 protected:
     void copy_to(shared_ptr<Model> cp) const;
-    void init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, const vector<tvec3> & nv);
+    void init_proxy(const shared_ptr<TAttribute<uint32_t>> soid, const shared_ptr<TAttribute<uint32_t>> toid, vector<tvec3> && nv);
 
     vector<tvec3> vertices;
     unordered_map<string, shared_ptr<Attribute>> attrib;
