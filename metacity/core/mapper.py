@@ -1,8 +1,6 @@
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.core.grid.grid import Grid
 from metacity.core.timeline import build_timeline
-from metacity.geometry import MultiTimePoint
-from tests.data.gen_gj import polygon
 
 
 def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback=None):

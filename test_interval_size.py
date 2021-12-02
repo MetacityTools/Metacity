@@ -35,7 +35,7 @@ def create_timeline(dataset_dir: str, project_tree: str):
 
 def main():
 
-    dataset_dir = "data/car-10k"
+    dataset_dir = "subway"
     project_tree = "projects"
     tl = create_timeline(dataset_dir, project_tree)
     tl.persist()

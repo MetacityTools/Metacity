@@ -46,7 +46,7 @@ vector<shared_ptr<MultiTimePoint>> MultiTimePoint::slice_to_timeline(const uint3
         segment->set_start_time(segment_start + start_trip_time);
         segment->points.insert(segment->points.end(), points.begin() + segment_start, points.begin() + segment_end);
         submodels.push_back(segment);
-    }    
+    }
 
     return submodels;
 }
