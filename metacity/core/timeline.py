@@ -80,7 +80,7 @@ class IntervalCache:
 
 
 class Timeline(Persistable):
-    def __init__(self, layer: Layer, group_by: int = 3600):
+    def __init__(self, layer: Layer, group_by: int = 60):
         self.dir = fs.timeline_dir(layer.dir)
         self.group_by = group_by
         self.init = False

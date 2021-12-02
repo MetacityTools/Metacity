@@ -75,7 +75,6 @@ shared_ptr<Model> MultiTimePoint::transform() const
 }
 
 void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
-
     //helpers
     tfloat z, maxz;
     tvec3 v;
@@ -91,6 +90,7 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
         maxz = -FLT_MAX;
 
         if (tri_ptrs.size() > 0){
+
             K::Line_3 line(to_point3(v), z_axis);
             for(const auto & ptr : tri_ptrs){
                 z = interpolate_z(ptr, line);
@@ -98,8 +98,8 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
                     maxz = z;
                 }
             }
-            v.z = maxz;
         }
+        v.z = maxz;
     }
 
 }
