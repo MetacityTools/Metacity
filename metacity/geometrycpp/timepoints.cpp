@@ -5,6 +5,10 @@
 static K::Vector_3 z_axis(0, 0, 1.0);
 
 
+MultiTimePointMapper::MultiTimePointMapper(const vector<shared_ptr<TriangularMesh>> target) {
+    tree = make_shared<RTree>(target);
+}
+
 void MultiTimePoint::set_points_from_b64(const string & data){
     points = string_to_vec2_to_vec3(data);
 }
@@ -74,23 +78,31 @@ shared_ptr<Model> MultiTimePoint::transform() const
     return nullptr;
 }
 
-void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
+shared_ptr<MultiTimePoint> MultiTimePoint::copy() const
+{
+    auto cp = make_shared<MultiTimePoint>();
+    cp->points = points;
+    cp->tags = tags;
+    cp->start = start;
+    return cp;
+}
+
+void MultiTimePoint::map(const shared_ptr<MultiTimePointMapper> mapper){
     //helpers
     tfloat z, maxz;
     tvec3 v;
     vector<const tvec3 *> tri_ptrs;
-    RTree tree(target);
 
     for(size_t p = 0; p < points.size(); ++p)
     {   
         tri_ptrs.clear();
         v = points[p];
 
-        tree.point_query(v, tri_ptrs);
+        mapper->tree->point_query(v, tri_ptrs);
         maxz = -FLT_MAX;
 
-        if (tri_ptrs.size() > 0){
-
+        if (tri_ptrs.size() > 0)
+        {
             K::Line_3 line(to_point3(v), z_axis);
             for(const auto & ptr : tri_ptrs){
                 z = interpolate_z(ptr, line);
@@ -99,7 +111,8 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
                 }
             }
         }
-        v.z = maxz;
+
+        points[p].z = maxz;
     }
 
 }

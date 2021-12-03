@@ -156,7 +156,7 @@ def build_timeline(layer: Layer, interval_length: int = 60):
     timeline = Timeline(layer, interval_length)
     timeline.clear()
 
-    for oid, object in tqdm(enumerate(layer.objects)):
+    for oid, object in enumerate(layer.objects):
         for model in object.models:
             timeline.add(oid, model)
 

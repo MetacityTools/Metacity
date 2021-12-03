@@ -1,6 +1,7 @@
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.core.grid.grid import Grid
 from metacity.core.timeline import Timeline
+from metacity.geometry import MultiTimePointMapper, MultiTimePoint
 
 
 def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback=None):
@@ -15,26 +16,30 @@ def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iteration
     overlay.size_target = target.size
 
 
-def build_overlay_timeline(overlay, source, target, iterationCallback):
+def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback):
     tg = Grid(target)
     polygons = [tile.polygon for tile in tg.tiles if tile.polygon is not None]
+    mapper = MultiTimePointMapper(polygons)
     tl = Timeline(overlay)
 
     it = 0
-    for oid, object in enumerate(source.objects):
-        for model in object.models:
-            if model.type == "timepoint":
-                model.map(polygons)
-                tl.add(oid, model)
+
+    source_copy: MultiTimePoint
+    for oid, source_object in enumerate(source.objects):
+        for source_model in source_object.models:
+            if source_model.type == "timepoint":
+                source_copy = source_model.copy()
+                source_copy.map(mapper)
+                tl.add(oid, source_copy)
 
         if iterationCallback is not None:
             iterationCallback(it)
             it += 1
     
-    tl.persist()
+    tl.persist() #persist with empty cache
 
 
-def build_overlay_grid(overlay, source, target, iterationCallback):
+def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback):
     tg = Grid(target)
     sg = Grid(source)
     grid = Grid(overlay)

@@ -232,15 +232,17 @@ Frontend Metacity iterace 1:
 
 Frontend Metacity iterace 2:
     Do interní prezentace:
-        ☐ timeline
-            ☐ přidat posuvník na čas
-            ☐ fast-forward, play, stop
-            ☐ uzpůsobit načítání zrychlenému přehrávání
-            ☐ mapování timeline na 3D terén
+        ✔ timeline @done(21-12-03 17:03)
+            ✔ obarvení podle rychlosti @done(21-12-02 21:34)
+            ✔ přidat posuvník na čas @done(21-12-03 17:02)
+            ✔ fast-forward, play, stop @done(21-12-03 17:02)
+            ✔ uzpůsobit načítání zrychlenému přehrávání?  - podle performance @done(21-12-03 17:02)
+            ✔ mapování timeline na 3D terén @done(21-12-02 21:33)
     
     Other:
-        ☐ Upravit UI jobů
+        ✔ cancelable tag @done(21-12-02 21:34)
         ☐ Udělat průchod ui a opravit případné chyby
+        ☐ Upravit UI jobů
         ☐ CI pro workspace
         ☐ Integrace metacity a workspace přes CI
 
