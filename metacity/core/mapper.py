@@ -35,10 +35,10 @@ def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, 
                 tl.add(oid, source_copy)
 
         if progressCallback is not None:
-            progressCallback(it)
+            progressCallback(f"inserting {it} to timeline")
             it += 1
     
-    tl.persist() #persist with empty cache
+    tl.persist(progressCallback) #persist with empty cache
 
 
 def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, progressCallback):
@@ -58,7 +58,7 @@ def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, prog
             grid.tile_from_single_model(source_copy, source_tile.name)
 
         if progressCallback is not None:
-            progressCallback(it)
+            progressCallback(f"mapping tile {it}")
             it += 1
 
-    grid.persist() #persist with empty cache
+    grid.persist(progressCallback) #persist with empty cache
