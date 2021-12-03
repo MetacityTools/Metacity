@@ -14,6 +14,7 @@ def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, progressC
     overlay.target_layer = target.name
     overlay.size_source = source.size
     overlay.size_target = target.size
+    overlay.persist()
 
 
 def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, progressCallback):
