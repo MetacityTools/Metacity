@@ -85,7 +85,6 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
     {   
         tri_ptrs.clear();
         v = &points[p];
-        cout << "before: " << v->z << endl;
         tree.point_query(*v, tri_ptrs);
         maxz = -FLT_MAX;
 
@@ -100,7 +99,6 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
             }
         }
         v->z = maxz;
-        cout << "after: " << v->z << endl;
     }
 
 }
