@@ -77,21 +77,21 @@ shared_ptr<Model> MultiTimePoint::transform() const
 void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
     //helpers
     tfloat z, maxz;
-    tvec3 v;
+    tvec3 * v;
     vector<const tvec3 *> tri_ptrs;
     RTree tree(target);
 
     for(size_t p = 0; p < points.size(); ++p)
     {   
         tri_ptrs.clear();
-        v = points[p];
-
-        tree.point_query(v, tri_ptrs);
+        v = &points[p];
+        cout << "before: " << v->z << endl;
+        tree.point_query(*v, tri_ptrs);
         maxz = -FLT_MAX;
 
         if (tri_ptrs.size() > 0){
 
-            K::Line_3 line(to_point3(v), z_axis);
+            K::Line_3 line(to_point3(*v), z_axis);
             for(const auto & ptr : tri_ptrs){
                 z = interpolate_z(ptr, line);
                 if (z > maxz){
@@ -99,7 +99,8 @@ void MultiTimePoint::map(const vector<shared_ptr<TriangularMesh>> target){
                 }
             }
         }
-        v.z = maxz;
+        v->z = maxz;
+        cout << "after: " << v->z << endl;
     }
 
 }
