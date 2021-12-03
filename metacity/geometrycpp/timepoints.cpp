@@ -88,7 +88,6 @@ shared_ptr<MultiTimePoint> MultiTimePoint::copy() const
 }
 
 void MultiTimePoint::map(const shared_ptr<MultiTimePointMapper> mapper){
-    //helpers
     tfloat z, maxz;
     tvec3 v;
     vector<const tvec3 *> tri_ptrs;
@@ -106,6 +105,7 @@ void MultiTimePoint::map(const shared_ptr<MultiTimePointMapper> mapper){
             K::Line_3 line(to_point3(v), z_axis);
             for(const auto & ptr : tri_ptrs){
                 z = interpolate_z(ptr, line);
+
                 if (z > maxz){
                     maxz = z;
                 }

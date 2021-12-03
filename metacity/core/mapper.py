@@ -4,19 +4,19 @@ from metacity.core.timeline import Timeline
 from metacity.geometry import MultiTimePointMapper, MultiTimePoint
 
 
-def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback=None):
+def build_overlay(overlay: LayerOverlay, source: Layer, target: Layer, progressCallback=None):
     if source.type != "layer" or target.type != "layer":
         raise Exception(f"Cannot map type {source.type} to {target.type}, only layer to layer is supported")
 
-    build_overlay_grid(overlay, source, target, iterationCallback)
-    build_overlay_timeline(overlay, source, target, iterationCallback)
+    build_overlay_grid(overlay, source, target, progressCallback)
+    build_overlay_timeline(overlay, source, target, progressCallback)
     overlay.source_layer = source.name
     overlay.target_layer = target.name
     overlay.size_source = source.size
     overlay.size_target = target.size
 
 
-def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback):
+def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, progressCallback):
     tg = Grid(target)
     polygons = [tile.polygon for tile in tg.tiles if tile.polygon is not None]
     mapper = MultiTimePointMapper(polygons)
@@ -24,6 +24,7 @@ def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, 
 
     it = 0
 
+    source_model: MultiTimePoint
     source_copy: MultiTimePoint
     for oid, source_object in enumerate(source.objects):
         for source_model in source_object.models:
@@ -32,14 +33,14 @@ def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, 
                 source_copy.map(mapper)
                 tl.add(oid, source_copy)
 
-        if iterationCallback is not None:
-            iterationCallback(it)
+        if progressCallback is not None:
+            progressCallback(it)
             it += 1
     
     tl.persist() #persist with empty cache
 
 
-def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, iterationCallback):
+def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, progressCallback):
     tg = Grid(target)
     sg = Grid(source)
     grid = Grid(overlay)
@@ -55,8 +56,8 @@ def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, iter
             source_copy.map(pol)
             grid.tile_from_single_model(source_copy, source_tile.name)
 
-        if iterationCallback is not None:
-            iterationCallback(it)
+        if progressCallback is not None:
+            progressCallback(it)
             it += 1
 
     grid.persist() #persist with empty cache
