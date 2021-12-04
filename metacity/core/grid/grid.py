@@ -98,9 +98,12 @@ class Grid(Persistable):
     def v_to_xy(self, vertex):
         return (int(vertex[0] // self.tile_size), int(vertex[1] // self.tile_size))
 
-    def persist(self):
+    def persist(self, progressCallback=None):
         for cache in self.cache.values():
             cache.to_tile()
+            if progressCallback is not None:
+                progressCallback(f"cache {cache.name}")
+
         self.init = True
         self.export()
 
@@ -144,11 +147,13 @@ class Grid(Persistable):
         self.init = data["init"]
 
 
-def build_grid(layer: Layer):
+def build_grid(layer: Layer, progressCallback=None):
     grid = Grid(layer)
     grid.clear()
     for oid, object in enumerate(layer.objects):
         for model in object.models:
             grid.add(oid, model) 
-    grid.persist()
+        if progressCallback is not None:
+            progressCallback(f"object {oid}")
+    grid.persist(progressCallback)
     return grid

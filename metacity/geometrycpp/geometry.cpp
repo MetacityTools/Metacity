@@ -641,6 +641,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("set_start_time", &MultiTimePoint::set_start_time)
         .def("slice_to_timeline", &MultiTimePoint::slice_to_timeline)
         .def("map", &MultiTimePoint::map)
+        .def("copy", &MultiTimePoint::copy)
         .def("transform", &MultiTimePoint::transform)
         .def("serialize", &MultiTimePoint::serialize)
         .def("deserialize", &MultiTimePoint::deserialize);
@@ -651,6 +652,9 @@ PYBIND11_MODULE(geometry, m) {
         .def("build_heightmap", &LegoBuilder::build_heightmap)
         .def("legofy", &LegoBuilder::legofy)
         .def("lego_to_png", &LegoBuilder::lego_to_png);
+
+    py::class_<MultiTimePointMapper, std::shared_ptr<MultiTimePointMapper>>(m, "MultiTimePointMapper")
+        .def(py::init<const vector<shared_ptr<TriangularMesh>>>());
 
     py::class_<Interval, std::shared_ptr<Interval>>(m, "Interval")
         .def(py::init<>())

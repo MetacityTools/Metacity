@@ -1,6 +1,5 @@
 from metacity.core.grid.grid import build_grid
 from metacity.core.mapper import build_overlay
-from tests.conftest import terrain_dataset, project_tree
 from metacity.io.parse import parse
 from metacity.core.timeline import build_timeline
 from metacity.datamodel import layer, project
