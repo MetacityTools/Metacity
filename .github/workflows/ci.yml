@@ -10,16 +10,17 @@ jobs:
   run-settings:
     runs-on: ubuntu-latest
     outputs:
-      out-bump: ${{ steps.run.outputs.bump }}
-      out-package: ${{ steps.run.outputs.package }}
+      out-bump: ${{ steps.run-setup.outputs.bump }}
+      out-package: ${{ steps.run-setup.outputs.package }}
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
 
     - name: Check for commit tags
-      id: run
+      id: run-setup
       run: |
+        log=$(git log --pretty=oneline --max-count=1)
         case "$log" in
             *action::bump* ) bump=1;;
             * ) bump=0;;
