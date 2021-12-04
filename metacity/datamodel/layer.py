@@ -91,6 +91,14 @@ class Layer(Persistable):
         self.group_by = data['group_by']
         self.disabled = data['disabled']
 
+    def clear(self, keep_originals=True):
+        if not self.load_model or not self.load_meta:
+            raise Exception("In order to clear layer properly, loading models and metadata must be enabled.")
+        
+        fs.clear_layer(self.dir, keep_originals)
+        self.size = 0
+        self.set = ObjectSet(self.dir, 0, self.group_by)
+
 
 class LayerOverlay(Persistable):
     def __init__(self, overlay_dir: str):
@@ -139,4 +147,10 @@ class LayerOverlay(Persistable):
         self.disabled = data['disabled']
         self.size_source = data['size_source']
         self.size_target = data['size_target']
+
+
+    def clear(self, keep_originals=True):
+        fs.clear_overlay(self.dir, keep_originals)
+        self.size_source = 0
+        self.size_target = 0
 
