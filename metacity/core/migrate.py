@@ -7,7 +7,7 @@ from metacity.core.grid.grid import build_grid
 from metacity.core.timeline import build_timeline
 from metacity.core.layout import build_layout
 from metacity.core.mapper import build_overlay
-from multiprocessing import Pool
+from multiprocessing import get_context
 
 def parse_original_files(layer: Layer):
     files = fs.layer_original_files(layer.dir)
@@ -35,9 +35,9 @@ def migrate_layer(project: Project, layer_name: str):
     print("parsing files")
     parse_original_files(layer)
     print("building grid")
-    build_grid(layer, update)
+    build_grid(layer, progressCallback=update)
     print("building timeline")
-    build_timeline(layer, update)
+    build_timeline(layer, progressCallback=update)
     layer.persist()
 
 
@@ -54,16 +54,16 @@ def migrate_overlay(project: Project, overlay_name: str):
     source = project.get_layer(overlay.source_layer)
     target = project.get_layer(overlay.target_layer)
     print("mapping")
-    build_overlay(overlay, source, target, update)
+    build_overlay(overlay, source, target, progressCallback=update)
 
 
 def migrate(project: Project):
     print(f"Migrating project {project.dir}...")
     names = project.layer_names
 
-    pool = Pool(4)
-    pool.starmap(migrate_layer, zip(repeat(project), names))
-    pool.starmap(migrate_overlay, zip(repeat(project), names))
+    with get_context("spawn").Pool(4) as pool:
+        pool.starmap(migrate_layer, zip(repeat(project), names))
+        pool.starmap(migrate_overlay, zip(repeat(project), names))
 
     print("building layout")
     build_layout(project)

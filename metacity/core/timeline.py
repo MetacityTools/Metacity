@@ -163,8 +163,6 @@ def build_timeline(layer: Layer, interval_length: int = 60, progressCallback=Non
     for oid, object in enumerate(layer.objects):
         for model in object.models:
             timeline.add(oid, model)
-        if progressCallback is not None:
-            progressCallback(f"object {oid}")
 
     timeline.persist(progressCallback)
     return timeline

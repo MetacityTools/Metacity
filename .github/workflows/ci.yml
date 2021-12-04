@@ -29,6 +29,7 @@ jobs:
 
         case "$log" in
             *action::package* ) package=1;;
+            *action::deploy* ) package=1;;
             * ) package=0;;
         esac
         echo "::set-output name=package::$package"

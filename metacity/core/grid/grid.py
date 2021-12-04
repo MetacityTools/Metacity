@@ -153,7 +153,5 @@ def build_grid(layer: Layer, progressCallback=None):
     for oid, object in enumerate(layer.objects):
         for model in object.models:
             grid.add(oid, model) 
-        if progressCallback is not None:
-            progressCallback(f"object {oid}")
     grid.persist(progressCallback)
     return grid

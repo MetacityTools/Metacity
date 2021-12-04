@@ -33,10 +33,6 @@ def build_overlay_timeline(overlay: LayerOverlay, source: Layer, target: Layer, 
                 source_copy = source_model.copy()
                 source_copy.map(mapper)
                 tl.add(oid, source_copy)
-
-        if progressCallback is not None:
-            progressCallback(f"inserting {it} to timeline")
-            it += 1
     
     tl.persist(progressCallback) #persist with empty cache
 
