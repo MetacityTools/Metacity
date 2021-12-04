@@ -103,8 +103,8 @@ jobs:
       run: |
         log=$(git log --pretty=oneline --max-count=1)
         case "$log" in
-            *version::major* ) cmd='bump --major';;
-            *version::minor* ) cmd='bump --minor';;
+            *version::major* ) cmd='bump --major --reset';;
+            *version::minor* ) cmd='bump --minor --reset';;
             * ) cmd='bump --patch';;
         esac
         eval $cmd
