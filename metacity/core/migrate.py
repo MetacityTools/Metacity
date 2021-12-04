@@ -12,7 +12,7 @@ def parse_original_files(layer: Layer):
     files = fs.layer_original_files(layer.dir)
 
     for i, file in enumerate(files):
-        print(f"parsing files: {i}/{len(files)}")
+        print(f"parsing files: {i}/{len(files)}", end="\r")
         try:
             objects = parse(file)
             for o in objects:
@@ -23,7 +23,7 @@ def parse_original_files(layer: Layer):
 
 def migrate(project: Project):
     print(f"Migrating project {project.dir}...")
-    update = lambda it: print(it)
+    update = lambda it: print(it, end="\r")
     for layer in project.layers_only:
         print(f"clearing layer {layer.name}")
         layer.clear()
