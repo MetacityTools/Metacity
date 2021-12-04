@@ -10,27 +10,28 @@ jobs:
   run-settings:
     runs-on: ubuntu-latest
     outputs:
-      out-bump: ${{ steps.run.outputs.bump }}
-      out-package: ${{ steps.run.outputs.package }}
+      out-bump: ${{ steps.run-setup.outputs.bump }}
+      out-package: ${{ steps.run-setup.outputs.package }}
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
 
     - name: Check for commit tags
-      id: run
+      id: run-setup
       run: |
+        log=$(git log --pretty=oneline --max-count=1)
         case "$log" in
-            *action::bump* ) run=1;;
-            * ) run=0;;
+            *action::bump* ) bump=1;;
+            * ) bump=0;;
         esac
-        echo "::set-output name=bump::$run"
+        echo "::set-output name=bump::$bump"
 
         case "$log" in
-            *action::package* ) run=1;;
-            * ) run=0;;
+            *action::package* ) package=1;;
+            * ) package=0;;
         esac
-        echo "::set-output name=package::$run"
+        echo "::set-output name=package::$package"
 
   test:
     runs-on: ubuntu-latest
@@ -82,7 +83,7 @@ jobs:
   bump:
     runs-on: ubuntu-latest
     if: needs.run-settings.outputs.out-bump == 1 && github.event_name == 'push' && contains(github.ref, 'dev')
-    needs: test
+    needs: [ test, run-settings ]
     steps:
     - uses: actions/checkout@v2
       with:
@@ -113,10 +114,10 @@ jobs:
         default_author: github_actions
         message: "Bumped package version"
 
-  package:
+  package-deploy:
     runs-on: ubuntu-latest
     if: needs.run-settings.outputs.out-package == 1 && github.event_name == 'push' && contains(github.ref, 'main')
-    needs: test
+    needs: [ test, run-settings ]
     steps:
     - uses: actions/checkout@v2
       with:
