@@ -38,7 +38,7 @@ bool overlaps(const BBox &b1, const BBox &b2)
 
 bool inside(const BBox &b, const tvec3 &p)
 {
-    return ((b.min.x <= p.x) && (p.x >= b.max.x)) && ((b.min.y <= p.y) && (p.y >= b.max.y));
+    return ((b.min.x <= p.x) && (p.x <= b.max.x)) && ((b.min.y <= p.y) && (p.y <= b.max.y));
 }
 
 void set_empty(BBox &box)

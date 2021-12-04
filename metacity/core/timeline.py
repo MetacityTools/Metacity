@@ -132,9 +132,12 @@ class Timeline(Persistable):
 
             self.cache[interval_start].add(oid, model)
 
-    def persist(self):
+    def persist(self, progressCallback=None):
         for cache in self.cache.values():
             self.movement_count += cache.to_interval()
+            if progressCallback is not None:
+                progressCallback(f"cache {cache.start_time}")
+
         self.init = True
         self.export()
 
@@ -152,14 +155,17 @@ class Timeline(Persistable):
         self.movement_count = data["movement_count"]
 
 
-def build_timeline(layer: Layer, interval_length: int = 60):
+def build_timeline(layer: Layer, interval_length: int = 60, progressCallback=None):
     timeline = Timeline(layer, interval_length)
     timeline.clear()
 
-    for oid, object in tqdm(enumerate(layer.objects)):
+
+    for oid, object in enumerate(layer.objects):
         for model in object.models:
             timeline.add(oid, model)
+        if progressCallback is not None:
+            progressCallback(f"object {oid}")
 
-    timeline.persist()
+    timeline.persist(progressCallback)
     return timeline
 

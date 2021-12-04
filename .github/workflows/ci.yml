@@ -1,7 +1,3 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
-
-
 name: Metacity CI
 
 on:
@@ -11,29 +7,34 @@ on:
     branches: [ dev ]
 
 jobs:
-  is-skippable:
+  run-settings:
     runs-on: ubuntu-latest
     outputs:
-      out-run: ${{ steps.norun.outputs.run }}
+      out-bump: ${{ steps.run.outputs.bump }}
+      out-package: ${{ steps.run.outputs.package }}
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
 
-    - name: Check for no-run commit
-      id: norun
+    - name: Check for commit tags
+      id: run
       run: |
-        log=$(git log --pretty=oneline --max-count=1)
         case "$log" in
-            *#norun* ) run=0;;
-            * ) run=1;;
+            *action::bump* ) run=1;;
+            * ) run=0;;
         esac
-        echo "::set-output name=run::$run"
+        echo "::set-output name=bump::$run"
+
+        case "$log" in
+            *action::package* ) run=1;;
+            * ) run=0;;
+        esac
+        echo "::set-output name=package::$run"
 
   test:
     runs-on: ubuntu-latest
-    needs: is-skippable
-    if: needs.is-skippable.outputs.out-run == 1
+    needs: run-settings
     steps:
     - uses: actions/checkout@v2
       with:
@@ -80,7 +81,7 @@ jobs:
 
   bump:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && contains(github.ref, 'dev')
+    if: needs.run-settings.outputs.out-bump == 1 && github.event_name == 'push' && contains(github.ref, 'dev')
     needs: test
     steps:
     - uses: actions/checkout@v2
@@ -101,8 +102,8 @@ jobs:
       run: |
         log=$(git log --pretty=oneline --max-count=1)
         case "$log" in
-            *#major* ) cmd='bump --major';;
-            *#minor* ) cmd='bump --minor';;
+            *version::major* ) cmd='bump --major';;
+            *version::minor* ) cmd='bump --minor';;
             * ) cmd='bump --patch';;
         esac
         eval $cmd
@@ -112,9 +113,9 @@ jobs:
         default_author: github_actions
         message: "Bumped package version"
 
-  deploy:
+  package:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && contains(github.ref, 'main')
+    if: needs.run-settings.outputs.out-package == 1 && github.event_name == 'push' && contains(github.ref, 'main')
     needs: test
     steps:
     - uses: actions/checkout@v2

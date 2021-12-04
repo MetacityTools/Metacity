@@ -1,7 +1,19 @@
 #pragma once
 #include "models.hpp"
 
+
 class Interval;
+class MultiTimePoint;
+class RTree;
+
+class MultiTimePointMapper {
+public: 
+    MultiTimePointMapper(const vector<shared_ptr<TriangularMesh>> target);
+protected:
+    shared_ptr<RTree> tree;
+    friend class MultiTimePoint;
+};
+
 
 class MultiTimePoint : public BaseModel {
 public: 
@@ -18,8 +30,9 @@ public:
 
     virtual const char * type() const override;
     virtual shared_ptr<Model> transform() const override;
+    shared_ptr<MultiTimePoint> copy() const;
     
-    void map(const vector<shared_ptr<TriangularMesh>> target);
+    void map(const shared_ptr<MultiTimePointMapper> mapper);
     
 protected:
     uint32_t start;

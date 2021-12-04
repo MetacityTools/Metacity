@@ -139,6 +139,36 @@ class Project:
             except:
                 yield self.get_overlay(name)
 
+    @property
+    def layers_only(self):
+        """
+        Generator, yields all layers only, no overlays. 
+
+        Returns:
+            list: All layers.
+        """
+        names = self.layer_names
+        for name in names:
+            try:
+                yield self.get_layer(name)
+            except:
+                pass
+
+    @property
+    def overlays_only(self):
+        """
+        Generator, yields all overlays only, no layer. 
+
+        Returns:
+            list: All layers.
+        """
+        names = self.layer_names
+        for name in names:
+            try:
+                yield self.get_overlay(name)
+            except:
+                pass
+
 
     def clayers(self, load_set=True, load_meta=True, load_model=True):
         """

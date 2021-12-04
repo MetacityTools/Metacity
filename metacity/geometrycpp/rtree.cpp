@@ -20,7 +20,7 @@ RTree::RTree(const shared_ptr<TriangularMesh> mesh)
     root = build(main, 0, nodes.size(), 0);
 }
 
-RTree::RTree(const TriangularMesh * mesh)
+RTree::RTree(const TriangularMesh *mesh)
 {
 
     BBox main;
@@ -38,23 +38,25 @@ RTree::RTree(const TriangularMesh * mesh)
     root = build(main, 0, nodes.size(), 0);
 }
 
-RTree::RTree(const vector<shared_ptr<TriangularMesh>> meshes){
+RTree::RTree(const vector<shared_ptr<TriangularMesh>> meshes)
+{
     BBox main;
     set_empty(main);
 
-    for (const auto & m : meshes){
-        for (size_t i = 0; i < m->vertices.size(); i += 3){
-        auto node = make_shared<RTreeLeafNode>();
-        for_triangle(&(m->vertices[i]), node->bbox);
-        extend(main, node->bbox);
-        node->ptr = &(m->vertices[i]);
-        node->type = RTreeNodeType::leaf;
-        nodes.push_back(node);
+    for (const auto &m : meshes)
+    {
+        for (size_t i = 0; i < m->vertices.size(); i += 3)
+        {
+            auto node = make_shared<RTreeLeafNode>();
+            for_triangle(&(m->vertices[i]), node->bbox);
+            extend(main, node->bbox);
+            node->ptr = &(m->vertices[i]);
+            node->type = RTreeNodeType::leaf;
+            nodes.push_back(node);
         }
     }
     root = build(main, 0, nodes.size(), 0);
 }
-
 
 shared_ptr<RTreeNode> RTree::build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
@@ -148,7 +150,7 @@ shared_ptr<RTreeNode> RTree::build_general(const BBox &box, const size_t start, 
 shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     size_t size = end - start;
-    if(size == 0)
+    if (size == 0)
         return nullptr;
     if (size == 1)
         return nodes[start];
@@ -158,31 +160,32 @@ shared_ptr<RTreeNode> RTree::build(const BBox &box, const size_t start, const si
     return build_general(box, start, end, axis);
 }
 
-void RTree::range_query(const BBox &range, vector<size_t> & out) const
+void RTree::range_query(const BBox &range, vector<size_t> &out) const
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return;
     if (overlaps(root->bbox, range))
         rquery(root, range, out);
 }
 
-void RTree::point_query(const tvec3 &point, vector<size_t> & out) const
+void RTree::point_query(const tvec3 &point, vector<size_t> &out) const
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return;
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }
 
-void RTree::point_query(const tvec3 &point, vector<const tvec3 *> & out) const
+void RTree::point_query(const tvec3 &point, vector<const tvec3 *> &out) const
 {
-    if(root == nullptr)
+    if (root == nullptr)
         return;
+
     if (inside(root->bbox, point))
         pquery(root, point, out);
 }
 
-void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> & out) const
+void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<size_t> &out) const
 {
     if (node->type == RTreeNodeType::leaf)
     {
@@ -199,8 +202,7 @@ void RTree::rquery(const shared_ptr<RTreeNode> node, const BBox &range, vector<s
     }
 }
 
-
-void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> & out) const
+void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<size_t> &out) const
 {
     if (node->type == RTreeNodeType::leaf)
     {
@@ -217,8 +219,8 @@ void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<
     }
 }
 
-//todo refactor    
-void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<const tvec3 *> & out) const
+// todo refactor
+void RTree::pquery(const shared_ptr<RTreeNode> node, const tvec3 &point, vector<const tvec3 *> &out) const
 {
     if (node->type == RTreeNodeType::leaf)
     {

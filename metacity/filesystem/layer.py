@@ -27,6 +27,23 @@ def create_layer(layer_dir: str):
         base.create_dir_if_not_exists(path)
 
 
+def clear_layer(layer_dir: str, keep_originals=True):
+    clear(layer_dir, keep_originals, base.BASE_DIRS)
+
+
+def clear_overlay(overlay_dir: str, keep_originals=True):
+    clear(overlay_dir, keep_originals, base.OVERLAY_DIRS)
+
+def clear(base_dir, keep_originals, base_dirs):
+    for dir in base_dirs:
+        if dir == base.ORIGINAL and keep_originals:
+            continue
+        path = os.path.join(base_dir, dir)
+        if os.path.exists(path):
+            shutil.rmtree(path)
+        base.create_dir_if_not_exists(path)
+
+
 def create_overlay(overlay_dir: str):
     """
     Creates a new overlay directory. If the directory already exists, it won't be overwritten.
@@ -92,6 +109,16 @@ def layer_name(layer_dir: str):
 
 def layer_originals(layer_dir: str):
     return os.path.join(layer_dir, base.ORIGINAL)
+
+
+def layer_originals_list(layer_dir: str):
+    return os.listdir(layer_originals(layer_dir))    
+
+
+def layer_original_files(layer_dir: str):
+    files = layer_originals_list(layer_dir)
+    originals = layer_originals(layer_dir)
+    return [os.path.join(originals, file) for file in files]
 
 
 def copy_to_layer(layer_dir: str, file_path: str):
