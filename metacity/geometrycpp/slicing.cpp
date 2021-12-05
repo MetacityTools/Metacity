@@ -101,15 +101,19 @@ const vector<tvec3> &TriangleSlicer::data()
     return triangles;
 }
 
-// copied almost from line spliter
-pair<int, int> TriangleSlicer::setup_range(const tvec3 t[3], const tfloat tile_size, const size_t axis)
+void TriangleSlicer::setup_range_rect(const tvec3 t[3], pair<tfloat, tfloat> & range, const size_t axis)
 {
-
-    pair<tfloat, tfloat> range;
     //minimal axis
     range.first = min(t[0][axis], min(t[1][axis], t[2][axis]));
     //maximal axis
     range.second = max(t[0][axis], max(t[1][axis], t[2][axis]));
+}
+
+pair<int, int> TriangleSlicer::setup_range(const tvec3 t[3], const tfloat tile_size, const size_t axis)
+{
+
+    pair<tfloat, tfloat> range;
+    setup_range_rect(t, range, axis);
     
     int base = range.first / tile_size;
     int stop = range.second / tile_size;
@@ -159,6 +163,16 @@ void TriangleSlicer::insert_triangle_split(const tvec3 &a, const tvec3 &b, const
     splited.emplace_back(a);
     splited.emplace_back(b);
     splited.emplace_back(c);
+}
+
+bool TriangleSlicer::center_inside(const tvec3 t[3], const tvec2 & lower, const tvec2 & upper) const
+{
+    tvec2 center;
+    center.x = (t[0].x + t[1].x + t[2].x) / 3;
+    center.y = (t[0].y + t[1].y + t[2].y) / 3;
+
+    return (center.x >= lower.x) && (center.x <= upper.x) &&
+           (center.y >= lower.y) && (center.y <= upper.y);
 }
 
 bool TriangleSlicer::not_splitable(const tvec3 t[3], const tfloat &p, size_t axis) const
@@ -256,17 +270,24 @@ void TriangleSlicer::split_triangle_along_axis(const tvec3 triangle[3], const tf
         general_case_split(triangle, p, plane, axis);
 }
 
-void TriangleSlicer::split_triangles_along_axis(const pair<int, int> &range, const size_t axis)
+void TriangleSlicer::split_triangles_along_boundry(const tfloat p, const size_t axis)
 {
     tvec3 origin(0);
+    splited.clear();
+    origin[axis] = p;
+    K::Plane_3 plane(to_point3(origin), axis_normal[axis]);
+    for (size_t i = 0; i < triangles.size(); i += 3)
+        split_triangle_along_axis(&triangles[i], origin[axis], plane, axis);
+    triangles = splited;
+}
+
+void TriangleSlicer::split_triangles_along_axis(const pair<int, int> &range, const size_t axis)
+{
+    tfloat p;
     for (int i = range.first; i <= range.second; ++i)
     {
-        splited.clear();
-        origin[axis] = (tfloat)(i) * tile_size;
-        K::Plane_3 plane(to_point3(origin), axis_normal[axis]);
-        for (size_t i = 0; i < triangles.size(); i += 3)
-            split_triangle_along_axis(&triangles[i], origin[axis], plane, axis);
-        triangles = splited;
+        p = (tfloat)(i) * tile_size;
+        split_triangles_along_boundry(p, axis);
     }
 }
 
@@ -281,6 +302,31 @@ void TriangleSlicer::grid_split(const tvec3 triangle[3], const tfloat tile_size_
 
     split_triangles_along_axis(xrange, 0);
     split_triangles_along_axis(yrange, 1);
+}
+
+
+void TriangleSlicer::rect_split(const tvec3 triangle[3], const tvec2 & lower, const tvec2 & upper)
+{
+    //setup
+    triangles.clear();
+    splited.clear();
+
+    if (lower.x >= upper.x || lower.y >= upper.y)
+        return;
+
+    split_triangles_along_boundry(lower.x, 0);
+    split_triangles_along_boundry(upper.x, 0);
+    split_triangles_along_boundry(lower.y, 1);
+    split_triangles_along_boundry(upper.y, 1);
+    
+    splited.clear();
+    for (size_t i = 0; i < triangles.size(); i += 3)
+    {
+        if (center_inside(&triangles[i], lower, upper))
+            insert_triangle_split(&triangles[i]);
+    }
+
+    triangles = splited;
 }
 
 //===============================================================================

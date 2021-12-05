@@ -73,37 +73,36 @@ void LegoBuilder::insert_model(const shared_ptr<TriangularMesh> model)
 //hopefully no one will trace anything higher then Mt. Everest
 #define ORIGIN 10000
 
-//resolution is a resolution per 1 unit of dimensions
-void LegoBuilder::build_heightmap(const tfloat xmin, const tfloat ymin, const tfloat xmax, const tfloat ymax, const uint32_t resolution_)
+void LegoBuilder::build_heightmap(const tfloat xmin, const tfloat ymin, const tfloat xmax, const tfloat ymax, const size_t resolution_)
 {
     BVH bvh(vertices);
-
     BBox box = bvh.bbox();
-    hmin = box.min.z;
-    hmax = box.max.z;
-
-    ixmin = xmin * resolution_;
-    ixmax = xmax * resolution_;
-    iymin = ymin * resolution_;
-    iymax = ymax * resolution_;
-
-    tfloat unit_frag = 1.0 / resolution_;  
-
-    xdim = (xmax - xmin) * resolution_;
-    ydim = (ymax - ymin) * resolution_;
     
+    //resolution per 1 unit of original coordinates
+    resolution = resolution_;
+    selected_box.min.x = xmin;
+    selected_box.min.y = ymin;
+    selected_box.min.z = box.min.z;
+    selected_box.max.x = xmax;
+    selected_box.max.y = ymax;
+    selected_box.max.z = box.max.z;
+    raster_dimx = (selected_box.max.x - selected_box.min.x) * resolution;
+    raster_dimy = (selected_box.max.y - selected_box.min.y) * resolution;
+
+    int ixmin = xmin * resolution;
+    int iymin = ymin * resolution;
+    tfloat unit_frag = 1.0 / resolution;  
+ 
     heightmap.clear();
-    heightmap.reserve(xdim * ydim);
+    heightmap.reserve(raster_dimx * raster_dimy);
 
-
-
-    for(int y = ydim - 1; y >= 0; --y)
+    for(int y = raster_dimy - 1; y >= 0; --y)
     {
-        for(int x = 0; x < xdim; ++x)
+        for(int x = 0; x < raster_dimx; ++x)
             heightmap.push_back(ORIGIN - bvh.traceDownRegualarRay((ixmin + x) * unit_frag, (iymin + y) * unit_frag, ORIGIN));
     }
     
-    denoise(heightmap.data(), xdim, ydim, hmin, hmax);
+    denoise(heightmap.data(), raster_dimx, raster_dimy, selected_box.min.z, selected_box.max.z);
 }
 
 
@@ -122,12 +121,14 @@ tfloat median_func(vector<tfloat> & tile)
     return tile[n];
 }
 
-#define LEGODIM 8
+//size of lego brick in milimeters
+#define LEGODIM 8.0 //width
+#define LEGOSTEP 3.2 //third of height
 
-json LegoBuilder::legofy(const int box_size)
+json LegoBuilder::legofy(const size_t box_size)
 {
-    lego_dimx = xdim / box_size;
-    lego_dimy = ydim / box_size;
+    lego_dimx = raster_dimx / box_size;
+    lego_dimy = raster_dimy / box_size;
 
     vector<tfloat> tile;
     legomap.clear();
@@ -137,50 +138,57 @@ json LegoBuilder::legofy(const int box_size)
         for(size_t i = 0; i < lego_dimx; ++i)
         {
             tile.clear();
-            for (size_t y = j * box_size; y < min((j + 1) * box_size, ydim); y++)
-                for (size_t x = i * box_size; x < min((i + 1) * box_size, xdim); x++)
-                    tile.push_back(heightmap[x + y * xdim]);
+            for (size_t y = j * box_size; y < min((j + 1) * box_size, raster_dimy); y++)
+                for (size_t x = i * box_size; x < min((i + 1) * box_size, raster_dimx); x++)
+                    tile.push_back(heightmap[x + y * raster_dimx]);
 
             legomap.push_back(median_func(tile));
         }
 
-    tfloat vmin = FLT_MAX, vmax = FLT_MIN;
-    uint8_t byte; 
+    tfloat lego_height_min = FLT_MAX, lego_height_max = FLT_MIN;
+
     for(const auto & t: legomap)
-        vmin = min(t, vmin), vmax = max(t, vmax);
-    tfloat range = vmax - vmin;
+        lego_height_min = min(t, lego_height_min), lego_height_max = max(t, lego_height_max);
+    
+    selected_box.min.z = lego_height_min;
+    selected_box.max.z = lego_height_max;
+    
+    tfloat unit_per_lego_brick = (tfloat) box_size / (tfloat) resolution;
+    tfloat unit_per_real_mm = (unit_per_lego_brick / LEGODIM);
+    tfloat height_step_resolution = unit_per_real_mm * LEGOSTEP;
+    tfloat height_range = lego_height_max - lego_height_min;
+    lego_dimz = height_range / height_step_resolution;
 
-    //tfloat scale = 
-    //size_t z_dim = 
-
+    for(auto & t: legomap)
+        t = floor((t - lego_height_min) / height_step_resolution);
 
     return {
-        {"real size", {
+        {"coord_size", {
+            {"x", selected_box.max.x - selected_box.min.x},
+            {"y", selected_box.max.y - selected_box.min.y},
+            {"z", selected_box.max.z - selected_box.min.z}
+        }},
+        {"model_size_mm", {
             {"x", lego_dimx * LEGODIM},
             {"y", lego_dimy * LEGODIM},
-            {"z"}
+            {"z", lego_dimz * LEGOSTEP}
         }},
-        {"dims", {
+        {"lego_size", {
             {"x", lego_dimx},
             {"y", lego_dimy},
-            
+            {"z", lego_dimz}
         }}
     };
 }
 
 void LegoBuilder::lego_to_png(const string & name) const
 {
-    tfloat vmin = FLT_MAX, vmax = FLT_MIN;
-    uint8_t byte; 
-    for(const auto & t: legomap)
-        vmin = min(t, vmin), vmax = max(t, vmax);
-    tfloat range = vmax - vmin;
-
     vector<uint8_t> image;
     image.reserve(lego_dimx * lego_dimy * 3);
-    for(const auto & h: legomap)
+    uint8_t byte;
+    for(const auto & b: legomap)
     {
-        byte = (h - vmin) / range * 255;
+        byte = (b / lego_dimz * 255);
         image.push_back(byte);
         image.push_back(byte);
         image.push_back(byte);

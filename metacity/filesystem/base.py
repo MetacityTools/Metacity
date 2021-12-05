@@ -1,6 +1,6 @@
 import os
 import shutil
-import json
+import orjson
 import sys
 import ntpath
 import errno
@@ -84,13 +84,15 @@ def delete_dir(dir):
 def write_json(filename, data):
     delete_file(filename)
 
-    with open(filename, 'w') as file:
-        json.dump(data, file, indent=4)
+    with open(filename, 'wb') as file:
+        sdata = orjson.dumps(data)
+        file.write(sdata)
 
 
 def read_json(filename):
     with open(filename, 'r') as file:
-        return json.load(file)
+        sdata = file.read()
+    return orjson.loads(sdata)
 
 
 def write_mss(filename, data):
