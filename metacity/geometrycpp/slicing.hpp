@@ -29,11 +29,13 @@ class TriangleSlicer
 {
 public:
     void grid_split(const tvec3 triangle[3], const tfloat tile_size_);
+    void rect_split(const tvec3 triangle[3], const tvec2 & lower, const tvec2 & upper);
     const vector<tvec3> & data();
 
 protected:
     // runtime routines
     void setup(const tvec3 t[3], const tfloat tile_size_);
+    void setup_range_rect(const tvec3 t[3], pair<tfloat, tfloat> & range, const size_t axis);
     pair<int, int> setup_range(const tvec3 t[3], const tfloat tile_size, const size_t axis);
     tvec3 cross_point(const tvec3 &a, const tvec3 &b, const K::Plane_3 plane) const;
     void insert_triangle(const tvec3 triangle[3]);
@@ -44,10 +46,13 @@ protected:
     void barrel_shift(tvec3 t[3]) const;
     // split routines
     void split_triangles_along_axis(const pair<int, int> &range, const size_t axis);
+    void split_triangles_along_boundry(const tfloat p, const size_t axis);
     void split_triangle_along_axis(const tvec3 triangle[3], const tfloat p, const K::Plane_3 &plane, const size_t axis);
+    
     void general_case_split(const tvec3 t[3], const tfloat p, const K::Plane_3 &plane, const size_t axis);
     void special_case_split(const tvec3 t[3], const tfloat p, const K::Plane_3 &plane, const size_t axis);
     // predicates
+    bool center_inside(const tvec3 t[3], const tvec2 & lower, const tvec2 & upper) const;
     bool not_splitable(const tvec3 t[3], const tfloat &p, size_t axis) const;
     bool point_on_plane(const tvec3 t[3], const tfloat p, const size_t axis) const;
     bool bc_on_same_side(const tvec3 t[3], const tfloat p, const size_t axis) const;

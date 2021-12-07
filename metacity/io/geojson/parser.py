@@ -1,4 +1,4 @@
-import json
+from metacity.filesystem.base import read_json
 from typing import List, Union
 from metacity.datamodel.object import Object
 from abc import ABC, abstractmethod
@@ -291,8 +291,7 @@ def parse_data(data):
 
 
 def parse(input_file: str):
-    with open(input_file, 'r') as file:
-        contents = json.load(file)
+    contents = read_json(input_file)
     return parse_data(contents)
 
 

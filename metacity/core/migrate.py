@@ -25,7 +25,8 @@ def parse_original_files(layer: Layer):
 
 def migrate_layer(project: Project, layer_name: str):
     try:
-        layer = project.get_layer(layer_name)
+        #the set does not have to be loaded since it's cleared in layer.clear()
+        layer = project.get_layer(layer_name, load_set=False)
     except:
         return
     
@@ -63,7 +64,9 @@ def migrate(project: Project):
 
     with get_context("spawn").Pool(4) as pool:
         pool.starmap(migrate_layer, zip(repeat(project), names))
-        pool.starmap(migrate_overlay, zip(repeat(project), names))
+        #pool.starmap(migrate_overlay, zip(repeat(project), names))
+    for name in names:
+        migrate_overlay(project, name)
 
     print("building layout")
     build_layout(project)

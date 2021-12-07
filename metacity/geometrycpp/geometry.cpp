@@ -629,6 +629,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("copy", &TriangularMesh::copy)
         .def("to_obj", &TriangularMesh::to_obj)
         .def("map", &TriangularMesh::map)
+        .def("slice_to_rect", &TriangularMesh::slice_to_rect)
         .def("slice_to_grid", &TriangularMesh::slice_to_grid);
 
     py::class_<MultiTimePoint, std::shared_ptr<MultiTimePoint>, BaseModel, PyMultiTimePoint>(m, "MultiTimePoint")

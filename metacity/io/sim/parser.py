@@ -1,7 +1,7 @@
-import json
 from typing import List
 from metacity.datamodel.object import Object
 import metacity.geometry as p
+from metacity.filesystem.base import read_json
 
 class MultiTimePoint():
     def __init__(self):
@@ -63,6 +63,5 @@ def parse_data(data):
 
 
 def parse(input_file: str):
-    with open(input_file, 'r') as file:
-        contents = json.load(file)
+    contents = read_json(input_file)
     return parse_data(contents)

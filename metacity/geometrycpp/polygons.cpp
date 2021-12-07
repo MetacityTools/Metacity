@@ -161,6 +161,30 @@ vector<shared_ptr<Model>> TriangularMesh::slice_to_grid(const tfloat tile_size) 
     return tiled;
 }
 
+void TriangularMesh::to_model(const vector<tvec3> &triangles, shared_ptr<TriangularMesh> model) const
+{
+    for (size_t p = 0; p < triangles.size(); p += 3)
+        model->push_vert(&triangles[p], 3);
+}
+
+shared_ptr<Model> TriangularMesh::slice_to_rect(const tfloat lower_x, const tfloat lower_y, const tfloat upper_x, const tfloat upper_y) const
+{
+    tvec2 lower = tvec2(lower_x, lower_y);
+    tvec2 upper = tvec2(upper_x, upper_y);
+    TriangleSlicer slicer;
+    auto output = make_shared<TriangularMesh>();
+
+    for (size_t i = 0; i < vertices.size(); i += 3)
+    {
+        slicer.rect_split(&vertices[i], lower, upper);
+        to_model(slicer.data(), output);
+    }
+
+    if (output->vertices.size() == 0)
+        return nullptr;
+    return output;
+}
+
 const tvec3 * TriangularMesh::triangle(const size_t index) const
 {
     return &(vertices[index * 3]);

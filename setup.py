@@ -126,7 +126,7 @@ setup(
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=[CMakeExtension('metacity.geometry')],
     cmdclass={"build_ext": CMakeBuild},
-    version="0.2.2",
+    version="0.2.4",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -145,7 +145,8 @@ setup(
         "geopandas>=0.9.0",
         "setuptools>=42",
         "wheel",
-        "lark>=0.11.3"
+        "lark>=0.11.3",
+        "orjson>=3.6.4"
     ],
     zip_safe=False,
     include_package_data=True
