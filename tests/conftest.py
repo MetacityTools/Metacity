@@ -384,3 +384,8 @@ def project_tree(tmpdir_factory):
     yield root
 
 
+@pytest.fixture(scope="function")
+def lego_tree(tmpdir_factory):
+    root = tmpdir_factory.mktemp("lego")
+    yield root
+

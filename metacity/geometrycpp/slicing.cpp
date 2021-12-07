@@ -314,6 +314,7 @@ void TriangleSlicer::rect_split(const tvec3 triangle[3], const tvec2 & lower, co
     if (lower.x >= upper.x || lower.y >= upper.y)
         return;
 
+    insert_triangle(triangle);
     split_triangles_along_boundry(lower.x, 0);
     split_triangles_along_boundry(upper.x, 0);
     split_triangles_along_boundry(lower.y, 1);

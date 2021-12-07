@@ -130,10 +130,10 @@ json LegoBuilder::legofy(const size_t box_size)
     lego_dimx = raster_dimx / box_size;
     lego_dimy = raster_dimy / box_size;
 
+    //conver using tile funciton 
     vector<tfloat> tile;
     legomap.clear();
     legomap.reserve(lego_dimx * lego_dimy);
-
     for(size_t j = 0; j < lego_dimy; ++j)
         for(size_t i = 0; i < lego_dimx; ++i)
         {
@@ -141,26 +141,39 @@ json LegoBuilder::legofy(const size_t box_size)
             for (size_t y = j * box_size; y < min((j + 1) * box_size, raster_dimy); y++)
                 for (size_t x = i * box_size; x < min((i + 1) * box_size, raster_dimx); x++)
                     tile.push_back(heightmap[x + y * raster_dimx]);
-
             legomap.push_back(median_func(tile));
         }
 
+    //found bounds in z axis
     tfloat lego_height_min = FLT_MAX, lego_height_max = FLT_MIN;
-
     for(const auto & t: legomap)
         lego_height_min = min(t, lego_height_min), lego_height_max = max(t, lego_height_max);
-    
     selected_box.min.z = lego_height_min;
     selected_box.max.z = lego_height_max;
     
+    //compute dims
     tfloat unit_per_lego_brick = (tfloat) box_size / (tfloat) resolution;
     tfloat unit_per_real_mm = (unit_per_lego_brick / LEGODIM);
     tfloat height_step_resolution = unit_per_real_mm * LEGOSTEP;
     tfloat height_range = lego_height_max - lego_height_min;
     lego_dimz = height_range / height_step_resolution;
 
+    //sample according to real dimensions
     for(auto & t: legomap)
         t = floor((t - lego_height_min) / height_step_resolution);
+
+
+    //produce height map (number of bricks)
+    vector<vector<uint8_t>> lego_heightmap;
+    lego_heightmap.reserve(lego_dimy);    
+    for (size_t y = 0; y < lego_dimy; y++)
+    {
+        vector<uint8_t> line;
+        for (size_t x = 0; x < lego_dimx; x++)  
+            line.push_back((legomap[x + y * lego_dimx]));
+        lego_heightmap.emplace_back(move(line));
+    }
+
 
     return {
         {"coord_size", {
@@ -177,7 +190,8 @@ json LegoBuilder::legofy(const size_t box_size)
             {"x", lego_dimx},
             {"y", lego_dimy},
             {"z", lego_dimz}
-        }}
+        }},
+        {"map", lego_heightmap}
     };
 }
 
