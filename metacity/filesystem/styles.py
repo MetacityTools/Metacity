@@ -3,6 +3,11 @@ from metacity.filesystem import base
 from metacity.filesystem import layer
 
 
+
+def style_legend(project_dir, style_name):
+    return os.path.join(layer.project_styles(project_dir), f'{style_name}_legend.mss.json')
+
+
 def style_mss(project_dir, style_name):
     return os.path.join(layer.project_styles(project_dir), f'{style_name}.mss')
 
