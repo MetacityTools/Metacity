@@ -58,6 +58,29 @@ RTree::RTree(const vector<shared_ptr<TriangularMesh>> meshes)
     root = build(main, 0, nodes.size(), 0);
 }
 
+
+RTree::RTree(const vector<shared_ptr<TriangularMesh>> meshes, bool use_oids_as_indices)
+{
+    BBox main;
+    set_empty(main);
+
+    for (const auto &m : meshes)
+    {
+        const shared_ptr<TAttribute<uint32_t>> oids = static_pointer_cast<TAttribute<uint32_t>>(m->attrib["oid"]);
+    
+        for (size_t i = 0; i < m->vertices.size(); i += 3)
+        {
+            auto node = make_shared<RTreeLeafNode>();
+            for_triangle(&(m->vertices[i]), node->bbox);
+            extend(main, node->bbox);
+            node->index = (*oids)[i];
+            node->type = RTreeNodeType::leaf;
+            nodes.push_back(node);
+        }
+    }
+    root = build(main, 0, nodes.size(), 0);
+}
+
 shared_ptr<RTreeNode> RTree::build_two_nodes(const BBox &box, const size_t start, const size_t end, const uint8_t axis)
 {
     auto node = make_shared<RTreeInternalNode>();

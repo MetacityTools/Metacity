@@ -297,3 +297,67 @@ void TriangularMesh::map(const shared_ptr<TriangularMesh> target3D)
 
     init_proxy(nsource_oid, ntarget_oid, move(nvertices));
 }
+
+
+MeshOIDMapper::MeshOIDMapper(const vector<shared_ptr<TriangularMesh>> target) {
+    for (const auto & t : target)
+        if (!(t->mapping_ready()))
+            throw runtime_error("Either mapped models are not ready for mapping (most likely miss the attribute OID.");
+
+    tree = make_shared<RTree>(target, true);
+}
+
+
+void MeshOIDMapper::map_oids(const shared_ptr<TriangularMesh> source) {
+    if (!(source->mapping_ready()))
+        throw runtime_error("Either mapped models are not ready for mapping (most likely miss the attribute OID.");
+
+    vector<size_t> toids;
+    BBox box;
+    uint32_t source_oid;
+
+    const shared_ptr<TAttribute<uint32_t>> source_oids = static_pointer_cast<TAttribute<uint32_t>>(source->attrib["oid"]);
+
+    for(size_t t = 0; t < source->vertices.size(); t += 3) {
+        toids.clear();
+        source_oid = (*source_oids)[t];
+        for_triangle(&source->vertices[t], box);
+        tree->range_query(box, toids);
+
+        for (const auto & i : toids)
+        {
+            auto toid_to_oid = oid_map.find(i);
+            if (toid_to_oid == oid_map.end())
+                toid_to_oid = oid_map.insert({i, unordered_map<uint32_t, size_t>()}).first;
+
+            auto oid_to_count = toid_to_oid->second.find(source_oid);
+            if (oid_to_count == toid_to_oid->second.end())
+                oid_to_count = toid_to_oid->second.insert({source_oid, 0}).first;
+            oid_to_count->second++;
+        }
+    }
+}
+
+unordered_map<uint32_t, uint32_t> MeshOIDMapper::get_mapping() const {
+    unordered_map<uint32_t, uint32_t> mapping;
+    for (const auto & i : oid_map)
+    {
+        auto max_count = 0;
+        uint32_t max_oid = 0;
+        for (const auto & j : i.second)
+        {
+            if (j.second > max_count)
+            {
+                max_count = j.second;
+                max_oid = j.first;
+            }
+        }
+        mapping.insert({i.first, max_oid});
+    }
+    return mapping;
+}
+
+unordered_map<uint32_t, unordered_map<uint32_t, size_t>> MeshOIDMapper::get_raw_mapping() const 
+{
+    return oid_map;
+}

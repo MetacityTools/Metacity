@@ -26,6 +26,10 @@ class Style:
         file = fs.style_mss(self.project_dir, self.name)
         return fs.base.read_mss(file)
 
+    def add_legend(self, rules: dict):
+        file = fs.style_legend(self.project_dir, self.name)
+        fs.base.write_json(file, rules)
+
     def update(self, mss: str):
         file = fs.style_mss(self.project_dir, self.name)
         dir = fs.style_dir(self.project_dir, self.name)

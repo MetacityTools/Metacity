@@ -1,5 +1,8 @@
 #pragma once
 #include "models.hpp"
+#include <map>
+
+using namespace std;
 
 class MultiPolygon : public BaseModel
 {
@@ -19,6 +22,19 @@ protected:
 
 class RTree;
 class LegoBuilder;
+
+class TriangularMesh;
+
+class MeshOIDMapper {
+public: 
+    MeshOIDMapper(const vector<shared_ptr<TriangularMesh>> target);
+    void map_oids(const shared_ptr<TriangularMesh> source);
+    unordered_map<uint32_t, uint32_t> get_mapping() const;
+    unordered_map<uint32_t, unordered_map<uint32_t, size_t>> get_raw_mapping() const;
+protected:
+    shared_ptr<RTree> tree;
+    unordered_map<uint32_t, unordered_map<uint32_t, size_t>> oid_map;
+};
 
 class TriangularMesh : public Model
 {
@@ -43,4 +59,5 @@ protected:
     
     friend class RTree;
     friend class LegoBuilder;
+    friend class MeshOIDMapper;
 };

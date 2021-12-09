@@ -657,6 +657,13 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<MultiTimePointMapper, std::shared_ptr<MultiTimePointMapper>>(m, "MultiTimePointMapper")
         .def(py::init<const vector<shared_ptr<TriangularMesh>>>());
 
+    py::class_<MeshOIDMapper, std::shared_ptr<MeshOIDMapper>>(m, "MeshOIDMapper")
+        .def_property_readonly("mapping", &MeshOIDMapper::get_mapping)
+        .def_property_readonly("raw_mapping", &MeshOIDMapper::get_raw_mapping)
+        .def("map_oids", &MeshOIDMapper::map_oids)
+        .def(py::init<const vector<shared_ptr<TriangularMesh>>>());
+
+
     py::class_<Interval, std::shared_ptr<Interval>>(m, "Interval")
         .def(py::init<>())
         .def(py::init<uint32_t, uint32_t>())

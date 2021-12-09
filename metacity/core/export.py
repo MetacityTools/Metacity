@@ -5,7 +5,7 @@ from metacity.geometry import TriangularMesh
 from metacity.utils.transform import tile_coords_in_range
 
 
-def export_slice(project: Project, output_file: str, start: Tuple[float, float], end: Tuple[float, float]):
+def export_obj(project: Project, output_file: str, start: Tuple[float, float], end: Tuple[float, float]):
     written_verts = 0
     for layer in project.clayers(load_set=False):
         if layer.disabled:
