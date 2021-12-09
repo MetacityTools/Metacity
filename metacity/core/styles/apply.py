@@ -2,7 +2,7 @@ from metacity.core.styles.style import Style
 from metacity.datamodel.layer import Layer, LayerOverlay
 from metacity.datamodel.project import Project
 from metacity.filesystem import styles as fs
-from typing import Union
+from typing import List, Tuple, Union
 from typing import Dict
 from lark import Lark, Transformer
 from functools import reduce
@@ -12,12 +12,13 @@ import numpy as np
 
 
 STYLEGRAMMAR = r"""
-    layer_rule_list: (layer_rules)*
+    layer_rule_list: (layer_rules)* [ legend ]
     layer_rules: ("@layer" "(" string ")" "{" [(rule)*] "}")
     rule: visibility | pickability | layer_color | mapping | meta_rules
 
     visibility: ("@visible" ":" boolean ";")
     pickability: ("@pickable" ":" boolean ";")
+    legend: ("@legend" "{" [ legend_style ";"]* "}")
 
     layer_color: ("@color" ":" color ";")
 
@@ -26,12 +27,19 @@ STYLEGRAMMAR = r"""
     target: ("@target" "{" [ meta_rules ] "}")
 
     meta_rules: (meta_rule)* 
-    meta_rule: ("@meta" "(" name_link ")" "{" [key_style ";"]* "}")
+    meta_rule: ("@meta" "(" name_link ")" "{" [ style ";"]* "}")
 
     name_link: (string [("." string)*])
+    style: key_style | range_style
+    legend_style: key_style | legend_range_style
+
     key_style: (key ":" color)
+    range_style: (range ":" (color)+ )
+    legend_range_style: (string ":" range ":" (color)+ )
     
     key: string | any
+    range: "[" SIGNED_NUMBER " " SIGNED_NUMBER "]"
+
 
     any: "@default"
     boolean: "true" -> true | "false" -> false
@@ -108,14 +116,35 @@ class TreeToStyle(Transformer):
         key, *styles = meta_rule_
         return (key, dict(styles))
 
+    def style(self, style_):
+        return style_[0]
+
+    def legend_style(self, style_):
+        return style_[0]
+
+    def legend_range_style(self, legend_range_style_):
+        key, range, *colors = legend_range_style_
+        return key, {
+            "range": range, 
+            "colors": colors
+        }
+
     def name_link(self, name_link_):
         return tuple(name_link_)
 
     def key_style(self, key_style_):
-        return key_style_
+        key, style = key_style_
+        return key, style
+
+    def range_style(self, range_style_):
+        key, *styles = range_style_
+        return key, styles
 
     def key(self, key_):
         return key_[0]
+
+    def range(self, range_):
+        return tuple(range_)
 
     def any(self, any_):
         return ANYKEY
@@ -125,6 +154,9 @@ class TreeToStyle(Transformer):
 
     def ESCAPED_STRING(self, escaped_string_):
         return str(escaped_string_[1:-1])
+
+    def SIGNED_NUMBER(self, signed_number_):
+        return float(signed_number_)
     
     def string(self, string_):
         return string_[0]
@@ -135,6 +167,10 @@ class TreeToStyle(Transformer):
     def color(self, color_):
         (color_,) = color_
         return int(color_[1:3], 16), int(color_[3:5], 16), int(color_[5:7], 16)
+
+    def legend(self, legend_):
+        print(legend_)
+        return ("@@legend", dict(legend_))
 
     true = lambda self, _: True
     false = lambda self, _: False
@@ -185,15 +221,51 @@ class LayerStyler:
         return self.apply_rules(object_meta, self.meta_rules)
 
     def apply_rules(self, object_meta, rules: Dict):
-        for key, value_style in rules.items():
-            matched, meta_subtree = self.get_value(object_meta, key)
+        for key, value_styles in rules.items():
+            matched, value = self.get_value(object_meta, key)
             if matched:
-                if (isinstance(meta_subtree, Hashable) and meta_subtree in value_style):
-                    return value_style[meta_subtree]
-                if ANYKEY in value_style:
-                    return value_style[ANYKEY]
+                if (isinstance(value, Hashable) and value in value_styles):
+                    return value_styles[value]
+
+                if isinstance(value, int) or isinstance(value, float):
+                    for s in value_styles:
+                        if isinstance(s, tuple):
+                            #interpolate color between s[0] and s[1]
+                            return self.interpolate_color(float(s[0]), float(s[1]), float(value), value_styles[s])
+
+                if (isinstance(value, Hashable) and str(value) in value_styles):
+                    return value_styles[str(value)]
+
+                if ANYKEY in value_styles:
+                    return value_styles[ANYKEY]
 
         return self.default_color
+
+    def interpolate_color(self, start: float, end: float, value: float, colors: List[Tuple[int, int, int]]):
+        print(start, end, value, colors)
+
+        if len(colors) == 1 or end <= start:
+            return colors[0]
+
+        if value <= start:
+            return colors[0]
+        if value >= end:
+            return colors[-1]
+
+        print("comp")
+        
+        map_range = end - start
+        interval_length = map_range / (len(colors) - 1)
+        interval_index = int((value - start) / interval_length)
+        interval_start = start + interval_index * interval_length
+        interval_end = interval_start + interval_length
+        interval_ratio = (value - interval_start) / (interval_end - interval_start)
+        start_color = colors[interval_index]
+        end_color = colors[interval_index + 1]
+        return tuple(int(start_color[i] + (end_color[i] - start_color[i]) * interval_ratio) for i in range(3))
+
+        
+
 
     def get_value(self, meta_subtree, key):
         match = True
@@ -254,12 +326,15 @@ def apply_style(project: Project, style_name: str):
     styles = fs.base.read_mss(mss_file)
     parsed = parse(styles)
     style = Style(project, style_name)
-
     for layer in project.clayers(load_model=False):
         styler = layer_style(layer, parsed)
         apply_style_to_layer(styler, style, layer)
 
+    if "@@legend" in parsed:
+        style.add_legend(parsed['@@legend'])
 
 
+
+    
 
  

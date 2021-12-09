@@ -58,3 +58,9 @@ def build_overlay_grid(overlay: LayerOverlay, source: Layer, target: Layer, prog
             it += 1
 
     grid.persist(progressCallback) #persist with empty cache
+
+
+
+def centroid_mapping(source: Layer, target: Layer, progressCallback=None):
+    if source.type != "layer" or target.type != "layer":
+        raise Exception(f"Cannot map type {source.type} to {target.type}, only layer to layer is supported")

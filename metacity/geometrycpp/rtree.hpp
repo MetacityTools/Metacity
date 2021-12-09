@@ -37,6 +37,7 @@ public:
     RTree(const shared_ptr<TriangularMesh> mesh);
     RTree(const TriangularMesh * mesh);
     RTree(const vector<shared_ptr<TriangularMesh>> meshes);
+    RTree(const vector<shared_ptr<TriangularMesh>> meshes, bool use_oids_as_indices);
     void range_query(const BBox &range, vector<size_t> & indices) const;
     void point_query(const tvec3 &point, vector<size_t> & indices) const;
     void point_query(const tvec3 &point, vector<const tvec3 *> & ptrs) const;
