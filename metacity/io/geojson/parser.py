@@ -230,6 +230,10 @@ def parse_geometry(data) -> Union[GJGeometryObject, None]:
 def parse_feature(data) -> GJFeature:
     feature = GJFeature()
     type: str = data["type"].lower()
+
+    if data["geometry"] is None:
+        return None
+
     if type != "feature":
         raise Exception(f"Excpected GeoJSON type Feature, found type {type}")
     if "geometry" in data:
@@ -244,7 +248,8 @@ def parse_feature_collection(data):
     if "features" in data and data["features"] is not None:
         for feature in data["features"]:
             feature_object = parse_feature(feature)
-            collection.features.append(feature_object)
+            if feature_object is not None:
+                collection.features.append(feature_object)
     return collection
 
 
