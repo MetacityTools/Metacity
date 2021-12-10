@@ -15,6 +15,8 @@ class MultiTimePoint():
     def to_models(self):
         model = p.MultiTimePoint()
         model.set_points_from_b64(self.geometry)
+        if self.start_time < 0:
+            self.start_time = 0
         model.set_start_time(self.start_time)
         return [model]
 

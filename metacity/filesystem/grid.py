@@ -30,6 +30,13 @@ def clear_grid(grid_dir):
     os.mkdir(grid_stream_dir(grid_dir))
     os.mkdir(grid_cache_dir(grid_dir))
 
+def cleanup_grid(grid_dir):
+    shutil.rmtree(grid_cache_dir(grid_dir))
+    try:
+        os.mkdir(grid_cache_dir(grid_dir))
+    except:
+        pass
+
 
 def tile_cache_tile_set(grid_dir, tile_name, offset):
     cache_dir = grid_cache_tile_dir(grid_dir, tile_name)

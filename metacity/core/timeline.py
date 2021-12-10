@@ -99,6 +99,9 @@ class Timeline(Persistable):
     def clear(self):
         fs.clear_timeline(self.dir)
 
+    def cleanup(self):
+        fs.cleanup_timeline(self.dir)
+
     @property
     def intervals(self):
         for interval_file in self.interval_list():
@@ -165,5 +168,6 @@ def build_timeline(layer: Layer, interval_length: int = 60, progressCallback=Non
             timeline.add(oid, model)
 
     timeline.persist(progressCallback)
+    timeline.cleanup()
     return timeline
 

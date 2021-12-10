@@ -38,3 +38,10 @@ def clear_timeline(timeline_dir):
     os.mkdir(timeline_intervals_dir(timeline_dir))
     os.mkdir(timeline_stream_dir(timeline_dir))
     os.mkdir(timeline_cache_dir(timeline_dir))
+
+def cleanup_timeline(timeline_dir):
+    shutil.rmtree(timeline_cache_dir(timeline_dir))
+    try:
+        os.mkdir(timeline_cache_dir(timeline_dir))
+    except:
+        pass

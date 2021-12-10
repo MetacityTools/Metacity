@@ -78,6 +78,9 @@ class Grid(Persistable):
     def clear(self):
         fs.clear_grid(self.dir)
 
+    def cleanup(self):
+        fs.cleanup_grid(self.dir)
+
     def add(self, oid: int, model: BaseModel):
         submodel = model.transform()
         if submodel is None:
@@ -146,6 +149,8 @@ class Grid(Persistable):
         self.tile_size = data["tile_size"]
         self.init = data["init"]
 
+    
+
 
 def build_grid(layer: Layer, progressCallback=None):
     grid = Grid(layer)
@@ -154,4 +159,5 @@ def build_grid(layer: Layer, progressCallback=None):
         for model in object.models:
             grid.add(oid, model) 
     grid.persist(progressCallback)
+    grid.cleanup()
     return grid
