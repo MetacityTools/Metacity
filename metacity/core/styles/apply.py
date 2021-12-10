@@ -71,9 +71,13 @@ def merge(a, b, path=None):
 
 ANYKEY = "@default"
 
+def filter_tuples_of_two(data):
+    return [t for t in data if isinstance(t, tuple) and len(t) == 2]
+
 
 class TreeToStyle(Transformer):
     def layer_rule_list(self, layer_rule_list_):
+        layer_rule_list_ = filter_tuples_of_two(layer_rule_list_)
         return dict(layer_rule_list_)
 
     def layer_rules(self, layer_rules_):
@@ -169,7 +173,6 @@ class TreeToStyle(Transformer):
         return int(color_[1:3], 16), int(color_[3:5], 16), int(color_[5:7], 16)
 
     def legend(self, legend_):
-        print(legend_)
         return ("@@legend", dict(legend_))
 
     true = lambda self, _: True
