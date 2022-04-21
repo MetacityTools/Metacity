@@ -72,7 +72,8 @@ void clamp(tfloat *height, unsigned int x, unsigned int y, tfloat low, tfloat hi
     for (size_t j = 0; j < y; j++)
         for (size_t i = 0; i < x; i++)
             if (height[j * x + i] < low || height[j * x + i] > high)
-                height[j * x + i] = min(max(height[j * x + i], low), high);
+                height[j * x + i] = (low + high) / 2.0;//min(min(height[j * x + i], low), high);
+                //height[j * x + i] = min(max(height[j * x + i], low), high);
 }
 
 //===================================================================================================
@@ -116,7 +117,25 @@ void LegoBuilder::build_heightmap(const tfloat xmin, const tfloat ymin, const tf
             heightmap.push_back(ORIGIN - bvh.traceDownRegualarRay((ixmin + x) * unit_frag, (iymin + y) * unit_frag, ORIGIN));
     }
 
-    clamp(heightmap.data(), raster_dimx, raster_dimy, selected_box.min.z, selected_box.max.z);
+    denoise(&heightmap[0], raster_dimx, raster_dimy, selected_box.min.z, selected_box.max.z);
+    //clamp(heightmap.data(), raster_dimx, raster_dimy, selected_box.min.z, selected_box.max.z);
+}
+
+tfloat max_func(vector<tfloat> &tile)
+{
+    tfloat mv = -FLT_MAX;
+    for (const auto &v : tile)
+        mv = max(mv, v);
+    return mv;
+}
+
+tfloat avg_func(vector<tfloat> &tile)
+{
+    tfloat mv = 0;
+    size_t cnt = 0;
+    for (const auto &v : tile)
+        mv += v, cnt++;
+    return mv / cnt;
 }
 
 tfloat min_func(vector<tfloat> &tile)
@@ -154,7 +173,7 @@ json LegoBuilder::legofy(const size_t box_size)
             for (size_t y = j * box_size; y < min((j + 1) * box_size, raster_dimy); y++)
                 for (size_t x = i * box_size; x < min((i + 1) * box_size, raster_dimx); x++)
                     tile.push_back(heightmap[x + y * raster_dimx]);
-            legomap.push_back(median_func(tile));
+            legomap.push_back(min_func(tile));
         }
 
     // found bounds in z axis

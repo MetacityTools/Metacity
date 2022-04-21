@@ -4,12 +4,11 @@
 #include "json/pybind11_json.hpp"
 #include <filesystem>
 #include "models.hpp"
+#include "modelloaders.hpp"
 #include "points.hpp"
-#include "lines.hpp"
-#include "polygons.hpp"
-#include "timepoints.hpp"
+#include "segments.hpp"
+#include "mesh.hpp"
 #include "legobuilder.hpp"
-#include "interval.hpp"
 
 namespace py = pybind11;
 using jsonref = const json;
@@ -21,22 +20,28 @@ public:
     using BaseModel::BaseModel;
 
     /* Trampoline (need one for each virtual function) */
-    virtual json serialize() const override {
-        PYBIND11_OVERRIDE(
-            json,/* Return type */
+    virtual const char * type() const override {
+        PYBIND11_OVERRIDE_PURE(
+            const char *,/* Return type */
             BaseModel,/* Parent class */
-            serialize,/* Name of function in C++ (must match Python name) */
-                      /* Argument(s) */
+            type,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
         );
     }
+};
+
+class PyLoaderModel : public ModelLoader {
+public:
+    /* Inherit the constructors */
+    using ModelLoader::ModelLoader;
 
     /* Trampoline (need one for each virtual function) */
-    virtual void deserialize(jsonref data) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
+    virtual const char * type() const override {
+        PYBIND11_OVERRIDE_PURE(
+            const char *,/* Return type */
             BaseModel,/* Parent class */
-            deserialize,/* Name of function in C++ (must match Python name) */
-            data/* Argument(s) */
+            type,/* Name of function in C++ (must match Python name) */
+            /* Argument(s) */
         );
     }
 
@@ -46,16 +51,6 @@ public:
             shared_ptr<Model>,/* Return type */
             BaseModel,/* Parent class */
             transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual const char * type() const override {
-        PYBIND11_OVERRIDE_PURE(
-            const char *,/* Return type */
-            BaseModel,/* Parent class */
-            type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
         );
     }
@@ -87,16 +82,6 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual shared_ptr<Model> transform() const override {
-        PYBIND11_OVERRIDE(
-            shared_ptr<Model>,/* Return type */
-            Model,/* Parent class */
-            transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE_PURE(
             const char *,/* Return type */
@@ -107,32 +92,12 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override {
-        PYBIND11_OVERRIDE_PURE(
-            vector<shared_ptr<Model>>,/* Return type */
-            Model,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE_PURE(
             shared_ptr<Model>,/* Return type */
             Model,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void map(const shared_ptr<TriangularMesh> target) override {
-        PYBIND11_OVERRIDE_PURE(
-            void,/* Return type */
-            Model,/* Parent class */
-            map,/* Name of function in C++ (must match Python name) */
-            target/* Argument(s) */
         );
     }
 
@@ -162,26 +127,6 @@ class PyMultiPoint : public MultiPoint {
 public:
     /* Inherit the constructors */
     using MultiPoint::MultiPoint;
-
-    /* Trampoline (need one for each virtual function) */
-    virtual json serialize() const override {
-        PYBIND11_OVERRIDE(
-            json,/* Return type */
-            MultiPoint,/* Parent class */
-            serialize,/* Name of function in C++ (must match Python name) */
-                      /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void deserialize(jsonref data) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            MultiPoint,/* Parent class */
-            deserialize,/* Name of function in C++ (must match Python name) */
-            data/* Argument(s) */
-        );
-    }
 
     /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> transform() const override {
@@ -220,32 +165,12 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Model>>,/* Return type */
-            PointCloud,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
             PointCloud,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void map(const shared_ptr<TriangularMesh> target) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            PointCloud,/* Parent class */
-            map,/* Name of function in C++ (must match Python name) */
-            target/* Argument(s) */
         );
     }
 
@@ -278,26 +203,6 @@ public:
     using MultiLine::MultiLine;
 
     /* Trampoline (need one for each virtual function) */
-    virtual json serialize() const override {
-        PYBIND11_OVERRIDE(
-            json,/* Return type */
-            MultiLine,/* Parent class */
-            serialize,/* Name of function in C++ (must match Python name) */
-                      /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void deserialize(jsonref data) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            MultiLine,/* Parent class */
-            deserialize,/* Name of function in C++ (must match Python name) */
-            data/* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> transform() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
@@ -318,28 +223,18 @@ public:
     }
 };
 
-class PySegmentCloud : public SegmentCloud {
+class PySegments : public Segments {
 public:
     /* Inherit the constructors */
-    using SegmentCloud::SegmentCloud;
+    using Segments::Segments;
 
     /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE(
             const char *,/* Return type */
-            SegmentCloud,/* Parent class */
+            Segments,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Model>>,/* Return type */
-            SegmentCloud,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
         );
     }
 
@@ -347,19 +242,9 @@ public:
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
-            SegmentCloud,/* Parent class */
+            Segments,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void map(const shared_ptr<TriangularMesh> target) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            SegmentCloud,/* Parent class */
-            map,/* Name of function in C++ (must match Python name) */
-            target/* Argument(s) */
         );
     }
 
@@ -367,7 +252,7 @@ public:
     virtual size_t to_obj(const string & path, const size_t offset) const override {
         PYBIND11_OVERRIDE(
             size_t,/* Return type */
-            SegmentCloud,/* Parent class */
+            Segments,/* Parent class */
             to_obj,/* Name of function in C++ (must match Python name) */
             path, offset/* Argument(s) */
         );
@@ -377,7 +262,7 @@ public:
     virtual void add_attribute(const string & name, const uint32_t value) override {
         PYBIND11_OVERRIDE_PURE(
             void,/* Return type */
-            SegmentCloud,/* Parent class */
+            Segments,/* Parent class */
             add_attribute,/* Name of function in C++ (must match Python name) */
             name, value/* Argument(s) */
         );
@@ -389,25 +274,6 @@ public:
     /* Inherit the constructors */
     using MultiPolygon::MultiPolygon;
 
-    /* Trampoline (need one for each virtual function) */
-    virtual json serialize() const override {
-        PYBIND11_OVERRIDE(
-            json,/* Return type */
-            MultiPolygon,/* Parent class */
-            serialize,/* Name of function in C++ (must match Python name) */
-                      /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void deserialize(jsonref data) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            MultiPolygon,/* Parent class */
-            deserialize,/* Name of function in C++ (must match Python name) */
-            data/* Argument(s) */
-        );
-    }
 
     /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> transform() const override {
@@ -446,32 +312,12 @@ public:
     }
 
     /* Trampoline (need one for each virtual function) */
-    virtual vector<shared_ptr<Model>> slice_to_grid(const tfloat tile_size) const override {
-        PYBIND11_OVERRIDE(
-            vector<shared_ptr<Model>>,/* Return type */
-            TriangularMesh,/* Parent class */
-            slice_to_grid,/* Name of function in C++ (must match Python name) */
-            tile_size/* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
             TriangularMesh,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void map(const shared_ptr<TriangularMesh> target) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            TriangularMesh,/* Parent class */
-            map,/* Name of function in C++ (must match Python name) */
-            target/* Argument(s) */
         );
     }
 
@@ -496,52 +342,6 @@ public:
     }
 };
 
-class PyMultiTimePoint : public MultiTimePoint {
-public:
-    /* Inherit the constructors */
-    using MultiTimePoint::MultiTimePoint;
-
-    /* Trampoline (need one for each virtual function) */
-    virtual json serialize() const override {
-        PYBIND11_OVERRIDE(
-            json,/* Return type */
-            MultiTimePoint,/* Parent class */
-            serialize,/* Name of function in C++ (must match Python name) */
-                      /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual void deserialize(jsonref data) override {
-        PYBIND11_OVERRIDE(
-            void,/* Return type */
-            MultiTimePoint,/* Parent class */
-            deserialize,/* Name of function in C++ (must match Python name) */
-            data/* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual shared_ptr<Model> transform() const override {
-        PYBIND11_OVERRIDE(
-            shared_ptr<Model>,/* Return type */
-            MultiTimePoint,/* Parent class */
-            transform,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-
-    /* Trampoline (need one for each virtual function) */
-    virtual const char * type() const override {
-        PYBIND11_OVERRIDE(
-            const char *,/* Return type */
-            MultiTimePoint,/* Parent class */
-            type,/* Name of function in C++ (must match Python name) */
-            /* Argument(s) */
-        );
-    }
-};
-
 
 
 
@@ -550,10 +350,13 @@ PYBIND11_MODULE(geometry, m) {
         .def(py::init<>())
         .def_property_readonly("type", &BaseModel::type)
         .def_property_readonly("tags", &BaseModel::get_tags)
-        .def("transform", &BaseModel::transform)
-        .def("serialize", &BaseModel::serialize)
-        .def("add_tag", &BaseModel::add_tag)
-        .def("deserialize", &BaseModel::deserialize);
+        .def("add_tag", &BaseModel::add_tag);
+
+
+    py::class_<ModelLoader, std::shared_ptr<ModelLoader>, PyLoaderModel>(m, "ModelLoader")
+        .def(py::init<>())
+        .def_property_readonly("type", &ModelLoader::type)
+        .def("transform", &ModelLoader::transform);
 
 
     py::class_<Model, std::shared_ptr<Model>, BaseModel, PyModel>(m, "Model")
@@ -563,14 +366,9 @@ PYBIND11_MODULE(geometry, m) {
         .def_property_readonly("bounding_box", &Model::bounding_box)
         .def("shift", &Model::shift)
         .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&Model::add_attribute))
-        .def("slice_to_grid", &Model::slice_to_grid)
-        .def("join", &Model::join)
         .def("copy", &Model::copy)
         .def("to_obj", &Model::to_obj)
-        .def("map", &Model::map)
-        .def("transform", &Model::transform)
         .def("serialize", &Model::serialize)
-        .def("serialize_stream", &Model::serialize_stream)
         .def("deserialize", &Model::deserialize);
 
 
@@ -579,18 +377,14 @@ PYBIND11_MODULE(geometry, m) {
         .def_property_readonly("type", &MultiPoint::type)
         .def("push_p2", &MultiPoint::push_p2)
         .def("push_p3", &MultiPoint::push_p3)
-        .def("transform", &MultiPoint::transform)
-        .def("serialize", &MultiPoint::serialize)
-        .def("deserialize", &MultiPoint::deserialize);
+        .def("transform", &MultiPoint::transform);
 
 
     py::class_<PointCloud, std::shared_ptr<PointCloud>, Model, PyPointCloud>(m, "PointCloud")
         .def(py::init<>())
         .def_property_readonly("type", &PointCloud::type)
         .def("copy", &PointCloud::copy)
-        .def("to_obj", &PointCloud::to_obj)
-        .def("map", &PointCloud::map)
-        .def("slice_to_grid", &PointCloud::slice_to_grid);
+        .def("to_obj", &PointCloud::to_obj);
 
 
     py::class_<MultiLine, std::shared_ptr<MultiLine>, BaseModel, PyMultiLine>(m, "MultiLine")
@@ -598,19 +392,15 @@ PYBIND11_MODULE(geometry, m) {
         .def_property_readonly("type", &MultiLine::type)
         .def("push_l2", &MultiLine::push_l2)
         .def("push_l3", &MultiLine::push_l3)
-        .def("transform", &MultiLine::transform)
-        .def("serialize", &MultiLine::serialize)
-        .def("deserialize", &MultiLine::deserialize);
+        .def("transform", &MultiLine::transform);
 
 
-    py::class_<SegmentCloud, std::shared_ptr<SegmentCloud>, Model, PySegmentCloud>(m, "SegmentCloud")
+    py::class_<Segments, std::shared_ptr<Segments>, Model, PySegments>(m, "Segments")
         .def(py::init<>())
-        .def_property_readonly("type", &SegmentCloud::type)
-        .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&SegmentCloud::add_attribute))
-        .def("copy", &SegmentCloud::copy)
-        .def("to_obj", &SegmentCloud::to_obj)
-        .def("map", &SegmentCloud::map)
-        .def("slice_to_grid", &SegmentCloud::slice_to_grid);
+        .def_property_readonly("type", &Segments::type)
+        .def("add_attribute", py::overload_cast<const string &, const uint32_t>(&Segments::add_attribute))
+        .def("copy", &Segments::copy)
+        .def("to_obj", &Segments::to_obj);
 
 
     py::class_<MultiPolygon, std::shared_ptr<MultiPolygon>, BaseModel, PyMultiPolygon>(m, "MultiPolygon")
@@ -618,34 +408,15 @@ PYBIND11_MODULE(geometry, m) {
         .def_property_readonly("type", &MultiPolygon::type)
         .def("push_p2", &MultiPolygon::push_p2)
         .def("push_p3", &MultiPolygon::push_p3)
-        .def("transform", &MultiPolygon::transform)
-        .def("serialize", &MultiPolygon::serialize)
-        .def("deserialize", &MultiPolygon::deserialize);
+        .def("transform", &MultiPolygon::transform);
 
 
     py::class_<TriangularMesh, std::shared_ptr<TriangularMesh>, Model, PyTriangularMesh>(m, "TriangularMesh")
         .def(py::init<>())
         .def_property_readonly("type", &TriangularMesh::type)
         .def("copy", &TriangularMesh::copy)
-        .def("to_obj", &TriangularMesh::to_obj)
-        .def("map", &TriangularMesh::map)
-        .def("slice_to_rect", &TriangularMesh::slice_to_rect)
-        .def("slice_to_grid", &TriangularMesh::slice_to_grid);
-
-    py::class_<MultiTimePoint, std::shared_ptr<MultiTimePoint>, BaseModel, PyMultiTimePoint>(m, "MultiTimePoint")
-        .def(py::init<>())
-        .def_property_readonly("type", &MultiTimePoint::type)
-        .def_property_readonly("start_time", &MultiTimePoint::get_start_time)
-        .def_property_readonly("end_time", &MultiTimePoint::get_end_time)
-        .def_property_readonly("empty", &MultiTimePoint::empty)
-        .def("set_points_from_b64", &MultiTimePoint::set_points_from_b64)
-        .def("set_start_time", &MultiTimePoint::set_start_time)
-        .def("slice_to_timeline", &MultiTimePoint::slice_to_timeline)
-        .def("map", &MultiTimePoint::map)
-        .def("copy", &MultiTimePoint::copy)
-        .def("transform", &MultiTimePoint::transform)
-        .def("serialize", &MultiTimePoint::serialize)
-        .def("deserialize", &MultiTimePoint::deserialize);
+        .def("to_obj", &TriangularMesh::to_obj);
+        
 
     py::class_<LegoBuilder, std::shared_ptr<LegoBuilder>>(m, "LegoBuilder")
         .def(py::init<>())
@@ -653,24 +424,4 @@ PYBIND11_MODULE(geometry, m) {
         .def("build_heightmap", &LegoBuilder::build_heightmap)
         .def("legofy", &LegoBuilder::legofy)
         .def("lego_to_png", &LegoBuilder::lego_to_png);
-
-    py::class_<MultiTimePointMapper, std::shared_ptr<MultiTimePointMapper>>(m, "MultiTimePointMapper")
-        .def(py::init<const vector<shared_ptr<TriangularMesh>>>());
-
-    py::class_<MeshOIDMapper, std::shared_ptr<MeshOIDMapper>>(m, "MeshOIDMapper")
-        .def_property_readonly("mapping", &MeshOIDMapper::get_mapping)
-        .def_property_readonly("raw_mapping", &MeshOIDMapper::get_raw_mapping)
-        .def("map_oids", &MeshOIDMapper::map_oids)
-        .def(py::init<const vector<shared_ptr<TriangularMesh>>>());
-
-
-    py::class_<Interval, std::shared_ptr<Interval>>(m, "Interval")
-        .def(py::init<>())
-        .def(py::init<uint32_t, uint32_t>())
-        .def_property_readonly("start_time", &Interval::get_start_time)
-        .def("insert", &Interval::insert)
-        .def("can_contain", &Interval::can_contain)
-        .def("serialize", &Interval::serialize)
-        .def("serialize_stream", &Interval::serialize_stream)
-        .def("deserialize", &Interval::deserialize);
 }

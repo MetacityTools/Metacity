@@ -6,143 +6,72 @@ namespace mapbox
     {
 
         template <>
-        struct nth<0, K::Point_2>
+        struct nth<0, tvec3>
         {
-            inline static tfloat get(const K::Point_2 &t)
+            inline static tfloat get(const tvec3 &t)
             {
-                return t.x();
+                return t.x;
             };
         };
         template <>
-        struct nth<1, K::Point_2>
+        struct nth<1, tvec3>
         {
-            inline static tfloat get(const K::Point_2 &t)
+            inline static tfloat get(const tvec3 &t)
             {
-                return t.y();
+                return t.y;
             };
         };
 
     } // namespace util
 } // namespace mapbox
 
-void Triangulator::triangulate(const TPolygons &in_polygons, vector<tvec3> &out_vertices)
+void Triangulator::triangulate(const vector<vector<vector<tvec3>>> &in_polygon, vector<tvec3> &out_vertices)
 {
-    if (in_polygons.size() == 0)
+    if (in_polygon.size() == 0)
         return;
     
-    mesh.clear();
-    tmp_faces.clear();
-
-    for(const auto & polygon : in_polygons) {
-        if (!to_cgal_mesh(polygon))
-            continue;
-
+    for (const auto & polygon : in_polygon)
+    {
         projected.clear();
-        vertexrefs.clear();
+        out_vertices.clear();
+        
+        tvec3 normal = compute_polygon_with_holes_normal(polygon);
+        project_along_normal(polygon, normal);
 
-        compute_normal(tmp_faces.back());
-        if (normal == CGAL::NULL_VECTOR)
-            continue;
-
-        project_pair(polygon);
         std::vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
         for (const auto &i : indices)
-            out_vertices.emplace_back(vertexrefs[i]);
+            out_vertices.emplace_back(polygon[i]);
     }
 }
 
-void Triangulator::triangulate(const TCGALFlatPolygon &in_polygon, vector<tvec3> &out_vertices)
+tvec3 Triangulator::compute_polygon_with_holes_normal(const vector<vector<tvec3>> & in_polygon) const
 {
-    mesh.clear();
-    tmp_faces.clear();
-    projected.clear();
-    vertexrefs.clear();
-
-    if(!to_cgal_mesh(in_polygon))
-        return;
-
-    compute_normal(tmp_faces[0]);
-    if (normal == CGAL::NULL_VECTOR)
-        return;
-
-    project_pair(in_polygon);
-    std::vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
-    for (const auto &i : indices)
-        out_vertices.emplace_back(vertexrefs[i]);
-}
-
-bool Triangulator::to_cgal_mesh(const TPolygon &polygon)
-{
-    tmp_faces.clear();
-    Mesh::Face_index fi;
-    tmp_points.clear();
-
-    if (polygon.size() == 0)
-        return false;
-
-    if (polygon[0].size() < 3)
-        return false;
-
-    for (const auto &p : polygon[0])
-        tmp_points.push_back(mesh.add_vertex(K::Point_3(p.x, p.y, p.z)));
-    
-    fi = mesh.add_face(tmp_points);
-    if (fi != Mesh::null_face())
-        tmp_faces.push_back(fi);
-
-    return true;
-}
-
-bool Triangulator::to_cgal_mesh(const TCGALFlatPolygon &polygon)
-{
-    tmp_faces.clear();
-    tmp_points.clear();
-    Mesh::Face_index fi;
-
-    if (polygon.size() < 3)
-        return false;
-
-    for (const auto &p : polygon)
-        tmp_points.push_back(mesh.add_vertex(p));
-    fi = mesh.add_face(tmp_points);
-    if (fi != Mesh::null_face())
-        tmp_faces.push_back(fi);
-
-    return true;
-}
-
-void Triangulator::compute_normal(const Mesh::Face_index fi)
-{    
-    normal = CGAL::Polygon_mesh_processing::compute_face_normal(fi, mesh);
-}
-
-void Triangulator::project_pair(const TPolygon &polygon)
-{
-    const tvec3 &p = polygon[0][0];
-    const K::Point_3 point = K::Point_3(p.x, p.y, p.z);
-    CGAL::Plane_3<K> plane(point, normal);
-
-    for (const auto &ring : polygon)
+    tvec3 normal;
+    for (const auto & polygon : in_polygon)
     {
-        vector<K::Point_2> projected_ring;
-        for (const auto &p : ring)
+        tvec3 polygon_normal = tvec3(0, 0, 0);
+        for (size_t i = 0; i < polygon.size(); i++)
         {
-            projected_ring.push_back(plane.to_2d(K::Point_3(p.x, p.y, p.z))); //to_2D behaves sus
-            vertexrefs.emplace_back(p);
+            tvec3 v1 = polygon[i];
+            tvec3 v2 = polygon[(i + 1) % polygon.size()];
+            polygon_normal += cross(v1, v2);
         }
-        projected.emplace_back(move(projected_ring));
+        normal += polygon_normal;
     }
+    normal = normalize(normal);
+    return normal;
 }
 
-void Triangulator::project_pair(const TCGALFlatPolygon &polygon)
+void Triangulator::project_along_normal(const vector<vector<tvec3>> & in_polygon, const tvec3 & normal)
 {
-    const K::Point_3 &point = polygon[0];
-    CGAL::Plane_3<K> plane(point, normal);
-    vector<K::Point_2> projected_ring;
-    for (const auto &p : polygon)
+    for (const auto & polygon : in_polygon)
     {
-        projected_ring.push_back(plane.to_2d(p));
-        vertexrefs.emplace_back(to_vec(p));
+        vector<tvec3> projected_polygon;
+        for (const auto & v : polygon)
+        {
+            tvec3 projected_vertex = v - dot(v, normal) * normal;
+            projected_polygon.emplace_back(projected_vertex);
+        }
+        projected.emplace_back(move(projected_polygon));
     }
-    projected.emplace_back(move(projected_ring));
 }

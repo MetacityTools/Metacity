@@ -1,5 +1,5 @@
-#include "polygons.hpp"
 #include "bbox.hpp"
+#include "mesh.hpp"
 
 class LegoBuilder {
 public:

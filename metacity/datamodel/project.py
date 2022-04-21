@@ -1,5 +1,5 @@
 from metacity.filesystem import layer as fs
-from metacity.datamodel.layer import Layer, LayerOverlay
+from metacity.datamodel.layer import Layer
 
 class Project:
     def __init__(self, directory: str):
@@ -28,21 +28,7 @@ class Project:
         layer = Layer(layer_dir)
         return layer
 
-    def create_overlay(self, layer_name: str):
-        """
-        Creates a new overlay with the given name.
-
-        Args:
-            layer_name (str): The name of the layer.
-
-        Returns:
-            LayerOverlay: The created overlay.
-        """
-        layer_dir = fs.non_coliding_layer_dir(self.dir, layer_name)
-        layer = LayerOverlay(layer_dir)
-        return layer
-
-    def get_layer(self, layer_name: str, load_set=True, load_meta=True, load_model=True):
+    def get_layer(self, layer_name: str, load_set=True, load_meta=True, load_geometry=True):
         """
         Gets a layer by its name. If the layer does not exist, it is created. 
 
@@ -54,22 +40,8 @@ class Project:
             Layer: The layer.
         """
         layer_dir = fs.layer_dir(self.dir, layer_name)
-        layer = Layer(layer_dir, load_set=load_set, load_meta=load_meta, load_model=load_model)
+        layer = Layer(layer_dir, load_set=load_set, load_meta=load_meta, load_geometry=load_geometry)
         return layer
-
-    def get_overlay(self, overlay_name: str):
-        """
-        Gets a overlay by its name. If the overlay does not exist, it is created.
-
-        Args:
-            overlay_name (str): The name of the overlay.
-
-        Returns:
-            LayerOverlay: The overlay.
-        """
-        overlay_dir = fs.overlay_dir(self.dir, overlay_name)
-        overlay = LayerOverlay(overlay_dir)
-        return overlay
 
     def delete_layer(self, layer_name: str):
         """
@@ -114,10 +86,11 @@ class Project:
         """
         fs.base.delete_dir(self.dir)
 
+
     @property
     def layer_names(self):
         """
-        Gets the names of all layers.
+        Gets the names of all available project layers.
 
         Returns:
             list: The names of all layers.
@@ -134,50 +107,20 @@ class Project:
         """
         names = self.layer_names
         for name in names:
-            try:
-                yield self.get_layer(name)
-            except:
-                yield self.get_overlay(name)
+            self.get_layer(name)
 
-    @property
-    def layers_only(self):
+
+    def clayers(self, load_set=True, load_meta=True, load_geometry=True):
         """
-        Generator, yields all layers only, no overlays. 
+        Generator,  yields all layers, parametrizable:
 
-        Returns:
-            list: All layers.
-        """
-        names = self.layer_names
-        for name in names:
-            try:
-                yield self.get_layer(name)
-            except:
-                pass
-
-    @property
-    def overlays_only(self):
-        """
-        Generator, yields all overlays only, no layer. 
-
-        Returns:
-            list: All layers.
+        Args:
+            load_set (bool, optional): If the objects should be loaded. Defaults to True.
+            load_meta (bool, optional): If the meta data should be loaded. Defaults to True.
+            load_geometry (bool, optional): If the geometry should be loaded. Defaults to True.
         """
         names = self.layer_names
         for name in names:
-            try:
-                yield self.get_overlay(name)
-            except:
-                pass
+            self.get_layer(name, load_set=load_set, load_meta=load_meta, load_geometry=load_geometry)
 
-
-    def clayers(self, load_set=True, load_meta=True, load_model=True):
-        """
-        Generator, yields all layers without the object set loaded.
-        """
-        names = self.layer_names
-        for name in names:
-            try:
-                yield self.get_layer(name, load_set=load_set, load_meta=load_meta, load_model=load_model)
-            except:
-                yield self.get_overlay(name)
 

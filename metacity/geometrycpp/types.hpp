@@ -5,9 +5,9 @@
 #include <vector>
 #include <iostream>
 
-using tvec3 = glm::highp_f64vec3;
-using tvec2 = glm::highp_f64vec2;
-using tfloat = double;
+using tvec3 = glm::highp_f32vec3;
+using tvec2 = glm::highp_f32vec2;
+using tfloat = float;
 using json = nlohmann::json;
 
 using namespace std;

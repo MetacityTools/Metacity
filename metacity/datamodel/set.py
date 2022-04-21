@@ -2,7 +2,7 @@ from typing import Callable, Dict
 from metacity.datamodel.object import Object, desermodel
 from metacity.filesystem import layer as fs
 from metacity.geometry import (MultiPoint, MultiLine, MultiPolygon, BaseModel,
-                               SegmentCloud, PointCloud, TriangularMesh, MultiTimePoint)
+                               Segments, PointCloud, TriangularMesh, MultiTimePoint)
 from metacity.utils.persistable import Persistable
 
 
@@ -56,7 +56,7 @@ types: Dict[str, Callable[[], BaseModel]] = {
     MultiPoint().type: MultiPoint,
     PointCloud().type: PointCloud,
     MultiLine().type: MultiLine,
-    SegmentCloud().type: SegmentCloud,
+    Segments().type: Segments,
     MultiPolygon().type: MultiPolygon,
     TriangularMesh().type: TriangularMesh,
     MultiTimePoint().type: MultiTimePoint
@@ -73,30 +73,30 @@ def desermodel(model):
     return m
 
 
-class ModelSet(DataSet):
+class GeometrySet(DataSet):
     def __init__(self, layer_dir: str, offset: int, capacity: int):        
         super().__init__(fs.layer_models(layer_dir), offset, capacity)
 
     def serialize(self): 
-        model: BaseModel
+        geometry: BaseModel
         data = super().serialize()
         objects = []
         for object in self.data:
-            models = []
-            for model in object:
-                models.append(model.serialize())
-            objects.append(models)
-        data['models'] = objects
+            geometries = []
+            for geometry in object:
+                geometries.append(geometry.serialize())
+            objects.append(geometries)
+        data['geometry'] = objects
         return data
 
     def deserialize(self, data):
         super().deserialize(data)
         self.data = []
-        for object in data['models']:
-            models = []
-            for model in object:
-                models.append(desermodel(model))
-            self.data.append(models)
+        for object in data['geometry']:
+            geometries = []
+            for geometry in object:
+                geometries.append(desermodel(geometry))
+            self.data.append(geometries)
 
 
 class MetaSet(DataSet):
@@ -114,50 +114,48 @@ class MetaSet(DataSet):
 
 
 class ObjectSet:
-    def __init__(self, layer_dir: str, offset: int, capacity: int, load_meta=True, load_model=True):  
-        self.readonly = not (load_meta and load_model)
-        if not (load_meta or load_model):
-            raise Exception("Cannot instantiate ObjectSet without any models or meta")
+    def __init__(self, layer_dir: str, offset: int, capacity: int, load_meta=True, load_geometry=True):  
+        self.readonly = not (load_meta and load_geometry)
+        if not (load_meta or load_geometry):
+            raise Exception("Cannot instantiate ObjectSet without any geometry or meta")
 
         self.load_meta = load_meta
-        self.load_model = load_model
+        self.load_geometry = load_geometry
 
-        if load_model: 
-            self.models = ModelSet(layer_dir, offset, capacity)
+        if load_geometry: 
+            self.geometry = GeometrySet(layer_dir, offset, capacity)
         if load_meta:
             self.meta = MetaSet(layer_dir, offset, capacity)
 
     def can_contain(self, index: int):
-        if self.load_model:
-            return self.models.can_contain(index) 
+        if self.load_geometry:
+            return self.geometry.can_contain(index) 
         return self.meta.can_contain(index) 
 
     def add(self, object: Object):
         if not self.readonly:
-            self.models.add(object.models)
+            self.geometry.add(object.geometry)
             self.meta.add(object.meta)
         else:
             raise Exception("Cannot object to ObjectSet in readonly mode")
 
     def __getitem__(self, index: int):
-        if self.load_model: 
-            if not self.models.contains(index):
+        if self.load_geometry: 
+            if not self.geometry.contains(index):
                 raise IndexError(f"No object at index {index}")
         elif self.load_meta:
             if not self.meta.contains(index):
                 raise IndexError(f"No object at index {index}")
-        else: 
-            raise Exception("Cannot instantiate ObjectSet without any models or meta")
             
         obj = Object()
-        if self.load_model: 
-            obj.models = self.models[index]
+        if self.load_geometry: 
+            obj.geometry = self.geometry[index]
         if self.load_meta:
             obj.meta = self.meta[index] 
         return obj
 
     def export(self):
         if not self.readonly:
-            self.models.export()
+            self.geometry.export()
             self.meta.export()
 

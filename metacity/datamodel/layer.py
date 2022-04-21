@@ -5,7 +5,7 @@ from metacity.utils.persistable import Persistable
 
 
 class Layer(Persistable):
-    def __init__(self, layer_dir: str, group_by = 100000, load_set=True, load_meta=True, load_model=True):
+    def __init__(self, layer_dir: str, group_by = 100000, load_set=True, load_meta=True, load_geometry=True):
         super().__init__(fs.layer_config(layer_dir))
 
         self.dir = layer_dir
@@ -15,7 +15,7 @@ class Layer(Persistable):
 
         fs.create_layer(self.dir)
         self.load_meta = load_meta
-        self.load_model = load_model
+        self.load_geometry = load_geometry
 
         try:
             self.load()
@@ -23,7 +23,7 @@ class Layer(Persistable):
             self.export()
 
         if load_set:
-            self.set = ObjectSet(self.dir, 0, self.group_by, load_meta=load_meta, load_model=load_model)
+            self.set = ObjectSet(self.dir, 0, self.group_by, load_meta=load_meta, load_geometry=load_geometry)
         else:
             self.set = None
     
@@ -92,65 +92,10 @@ class Layer(Persistable):
         self.disabled = data['disabled']
 
     def clear(self, keep_originals=True):
-        if not self.load_model or not self.load_meta:
+        if not self.load_geometry or not self.load_meta:
             raise Exception("In order to clear layer properly, loading models and metadata must be enabled.")
         
         fs.clear_layer(self.dir, keep_originals)
         self.size = 0
         self.set = ObjectSet(self.dir, 0, self.group_by)
-
-
-class LayerOverlay(Persistable):
-    def __init__(self, overlay_dir: str):
-        super().__init__(fs.layer_config(overlay_dir))
-        self.source_layer = None
-        self.target_layer = None
-        self.dir = overlay_dir
-        self.disabled = False
-        self.size_source = 0
-        self.size_target = 0
-        fs.create_overlay(self.dir)
-
-        try:
-            self.load()
-        except FileNotFoundError:
-            self.export()
-
-    @property
-    def type(self):
-        return "overlay"
-
-    @property
-    def name(self):
-        return fs.layer_name(self.dir)
-
-    @property
-    def size(self):
-        return [self.size_source, self.size_target]
-
-    def persist(self):
-        self.export()
-
-    def serialize(self):
-        return {
-            'type': 'overlay',
-            'disabled': self.disabled,
-            'source': self.source_layer,
-            'target': self.target_layer,
-            'size_source': self.size_source,
-            'size_target': self.size_target
-        }
-
-    def deserialize(self, data):
-        self.source_layer = data['source']
-        self.target_layer = data['target']
-        self.disabled = data['disabled']
-        self.size_source = data['size_source']
-        self.size_target = data['size_target']
-
-
-    def clear(self, keep_originals=True):
-        fs.clear_overlay(self.dir, keep_originals)
-        self.size_source = 0
-        self.size_target = 0
 
