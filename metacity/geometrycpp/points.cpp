@@ -1,8 +1,9 @@
 #include <stdexcept>
 #include <unordered_map>
+#include <fstream>
 #include "points.hpp"
 
-static K::Vector_3 z_axis(0, 0, 1.0);
+using namespace std;
 
 //===============================================================================
 

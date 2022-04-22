@@ -1,7 +1,7 @@
 #pragma once
 #include "types.hpp"
 #include "bbox.hpp"
-#include "polygons.hpp"
+#include "mesh.hpp"
 
 enum BVHNodeType
 {

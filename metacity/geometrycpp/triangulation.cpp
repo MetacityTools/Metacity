@@ -6,17 +6,17 @@ namespace mapbox
     {
 
         template <>
-        struct nth<0, tvec3>
+        struct nth<0, tvec2>
         {
-            inline static tfloat get(const tvec3 &t)
+            inline static tfloat get(const tvec2 &t)
             {
                 return t.x;
             };
         };
         template <>
-        struct nth<1, tvec3>
+        struct nth<1, tvec2>
         {
-            inline static tfloat get(const tvec3 &t)
+            inline static tfloat get(const tvec2 &t)
             {
                 return t.y;
             };
@@ -25,22 +25,38 @@ namespace mapbox
     } // namespace util
 } // namespace mapbox
 
+
+void Triangulator::to_output(const vector<vector<tvec3>> & polygon, vector<uint32_t> & indices, vector<tvec3> &out_vertices) const
+{
+     for (auto &i : indices)
+    {
+        for (const auto &ring : polygon)
+        {
+            if (i < ring.size())
+            {
+                out_vertices.push_back(ring[i]);
+                break;
+            }
+            i -= ring.size();
+        }
+    }
+}
+
 void Triangulator::triangulate(const vector<vector<vector<tvec3>>> &in_polygon, vector<tvec3> &out_vertices)
 {
     if (in_polygon.size() == 0)
         return;
     
+    out_vertices.clear();
+
     for (const auto & polygon : in_polygon)
     {
         projected.clear();
-        out_vertices.clear();
         
         tvec3 normal = compute_polygon_with_holes_normal(polygon);
         project_along_normal(polygon, normal);
-
-        std::vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
-        for (const auto &i : indices)
-            out_vertices.emplace_back(polygon[i]);
+        vector<uint32_t> indices = mapbox::earcut<uint32_t>(projected);
+        to_output(polygon, indices, out_vertices);
     }
 }
 
@@ -66,7 +82,7 @@ void Triangulator::project_along_normal(const vector<vector<tvec3>> & in_polygon
 {
     for (const auto & polygon : in_polygon)
     {
-        vector<tvec3> projected_polygon;
+        vector<tvec2> projected_polygon;
         for (const auto & v : polygon)
         {
             tvec3 projected_vertex = v - dot(v, normal) * normal;
