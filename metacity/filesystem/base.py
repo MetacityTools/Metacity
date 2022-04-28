@@ -5,31 +5,6 @@ import sys
 import ntpath
 import errno
 
-METADATA = "metadata"
-REGROUPED = "regrouped"
-MODELS = "models"
-GRID = "grid"
-ORIGINAL = "original"
-GRID_TILES = "tiles"
-GRID_STREAM = "stream"
-GRID_CACHE = "cache"
-STYLES = "styles"
-TIMELINE = "timeline"
-TIMELINE_INTERVALS = "intervals"
-TIMELINE_STREAM = "stream"
-TIMELINE_CACHE = "cache"
-
-
-RESERVED = [STYLES]
-
-BASE_DIRS = [METADATA, MODELS, ORIGINAL, 
-             os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE), os.path.join(GRID, GRID_STREAM),
-             TIMELINE, os.path.join(TIMELINE, TIMELINE_STREAM), os.path.join(TIMELINE, TIMELINE_INTERVALS), os.path.join(TIMELINE, TIMELINE_CACHE)]
-
-OVERLAY_DIRS = [os.path.join(GRID, GRID_TILES), os.path.join(GRID, GRID_CACHE), os.path.join(GRID, GRID_STREAM),
-                TIMELINE, os.path.join(TIMELINE, TIMELINE_STREAM), os.path.join(TIMELINE, TIMELINE_INTERVALS), os.path.join(TIMELINE, TIMELINE_CACHE)]
-
-
 # basics
 def filename(file_path):
     return ntpath.basename(file_path)
@@ -55,10 +30,6 @@ def rename(old, new):
         os.rename(old, new)
         return True
     return False
-
-
-def project_layout(project_dir):
-    return os.path.join(project_dir, 'layout.json')
 
 
 def readable(file):
@@ -95,16 +66,6 @@ def read_json(filename):
     return orjson.loads(sdata)
 
 
-def write_mss(filename, data):
-    with open(filename, 'w') as file:
-        file.write(data)
-
-
-def read_mss(filename):
-    with open(filename, 'r') as file:
-        return file.read()
-
-
 def dir_from_path(path):
     return os.path.dirname(path)
 
@@ -117,8 +78,6 @@ def change_suffix(path, suffix):
 def get_suffix(path):
     return os.path.splitext(path)[1][1:]
 
-def valid_name(name):
-    return not (name in RESERVED)
 
 # https://stackoverflow.com/questions/9532499/check-whether-a-path-is-valid-in-python-without-creating-a-file-at-the-paths-ta
 # Sadly, Python fails to provide the following magic number for us.

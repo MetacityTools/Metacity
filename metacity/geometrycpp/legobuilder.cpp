@@ -80,7 +80,7 @@ void clamp(tfloat *height, unsigned int x, unsigned int y, tfloat low, tfloat hi
 
 LegoBuilder::LegoBuilder() {}
 
-void LegoBuilder::insert_model(const shared_ptr<TriangularMesh> model)
+void LegoBuilder::insert_model(const shared_ptr<Mesh> model)
 {
     vertices.insert(vertices.end(), model->vertices.begin(), model->vertices.end());
 }

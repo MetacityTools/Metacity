@@ -2,12 +2,12 @@
 #include "models.hpp"
 
 
-class PointCloud : public Model
+class Points : public Model
 {
 public:
-    PointCloud();
-    PointCloud(const vector<tvec3> & v);
-    PointCloud(const vector<tvec3> && v);
+    Points();
+    Points(const vector<tvec3> & v);
+    Points(const vector<tvec3> && v);
 
     virtual shared_ptr<Model> copy() const override;
     virtual const char * type() const override;

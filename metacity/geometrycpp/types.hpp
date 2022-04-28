@@ -13,8 +13,10 @@ using json = nlohmann::json;
 using namespace std;
 
 ostream &operator<<(ostream &os, const tvec3 &vec);
+ostream &operator<<(ostream &os, const tvec2 &vec);
 ostream &operator<<(ostream &os, const vector<tvec3> &vec);
-
+ostream &operator<<(ostream &os, const vector<tvec2> &vec);
+ostream &operator<<(ostream &os, const vector<uint32_t> &vec);
 
 // fully defined
 void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coords);
@@ -28,11 +30,6 @@ string vec_to_string(const vector<tvec3> &vec);
 string vec_to_f_to_string(const vector<tvec3> &vec);
 vector<tvec3> string_to_vec(const string &s);
 vector<tvec3> string_to_vec2_to_vec3(const string &s);
-
-struct pair_hash
-{
-    size_t operator()(const pair<int, int> &p) const;
-};
 
 //===============================================================================
 // templates

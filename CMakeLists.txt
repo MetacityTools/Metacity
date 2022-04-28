@@ -5,7 +5,6 @@ set (CMAKE_CXX_STANDARD 17)
 add_subdirectory(pybind11)
 
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
-set(CMAKE_VERBOSE_MAKEFILE ON)
 
 include_directories(metacity/geometrycpp)
 link_directories(metacity/geometrycpp)
@@ -17,8 +16,8 @@ add_compile_options(-Wall -pedantic -g) #-fsanitize=address -fno-omit-frame-poin
 pybind11_add_module(${PROJECT_NAME} metacity/geometrycpp/geometry.cpp 
                                     metacity/geometrycpp/models.cpp 
                                     metacity/geometrycpp/models.hpp 
-                                    metacity/geometrycpp/modelloaders.cpp 
-                                    metacity/geometrycpp/modelloaders.hpp 
+                                    metacity/geometrycpp/loaders.cpp 
+                                    metacity/geometrycpp/loaders.hpp 
                                     metacity/geometrycpp/points.cpp
                                     metacity/geometrycpp/points.hpp
                                     metacity/geometrycpp/segments.cpp

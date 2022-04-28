@@ -1,28 +1,27 @@
 #include <stdexcept>
-#include <unordered_map>
 #include <fstream>
 #include "mesh.hpp"
 #include "triangulation.hpp"
 
 //===============================================================================
 
-TriangularMesh::TriangularMesh() : Model() {}
-TriangularMesh::TriangularMesh(const vector<tvec3> &v) : Model(v) {}
-TriangularMesh::TriangularMesh(const vector<tvec3> &&v) : Model(move(v)) {}
+Mesh::Mesh() : Model() {}
+Mesh::Mesh(const vector<tvec3> &v) : Model(v) {}
+Mesh::Mesh(const vector<tvec3> &&v) : Model(move(v)) {}
 
-shared_ptr<Model> TriangularMesh::copy() const
+shared_ptr<Model> Mesh::copy() const
 {
-    auto cp = make_shared<TriangularMesh>();
+    auto cp = make_shared<Mesh>();
     copy_to(cp);
     return cp;
 }
 
-const char *TriangularMesh::type() const
+const char *Mesh::type() const
 {
     return "simplepolygon";
 }
 
-size_t TriangularMesh::to_obj(const string & path, const size_t offset) const 
+size_t Mesh::to_obj(const string & path, const size_t offset) const 
 {
     ofstream objfile(path, std::ios_base::app);
     objfile << "o Polygon" << offset << endl; 
@@ -43,12 +42,12 @@ inline tvec3 tcentroid(const tvec3 triangle[3])
     return c;
 }
 
-const tvec3 * TriangularMesh::triangle(const size_t index) const
+const tvec3 * Mesh::triangle(const size_t index) const
 {
     return &(vertices[index * 3]);
 }
 
-const shared_ptr<Attribute> TriangularMesh::attribute(const string & name)
+const shared_ptr<Attribute> Mesh::attribute(const string & name)
 {
     const auto it = attrib.find(name);
     if (it == attrib.end())

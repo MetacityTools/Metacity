@@ -2,7 +2,7 @@ from metacity.filesystem.base import read_json
 from typing import List, Union
 from metacity.datamodel.object import Object
 from abc import ABC, abstractmethod
-import metacity.geometry as p
+import metacity.geometry as mg
 
 
 def flatten(data):
@@ -22,7 +22,7 @@ class GJGeometryObject(ABC):
             self.coordinates = data['coordinates']
 
     @abstractmethod
-    def to_models(self):
+    def to_geometry(self):
         pass
 
     @property
@@ -44,26 +44,26 @@ class GJPoint(GJGeometryObject):
     def parse(self, data):
         self.set_coordinates(data)
 
-    def to_models(self):
-        model = p.MultiPoint()
+    def to_geometry(self):
+        geometry = mg.MultiPoint()
         if self.dim == 2:
-            model.push_p2(self.coordinates)
+            geometry.push_p2(self.coordinates)
         elif self.dim == 3:
-            model.push_p3(self.coordinates)
-        return [model]
+            geometry.push_p3(self.coordinates)
+        return [geometry.transform()]
 
 
 class GJMultiPoint(GJPoint):
     def __init__(self):
         super().__init__()
 
-    def to_models(self):
-        model = p.MultiPoint()
+    def to_geometry(self):
+        geometry = mg.MultiPoint()
         if self.dim == 2:
-            model.push_p2(flatten(self.coordinates))
+            geometry.push_p2(flatten(self.coordinates))
         elif self.dim == 3:
-            model.push_p3(flatten(self.coordinates))
-        return [model]
+            geometry.push_p3(flatten(self.coordinates))
+        return [geometry.transform()]
 
 
 class GJLine(GJGeometryObject):
@@ -73,28 +73,28 @@ class GJLine(GJGeometryObject):
     def parse(self, data):
         self.set_coordinates(data)
 
-    def to_models(self):
-        model = p.MultiLine()
+    def to_geometry(self):
+        geometry = mg.MultiLine()
         if self.dim == 2:
-            model.push_l2(flatten(self.coordinates))
+            geometry.push_l2(flatten(self.coordinates))
         elif self.dim == 3:
-            model.push_l3(flatten(self.coordinates))
-        return [model]
+            geometry.push_l3(flatten(self.coordinates))
+        return [geometry.transform()]
 
 
 class GJMultiLine(GJLine):
     def __init__(self):
         super().__init__()
 
-    def to_models(self):
-        model = p.MultiLine()
+    def to_geometry(self):
+        geometry = mg.MultiLine()
         dim = self.dim
         for line in self.coordinates:
             if dim == 2:
-                model.push_l2(flatten(line))
+                geometry.push_l2(flatten(line))
             elif dim == 3:
-                model.push_l3(flatten(line))
-        return [model]
+                geometry.push_l3(flatten(line))
+        return [geometry.transform()]
 
 
 class GJPolygon(GJGeometryObject):
@@ -104,29 +104,29 @@ class GJPolygon(GJGeometryObject):
     def parse(self, data):
         self.set_coordinates(data)
 
-    def to_models(self):
-        model = p.MultiPolygon()
+    def to_geometry(self):
+        geometry = mg.MultiPolygon()
         dim = self.dim
         if dim == 2:
-            model.push_p2(flatten_polygon(self.coordinates))
+            geometry.push_p2(flatten_polygon(self.coordinates))
         elif dim == 3:
-            model.push_p3(flatten_polygon(self.coordinates))
-        return [model]
+            geometry.push_p3(flatten_polygon(self.coordinates))
+        return [geometry.transform()]
 
 
 class GJMultiPolygon(GJPolygon):
     def __init__(self):
         super().__init__()
 
-    def to_models(self):
-        model = p.MultiPolygon()
+    def to_geometry(self):
+        geometry = mg.MultiPolygon()
         dim = self.dim
         for polygon in self.coordinates:
             if dim == 2:
-                model.push_p2(flatten_polygon(polygon))
+                geometry.push_p2(flatten_polygon(polygon))
             elif dim == 3:
-                model.push_p3(flatten_polygon(polygon))
-        return [model]
+                geometry.push_p3(flatten_polygon(polygon))
+        return [geometry.transform()]
 
 
 class GJGeometryCollection(GJGeometryObject):
@@ -134,8 +134,8 @@ class GJGeometryCollection(GJGeometryObject):
         super().__init__()
         self.geometries: List[GJGeometryObject] = []
 
-    def to_models(self):
-        return [model for geometry in self.geometries for model in geometry.to_models()]
+    def to_geometry(self):
+        return [g for geometry in self.geometries for g in geometry.to_geometry()]
 
 
 class GJFeature:
@@ -146,7 +146,7 @@ class GJFeature:
 
     def to_object(self):
         o = Object()
-        o.models = self.geometry.to_models()
+        o.geometry = self.geometry.to_geometry()
         o.meta = self.meta
         return o
 
@@ -162,39 +162,39 @@ class GJFeatureCollection:
 
 
 def parse_point(data):
-    model = GJPoint()
-    model.parse(data)
-    return model
+    geometry = GJPoint()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_multipoint(data):
-    model = GJMultiPoint()
-    model.parse(data)
-    return model
+    geometry = GJMultiPoint()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_line(data):
-    model = GJLine()
-    model.parse(data)
-    return model
+    geometry = GJLine()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_multiline(data):
-    model = GJMultiLine()
-    model.parse(data)
-    return model
+    geometry = GJMultiLine()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_polygon(data):
-    model = GJPolygon()
-    model.parse(data)
-    return model
+    geometry = GJPolygon()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_multipolygon(data):
-    model = GJMultiPolygon()
-    model.parse(data)
-    return model
+    geometry = GJMultiPolygon()
+    geometry.parse(data)
+    return geometry
 
 
 def parse_geometry_collection(data):

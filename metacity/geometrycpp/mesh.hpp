@@ -8,12 +8,12 @@ using namespace std;
 class RTree;
 class LegoBuilder;
 
-class TriangularMesh : public Model
+class Mesh : public Model
 {
 public:
-    TriangularMesh();
-    TriangularMesh(const vector<tvec3> &v);
-    TriangularMesh(const vector<tvec3> &&v);
+    Mesh();
+    Mesh(const vector<tvec3> &v);
+    Mesh(const vector<tvec3> &&v);
 
     virtual shared_ptr<Model> copy() const override;
     virtual const char *type() const override;

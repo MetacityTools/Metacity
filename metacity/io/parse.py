@@ -2,7 +2,6 @@ from metacity.filesystem import base as fs
 #from metacity.io.cityjson.parser import parse as parse_cj
 from metacity.io.geojson.parser import parse as parse_gj
 from metacity.io.shapefile.parser import parse as parse_shp
-from metacity.io.sim.parser import parse as parse_sim
 
 
 def parse_json(input_file: str):
@@ -24,11 +23,6 @@ def parse_shapefile(input_file: str):
     except Exception as e:
         raise Exception(f"Could not parse {input_file}: \nSHP parser:{e}")
 
-def parse_simfile(input_file: str):
-    try:
-        return parse_sim(input_file)
-    except Exception as e:
-        raise Exception(f"Could not parse {input_file}: \nSIM parser:{e}") 
 
 def parse(input_file: str):
     suffix = fs.get_suffix(input_file)
@@ -36,6 +30,4 @@ def parse(input_file: str):
         return parse_json(input_file)
     elif suffix == 'shp':
         return parse_shapefile(input_file)
-    elif suffix == 'sim':
-        return parse_simfile(input_file)
     return []

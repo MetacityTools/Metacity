@@ -4,7 +4,7 @@
 #include "json/pybind11_json.hpp"
 #include <filesystem>
 #include "models.hpp"
-#include "modelloaders.hpp"
+#include "loaders.hpp"
 #include "points.hpp"
 #include "segments.hpp"
 #include "mesh.hpp"
@@ -149,16 +149,16 @@ public:
     }
 };
 
-class PyPointCloud : public PointCloud {
+class PyPoints : public Points {
 public:
     /* Inherit the constructors */
-    using PointCloud::PointCloud;
+    using Points::Points;
 
     /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE(
             const char *,/* Return type */
-            PointCloud,/* Parent class */
+            Points,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
         );
@@ -168,7 +168,7 @@ public:
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
-            PointCloud,/* Parent class */
+            Points,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
         );
@@ -178,7 +178,7 @@ public:
     virtual size_t to_obj(const string & path, const size_t offset) const override {
         PYBIND11_OVERRIDE(
             size_t,/* Return type */
-            PointCloud,/* Parent class */
+            Points,/* Parent class */
             to_obj,/* Name of function in C++ (must match Python name) */
             path, offset/* Argument(s) */
         );
@@ -188,7 +188,7 @@ public:
     virtual void add_attribute(const string & name, const uint32_t value) override {
         PYBIND11_OVERRIDE_PURE(
             void,/* Return type */
-            PointCloud,/* Parent class */
+            Points,/* Parent class */
             add_attribute,/* Name of function in C++ (must match Python name) */
             name, value/* Argument(s) */
         );
@@ -296,16 +296,16 @@ public:
     }
 };
 
-class PyTriangularMesh : public TriangularMesh {
+class PyMesh : public Mesh {
 public:
     /* Inherit the constructors */
-    using TriangularMesh::TriangularMesh;
+    using Mesh::Mesh;
 
     /* Trampoline (need one for each virtual function) */
     virtual const char * type() const override {
         PYBIND11_OVERRIDE(
             const char *,/* Return type */
-            TriangularMesh,/* Parent class */
+            Mesh,/* Parent class */
             type,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
         );
@@ -315,7 +315,7 @@ public:
     virtual shared_ptr<Model> copy() const override {
         PYBIND11_OVERRIDE(
             shared_ptr<Model>,/* Return type */
-            TriangularMesh,/* Parent class */
+            Mesh,/* Parent class */
             copy,/* Name of function in C++ (must match Python name) */
             /* Argument(s) */
         );
@@ -325,7 +325,7 @@ public:
     virtual size_t to_obj(const string & path, const size_t offset) const override {
         PYBIND11_OVERRIDE(
             size_t,/* Return type */
-            TriangularMesh,/* Parent class */
+            Mesh,/* Parent class */
             to_obj,/* Name of function in C++ (must match Python name) */
             path, offset/* Argument(s) */
         );
@@ -335,7 +335,7 @@ public:
     virtual void add_attribute(const string & name, const uint32_t value) override {
         PYBIND11_OVERRIDE_PURE(
             void,/* Return type */
-            TriangularMesh,/* Parent class */
+            Mesh,/* Parent class */
             add_attribute,/* Name of function in C++ (must match Python name) */
             name, value/* Argument(s) */
         );
@@ -359,6 +359,30 @@ PYBIND11_MODULE(geometry, m) {
         .def("transform", &ModelLoader::transform);
 
 
+    py::class_<MultiPoint, std::shared_ptr<MultiPoint>, BaseModel, PyMultiPoint>(m, "MultiPoint")
+        .def(py::init<>())
+        .def_property_readonly("type", &MultiPoint::type)
+        .def("push_p2", &MultiPoint::push_p2)
+        .def("push_p3", &MultiPoint::push_p3)
+        .def("transform", &MultiPoint::transform);
+
+
+    py::class_<MultiLine, std::shared_ptr<MultiLine>, BaseModel, PyMultiLine>(m, "MultiLine")
+        .def(py::init<>())
+        .def_property_readonly("type", &MultiLine::type)
+        .def("push_l2", &MultiLine::push_l2)
+        .def("push_l3", &MultiLine::push_l3)
+        .def("transform", &MultiLine::transform);
+
+
+    py::class_<MultiPolygon, std::shared_ptr<MultiPolygon>, BaseModel, PyMultiPolygon>(m, "MultiPolygon")
+        .def(py::init<>())
+        .def_property_readonly("type", &MultiPolygon::type)
+        .def("push_p2", &MultiPolygon::push_p2)
+        .def("push_p3", &MultiPolygon::push_p3)
+        .def("transform", &MultiPolygon::transform);
+
+
     py::class_<Model, std::shared_ptr<Model>, BaseModel, PyModel>(m, "Model")
         .def(py::init<>())
         .def_property_readonly("type", &Model::type)
@@ -372,27 +396,11 @@ PYBIND11_MODULE(geometry, m) {
         .def("deserialize", &Model::deserialize);
 
 
-    py::class_<MultiPoint, std::shared_ptr<MultiPoint>, BaseModel, PyMultiPoint>(m, "MultiPoint")
+    py::class_<Points, std::shared_ptr<Points>, Model, PyPoints>(m, "Points")
         .def(py::init<>())
-        .def_property_readonly("type", &MultiPoint::type)
-        .def("push_p2", &MultiPoint::push_p2)
-        .def("push_p3", &MultiPoint::push_p3)
-        .def("transform", &MultiPoint::transform);
-
-
-    py::class_<PointCloud, std::shared_ptr<PointCloud>, Model, PyPointCloud>(m, "PointCloud")
-        .def(py::init<>())
-        .def_property_readonly("type", &PointCloud::type)
-        .def("copy", &PointCloud::copy)
-        .def("to_obj", &PointCloud::to_obj);
-
-
-    py::class_<MultiLine, std::shared_ptr<MultiLine>, BaseModel, PyMultiLine>(m, "MultiLine")
-        .def(py::init<>())
-        .def_property_readonly("type", &MultiLine::type)
-        .def("push_l2", &MultiLine::push_l2)
-        .def("push_l3", &MultiLine::push_l3)
-        .def("transform", &MultiLine::transform);
+        .def_property_readonly("type", &Points::type)
+        .def("copy", &Points::copy)
+        .def("to_obj", &Points::to_obj);
 
 
     py::class_<Segments, std::shared_ptr<Segments>, Model, PySegments>(m, "Segments")
@@ -403,19 +411,11 @@ PYBIND11_MODULE(geometry, m) {
         .def("to_obj", &Segments::to_obj);
 
 
-    py::class_<MultiPolygon, std::shared_ptr<MultiPolygon>, BaseModel, PyMultiPolygon>(m, "MultiPolygon")
+    py::class_<Mesh, std::shared_ptr<Mesh>, Model, PyMesh>(m, "Mesh")
         .def(py::init<>())
-        .def_property_readonly("type", &MultiPolygon::type)
-        .def("push_p2", &MultiPolygon::push_p2)
-        .def("push_p3", &MultiPolygon::push_p3)
-        .def("transform", &MultiPolygon::transform);
-
-
-    py::class_<TriangularMesh, std::shared_ptr<TriangularMesh>, Model, PyTriangularMesh>(m, "TriangularMesh")
-        .def(py::init<>())
-        .def_property_readonly("type", &TriangularMesh::type)
-        .def("copy", &TriangularMesh::copy)
-        .def("to_obj", &TriangularMesh::to_obj);
+        .def_property_readonly("type", &Mesh::type)
+        .def("copy", &Mesh::copy)
+        .def("to_obj", &Mesh::to_obj);
         
 
     py::class_<LegoBuilder, std::shared_ptr<LegoBuilder>>(m, "LegoBuilder")
