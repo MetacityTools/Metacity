@@ -42,6 +42,15 @@
                         <li>
                                 <a class="function" href="#Layer.add_objects">add_objects</a>
                         </li>
+                        <li>
+                                <a class="function" href="#Layer.serialize">serialize</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#Layer.deserialize">deserialize</a>
+                        </li>
+                        <li>
+                                <a class="variable" href="#Layer.objects">objects</a>
+                        </li>
                 </ul>
 
             </li>
@@ -65,36 +74,76 @@
                         <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span id="L-0"><a href="#L-0"><span class="linenos"> 0</span></a><span class="kn">from</span> <span class="nn">metacity.datamodel.object</span> <span class="kn">import</span> <span class="n">Object</span>
-</span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
-</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="sd">        </span>
-</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">        Args:</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="sd">            name (str): The name of the layer.</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="sd">        Add an object to the layer.</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="sd">        </span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="sd">        Args:</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">            obj (Object): The object to add.</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a><span class="sd">        Add objects to the layer. </span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a><span class="sd">        Args:</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
+</span><span id="L-1"><a href="#L-1"><span class="linenos"> 1</span></a><span class="kn">from</span> <span class="nn">metacity.datamodel.grid</span> <span class="kn">import</span> <span class="n">Grid</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>
+</span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+</span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">        </span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="sd">        Args:</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="sd">            name (str): The name of the layer.</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="sd">            tile_xdim (float): The x dimension of the tiles. Default is 1000.0.</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="sd">            tile_ydim (float): The y dimension of the tiles. Default is 1000.0.</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">tile_xdim</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">)</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a>    
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="sd">        Add an object to the layer.</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="sd">        </span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="sd">        Args:</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a><span class="sd">            obj (Object): The object to add.</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a><span class="sd">        Add objects to the layer. </span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a><span class="sd">        Args:</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        Serialize the layer.</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        Returns:</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>        <span class="p">}</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        Deserialize the layer.</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a><span class="sd">        Args:</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>        <span class="k">return</span> <span class="n">layer</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="nd">@property</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">        Generator, yields objects in the layer.</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a><span class="sd">        Yields:</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a><span class="sd">            Object: The objects in the layer.</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>            <span class="k">yield</span> <span class="n">obj</span>
 </span></pre></div>
 
         </details>
@@ -111,34 +160,73 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer-4"><a href="#Layer-4"><span class="linenos"> 4</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
-</span><span id="Layer-5"><a href="#Layer-5"><span class="linenos"> 5</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-</span><span id="Layer-6"><a href="#Layer-6"><span class="linenos"> 6</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-7"><a href="#Layer-7"><span class="linenos"> 7</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
-</span><span id="Layer-8"><a href="#Layer-8"><span class="linenos"> 8</span></a><span class="sd">        </span>
-</span><span id="Layer-9"><a href="#Layer-9"><span class="linenos"> 9</span></a><span class="sd">        Args:</span>
-</span><span id="Layer-10"><a href="#Layer-10"><span class="linenos">10</span></a><span class="sd">            name (str): The name of the layer.</span>
-</span><span id="Layer-11"><a href="#Layer-11"><span class="linenos">11</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-12"><a href="#Layer-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-</span><span id="Layer-13"><a href="#Layer-13"><span class="linenos">13</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="Layer-14"><a href="#Layer-14"><span class="linenos">14</span></a>    
-</span><span id="Layer-15"><a href="#Layer-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
-</span><span id="Layer-16"><a href="#Layer-16"><span class="linenos">16</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-17"><a href="#Layer-17"><span class="linenos">17</span></a><span class="sd">        Add an object to the layer.</span>
-</span><span id="Layer-18"><a href="#Layer-18"><span class="linenos">18</span></a><span class="sd">        </span>
-</span><span id="Layer-19"><a href="#Layer-19"><span class="linenos">19</span></a><span class="sd">        Args:</span>
-</span><span id="Layer-20"><a href="#Layer-20"><span class="linenos">20</span></a><span class="sd">            obj (Object): The object to add.</span>
-</span><span id="Layer-21"><a href="#Layer-21"><span class="linenos">21</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-22"><a href="#Layer-22"><span class="linenos">22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-</span><span id="Layer-23"><a href="#Layer-23"><span class="linenos">23</span></a>
-</span><span id="Layer-24"><a href="#Layer-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
-</span><span id="Layer-25"><a href="#Layer-25"><span class="linenos">25</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-26"><a href="#Layer-26"><span class="linenos">26</span></a><span class="sd">        Add objects to the layer. </span>
-</span><span id="Layer-27"><a href="#Layer-27"><span class="linenos">27</span></a>
-</span><span id="Layer-28"><a href="#Layer-28"><span class="linenos">28</span></a><span class="sd">        Args:</span>
-</span><span id="Layer-29"><a href="#Layer-29"><span class="linenos">29</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
-</span><span id="Layer-30"><a href="#Layer-30"><span class="linenos">30</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-31"><a href="#Layer-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer-5"><a href="#Layer-5"><span class="linenos"> 5</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
+</span><span id="Layer-6"><a href="#Layer-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+</span><span id="Layer-7"><a href="#Layer-7"><span class="linenos"> 7</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-8"><a href="#Layer-8"><span class="linenos"> 8</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
+</span><span id="Layer-9"><a href="#Layer-9"><span class="linenos"> 9</span></a><span class="sd">        </span>
+</span><span id="Layer-10"><a href="#Layer-10"><span class="linenos">10</span></a><span class="sd">        Args:</span>
+</span><span id="Layer-11"><a href="#Layer-11"><span class="linenos">11</span></a><span class="sd">            name (str): The name of the layer.</span>
+</span><span id="Layer-12"><a href="#Layer-12"><span class="linenos">12</span></a><span class="sd">            tile_xdim (float): The x dimension of the tiles. Default is 1000.0.</span>
+</span><span id="Layer-13"><a href="#Layer-13"><span class="linenos">13</span></a><span class="sd">            tile_ydim (float): The y dimension of the tiles. Default is 1000.0.</span>
+</span><span id="Layer-14"><a href="#Layer-14"><span class="linenos">14</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-15"><a href="#Layer-15"><span class="linenos">15</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span id="Layer-16"><a href="#Layer-16"><span class="linenos">16</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">tile_xdim</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">)</span>
+</span><span id="Layer-17"><a href="#Layer-17"><span class="linenos">17</span></a>    
+</span><span id="Layer-18"><a href="#Layer-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
+</span><span id="Layer-19"><a href="#Layer-19"><span class="linenos">19</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-20"><a href="#Layer-20"><span class="linenos">20</span></a><span class="sd">        Add an object to the layer.</span>
+</span><span id="Layer-21"><a href="#Layer-21"><span class="linenos">21</span></a><span class="sd">        </span>
+</span><span id="Layer-22"><a href="#Layer-22"><span class="linenos">22</span></a><span class="sd">        Args:</span>
+</span><span id="Layer-23"><a href="#Layer-23"><span class="linenos">23</span></a><span class="sd">            obj (Object): The object to add.</span>
+</span><span id="Layer-24"><a href="#Layer-24"><span class="linenos">24</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-25"><a href="#Layer-25"><span class="linenos">25</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="Layer-26"><a href="#Layer-26"><span class="linenos">26</span></a>
+</span><span id="Layer-27"><a href="#Layer-27"><span class="linenos">27</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
+</span><span id="Layer-28"><a href="#Layer-28"><span class="linenos">28</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-29"><a href="#Layer-29"><span class="linenos">29</span></a><span class="sd">        Add objects to the layer. </span>
+</span><span id="Layer-30"><a href="#Layer-30"><span class="linenos">30</span></a>
+</span><span id="Layer-31"><a href="#Layer-31"><span class="linenos">31</span></a><span class="sd">        Args:</span>
+</span><span id="Layer-32"><a href="#Layer-32"><span class="linenos">32</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
+</span><span id="Layer-33"><a href="#Layer-33"><span class="linenos">33</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-34"><a href="#Layer-34"><span class="linenos">34</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+</span><span id="Layer-35"><a href="#Layer-35"><span class="linenos">35</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+</span><span id="Layer-36"><a href="#Layer-36"><span class="linenos">36</span></a>
+</span><span id="Layer-37"><a href="#Layer-37"><span class="linenos">37</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Layer-38"><a href="#Layer-38"><span class="linenos">38</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-39"><a href="#Layer-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer.</span>
+</span><span id="Layer-40"><a href="#Layer-40"><span class="linenos">40</span></a>
+</span><span id="Layer-41"><a href="#Layer-41"><span class="linenos">41</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer-42"><a href="#Layer-42"><span class="linenos">42</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="Layer-43"><a href="#Layer-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-44"><a href="#Layer-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="Layer-45"><a href="#Layer-45"><span class="linenos">45</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="Layer-46"><a href="#Layer-46"><span class="linenos">46</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="Layer-47"><a href="#Layer-47"><span class="linenos">47</span></a>        <span class="p">}</span>
+</span><span id="Layer-48"><a href="#Layer-48"><span class="linenos">48</span></a>
+</span><span id="Layer-49"><a href="#Layer-49"><span class="linenos">49</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="Layer-50"><a href="#Layer-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="Layer-51"><a href="#Layer-51"><span class="linenos">51</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-52"><a href="#Layer-52"><span class="linenos">52</span></a><span class="sd">        Deserialize the layer.</span>
+</span><span id="Layer-53"><a href="#Layer-53"><span class="linenos">53</span></a>
+</span><span id="Layer-54"><a href="#Layer-54"><span class="linenos">54</span></a><span class="sd">        Args:</span>
+</span><span id="Layer-55"><a href="#Layer-55"><span class="linenos">55</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="Layer-56"><a href="#Layer-56"><span class="linenos">56</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-57"><a href="#Layer-57"><span class="linenos">57</span></a>
+</span><span id="Layer-58"><a href="#Layer-58"><span class="linenos">58</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="Layer-59"><a href="#Layer-59"><span class="linenos">59</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="Layer-60"><a href="#Layer-60"><span class="linenos">60</span></a>        <span class="k">return</span> <span class="n">layer</span>
+</span><span id="Layer-61"><a href="#Layer-61"><span class="linenos">61</span></a>
+</span><span id="Layer-62"><a href="#Layer-62"><span class="linenos">62</span></a>    <span class="nd">@property</span>
+</span><span id="Layer-63"><a href="#Layer-63"><span class="linenos">63</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Layer-64"><a href="#Layer-64"><span class="linenos">64</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-65"><a href="#Layer-65"><span class="linenos">65</span></a><span class="sd">        Generator, yields objects in the layer.</span>
+</span><span id="Layer-66"><a href="#Layer-66"><span class="linenos">66</span></a>
+</span><span id="Layer-67"><a href="#Layer-67"><span class="linenos">67</span></a><span class="sd">        Yields:</span>
+</span><span id="Layer-68"><a href="#Layer-68"><span class="linenos">68</span></a><span class="sd">            Object: The objects in the layer.</span>
+</span><span id="Layer-69"><a href="#Layer-69"><span class="linenos">69</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-70"><a href="#Layer-70"><span class="linenos">70</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+</span><span id="Layer-71"><a href="#Layer-71"><span class="linenos">71</span></a>            <span class="k">yield</span> <span class="n">obj</span>
 </span></pre></div>
 
         </details>
@@ -149,20 +237,22 @@
                                         <div class="attr function"><a class="headerlink" href="#Layer.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Layer</span><span class="signature">(name)</span>
+            <span class="name">Layer</span><span class="signature">(name, tile_xdim=1000.0, tile_ydim=1000.0)</span>
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.__init__-5"><a href="#Layer.__init__-5"><span class="linenos"> 5</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
-</span><span id="Layer.__init__-6"><a href="#Layer.__init__-6"><span class="linenos"> 6</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer.__init__-7"><a href="#Layer.__init__-7"><span class="linenos"> 7</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
-</span><span id="Layer.__init__-8"><a href="#Layer.__init__-8"><span class="linenos"> 8</span></a><span class="sd">        </span>
-</span><span id="Layer.__init__-9"><a href="#Layer.__init__-9"><span class="linenos"> 9</span></a><span class="sd">        Args:</span>
-</span><span id="Layer.__init__-10"><a href="#Layer.__init__-10"><span class="linenos">10</span></a><span class="sd">            name (str): The name of the layer.</span>
-</span><span id="Layer.__init__-11"><a href="#Layer.__init__-11"><span class="linenos">11</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer.__init__-12"><a href="#Layer.__init__-12"><span class="linenos">12</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
-</span><span id="Layer.__init__-13"><a href="#Layer.__init__-13"><span class="linenos">13</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span> <span class="o">=</span> <span class="p">[]</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.__init__-6"><a href="#Layer.__init__-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+</span><span id="Layer.__init__-7"><a href="#Layer.__init__-7"><span class="linenos"> 7</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.__init__-8"><a href="#Layer.__init__-8"><span class="linenos"> 8</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
+</span><span id="Layer.__init__-9"><a href="#Layer.__init__-9"><span class="linenos"> 9</span></a><span class="sd">        </span>
+</span><span id="Layer.__init__-10"><a href="#Layer.__init__-10"><span class="linenos">10</span></a><span class="sd">        Args:</span>
+</span><span id="Layer.__init__-11"><a href="#Layer.__init__-11"><span class="linenos">11</span></a><span class="sd">            name (str): The name of the layer.</span>
+</span><span id="Layer.__init__-12"><a href="#Layer.__init__-12"><span class="linenos">12</span></a><span class="sd">            tile_xdim (float): The x dimension of the tiles. Default is 1000.0.</span>
+</span><span id="Layer.__init__-13"><a href="#Layer.__init__-13"><span class="linenos">13</span></a><span class="sd">            tile_ydim (float): The y dimension of the tiles. Default is 1000.0.</span>
+</span><span id="Layer.__init__-14"><a href="#Layer.__init__-14"><span class="linenos">14</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.__init__-15"><a href="#Layer.__init__-15"><span class="linenos">15</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+</span><span id="Layer.__init__-16"><a href="#Layer.__init__-16"><span class="linenos">16</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="p">(</span><span class="n">tile_xdim</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -173,6 +263,8 @@
 
 <ul>
 <li><strong>name (str):</strong>  The name of the layer.</li>
+<li><strong>tile_xdim (float):</strong>  The x dimension of the tiles. Default is 1000.0.</li>
+<li><strong>tile_ydim (float):</strong>  The y dimension of the tiles. Default is 1000.0.</li>
 </ul>
 </div>
 
@@ -188,14 +280,14 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.add_object-15"><a href="#Layer.add_object-15"><span class="linenos">15</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
-</span><span id="Layer.add_object-16"><a href="#Layer.add_object-16"><span class="linenos">16</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer.add_object-17"><a href="#Layer.add_object-17"><span class="linenos">17</span></a><span class="sd">        Add an object to the layer.</span>
-</span><span id="Layer.add_object-18"><a href="#Layer.add_object-18"><span class="linenos">18</span></a><span class="sd">        </span>
-</span><span id="Layer.add_object-19"><a href="#Layer.add_object-19"><span class="linenos">19</span></a><span class="sd">        Args:</span>
-</span><span id="Layer.add_object-20"><a href="#Layer.add_object-20"><span class="linenos">20</span></a><span class="sd">            obj (Object): The object to add.</span>
-</span><span id="Layer.add_object-21"><a href="#Layer.add_object-21"><span class="linenos">21</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer.add_object-22"><a href="#Layer.add_object-22"><span class="linenos">22</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.add_object-18"><a href="#Layer.add_object-18"><span class="linenos">18</span></a>    <span class="k">def</span> <span class="nf">add_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Object</span><span class="p">):</span>
+</span><span id="Layer.add_object-19"><a href="#Layer.add_object-19"><span class="linenos">19</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.add_object-20"><a href="#Layer.add_object-20"><span class="linenos">20</span></a><span class="sd">        Add an object to the layer.</span>
+</span><span id="Layer.add_object-21"><a href="#Layer.add_object-21"><span class="linenos">21</span></a><span class="sd">        </span>
+</span><span id="Layer.add_object-22"><a href="#Layer.add_object-22"><span class="linenos">22</span></a><span class="sd">        Args:</span>
+</span><span id="Layer.add_object-23"><a href="#Layer.add_object-23"><span class="linenos">23</span></a><span class="sd">            obj (Object): The object to add.</span>
+</span><span id="Layer.add_object-24"><a href="#Layer.add_object-24"><span class="linenos">24</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.add_object-25"><a href="#Layer.add_object-25"><span class="linenos">25</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -221,14 +313,15 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.add_objects-24"><a href="#Layer.add_objects-24"><span class="linenos">24</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
-</span><span id="Layer.add_objects-25"><a href="#Layer.add_objects-25"><span class="linenos">25</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer.add_objects-26"><a href="#Layer.add_objects-26"><span class="linenos">26</span></a><span class="sd">        Add objects to the layer. </span>
-</span><span id="Layer.add_objects-27"><a href="#Layer.add_objects-27"><span class="linenos">27</span></a>
-</span><span id="Layer.add_objects-28"><a href="#Layer.add_objects-28"><span class="linenos">28</span></a><span class="sd">        Args:</span>
-</span><span id="Layer.add_objects-29"><a href="#Layer.add_objects-29"><span class="linenos">29</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
-</span><span id="Layer.add_objects-30"><a href="#Layer.add_objects-30"><span class="linenos">30</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer.add_objects-31"><a href="#Layer.add_objects-31"><span class="linenos">31</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">objs</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.add_objects-27"><a href="#Layer.add_objects-27"><span class="linenos">27</span></a>    <span class="k">def</span> <span class="nf">add_objects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objs</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Object</span><span class="p">]):</span>
+</span><span id="Layer.add_objects-28"><a href="#Layer.add_objects-28"><span class="linenos">28</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.add_objects-29"><a href="#Layer.add_objects-29"><span class="linenos">29</span></a><span class="sd">        Add objects to the layer. </span>
+</span><span id="Layer.add_objects-30"><a href="#Layer.add_objects-30"><span class="linenos">30</span></a>
+</span><span id="Layer.add_objects-31"><a href="#Layer.add_objects-31"><span class="linenos">31</span></a><span class="sd">        Args:</span>
+</span><span id="Layer.add_objects-32"><a href="#Layer.add_objects-32"><span class="linenos">32</span></a><span class="sd">            objs (List[Object]): The objects to add.</span>
+</span><span id="Layer.add_objects-33"><a href="#Layer.add_objects-33"><span class="linenos">33</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.add_objects-34"><a href="#Layer.add_objects-34"><span class="linenos">34</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objs</span><span class="p">:</span>
+</span><span id="Layer.add_objects-35"><a href="#Layer.add_objects-35"><span class="linenos">35</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -240,6 +333,98 @@
 <ul>
 <li><strong>objs (List[Object]):</strong>  The objects to add.</li>
 </ul>
+</div>
+
+
+                            </div>
+                            <div id="Layer.serialize" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Layer.serialize">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">serialize</span><span class="signature">(self)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.serialize-37"><a href="#Layer.serialize-37"><span class="linenos">37</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Layer.serialize-38"><a href="#Layer.serialize-38"><span class="linenos">38</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.serialize-39"><a href="#Layer.serialize-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer.</span>
+</span><span id="Layer.serialize-40"><a href="#Layer.serialize-40"><span class="linenos">40</span></a>
+</span><span id="Layer.serialize-41"><a href="#Layer.serialize-41"><span class="linenos">41</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer.serialize-42"><a href="#Layer.serialize-42"><span class="linenos">42</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="Layer.serialize-43"><a href="#Layer.serialize-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.serialize-44"><a href="#Layer.serialize-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="Layer.serialize-45"><a href="#Layer.serialize-45"><span class="linenos">45</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="Layer.serialize-46"><a href="#Layer.serialize-46"><span class="linenos">46</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="Layer.serialize-47"><a href="#Layer.serialize-47"><span class="linenos">47</span></a>        <span class="p">}</span>
+</span></pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Serialize the layer.</p>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Dict: The serialized layer.</p>
+</blockquote>
+</div>
+
+
+                            </div>
+                            <div id="Layer.deserialize" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#Layer.deserialize">#&nbsp;&nbsp</a>
+
+                <div class="decorator">@staticmethod</div>
+
+            <span class="def">def</span>
+            <span class="name">deserialize</span><span class="signature">(data: Dict)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.deserialize-49"><a href="#Layer.deserialize-49"><span class="linenos">49</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="Layer.deserialize-50"><a href="#Layer.deserialize-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="Layer.deserialize-51"><a href="#Layer.deserialize-51"><span class="linenos">51</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.deserialize-52"><a href="#Layer.deserialize-52"><span class="linenos">52</span></a><span class="sd">        Deserialize the layer.</span>
+</span><span id="Layer.deserialize-53"><a href="#Layer.deserialize-53"><span class="linenos">53</span></a>
+</span><span id="Layer.deserialize-54"><a href="#Layer.deserialize-54"><span class="linenos">54</span></a><span class="sd">        Args:</span>
+</span><span id="Layer.deserialize-55"><a href="#Layer.deserialize-55"><span class="linenos">55</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="Layer.deserialize-56"><a href="#Layer.deserialize-56"><span class="linenos">56</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.deserialize-57"><a href="#Layer.deserialize-57"><span class="linenos">57</span></a>
+</span><span id="Layer.deserialize-58"><a href="#Layer.deserialize-58"><span class="linenos">58</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="Layer.deserialize-59"><a href="#Layer.deserialize-59"><span class="linenos">59</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="Layer.deserialize-60"><a href="#Layer.deserialize-60"><span class="linenos">60</span></a>        <span class="k">return</span> <span class="n">layer</span>
+</span></pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Deserialize the layer.</p>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>data (Dict):</strong>  The data to deserialize.</li>
+</ul>
+</div>
+
+
+                            </div>
+                            <div id="Layer.objects" class="classattr">
+                                            <div class="attr variable"><a class="headerlink" href="#Layer.objects">#&nbsp;&nbsp</a>
+
+        <span class="name">objects</span>
+    </div>
+
+    
+            <div class="docstring"><p>Generator, yields objects in the layer.</p>
+
+<h6 id="yields">Yields</h6>
+
+<blockquote>
+  <p>Object: The objects in the layer.</p>
+</blockquote>
 </div>
 
 
