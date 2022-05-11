@@ -264,3 +264,6 @@ dev/*
 projects/
 Praha/
 html/
+data/
+tmp/
+ng_*

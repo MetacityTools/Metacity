@@ -47,15 +47,18 @@ class Object:
             "geometry": [g.serialize() for g in self.geometry]
         }
 
-    def deserialize(self, data):
+    @staticmethod
+    def deserialize(data):
         """
         Deserialize the object.
 
         Args:
             data (Dict): The data to deserialize.
         """
-        self.meta = data["meta"]
-        self.geometry = [desermodel(g) for g in data["geometry"]]
+        obj = Object()
+        obj.meta = data["meta"]
+        obj.geometry = [desermodel(g) for g in data["geometry"]]
+        return obj
 
 
         

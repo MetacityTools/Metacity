@@ -73,6 +73,10 @@ def shp_poly_dataset():
     dataset_path = os.path.join(data_dir(), 'data', 'shp-poly', 'BD3_Prah96_mp.shp')
     yield dataset_path
 
+@pytest.fixture(scope='function')
+def data_directory():
+    yield data_dir()
+
 class DatasetStats:
     def __init__(self):
         self.obj_count = 0
@@ -90,6 +94,10 @@ def railway_dataset_stats():
 
     yield stats
 
+@pytest.fixture(scope="function")
+def tmp_directory(tmpdir_factory):
+    dir = tmpdir_factory.mktemp("tmp_directory")
+    return dir
 
 
 

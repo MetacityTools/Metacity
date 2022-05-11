@@ -15,8 +15,7 @@ def test_grid_poly(shp_poly_dataset: str):
     tilecounts = [len(t.objects) for t in grid.tiles.values()]
 
     data = grid.serialize()
-    grid2 = Grid()
-    grid2.deserialize(data)
+    grid2 = Grid.deserialize(data)
 
     assert len(grid2.tiles) == 6
     tilecounts2 = [len(t.objects) for t in grid2.tiles.values()]

@@ -44,28 +44,27 @@ class Tile:
             "objects": [obj.serialize() for obj in self.objects]
         }
 
-    def deserialize(self, data: Dict):
+    @staticmethod
+    def deserialize(data: Dict):
         """
         Deserialize the tile.
 
         Args:
             data (Dict): The data to deserialize.
         """
-        self.x = data["x"]
-        self.y = data["y"]
-        self.width = data["width"]
-        self.height = data["height"]
-        self.objects = [Object().deserialize(obj) for obj in data["objects"]]
+        tile = Tile(data["x"], data["y"], data["width"], data["height"])
+        tile.objects = [Object.deserialize(obj) for obj in data["objects"]]
+        return tile
 
 
 class Grid:
-    def __init__(self, tile_xdim=1000, tile_ydim=1000):
+    def __init__(self, tile_xdim=1000.0, tile_ydim=1000.0):
         """
         Initialize a regular grid. All tiles are AABBs, aligned to zero coordinates with fixed dimensions.
         
         Args:
-            tile_xdim (int): The x dimension of a single tile.
-            tile_ydim (int): The y dimension of a single tile.
+            tile_xdim (float): The x dimension of a single tile. Default is 1000.0.
+            tile_ydim (float): The y dimension of a single tile. Default is 1000.0.
         """
         self.tiles: Dict[Tuple[int, int], Tile] = {}
         self.tile_xdim = tile_xdim
@@ -117,20 +116,36 @@ class Grid:
             Dict: The serialized grid.
         """
         return {
-            "tiles": [tile.serialize() for tile in self.tiles.values()]
+            "tiles": [tile.serialize() for tile in self.tiles.values()],
+            "tile_xdim": self.tile_xdim,
+            "tile_ydim": self.tile_ydim
         }
 
-    def deserialize(self, data: Dict):
+    @staticmethod
+    def deserialize(data: Dict):
         """
         Deserialize the grid. The tiles are deserialized separately.
         
         Args:
             data (Dict): The data to deserialize.
         """
-        self.tiles = {}
+        grid = Grid()
+        grid.tile_xdim = data["tile_xdim"]
+        grid.tile_ydim = data["tile_ydim"]
         for tile in data["tiles"]:
             x = tile["x"]
             y = tile["y"]
-            self.tiles[(x, y)] = Tile(x, y, self.tile_xdim, self.tile_ydim)
-            self.tiles[(x, y)].deserialize(tile)
-        
+            grid.tiles[(x, y)] = Tile.deserialize(tile)
+        return grid
+
+    @property
+    def objects(self):
+        """
+        Get all objects in the grid.
+
+        Yields:
+            Object: The objects in the grid.
+        """
+        for tile in self.tiles.values():
+            for object in tile.objects:
+                yield object

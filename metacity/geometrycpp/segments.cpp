@@ -39,12 +39,14 @@ void Segments::add_attribute(const string &name, const uint32_t value)
 size_t Segments::to_obj(const string &path, const size_t offset) const
 {
     ofstream objfile(path, std::ios_base::app);
-    objfile << "o Line" << offset << endl;
+    objfile << "o Line" << offset << "\n";
+    objfile << fixed << setprecision(2);
+
     for (const auto &v : vertices)
-        objfile << "v " << v.x << " " << v.y << " " << v.z << endl;
+        objfile << "v " << v.x << " " << v.y << " " << v.z << "\n";
 
     for (size_t i = offset + 1; i < offset + 1 + vertices.size(); i += 2)
-        objfile << "l " << i << " " << i + 1 << endl;
+        objfile << "l " << i << " " << i + 1 << "\n";
 
     objfile.close();
     return vertices.size();

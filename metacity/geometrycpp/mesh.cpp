@@ -24,12 +24,14 @@ const char *Mesh::type() const
 size_t Mesh::to_obj(const string & path, const size_t offset) const 
 {
     ofstream objfile(path, std::ios_base::app);
-    objfile << "o Polygon" << offset << endl; 
+    objfile << "o Polygon" << offset << "\n"; 
+    objfile << fixed << setprecision(2);
+
     for(const auto & v: vertices)
-        objfile << "v " << v.x << " " << v.y << " " << v.z << endl;
+        objfile << "v " << v.x << " " << v.y << " " << v.z << "\n";
 
     for(size_t i = offset + 1; i < offset + 1 + vertices.size(); i += 3)
-        objfile << "f " << i << " " << i + 1 << " " << i + 2 << endl;
+        objfile << "f " << i << " " << i + 1 << " " << i + 2 << "\n";
 
     objfile.close();
     return vertices.size();

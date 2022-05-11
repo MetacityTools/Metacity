@@ -25,6 +25,14 @@ def file_exists(file):
     return os.path.exists(file)
 
 
+def list_subdirectories(dir):
+    return [f for f in os.listdir(dir) if os.path.isdir(os.path.join(dir, f))]
+
+
+def join_path(path, *args):
+    return os.path.join(path, *args)
+
+
 def rename(old, new):
     if file_exists(old) and not file_exists(new):
         os.rename(old, new)
