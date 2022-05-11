@@ -19,7 +19,7 @@ shared_ptr<Model> Points::copy() const
 
 const char * Points::type() const
 {
-    return "simplepoint";
+    return "points";
 }
 
 size_t Points::to_obj(const string & path, const size_t offset) const 

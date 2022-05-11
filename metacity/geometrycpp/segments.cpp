@@ -18,7 +18,7 @@ shared_ptr<Model> Segments::copy() const
 
 const char *Segments::type() const
 {
-    return "simpleline";
+    return "segments";
 }
 
 inline tvec3 lcentroid(const tvec3 line[2])

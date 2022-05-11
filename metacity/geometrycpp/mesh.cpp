@@ -18,7 +18,7 @@ shared_ptr<Model> Mesh::copy() const
 
 const char *Mesh::type() const
 {
-    return "simplepolygon";
+    return "mesh";
 }
 
 size_t Mesh::to_obj(const string & path, const size_t offset) const 
