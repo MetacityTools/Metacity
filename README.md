@@ -32,7 +32,7 @@ sudo apt-get install cmake
 ## Development
 1. Clone this repository:
 ```
-git clone 
+git clone git@github.com:MetacitySuite/Metacity.git
 ```
 2. Initialize submodules:
 ```
