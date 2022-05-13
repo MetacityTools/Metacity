@@ -78,7 +78,7 @@
 </span><span id="L-2"><a href="#L-2"><span class="linenos"> 2</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span>
 </span><span id="L-3"><a href="#L-3"><span class="linenos"> 3</span></a>
 </span><span id="L-4"><a href="#L-4"><span class="linenos"> 4</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+</span><span id="L-5"><a href="#L-5"><span class="linenos"> 5</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile_xdim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
 </span><span id="L-6"><a href="#L-6"><span class="linenos"> 6</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="sd">        </span>
@@ -111,39 +111,56 @@
 </span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>
 </span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        Serialize the layer.</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        Returns:</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">            Dict: The serialized layer.</span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a>        <span class="p">}</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a><span class="sd">        Serialize the layer. The serialized layer is a dictionary with the following keys:</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a><span class="sd">        ```js</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="sd">        {</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos">41</span></a><span class="sd">            // The name of the layer.</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos">42</span></a><span class="sd">            &quot;name&quot;: str,</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos">43</span></a><span class="sd">            // The grid of the layer.</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos">44</span></a><span class="sd">            &quot;grid&quot;: JSON</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos">45</span></a><span class="sd">        }</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos">46</span></a><span class="sd">        ```</span>
 </span><span id="L-47"><a href="#L-47"><span class="linenos">47</span></a>
-</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        Deserialize the layer.</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a>
-</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a><span class="sd">        Args:</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>
-</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>        <span class="k">return</span> <span class="n">layer</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>
-</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>    <span class="nd">@property</span>
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">        Generator, yields objects in the layer.</span>
-</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a>
-</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a><span class="sd">        Yields:</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a><span class="sd">            Object: The objects in the layer.</span>
-</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a>            <span class="k">yield</span> <span class="n">obj</span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos">48</span></a><span class="sd">        Returns:</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos">49</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos">50</span></a>
+</span><span id="L-51"><a href="#L-51"><span class="linenos">51</span></a><span class="sd">        See Also:</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos">52</span></a><span class="sd">            :func:`metacity.datamodel.grid.Grid.serialize` for the serialization of a grid into JSON</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos">53</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos">54</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos">55</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos">56</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos">57</span></a>        <span class="p">}</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos">58</span></a>
+</span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a><span class="sd">        Deserialize the layer, static method.</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a>
+</span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">        Args:</span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a>
+</span><span id="L-67"><a href="#L-67"><span class="linenos">67</span></a><span class="sd">        Returns:</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos">68</span></a><span class="sd">            Layer: The deserialized layer.</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos">69</span></a>
+</span><span id="L-70"><a href="#L-70"><span class="linenos">70</span></a><span class="sd">        See Also:</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos">71</span></a><span class="sd">            :func:`Layer.serialize` for the serialization of a layer into a dictionary</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos">72</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos">73</span></a>
+</span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>        <span class="k">return</span> <span class="n">layer</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>    <span class="nd">@property</span>
+</span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a><span class="sd">        Generator, yields objects in the layer.</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos">82</span></a>
+</span><span id="L-83"><a href="#L-83"><span class="linenos">83</span></a><span class="sd">        Yields:</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos">84</span></a><span class="sd">            Object: The objects in the layer.</span>
+</span><span id="L-85"><a href="#L-85"><span class="linenos">85</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos">86</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos">87</span></a>            <span class="k">yield</span> <span class="n">obj</span>
 </span></pre></div>
 
         </details>
@@ -161,7 +178,7 @@
             <details>
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Layer-5"><a href="#Layer-5"><span class="linenos"> 5</span></a><span class="k">class</span> <span class="nc">Layer</span><span class="p">:</span>
-</span><span id="Layer-6"><a href="#Layer-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+</span><span id="Layer-6"><a href="#Layer-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile_xdim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
 </span><span id="Layer-7"><a href="#Layer-7"><span class="linenos"> 7</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Layer-8"><a href="#Layer-8"><span class="linenos"> 8</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
 </span><span id="Layer-9"><a href="#Layer-9"><span class="linenos"> 9</span></a><span class="sd">        </span>
@@ -194,39 +211,56 @@
 </span><span id="Layer-36"><a href="#Layer-36"><span class="linenos">36</span></a>
 </span><span id="Layer-37"><a href="#Layer-37"><span class="linenos">37</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="Layer-38"><a href="#Layer-38"><span class="linenos">38</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-39"><a href="#Layer-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer.</span>
-</span><span id="Layer-40"><a href="#Layer-40"><span class="linenos">40</span></a>
-</span><span id="Layer-41"><a href="#Layer-41"><span class="linenos">41</span></a><span class="sd">        Returns:</span>
-</span><span id="Layer-42"><a href="#Layer-42"><span class="linenos">42</span></a><span class="sd">            Dict: The serialized layer.</span>
-</span><span id="Layer-43"><a href="#Layer-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-44"><a href="#Layer-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="Layer-45"><a href="#Layer-45"><span class="linenos">45</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="Layer-46"><a href="#Layer-46"><span class="linenos">46</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
-</span><span id="Layer-47"><a href="#Layer-47"><span class="linenos">47</span></a>        <span class="p">}</span>
+</span><span id="Layer-39"><a href="#Layer-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer. The serialized layer is a dictionary with the following keys:</span>
+</span><span id="Layer-40"><a href="#Layer-40"><span class="linenos">40</span></a><span class="sd">        ```js</span>
+</span><span id="Layer-41"><a href="#Layer-41"><span class="linenos">41</span></a><span class="sd">        {</span>
+</span><span id="Layer-42"><a href="#Layer-42"><span class="linenos">42</span></a><span class="sd">            // The name of the layer.</span>
+</span><span id="Layer-43"><a href="#Layer-43"><span class="linenos">43</span></a><span class="sd">            &quot;name&quot;: str,</span>
+</span><span id="Layer-44"><a href="#Layer-44"><span class="linenos">44</span></a><span class="sd">            // The grid of the layer.</span>
+</span><span id="Layer-45"><a href="#Layer-45"><span class="linenos">45</span></a><span class="sd">            &quot;grid&quot;: JSON</span>
+</span><span id="Layer-46"><a href="#Layer-46"><span class="linenos">46</span></a><span class="sd">        }</span>
+</span><span id="Layer-47"><a href="#Layer-47"><span class="linenos">47</span></a><span class="sd">        ```</span>
 </span><span id="Layer-48"><a href="#Layer-48"><span class="linenos">48</span></a>
-</span><span id="Layer-49"><a href="#Layer-49"><span class="linenos">49</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="Layer-50"><a href="#Layer-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-</span><span id="Layer-51"><a href="#Layer-51"><span class="linenos">51</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-52"><a href="#Layer-52"><span class="linenos">52</span></a><span class="sd">        Deserialize the layer.</span>
-</span><span id="Layer-53"><a href="#Layer-53"><span class="linenos">53</span></a>
-</span><span id="Layer-54"><a href="#Layer-54"><span class="linenos">54</span></a><span class="sd">        Args:</span>
-</span><span id="Layer-55"><a href="#Layer-55"><span class="linenos">55</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
-</span><span id="Layer-56"><a href="#Layer-56"><span class="linenos">56</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-57"><a href="#Layer-57"><span class="linenos">57</span></a>
-</span><span id="Layer-58"><a href="#Layer-58"><span class="linenos">58</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-</span><span id="Layer-59"><a href="#Layer-59"><span class="linenos">59</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
-</span><span id="Layer-60"><a href="#Layer-60"><span class="linenos">60</span></a>        <span class="k">return</span> <span class="n">layer</span>
-</span><span id="Layer-61"><a href="#Layer-61"><span class="linenos">61</span></a>
-</span><span id="Layer-62"><a href="#Layer-62"><span class="linenos">62</span></a>    <span class="nd">@property</span>
-</span><span id="Layer-63"><a href="#Layer-63"><span class="linenos">63</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="Layer-64"><a href="#Layer-64"><span class="linenos">64</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer-65"><a href="#Layer-65"><span class="linenos">65</span></a><span class="sd">        Generator, yields objects in the layer.</span>
-</span><span id="Layer-66"><a href="#Layer-66"><span class="linenos">66</span></a>
-</span><span id="Layer-67"><a href="#Layer-67"><span class="linenos">67</span></a><span class="sd">        Yields:</span>
-</span><span id="Layer-68"><a href="#Layer-68"><span class="linenos">68</span></a><span class="sd">            Object: The objects in the layer.</span>
-</span><span id="Layer-69"><a href="#Layer-69"><span class="linenos">69</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer-70"><a href="#Layer-70"><span class="linenos">70</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
-</span><span id="Layer-71"><a href="#Layer-71"><span class="linenos">71</span></a>            <span class="k">yield</span> <span class="n">obj</span>
+</span><span id="Layer-49"><a href="#Layer-49"><span class="linenos">49</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer-50"><a href="#Layer-50"><span class="linenos">50</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="Layer-51"><a href="#Layer-51"><span class="linenos">51</span></a>
+</span><span id="Layer-52"><a href="#Layer-52"><span class="linenos">52</span></a><span class="sd">        See Also:</span>
+</span><span id="Layer-53"><a href="#Layer-53"><span class="linenos">53</span></a><span class="sd">            :func:`metacity.datamodel.grid.Grid.serialize` for the serialization of a grid into JSON</span>
+</span><span id="Layer-54"><a href="#Layer-54"><span class="linenos">54</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-55"><a href="#Layer-55"><span class="linenos">55</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="Layer-56"><a href="#Layer-56"><span class="linenos">56</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="Layer-57"><a href="#Layer-57"><span class="linenos">57</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="Layer-58"><a href="#Layer-58"><span class="linenos">58</span></a>        <span class="p">}</span>
+</span><span id="Layer-59"><a href="#Layer-59"><span class="linenos">59</span></a>
+</span><span id="Layer-60"><a href="#Layer-60"><span class="linenos">60</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="Layer-61"><a href="#Layer-61"><span class="linenos">61</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="Layer-62"><a href="#Layer-62"><span class="linenos">62</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-63"><a href="#Layer-63"><span class="linenos">63</span></a><span class="sd">        Deserialize the layer, static method.</span>
+</span><span id="Layer-64"><a href="#Layer-64"><span class="linenos">64</span></a>
+</span><span id="Layer-65"><a href="#Layer-65"><span class="linenos">65</span></a><span class="sd">        Args:</span>
+</span><span id="Layer-66"><a href="#Layer-66"><span class="linenos">66</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="Layer-67"><a href="#Layer-67"><span class="linenos">67</span></a>
+</span><span id="Layer-68"><a href="#Layer-68"><span class="linenos">68</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer-69"><a href="#Layer-69"><span class="linenos">69</span></a><span class="sd">            Layer: The deserialized layer.</span>
+</span><span id="Layer-70"><a href="#Layer-70"><span class="linenos">70</span></a>
+</span><span id="Layer-71"><a href="#Layer-71"><span class="linenos">71</span></a><span class="sd">        See Also:</span>
+</span><span id="Layer-72"><a href="#Layer-72"><span class="linenos">72</span></a><span class="sd">            :func:`Layer.serialize` for the serialization of a layer into a dictionary</span>
+</span><span id="Layer-73"><a href="#Layer-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-74"><a href="#Layer-74"><span class="linenos">74</span></a>
+</span><span id="Layer-75"><a href="#Layer-75"><span class="linenos">75</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="Layer-76"><a href="#Layer-76"><span class="linenos">76</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="Layer-77"><a href="#Layer-77"><span class="linenos">77</span></a>        <span class="k">return</span> <span class="n">layer</span>
+</span><span id="Layer-78"><a href="#Layer-78"><span class="linenos">78</span></a>
+</span><span id="Layer-79"><a href="#Layer-79"><span class="linenos">79</span></a>    <span class="nd">@property</span>
+</span><span id="Layer-80"><a href="#Layer-80"><span class="linenos">80</span></a>    <span class="k">def</span> <span class="nf">objects</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="Layer-81"><a href="#Layer-81"><span class="linenos">81</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer-82"><a href="#Layer-82"><span class="linenos">82</span></a><span class="sd">        Generator, yields objects in the layer.</span>
+</span><span id="Layer-83"><a href="#Layer-83"><span class="linenos">83</span></a>
+</span><span id="Layer-84"><a href="#Layer-84"><span class="linenos">84</span></a><span class="sd">        Yields:</span>
+</span><span id="Layer-85"><a href="#Layer-85"><span class="linenos">85</span></a><span class="sd">            Object: The objects in the layer.</span>
+</span><span id="Layer-86"><a href="#Layer-86"><span class="linenos">86</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer-87"><a href="#Layer-87"><span class="linenos">87</span></a>        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">objects</span><span class="p">:</span>
+</span><span id="Layer-88"><a href="#Layer-88"><span class="linenos">88</span></a>            <span class="k">yield</span> <span class="n">obj</span>
 </span></pre></div>
 
         </details>
@@ -237,12 +271,12 @@
                                         <div class="attr function"><a class="headerlink" href="#Layer.__init__">#&nbsp;&nbsp</a>
 
         
-            <span class="name">Layer</span><span class="signature">(name, tile_xdim=1000.0, tile_ydim=1000.0)</span>
+            <span class="name">Layer</span><span class="signature">(name: str, tile_xdim: float = 1000.0, tile_ydim: float = 1000.0)</span>
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.__init__-6"><a href="#Layer.__init__-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">tile_xdim</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.__init__-6"><a href="#Layer.__init__-6"><span class="linenos"> 6</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile_xdim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">,</span> <span class="n">tile_ydim</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1000.0</span><span class="p">):</span>
 </span><span id="Layer.__init__-7"><a href="#Layer.__init__-7"><span class="linenos"> 7</span></a>        <span class="sd">&quot;&quot;&quot;</span>
 </span><span id="Layer.__init__-8"><a href="#Layer.__init__-8"><span class="linenos"> 8</span></a><span class="sd">        Initialize a layer. Layer represents a collection of objects.</span>
 </span><span id="Layer.__init__-9"><a href="#Layer.__init__-9"><span class="linenos"> 9</span></a><span class="sd">        </span>
@@ -349,25 +383,50 @@
             <summary>View Source</summary>
             <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.serialize-37"><a href="#Layer.serialize-37"><span class="linenos">37</span></a>    <span class="k">def</span> <span class="nf">serialize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 </span><span id="Layer.serialize-38"><a href="#Layer.serialize-38"><span class="linenos">38</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer.serialize-39"><a href="#Layer.serialize-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer.</span>
-</span><span id="Layer.serialize-40"><a href="#Layer.serialize-40"><span class="linenos">40</span></a>
-</span><span id="Layer.serialize-41"><a href="#Layer.serialize-41"><span class="linenos">41</span></a><span class="sd">        Returns:</span>
-</span><span id="Layer.serialize-42"><a href="#Layer.serialize-42"><span class="linenos">42</span></a><span class="sd">            Dict: The serialized layer.</span>
-</span><span id="Layer.serialize-43"><a href="#Layer.serialize-43"><span class="linenos">43</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer.serialize-44"><a href="#Layer.serialize-44"><span class="linenos">44</span></a>        <span class="k">return</span> <span class="p">{</span>
-</span><span id="Layer.serialize-45"><a href="#Layer.serialize-45"><span class="linenos">45</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-</span><span id="Layer.serialize-46"><a href="#Layer.serialize-46"><span class="linenos">46</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
-</span><span id="Layer.serialize-47"><a href="#Layer.serialize-47"><span class="linenos">47</span></a>        <span class="p">}</span>
+</span><span id="Layer.serialize-39"><a href="#Layer.serialize-39"><span class="linenos">39</span></a><span class="sd">        Serialize the layer. The serialized layer is a dictionary with the following keys:</span>
+</span><span id="Layer.serialize-40"><a href="#Layer.serialize-40"><span class="linenos">40</span></a><span class="sd">        ```js</span>
+</span><span id="Layer.serialize-41"><a href="#Layer.serialize-41"><span class="linenos">41</span></a><span class="sd">        {</span>
+</span><span id="Layer.serialize-42"><a href="#Layer.serialize-42"><span class="linenos">42</span></a><span class="sd">            // The name of the layer.</span>
+</span><span id="Layer.serialize-43"><a href="#Layer.serialize-43"><span class="linenos">43</span></a><span class="sd">            &quot;name&quot;: str,</span>
+</span><span id="Layer.serialize-44"><a href="#Layer.serialize-44"><span class="linenos">44</span></a><span class="sd">            // The grid of the layer.</span>
+</span><span id="Layer.serialize-45"><a href="#Layer.serialize-45"><span class="linenos">45</span></a><span class="sd">            &quot;grid&quot;: JSON</span>
+</span><span id="Layer.serialize-46"><a href="#Layer.serialize-46"><span class="linenos">46</span></a><span class="sd">        }</span>
+</span><span id="Layer.serialize-47"><a href="#Layer.serialize-47"><span class="linenos">47</span></a><span class="sd">        ```</span>
+</span><span id="Layer.serialize-48"><a href="#Layer.serialize-48"><span class="linenos">48</span></a>
+</span><span id="Layer.serialize-49"><a href="#Layer.serialize-49"><span class="linenos">49</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer.serialize-50"><a href="#Layer.serialize-50"><span class="linenos">50</span></a><span class="sd">            Dict: The serialized layer.</span>
+</span><span id="Layer.serialize-51"><a href="#Layer.serialize-51"><span class="linenos">51</span></a>
+</span><span id="Layer.serialize-52"><a href="#Layer.serialize-52"><span class="linenos">52</span></a><span class="sd">        See Also:</span>
+</span><span id="Layer.serialize-53"><a href="#Layer.serialize-53"><span class="linenos">53</span></a><span class="sd">            :func:`metacity.datamodel.grid.Grid.serialize` for the serialization of a grid into JSON</span>
+</span><span id="Layer.serialize-54"><a href="#Layer.serialize-54"><span class="linenos">54</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.serialize-55"><a href="#Layer.serialize-55"><span class="linenos">55</span></a>        <span class="k">return</span> <span class="p">{</span>
+</span><span id="Layer.serialize-56"><a href="#Layer.serialize-56"><span class="linenos">56</span></a>            <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span><span id="Layer.serialize-57"><a href="#Layer.serialize-57"><span class="linenos">57</span></a>            <span class="s2">&quot;grid&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+</span><span id="Layer.serialize-58"><a href="#Layer.serialize-58"><span class="linenos">58</span></a>        <span class="p">}</span>
 </span></pre></div>
 
         </details>
 
-            <div class="docstring"><p>Serialize the layer.</p>
+            <div class="docstring"><p>Serialize the layer. The serialized layer is a dictionary with the following keys:</p>
+
+<div class="pdoc-code codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// The name of the layer.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="nx">str</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// The grid of the layer.</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;grid&quot;</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <h6 id="returns">Returns</h6>
 
 <blockquote>
   <p>Dict: The serialized layer.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="grid.html#Grid.serialize">metacity.datamodel.grid.Grid.serialize</a></code> for the serialization of a grid into JSON</p>
 </blockquote>
 </div>
 
@@ -384,29 +443,47 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.deserialize-49"><a href="#Layer.deserialize-49"><span class="linenos">49</span></a>    <span class="nd">@staticmethod</span>
-</span><span id="Layer.deserialize-50"><a href="#Layer.deserialize-50"><span class="linenos">50</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
-</span><span id="Layer.deserialize-51"><a href="#Layer.deserialize-51"><span class="linenos">51</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="Layer.deserialize-52"><a href="#Layer.deserialize-52"><span class="linenos">52</span></a><span class="sd">        Deserialize the layer.</span>
-</span><span id="Layer.deserialize-53"><a href="#Layer.deserialize-53"><span class="linenos">53</span></a>
-</span><span id="Layer.deserialize-54"><a href="#Layer.deserialize-54"><span class="linenos">54</span></a><span class="sd">        Args:</span>
-</span><span id="Layer.deserialize-55"><a href="#Layer.deserialize-55"><span class="linenos">55</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
-</span><span id="Layer.deserialize-56"><a href="#Layer.deserialize-56"><span class="linenos">56</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="Layer.deserialize-57"><a href="#Layer.deserialize-57"><span class="linenos">57</span></a>
-</span><span id="Layer.deserialize-58"><a href="#Layer.deserialize-58"><span class="linenos">58</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
-</span><span id="Layer.deserialize-59"><a href="#Layer.deserialize-59"><span class="linenos">59</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
-</span><span id="Layer.deserialize-60"><a href="#Layer.deserialize-60"><span class="linenos">60</span></a>        <span class="k">return</span> <span class="n">layer</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="Layer.deserialize-60"><a href="#Layer.deserialize-60"><span class="linenos">60</span></a>    <span class="nd">@staticmethod</span>
+</span><span id="Layer.deserialize-61"><a href="#Layer.deserialize-61"><span class="linenos">61</span></a>    <span class="k">def</span> <span class="nf">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">Dict</span><span class="p">):</span>
+</span><span id="Layer.deserialize-62"><a href="#Layer.deserialize-62"><span class="linenos">62</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="Layer.deserialize-63"><a href="#Layer.deserialize-63"><span class="linenos">63</span></a><span class="sd">        Deserialize the layer, static method.</span>
+</span><span id="Layer.deserialize-64"><a href="#Layer.deserialize-64"><span class="linenos">64</span></a>
+</span><span id="Layer.deserialize-65"><a href="#Layer.deserialize-65"><span class="linenos">65</span></a><span class="sd">        Args:</span>
+</span><span id="Layer.deserialize-66"><a href="#Layer.deserialize-66"><span class="linenos">66</span></a><span class="sd">            data (Dict): The data to deserialize.</span>
+</span><span id="Layer.deserialize-67"><a href="#Layer.deserialize-67"><span class="linenos">67</span></a>
+</span><span id="Layer.deserialize-68"><a href="#Layer.deserialize-68"><span class="linenos">68</span></a><span class="sd">        Returns:</span>
+</span><span id="Layer.deserialize-69"><a href="#Layer.deserialize-69"><span class="linenos">69</span></a><span class="sd">            Layer: The deserialized layer.</span>
+</span><span id="Layer.deserialize-70"><a href="#Layer.deserialize-70"><span class="linenos">70</span></a>
+</span><span id="Layer.deserialize-71"><a href="#Layer.deserialize-71"><span class="linenos">71</span></a><span class="sd">        See Also:</span>
+</span><span id="Layer.deserialize-72"><a href="#Layer.deserialize-72"><span class="linenos">72</span></a><span class="sd">            :func:`Layer.serialize` for the serialization of a layer into a dictionary</span>
+</span><span id="Layer.deserialize-73"><a href="#Layer.deserialize-73"><span class="linenos">73</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="Layer.deserialize-74"><a href="#Layer.deserialize-74"><span class="linenos">74</span></a>
+</span><span id="Layer.deserialize-75"><a href="#Layer.deserialize-75"><span class="linenos">75</span></a>        <span class="n">layer</span> <span class="o">=</span> <span class="n">Layer</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+</span><span id="Layer.deserialize-76"><a href="#Layer.deserialize-76"><span class="linenos">76</span></a>        <span class="n">layer</span><span class="o">.</span><span class="n">grid</span> <span class="o">=</span> <span class="n">Grid</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;grid&quot;</span><span class="p">])</span>
+</span><span id="Layer.deserialize-77"><a href="#Layer.deserialize-77"><span class="linenos">77</span></a>        <span class="k">return</span> <span class="n">layer</span>
 </span></pre></div>
 
         </details>
 
-            <div class="docstring"><p>Deserialize the layer.</p>
+            <div class="docstring"><p>Deserialize the layer, static method.</p>
 
 <h6 id="args">Args</h6>
 
 <ul>
 <li><strong>data (Dict):</strong>  The data to deserialize.</li>
 </ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Layer: The deserialized layer.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#Layer.serialize">Layer.serialize</a></code> for the serialization of a layer into a dictionary</p>
+</blockquote>
 </div>
 
 

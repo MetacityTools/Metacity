@@ -29,7 +29,27 @@ export C_INCLUDE_PATH=/usr/include/gdal
 sudo apt-get install cmake
 ```
 
-
+## Development
+1. Clone this repository:
+```
+git clone 
+```
+2. Initialize submodules:
+```
+git submodule update --init --recursive
+```
+3. Install requirements:
+```
+pip install -r requirements.txt
+```
+4. Build C++ with:
+```
+python setup.py build_ext --inplace
+```
+If you encounter any problems, make sure you installed dependencies listed above, generally:
+- have `GDAL` and `CMake` installed
+- install packages based on `requirements.txt`
+- make sure you have c++ compiler supporting c++17 installed
 
 ## Branches
 | Branch | Status | Description |

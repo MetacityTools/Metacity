@@ -7,14 +7,23 @@ types: Dict[str, Callable[[], Model]] = {
     Segments().type: Segments,
     Mesh().type: Mesh
 }
+"""
+The types used to deserialize geometry objects.
+"""
 
 
-def desermodel(geometry):
+def desermodel(geometry: Model):
     """
-    Deserialize a geometry object.
+    Deserialize a geometry object, raising an exception if the type is not supported.
 
     Args:
         geometry (Dict): The geometry object to deserialize.
+
+    Returns:
+        Model: The deserialized geometry object.
+
+    Raises:
+        ValueError: If the type is not supported.
     """
     type = geometry["type"]
     if geometry["type"] in types:
@@ -37,7 +46,18 @@ class Object:
 
     def serialize(self):
         """
-        Serialize the object.
+        Serialize the object. The serialization is a dictionary with the following keys:
+        ```js
+        {
+            // The metadata of the object.
+            "meta": { "key": "value", ... },
+            // The geometries of the object.
+            "geometry": [ JSON, JSON, ... ]
+        }
+        ```
+
+        See Also:
+            :func:`metacity.geometry.Model.serialize` for the serialization of a geometry into JSON
 
         Returns:
             Dict: The serialized object.
@@ -48,12 +68,18 @@ class Object:
         }
 
     @staticmethod
-    def deserialize(data):
+    def deserialize(data: Dict):
         """
-        Deserialize the object.
+        Deserialize the object, a static method.
 
         Args:
             data (Dict): The data to deserialize.
+
+        Returns:
+            Object: The deserialized object.
+
+        See Also:
+            :func:`Object.serialize` for the serialization of an object into JSON
         """
         obj = Object()
         obj.meta = data["meta"]

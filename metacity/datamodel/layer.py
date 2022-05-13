@@ -3,7 +3,7 @@ from metacity.datamodel.grid import Grid
 from typing import List, Dict
 
 class Layer:
-    def __init__(self, name, tile_xdim = 1000.0, tile_ydim= 1000.0):
+    def __init__(self, name: str, tile_xdim: float = 1000.0, tile_ydim: float = 1000.0):
         """
         Initialize a layer. Layer represents a collection of objects.
         
@@ -36,10 +36,21 @@ class Layer:
 
     def serialize(self):
         """
-        Serialize the layer.
+        Serialize the layer. The serialized layer is a dictionary with the following keys:
+        ```js
+        {
+            // The name of the layer.
+            "name": str,
+            // The grid of the layer.
+            "grid": JSON
+        }
+        ```
 
         Returns:
             Dict: The serialized layer.
+
+        See Also:
+            :func:`metacity.datamodel.grid.Grid.serialize` for the serialization of a grid into JSON
         """
         return {
             "name": self.name,
@@ -49,10 +60,16 @@ class Layer:
     @staticmethod
     def deserialize(data: Dict):
         """
-        Deserialize the layer.
+        Deserialize the layer, static method.
 
         Args:
             data (Dict): The data to deserialize.
+
+        Returns:
+            Layer: The deserialized layer.
+
+        See Also:
+            :func:`Layer.serialize` for the serialization of a layer into a dictionary
         """
 
         layer = Layer(data["name"])
