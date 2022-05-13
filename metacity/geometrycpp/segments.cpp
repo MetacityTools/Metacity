@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <iostream>
+#include <iomanip>
 #include <fstream>
 #include "segments.hpp"
 

@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include <fstream>
+#include <iomanip>
 #include "mesh.hpp"
 #include "triangulation.hpp"
 
