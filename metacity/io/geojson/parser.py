@@ -1,4 +1,4 @@
-from metacity.filesystem.base import read_json
+from metacity.utils.filesystem import read_json
 from typing import List, Union
 from metacity.datamodel.object import Object
 from abc import ABC, abstractmethod

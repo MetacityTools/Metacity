@@ -1,8 +1,8 @@
 from typing import Tuple
 #from metacity.datamodel.project import Project
 from metacity.geometry import LegoBuilder
-from metacity.filesystem.base import write_json
-import metacity.filesystem.base as fs
+from metacity.utils.filesystem import write_json
+import metacity.utils.filesystem as fs
 from tqdm import tqdm
 #from metacity.utils.transform import tile_coords_in_range
 import os

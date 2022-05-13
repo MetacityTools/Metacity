@@ -93,10 +93,9 @@ ERROR_INVALID_NAME = 123
 '''
 Windows-specific error code indicating an invalid pathname.
 
-See Also
-----------
-https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
-    Official listing of all such codes.
+See Also:
+    [Official listing of all such codes.](https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-)
+        
 '''
 
 def is_pathname_valid(pathname: str) -> bool:
@@ -181,10 +180,10 @@ def is_path_creatable(pathname: str) -> bool:
 
 def is_path_exists_or_creatable(pathname: str) -> bool:
     '''
-    `True` if the passed pathname is a valid pathname for the current OS _and_
+    `True` if the passed pathname is a valid pathname for the current OS *and*
     either currently exists or is hypothetically creatable; `False` otherwise.
 
-    This function is guaranteed to _never_ raise exceptions.
+    This function is guaranteed to *never* raise exceptions.
     '''
     try:
         # To prevent "os" module calls from raising undesirable exceptions on

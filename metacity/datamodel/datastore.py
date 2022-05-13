@@ -1,4 +1,4 @@
-from metacity.filesystem import base as fs
+from metacity.utils import filesystem as fs
 from metacity.datamodel.layer import Layer
 
 
@@ -59,7 +59,20 @@ class DataStore:
     def layers(self):
         """
         Generator, yields Layer stored in the data store. 
+
+        Yields:
+            Layer: each Layer in the data store.
+
+        Example:
+            Generate a list of names of layers in the data store.
+
+        >>> ds = DataStore("store")
+        >>> for name in ["terrain", "buildings", "roads"]:
+        ...     ds.add_layer(Layer(name))
+        >>> [l.name for l in ds.layers]
+        ['terrain', 'buildings', 'roads']
         """
+
         for layer_name in fs.list_subdirectories(self.directory):
             layer = self.get_layer(layer_name)
             if layer is not None:

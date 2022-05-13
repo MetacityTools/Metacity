@@ -1,5 +1,5 @@
 from metacity.datamodel.layer import Layer
-from metacity.filesystem.datastore import DataStore
+from metacity.datamodel.datastore import DataStore
 from metacity.io.parse import parse
 import os
 

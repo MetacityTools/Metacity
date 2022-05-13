@@ -1,6 +1,6 @@
 import fiona
 import geopandas
-from metacity.filesystem import base as fs
+from metacity.utils import filesystem as fs
 from metacity.io.geojson.parser import parse_data as parse_geojson
 
 
