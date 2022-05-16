@@ -134,7 +134,7 @@ class DataStore:
         """
         layer_dir = self.layer_dir(layer)
         fs.create_dir_if_not_exists(layer_dir)
-        fs.write_json(layer_main_file(layer_dir))
+        fs.write_json(layer_main_file(layer_dir), layer.serialize())
 
     def publish_layer(self, layer: Layer):
         """
