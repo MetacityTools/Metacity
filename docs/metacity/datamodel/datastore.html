@@ -34,6 +34,9 @@
                     <a class="function" href="#layer_main_file">layer_main_file</a>
             </li>
             <li>
+                    <a class="function" href="#layer_layout_file">layer_layout_file</a>
+            </li>
+            <li>
                     <a class="class" href="#DataStore">DataStore</a>
                             <ul class="memberlist">
                         <li>
@@ -52,10 +55,16 @@
                                 <a class="function" href="#DataStore.add_layer">add_layer</a>
                         </li>
                         <li>
+                                <a class="function" href="#DataStore.publish_layer">publish_layer</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#DataStore.update_layer">update_layer</a>
                         </li>
                         <li>
                                 <a class="function" href="#DataStore.layer_dir">layer_dir</a>
+                        </li>
+                        <li>
+                                <a class="function" href="#DataStore.tile_file">tile_file</a>
                         </li>
                 </ul>
 
@@ -79,130 +88,224 @@
                 
                         <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="L-0"><a href="#L-0"><span class="linenos">  0</span></a><span class="kn">from</span> <span class="nn">metacity.utils</span> <span class="kn">import</span> <span class="n">filesystem</span> <span class="k">as</span> <span class="n">fs</span>
-</span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">from</span> <span class="nn">metacity.datamodel.layer</span> <span class="kn">import</span> <span class="n">Layer</span>
-</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a>
-</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a>
-</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a><span class="k">def</span> <span class="nf">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
-</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="sd">    Get the main file of the layer.</span>
-</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>
-</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">    Args:</span>
-</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a>
-</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">    Returns:</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a><span class="sd">        str: Path to the main file of the layer.</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;main.json&quot;</span><span class="p">)</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a>
-</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>
-</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a><span class="k">class</span> <span class="nc">DataStore</span><span class="p">:</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
-</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a>
-</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>
-</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a><span class="sd">        List all layers in the data store.</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>
-</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        Returns:</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">            List[str]: The names of the layers.</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="L-0"><a href="#L-0"><span class="linenos">  0</span></a><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+</span><span id="L-1"><a href="#L-1"><span class="linenos">  1</span></a><span class="kn">from</span> <span class="nn">metacity.datamodel.grid</span> <span class="kn">import</span> <span class="n">Tile</span>
+</span><span id="L-2"><a href="#L-2"><span class="linenos">  2</span></a><span class="kn">from</span> <span class="nn">metacity.utils</span> <span class="kn">import</span> <span class="n">filesystem</span> <span class="k">as</span> <span class="n">fs</span>
+</span><span id="L-3"><a href="#L-3"><span class="linenos">  3</span></a><span class="kn">from</span> <span class="nn">metacity.datamodel.layer</span> <span class="kn">import</span> <span class="n">Layer</span>
+</span><span id="L-4"><a href="#L-4"><span class="linenos">  4</span></a>
+</span><span id="L-5"><a href="#L-5"><span class="linenos">  5</span></a>
+</span><span id="L-6"><a href="#L-6"><span class="linenos">  6</span></a><span class="k">def</span> <span class="nf">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="L-7"><a href="#L-7"><span class="linenos">  7</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-8"><a href="#L-8"><span class="linenos">  8</span></a><span class="sd">    Get the main file of the layer.</span>
+</span><span id="L-9"><a href="#L-9"><span class="linenos">  9</span></a>
+</span><span id="L-10"><a href="#L-10"><span class="linenos"> 10</span></a><span class="sd">    Args:</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos"> 11</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos"> 12</span></a>
+</span><span id="L-13"><a href="#L-13"><span class="linenos"> 13</span></a><span class="sd">    Returns:</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos"> 14</span></a><span class="sd">        str: Path to the main file of the layer.</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos"> 15</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos"> 16</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;main.json&quot;</span><span class="p">)</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos"> 17</span></a>
+</span><span id="L-18"><a href="#L-18"><span class="linenos"> 18</span></a>
+</span><span id="L-19"><a href="#L-19"><span class="linenos"> 19</span></a><span class="k">def</span> <span class="nf">layer_layout_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos"> 20</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos"> 21</span></a><span class="sd">    Get the main file of the layer.</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos"> 22</span></a>
+</span><span id="L-23"><a href="#L-23"><span class="linenos"> 23</span></a><span class="sd">    Args:</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos"> 24</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos"> 25</span></a>
+</span><span id="L-26"><a href="#L-26"><span class="linenos"> 26</span></a><span class="sd">    Returns:</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos"> 27</span></a><span class="sd">        str: Path to the main file of the layer.</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos"> 28</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos"> 29</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;layout.json&quot;</span><span class="p">)</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos"> 30</span></a>
+</span><span id="L-31"><a href="#L-31"><span class="linenos"> 31</span></a><span class="k">class</span> <span class="nc">DataStore</span><span class="p">:</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos"> 32</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos"> 33</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos"> 34</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos"> 35</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos"> 36</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos"> 37</span></a>
 </span><span id="L-38"><a href="#L-38"><span class="linenos"> 38</span></a>
-</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
-</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        None is returned.</span>
-</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a>
-</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        Args:</span>
-</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
-</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        </span>
-</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        Returns:</span>
-</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">            Layer: The layer.</span>
-</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
-</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
-</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a>            <span class="k">return</span>
-</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a>
-</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a>    <span class="nd">@property</span>
-</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a>    <span class="k">def</span> <span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">        Generator, yields Layer stored in the data store. </span>
-</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a>
-</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">        Yields:</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">            Layer: each Layer in the data store.</span>
-</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a>
-</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">        Example:</span>
-</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            Generate a list of names of layers in the data store.</span>
-</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a>
-</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
-</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        &gt;&gt;&gt; for name in [&quot;terrain&quot;, &quot;buildings&quot;, &quot;roads&quot;]:</span>
-</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="sd">        ...     ds.add_layer(Layer(name))</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
-</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos"> 39</span></a><span class="sd">        The structure of the Data Store is as follows:</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos"> 40</span></a><span class="sd">        ```</span>
+</span><span id="L-41"><a href="#L-41"><span class="linenos"> 41</span></a><span class="sd">        datastore_dir/</span>
+</span><span id="L-42"><a href="#L-42"><span class="linenos"> 42</span></a><span class="sd">        └───layer_1/</span>
+</span><span id="L-43"><a href="#L-43"><span class="linenos"> 43</span></a><span class="sd">        │   │</span>
+</span><span id="L-44"><a href="#L-44"><span class="linenos"> 44</span></a><span class="sd">        │   │   BASE FILES</span>
+</span><span id="L-45"><a href="#L-45"><span class="linenos"> 45</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="L-46"><a href="#L-46"><span class="linenos"> 46</span></a><span class="sd">        │   │   main.json   │ all layer data in a single file</span>
+</span><span id="L-47"><a href="#L-47"><span class="linenos"> 47</span></a><span class="sd">        │   │  </span>
+</span><span id="L-48"><a href="#L-48"><span class="linenos"> 48</span></a><span class="sd">        │   │   PUBLISHED FILES</span>
+</span><span id="L-49"><a href="#L-49"><span class="linenos"> 49</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="L-50"><a href="#L-50"><span class="linenos"> 50</span></a><span class="sd">        │   │   layout.json │ structure of tiles for viewer</span>
+</span><span id="L-51"><a href="#L-51"><span class="linenos"> 51</span></a><span class="sd">        │   │   x1_y1.json  │ tile data</span>
+</span><span id="L-52"><a href="#L-52"><span class="linenos"> 52</span></a><span class="sd">        │   │   x2_y2.json  │ tile data</span>
+</span><span id="L-53"><a href="#L-53"><span class="linenos"> 53</span></a><span class="sd">        │   │   ... </span>
+</span><span id="L-54"><a href="#L-54"><span class="linenos"> 54</span></a><span class="sd">        │   </span>
+</span><span id="L-55"><a href="#L-55"><span class="linenos"> 55</span></a><span class="sd">        └───layer_2/</span>
+</span><span id="L-56"><a href="#L-56"><span class="linenos"> 56</span></a><span class="sd">        │   ...</span>
+</span><span id="L-57"><a href="#L-57"><span class="linenos"> 57</span></a><span class="sd">        ```</span>
+</span><span id="L-58"><a href="#L-58"><span class="linenos"> 58</span></a><span class="sd">        </span>
+</span><span id="L-59"><a href="#L-59"><span class="linenos"> 59</span></a><span class="sd">        Important files:</span>
+</span><span id="L-60"><a href="#L-60"><span class="linenos"> 60</span></a><span class="sd">            * `main.json` contains all of the layer data, including object data, </span>
+</span><span id="L-61"><a href="#L-61"><span class="linenos"> 61</span></a><span class="sd">            geometry and metadata</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos"> 62</span></a><span class="sd">            * `layout.json` contains the structure of the tiles for the web </span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos"> 63</span></a><span class="sd">            viewer - namely tile coordinates, sizes and filenames</span>
+</span><span id="L-64"><a href="#L-64"><span class="linenos"> 64</span></a><span class="sd">            * `x_y.json` contains the tile data for the tile at the specified </span>
+</span><span id="L-65"><a href="#L-65"><span class="linenos"> 65</span></a><span class="sd">            coordinates - namely the tile geometry and metadata of the objects</span>
+</span><span id="L-66"><a href="#L-66"><span class="linenos"> 66</span></a><span class="sd">            with centroids contained in the tile</span>
+</span><span id="L-67"><a href="#L-67"><span class="linenos"> 67</span></a><span class="sd">        Args:</span>
+</span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a><span class="sd">            directory (str): The directory of the data store.</span>
+</span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
+</span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
+</span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>
-</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>        <span class="k">for</span> <span class="n">layer_name</span> <span class="ow">in</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">):</span>
-</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>            <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>            <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a>                <span class="k">yield</span> <span class="n">layer</span>
+</span><span id="L-75"><a href="#L-75"><span class="linenos"> 75</span></a>
+</span><span id="L-76"><a href="#L-76"><span class="linenos"> 76</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos"> 77</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos"> 78</span></a><span class="sd">        List all layers in the data store.</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos"> 79</span></a>
-</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        Add a layer to the data store.</span>
-</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>
-</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a><span class="sd">        Args:</span>
-</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a><span class="sd">            layer (Layer): The layer to add.</span>
-</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
-</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
-</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a>
-</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        Update a layer in the data store.</span>
-</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a>
-</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        Args:</span>
-</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a><span class="sd">            layer (Layer): The layer to update.</span>
-</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
-</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>
-</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
-</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a><span class="sd">            </span>
-</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a><span class="sd">        Args:</span>
-</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
-</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
-</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
-</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
-</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a>
-</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        Get a layer from the data store. This is a shortcut for get_layer.</span>
-</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a>
-</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        Args:</span>
-</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
-</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a>
-</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a><span class="sd">        Returns:</span>
-</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a><span class="sd">            Layer: The layer.</span>
-</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
+</span><span id="L-80"><a href="#L-80"><span class="linenos"> 80</span></a><span class="sd">        Returns:</span>
+</span><span id="L-81"><a href="#L-81"><span class="linenos"> 81</span></a><span class="sd">            List[str]: The names of the layers.</span>
+</span><span id="L-82"><a href="#L-82"><span class="linenos"> 82</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-83"><a href="#L-83"><span class="linenos"> 83</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+</span><span id="L-84"><a href="#L-84"><span class="linenos"> 84</span></a>
+</span><span id="L-85"><a href="#L-85"><span class="linenos"> 85</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
+</span><span id="L-86"><a href="#L-86"><span class="linenos"> 86</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-87"><a href="#L-87"><span class="linenos"> 87</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
+</span><span id="L-88"><a href="#L-88"><span class="linenos"> 88</span></a><span class="sd">        None is returned.</span>
+</span><span id="L-89"><a href="#L-89"><span class="linenos"> 89</span></a>
+</span><span id="L-90"><a href="#L-90"><span class="linenos"> 90</span></a><span class="sd">        Args:</span>
+</span><span id="L-91"><a href="#L-91"><span class="linenos"> 91</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
+</span><span id="L-92"><a href="#L-92"><span class="linenos"> 92</span></a><span class="sd">        </span>
+</span><span id="L-93"><a href="#L-93"><span class="linenos"> 93</span></a><span class="sd">        Returns:</span>
+</span><span id="L-94"><a href="#L-94"><span class="linenos"> 94</span></a><span class="sd">            Layer: The layer.</span>
+</span><span id="L-95"><a href="#L-95"><span class="linenos"> 95</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-96"><a href="#L-96"><span class="linenos"> 96</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+</span><span id="L-97"><a href="#L-97"><span class="linenos"> 97</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
+</span><span id="L-98"><a href="#L-98"><span class="linenos"> 98</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+</span><span id="L-99"><a href="#L-99"><span class="linenos"> 99</span></a>            <span class="k">return</span>
+</span><span id="L-100"><a href="#L-100"><span class="linenos">100</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+</span><span id="L-101"><a href="#L-101"><span class="linenos">101</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="L-102"><a href="#L-102"><span class="linenos">102</span></a>
+</span><span id="L-103"><a href="#L-103"><span class="linenos">103</span></a>    <span class="nd">@property</span>
+</span><span id="L-104"><a href="#L-104"><span class="linenos">104</span></a>    <span class="k">def</span> <span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="L-105"><a href="#L-105"><span class="linenos">105</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-106"><a href="#L-106"><span class="linenos">106</span></a><span class="sd">        Generator, yields Layer stored in the data store. </span>
+</span><span id="L-107"><a href="#L-107"><span class="linenos">107</span></a>
+</span><span id="L-108"><a href="#L-108"><span class="linenos">108</span></a><span class="sd">        Yields:</span>
+</span><span id="L-109"><a href="#L-109"><span class="linenos">109</span></a><span class="sd">            Layer: each Layer in the data store.</span>
+</span><span id="L-110"><a href="#L-110"><span class="linenos">110</span></a>
+</span><span id="L-111"><a href="#L-111"><span class="linenos">111</span></a><span class="sd">        Example:</span>
+</span><span id="L-112"><a href="#L-112"><span class="linenos">112</span></a><span class="sd">            Generate a list of names of layers in the data store.</span>
+</span><span id="L-113"><a href="#L-113"><span class="linenos">113</span></a>
+</span><span id="L-114"><a href="#L-114"><span class="linenos">114</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
+</span><span id="L-115"><a href="#L-115"><span class="linenos">115</span></a><span class="sd">        &gt;&gt;&gt; for name in [&quot;terrain&quot;, &quot;buildings&quot;, &quot;roads&quot;]:</span>
+</span><span id="L-116"><a href="#L-116"><span class="linenos">116</span></a><span class="sd">        ...     ds.add_layer(Layer(name))</span>
+</span><span id="L-117"><a href="#L-117"><span class="linenos">117</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
+</span><span id="L-118"><a href="#L-118"><span class="linenos">118</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+</span><span id="L-119"><a href="#L-119"><span class="linenos">119</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-120"><a href="#L-120"><span class="linenos">120</span></a>
+</span><span id="L-121"><a href="#L-121"><span class="linenos">121</span></a>        <span class="k">for</span> <span class="n">layer_name</span> <span class="ow">in</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">):</span>
+</span><span id="L-122"><a href="#L-122"><span class="linenos">122</span></a>            <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
+</span><span id="L-123"><a href="#L-123"><span class="linenos">123</span></a>            <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-124"><a href="#L-124"><span class="linenos">124</span></a>                <span class="k">yield</span> <span class="n">layer</span>
+</span><span id="L-125"><a href="#L-125"><span class="linenos">125</span></a>
+</span><span id="L-126"><a href="#L-126"><span class="linenos">126</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="L-127"><a href="#L-127"><span class="linenos">127</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-128"><a href="#L-128"><span class="linenos">128</span></a><span class="sd">        Add a layer to the data store. Adding a layer to the datastore persists the </span>
+</span><span id="L-129"><a href="#L-129"><span class="linenos">129</span></a><span class="sd">        layer onto the disk. </span>
+</span><span id="L-130"><a href="#L-130"><span class="linenos">130</span></a>
+</span><span id="L-131"><a href="#L-131"><span class="linenos">131</span></a><span class="sd">        Args:</span>
+</span><span id="L-132"><a href="#L-132"><span class="linenos">132</span></a><span class="sd">            layer (Layer): The layer to add.</span>
+</span><span id="L-133"><a href="#L-133"><span class="linenos">133</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-134"><a href="#L-134"><span class="linenos">134</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="L-135"><a href="#L-135"><span class="linenos">135</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
+</span><span id="L-136"><a href="#L-136"><span class="linenos">136</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">))</span>
+</span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
+</span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a>    <span class="k">def</span> <span class="nf">publish_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        Publish a layer to the data store. Publishing stores all of the static </span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        files required by the web viewer.</span>
+</span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        Args:</span>
+</span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">            layer (Layer): The layer to publish.</span>
+</span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>
+</span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a><span class="sd">        See Also:</span>
+</span><span id="L-147"><a href="#L-147"><span class="linenos">147</span></a><span class="sd">            :class:`DataStore` see constructor to check the layout of the</span>
+</span><span id="L-148"><a href="#L-148"><span class="linenos">148</span></a><span class="sd">            publish files.</span>
+</span><span id="L-149"><a href="#L-149"><span class="linenos">149</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-150"><a href="#L-150"><span class="linenos">150</span></a>
+</span><span id="L-151"><a href="#L-151"><span class="linenos">151</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="L-152"><a href="#L-152"><span class="linenos">152</span></a>        <span class="n">tile_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="L-153"><a href="#L-153"><span class="linenos">153</span></a>        <span class="k">for</span> <span class="n">tile</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="L-154"><a href="#L-154"><span class="linenos">154</span></a>            <span class="n">tile_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tile_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="n">tile</span><span class="p">)</span>
+</span><span id="L-155"><a href="#L-155"><span class="linenos">155</span></a>            <span class="n">tile_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="L-156"><a href="#L-156"><span class="linenos">156</span></a>                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+</span><span id="L-157"><a href="#L-157"><span class="linenos">157</span></a>                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+</span><span id="L-158"><a href="#L-158"><span class="linenos">158</span></a>                <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">tile_file</span><span class="p">,</span>
+</span><span id="L-159"><a href="#L-159"><span class="linenos">159</span></a>            <span class="p">})</span>
+</span><span id="L-160"><a href="#L-160"><span class="linenos">160</span></a>            <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">tile_file</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</span><span id="L-161"><a href="#L-161"><span class="linenos">161</span></a>
+</span><span id="L-162"><a href="#L-162"><span class="linenos">162</span></a>        <span class="n">grid_stats</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="L-163"><a href="#L-163"><span class="linenos">163</span></a>            <span class="s2">&quot;tile_xdim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_xdim</span><span class="p">,</span>
+</span><span id="L-164"><a href="#L-164"><span class="linenos">164</span></a>            <span class="s2">&quot;tile_ydim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_ydim</span><span class="p">,</span>
+</span><span id="L-165"><a href="#L-165"><span class="linenos">165</span></a>            <span class="s2">&quot;tile_list&quot;</span><span class="p">:</span> <span class="n">tile_list</span><span class="p">,</span>
+</span><span id="L-166"><a href="#L-166"><span class="linenos">166</span></a>        <span class="p">}</span>
+</span><span id="L-167"><a href="#L-167"><span class="linenos">167</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_layout_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">grid_stats</span><span class="p">)</span>
+</span><span id="L-168"><a href="#L-168"><span class="linenos">168</span></a>
+</span><span id="L-169"><a href="#L-169"><span class="linenos">169</span></a>
+</span><span id="L-170"><a href="#L-170"><span class="linenos">170</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="L-171"><a href="#L-171"><span class="linenos">171</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-172"><a href="#L-172"><span class="linenos">172</span></a><span class="sd">        Update a layer in the data store.</span>
+</span><span id="L-173"><a href="#L-173"><span class="linenos">173</span></a>
+</span><span id="L-174"><a href="#L-174"><span class="linenos">174</span></a><span class="sd">        Args:</span>
+</span><span id="L-175"><a href="#L-175"><span class="linenos">175</span></a><span class="sd">            layer (Layer): The layer to update.</span>
+</span><span id="L-176"><a href="#L-176"><span class="linenos">176</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-177"><a href="#L-177"><span class="linenos">177</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="L-178"><a href="#L-178"><span class="linenos">178</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</span><span id="L-179"><a href="#L-179"><span class="linenos">179</span></a>
+</span><span id="L-180"><a href="#L-180"><span class="linenos">180</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="L-181"><a href="#L-181"><span class="linenos">181</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-182"><a href="#L-182"><span class="linenos">182</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
+</span><span id="L-183"><a href="#L-183"><span class="linenos">183</span></a><span class="sd">            </span>
+</span><span id="L-184"><a href="#L-184"><span class="linenos">184</span></a><span class="sd">        Args:</span>
+</span><span id="L-185"><a href="#L-185"><span class="linenos">185</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
+</span><span id="L-186"><a href="#L-186"><span class="linenos">186</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-187"><a href="#L-187"><span class="linenos">187</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="L-188"><a href="#L-188"><span class="linenos">188</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="L-189"><a href="#L-189"><span class="linenos">189</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="L-190"><a href="#L-190"><span class="linenos">190</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
+</span><span id="L-191"><a href="#L-191"><span class="linenos">191</span></a>
+</span><span id="L-192"><a href="#L-192"><span class="linenos">192</span></a>    <span class="k">def</span> <span class="nf">tile_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile</span><span class="p">:</span> <span class="n">Tile</span><span class="p">):</span>
+</span><span id="L-193"><a href="#L-193"><span class="linenos">193</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-194"><a href="#L-194"><span class="linenos">194</span></a><span class="sd">        Get the file path of a tile in the data store.</span>
+</span><span id="L-195"><a href="#L-195"><span class="linenos">195</span></a>
+</span><span id="L-196"><a href="#L-196"><span class="linenos">196</span></a><span class="sd">        Args:</span>
+</span><span id="L-197"><a href="#L-197"><span class="linenos">197</span></a><span class="sd">            layer_dir (str): The directory of the layer.</span>
+</span><span id="L-198"><a href="#L-198"><span class="linenos">198</span></a><span class="sd">            tile (Tuple[int, int]): The tile to get the file path of.</span>
+</span><span id="L-199"><a href="#L-199"><span class="linenos">199</span></a><span class="sd">        </span>
+</span><span id="L-200"><a href="#L-200"><span class="linenos">200</span></a><span class="sd">        Returns:</span>
+</span><span id="L-201"><a href="#L-201"><span class="linenos">201</span></a><span class="sd">            str: The file path of the tile.</span>
+</span><span id="L-202"><a href="#L-202"><span class="linenos">202</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-203"><a href="#L-203"><span class="linenos">203</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="L-204"><a href="#L-204"><span class="linenos">204</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="L-205"><a href="#L-205"><span class="linenos">205</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+</span><span id="L-206"><a href="#L-206"><span class="linenos">206</span></a>
+</span><span id="L-207"><a href="#L-207"><span class="linenos">207</span></a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="L-208"><a href="#L-208"><span class="linenos">208</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-209"><a href="#L-209"><span class="linenos">209</span></a><span class="sd">        Get a layer from the data store. This is a shortcut for get_layer.</span>
+</span><span id="L-210"><a href="#L-210"><span class="linenos">210</span></a>
+</span><span id="L-211"><a href="#L-211"><span class="linenos">211</span></a><span class="sd">        Args:</span>
+</span><span id="L-212"><a href="#L-212"><span class="linenos">212</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
+</span><span id="L-213"><a href="#L-213"><span class="linenos">213</span></a>
+</span><span id="L-214"><a href="#L-214"><span class="linenos">214</span></a><span class="sd">        Returns:</span>
+</span><span id="L-215"><a href="#L-215"><span class="linenos">215</span></a><span class="sd">            Layer: The layer.</span>
+</span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -213,22 +316,64 @@
 
         
             <span class="def">def</span>
-            <span class="name">layer_main_file</span><span class="signature">(layer_dir)</span>:
+            <span class="name">layer_main_file</span><span class="signature">(layer_dir: str)</span>:
     </div>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="layer_main_file-5"><a href="#layer_main_file-5"><span class="linenos"> 5</span></a><span class="k">def</span> <span class="nf">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
-</span><span id="layer_main_file-6"><a href="#layer_main_file-6"><span class="linenos"> 6</span></a>    <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="layer_main_file-7"><a href="#layer_main_file-7"><span class="linenos"> 7</span></a><span class="sd">    Get the main file of the layer.</span>
-</span><span id="layer_main_file-8"><a href="#layer_main_file-8"><span class="linenos"> 8</span></a>
-</span><span id="layer_main_file-9"><a href="#layer_main_file-9"><span class="linenos"> 9</span></a><span class="sd">    Args:</span>
-</span><span id="layer_main_file-10"><a href="#layer_main_file-10"><span class="linenos">10</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
-</span><span id="layer_main_file-11"><a href="#layer_main_file-11"><span class="linenos">11</span></a>
-</span><span id="layer_main_file-12"><a href="#layer_main_file-12"><span class="linenos">12</span></a><span class="sd">    Returns:</span>
-</span><span id="layer_main_file-13"><a href="#layer_main_file-13"><span class="linenos">13</span></a><span class="sd">        str: Path to the main file of the layer.</span>
-</span><span id="layer_main_file-14"><a href="#layer_main_file-14"><span class="linenos">14</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="layer_main_file-15"><a href="#layer_main_file-15"><span class="linenos">15</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;main.json&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="layer_main_file-7"><a href="#layer_main_file-7"><span class="linenos"> 7</span></a><span class="k">def</span> <span class="nf">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="layer_main_file-8"><a href="#layer_main_file-8"><span class="linenos"> 8</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="layer_main_file-9"><a href="#layer_main_file-9"><span class="linenos"> 9</span></a><span class="sd">    Get the main file of the layer.</span>
+</span><span id="layer_main_file-10"><a href="#layer_main_file-10"><span class="linenos">10</span></a>
+</span><span id="layer_main_file-11"><a href="#layer_main_file-11"><span class="linenos">11</span></a><span class="sd">    Args:</span>
+</span><span id="layer_main_file-12"><a href="#layer_main_file-12"><span class="linenos">12</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
+</span><span id="layer_main_file-13"><a href="#layer_main_file-13"><span class="linenos">13</span></a>
+</span><span id="layer_main_file-14"><a href="#layer_main_file-14"><span class="linenos">14</span></a><span class="sd">    Returns:</span>
+</span><span id="layer_main_file-15"><a href="#layer_main_file-15"><span class="linenos">15</span></a><span class="sd">        str: Path to the main file of the layer.</span>
+</span><span id="layer_main_file-16"><a href="#layer_main_file-16"><span class="linenos">16</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="layer_main_file-17"><a href="#layer_main_file-17"><span class="linenos">17</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;main.json&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Get the main file of the layer.</p>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>layer_dir (str):</strong>  The directory path of the layer.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>str: Path to the main file of the layer.</p>
+</blockquote>
+</div>
+
+
+                </section>
+                <section id="layer_layout_file">
+                            <div class="attr function"><a class="headerlink" href="#layer_layout_file">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">layer_layout_file</span><span class="signature">(layer_dir: str)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="layer_layout_file-20"><a href="#layer_layout_file-20"><span class="linenos">20</span></a><span class="k">def</span> <span class="nf">layer_layout_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="layer_layout_file-21"><a href="#layer_layout_file-21"><span class="linenos">21</span></a>    <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="layer_layout_file-22"><a href="#layer_layout_file-22"><span class="linenos">22</span></a><span class="sd">    Get the main file of the layer.</span>
+</span><span id="layer_layout_file-23"><a href="#layer_layout_file-23"><span class="linenos">23</span></a>
+</span><span id="layer_layout_file-24"><a href="#layer_layout_file-24"><span class="linenos">24</span></a><span class="sd">    Args:</span>
+</span><span id="layer_layout_file-25"><a href="#layer_layout_file-25"><span class="linenos">25</span></a><span class="sd">        layer_dir (str): The directory path of the layer.</span>
+</span><span id="layer_layout_file-26"><a href="#layer_layout_file-26"><span class="linenos">26</span></a>
+</span><span id="layer_layout_file-27"><a href="#layer_layout_file-27"><span class="linenos">27</span></a><span class="sd">    Returns:</span>
+</span><span id="layer_layout_file-28"><a href="#layer_layout_file-28"><span class="linenos">28</span></a><span class="sd">        str: Path to the main file of the layer.</span>
+</span><span id="layer_layout_file-29"><a href="#layer_layout_file-29"><span class="linenos">29</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="layer_layout_file-30"><a href="#layer_layout_file-30"><span class="linenos">30</span></a>    <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="s2">&quot;layout.json&quot;</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -261,113 +406,193 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore-18"><a href="#DataStore-18"><span class="linenos"> 18</span></a><span class="k">class</span> <span class="nc">DataStore</span><span class="p">:</span>
-</span><span id="DataStore-19"><a href="#DataStore-19"><span class="linenos"> 19</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-</span><span id="DataStore-20"><a href="#DataStore-20"><span class="linenos"> 20</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-21"><a href="#DataStore-21"><span class="linenos"> 21</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
-</span><span id="DataStore-22"><a href="#DataStore-22"><span class="linenos"> 22</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
-</span><span id="DataStore-23"><a href="#DataStore-23"><span class="linenos"> 23</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
-</span><span id="DataStore-24"><a href="#DataStore-24"><span class="linenos"> 24</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-25"><a href="#DataStore-25"><span class="linenos"> 25</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
-</span><span id="DataStore-26"><a href="#DataStore-26"><span class="linenos"> 26</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
-</span><span id="DataStore-27"><a href="#DataStore-27"><span class="linenos"> 27</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
-</span><span id="DataStore-28"><a href="#DataStore-28"><span class="linenos"> 28</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
-</span><span id="DataStore-29"><a href="#DataStore-29"><span class="linenos"> 29</span></a>
-</span><span id="DataStore-30"><a href="#DataStore-30"><span class="linenos"> 30</span></a>
-</span><span id="DataStore-31"><a href="#DataStore-31"><span class="linenos"> 31</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="DataStore-32"><a href="#DataStore-32"><span class="linenos"> 32</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-33"><a href="#DataStore-33"><span class="linenos"> 33</span></a><span class="sd">        List all layers in the data store.</span>
-</span><span id="DataStore-34"><a href="#DataStore-34"><span class="linenos"> 34</span></a>
-</span><span id="DataStore-35"><a href="#DataStore-35"><span class="linenos"> 35</span></a><span class="sd">        Returns:</span>
-</span><span id="DataStore-36"><a href="#DataStore-36"><span class="linenos"> 36</span></a><span class="sd">            List[str]: The names of the layers.</span>
-</span><span id="DataStore-37"><a href="#DataStore-37"><span class="linenos"> 37</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-38"><a href="#DataStore-38"><span class="linenos"> 38</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore-32"><a href="#DataStore-32"><span class="linenos"> 32</span></a><span class="k">class</span> <span class="nc">DataStore</span><span class="p">:</span>
+</span><span id="DataStore-33"><a href="#DataStore-33"><span class="linenos"> 33</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+</span><span id="DataStore-34"><a href="#DataStore-34"><span class="linenos"> 34</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-35"><a href="#DataStore-35"><span class="linenos"> 35</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
+</span><span id="DataStore-36"><a href="#DataStore-36"><span class="linenos"> 36</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
+</span><span id="DataStore-37"><a href="#DataStore-37"><span class="linenos"> 37</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
+</span><span id="DataStore-38"><a href="#DataStore-38"><span class="linenos"> 38</span></a>
 </span><span id="DataStore-39"><a href="#DataStore-39"><span class="linenos"> 39</span></a>
-</span><span id="DataStore-40"><a href="#DataStore-40"><span class="linenos"> 40</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
-</span><span id="DataStore-41"><a href="#DataStore-41"><span class="linenos"> 41</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-42"><a href="#DataStore-42"><span class="linenos"> 42</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
-</span><span id="DataStore-43"><a href="#DataStore-43"><span class="linenos"> 43</span></a><span class="sd">        None is returned.</span>
-</span><span id="DataStore-44"><a href="#DataStore-44"><span class="linenos"> 44</span></a>
-</span><span id="DataStore-45"><a href="#DataStore-45"><span class="linenos"> 45</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore-46"><a href="#DataStore-46"><span class="linenos"> 46</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
-</span><span id="DataStore-47"><a href="#DataStore-47"><span class="linenos"> 47</span></a><span class="sd">        </span>
-</span><span id="DataStore-48"><a href="#DataStore-48"><span class="linenos"> 48</span></a><span class="sd">        Returns:</span>
-</span><span id="DataStore-49"><a href="#DataStore-49"><span class="linenos"> 49</span></a><span class="sd">            Layer: The layer.</span>
-</span><span id="DataStore-50"><a href="#DataStore-50"><span class="linenos"> 50</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-51"><a href="#DataStore-51"><span class="linenos"> 51</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
-</span><span id="DataStore-52"><a href="#DataStore-52"><span class="linenos"> 52</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
-</span><span id="DataStore-53"><a href="#DataStore-53"><span class="linenos"> 53</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-</span><span id="DataStore-54"><a href="#DataStore-54"><span class="linenos"> 54</span></a>            <span class="k">return</span>
-</span><span id="DataStore-55"><a href="#DataStore-55"><span class="linenos"> 55</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-</span><span id="DataStore-56"><a href="#DataStore-56"><span class="linenos"> 56</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-</span><span id="DataStore-57"><a href="#DataStore-57"><span class="linenos"> 57</span></a>
-</span><span id="DataStore-58"><a href="#DataStore-58"><span class="linenos"> 58</span></a>    <span class="nd">@property</span>
-</span><span id="DataStore-59"><a href="#DataStore-59"><span class="linenos"> 59</span></a>    <span class="k">def</span> <span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="DataStore-60"><a href="#DataStore-60"><span class="linenos"> 60</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-61"><a href="#DataStore-61"><span class="linenos"> 61</span></a><span class="sd">        Generator, yields Layer stored in the data store. </span>
-</span><span id="DataStore-62"><a href="#DataStore-62"><span class="linenos"> 62</span></a>
-</span><span id="DataStore-63"><a href="#DataStore-63"><span class="linenos"> 63</span></a><span class="sd">        Yields:</span>
-</span><span id="DataStore-64"><a href="#DataStore-64"><span class="linenos"> 64</span></a><span class="sd">            Layer: each Layer in the data store.</span>
-</span><span id="DataStore-65"><a href="#DataStore-65"><span class="linenos"> 65</span></a>
-</span><span id="DataStore-66"><a href="#DataStore-66"><span class="linenos"> 66</span></a><span class="sd">        Example:</span>
-</span><span id="DataStore-67"><a href="#DataStore-67"><span class="linenos"> 67</span></a><span class="sd">            Generate a list of names of layers in the data store.</span>
-</span><span id="DataStore-68"><a href="#DataStore-68"><span class="linenos"> 68</span></a>
-</span><span id="DataStore-69"><a href="#DataStore-69"><span class="linenos"> 69</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
-</span><span id="DataStore-70"><a href="#DataStore-70"><span class="linenos"> 70</span></a><span class="sd">        &gt;&gt;&gt; for name in [&quot;terrain&quot;, &quot;buildings&quot;, &quot;roads&quot;]:</span>
-</span><span id="DataStore-71"><a href="#DataStore-71"><span class="linenos"> 71</span></a><span class="sd">        ...     ds.add_layer(Layer(name))</span>
-</span><span id="DataStore-72"><a href="#DataStore-72"><span class="linenos"> 72</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="DataStore-73"><a href="#DataStore-73"><span class="linenos"> 73</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
-</span><span id="DataStore-74"><a href="#DataStore-74"><span class="linenos"> 74</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-40"><a href="#DataStore-40"><span class="linenos"> 40</span></a><span class="sd">        The structure of the Data Store is as follows:</span>
+</span><span id="DataStore-41"><a href="#DataStore-41"><span class="linenos"> 41</span></a><span class="sd">        ```</span>
+</span><span id="DataStore-42"><a href="#DataStore-42"><span class="linenos"> 42</span></a><span class="sd">        datastore_dir/</span>
+</span><span id="DataStore-43"><a href="#DataStore-43"><span class="linenos"> 43</span></a><span class="sd">        └───layer_1/</span>
+</span><span id="DataStore-44"><a href="#DataStore-44"><span class="linenos"> 44</span></a><span class="sd">        │   │</span>
+</span><span id="DataStore-45"><a href="#DataStore-45"><span class="linenos"> 45</span></a><span class="sd">        │   │   BASE FILES</span>
+</span><span id="DataStore-46"><a href="#DataStore-46"><span class="linenos"> 46</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="DataStore-47"><a href="#DataStore-47"><span class="linenos"> 47</span></a><span class="sd">        │   │   main.json   │ all layer data in a single file</span>
+</span><span id="DataStore-48"><a href="#DataStore-48"><span class="linenos"> 48</span></a><span class="sd">        │   │  </span>
+</span><span id="DataStore-49"><a href="#DataStore-49"><span class="linenos"> 49</span></a><span class="sd">        │   │   PUBLISHED FILES</span>
+</span><span id="DataStore-50"><a href="#DataStore-50"><span class="linenos"> 50</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="DataStore-51"><a href="#DataStore-51"><span class="linenos"> 51</span></a><span class="sd">        │   │   layout.json │ structure of tiles for viewer</span>
+</span><span id="DataStore-52"><a href="#DataStore-52"><span class="linenos"> 52</span></a><span class="sd">        │   │   x1_y1.json  │ tile data</span>
+</span><span id="DataStore-53"><a href="#DataStore-53"><span class="linenos"> 53</span></a><span class="sd">        │   │   x2_y2.json  │ tile data</span>
+</span><span id="DataStore-54"><a href="#DataStore-54"><span class="linenos"> 54</span></a><span class="sd">        │   │   ... </span>
+</span><span id="DataStore-55"><a href="#DataStore-55"><span class="linenos"> 55</span></a><span class="sd">        │   </span>
+</span><span id="DataStore-56"><a href="#DataStore-56"><span class="linenos"> 56</span></a><span class="sd">        └───layer_2/</span>
+</span><span id="DataStore-57"><a href="#DataStore-57"><span class="linenos"> 57</span></a><span class="sd">        │   ...</span>
+</span><span id="DataStore-58"><a href="#DataStore-58"><span class="linenos"> 58</span></a><span class="sd">        ```</span>
+</span><span id="DataStore-59"><a href="#DataStore-59"><span class="linenos"> 59</span></a><span class="sd">        </span>
+</span><span id="DataStore-60"><a href="#DataStore-60"><span class="linenos"> 60</span></a><span class="sd">        Important files:</span>
+</span><span id="DataStore-61"><a href="#DataStore-61"><span class="linenos"> 61</span></a><span class="sd">            * `main.json` contains all of the layer data, including object data, </span>
+</span><span id="DataStore-62"><a href="#DataStore-62"><span class="linenos"> 62</span></a><span class="sd">            geometry and metadata</span>
+</span><span id="DataStore-63"><a href="#DataStore-63"><span class="linenos"> 63</span></a><span class="sd">            * `layout.json` contains the structure of the tiles for the web </span>
+</span><span id="DataStore-64"><a href="#DataStore-64"><span class="linenos"> 64</span></a><span class="sd">            viewer - namely tile coordinates, sizes and filenames</span>
+</span><span id="DataStore-65"><a href="#DataStore-65"><span class="linenos"> 65</span></a><span class="sd">            * `x_y.json` contains the tile data for the tile at the specified </span>
+</span><span id="DataStore-66"><a href="#DataStore-66"><span class="linenos"> 66</span></a><span class="sd">            coordinates - namely the tile geometry and metadata of the objects</span>
+</span><span id="DataStore-67"><a href="#DataStore-67"><span class="linenos"> 67</span></a><span class="sd">            with centroids contained in the tile</span>
+</span><span id="DataStore-68"><a href="#DataStore-68"><span class="linenos"> 68</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-69"><a href="#DataStore-69"><span class="linenos"> 69</span></a><span class="sd">            directory (str): The directory of the data store.</span>
+</span><span id="DataStore-70"><a href="#DataStore-70"><span class="linenos"> 70</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-71"><a href="#DataStore-71"><span class="linenos"> 71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+</span><span id="DataStore-72"><a href="#DataStore-72"><span class="linenos"> 72</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
+</span><span id="DataStore-73"><a href="#DataStore-73"><span class="linenos"> 73</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
+</span><span id="DataStore-74"><a href="#DataStore-74"><span class="linenos"> 74</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
 </span><span id="DataStore-75"><a href="#DataStore-75"><span class="linenos"> 75</span></a>
-</span><span id="DataStore-76"><a href="#DataStore-76"><span class="linenos"> 76</span></a>        <span class="k">for</span> <span class="n">layer_name</span> <span class="ow">in</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">):</span>
-</span><span id="DataStore-77"><a href="#DataStore-77"><span class="linenos"> 77</span></a>            <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
-</span><span id="DataStore-78"><a href="#DataStore-78"><span class="linenos"> 78</span></a>            <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="DataStore-79"><a href="#DataStore-79"><span class="linenos"> 79</span></a>                <span class="k">yield</span> <span class="n">layer</span>
+</span><span id="DataStore-76"><a href="#DataStore-76"><span class="linenos"> 76</span></a>
+</span><span id="DataStore-77"><a href="#DataStore-77"><span class="linenos"> 77</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="DataStore-78"><a href="#DataStore-78"><span class="linenos"> 78</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-79"><a href="#DataStore-79"><span class="linenos"> 79</span></a><span class="sd">        List all layers in the data store.</span>
 </span><span id="DataStore-80"><a href="#DataStore-80"><span class="linenos"> 80</span></a>
-</span><span id="DataStore-81"><a href="#DataStore-81"><span class="linenos"> 81</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore-82"><a href="#DataStore-82"><span class="linenos"> 82</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-83"><a href="#DataStore-83"><span class="linenos"> 83</span></a><span class="sd">        Add a layer to the data store.</span>
-</span><span id="DataStore-84"><a href="#DataStore-84"><span class="linenos"> 84</span></a>
-</span><span id="DataStore-85"><a href="#DataStore-85"><span class="linenos"> 85</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore-86"><a href="#DataStore-86"><span class="linenos"> 86</span></a><span class="sd">            layer (Layer): The layer to add.</span>
-</span><span id="DataStore-87"><a href="#DataStore-87"><span class="linenos"> 87</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-88"><a href="#DataStore-88"><span class="linenos"> 88</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="DataStore-89"><a href="#DataStore-89"><span class="linenos"> 89</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
-</span><span id="DataStore-90"><a href="#DataStore-90"><span class="linenos"> 90</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
-</span><span id="DataStore-91"><a href="#DataStore-91"><span class="linenos"> 91</span></a>
-</span><span id="DataStore-92"><a href="#DataStore-92"><span class="linenos"> 92</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore-93"><a href="#DataStore-93"><span class="linenos"> 93</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-94"><a href="#DataStore-94"><span class="linenos"> 94</span></a><span class="sd">        Update a layer in the data store.</span>
-</span><span id="DataStore-95"><a href="#DataStore-95"><span class="linenos"> 95</span></a>
-</span><span id="DataStore-96"><a href="#DataStore-96"><span class="linenos"> 96</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore-97"><a href="#DataStore-97"><span class="linenos"> 97</span></a><span class="sd">            layer (Layer): The layer to update.</span>
-</span><span id="DataStore-98"><a href="#DataStore-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-99"><a href="#DataStore-99"><span class="linenos"> 99</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="DataStore-100"><a href="#DataStore-100"><span class="linenos">100</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
-</span><span id="DataStore-101"><a href="#DataStore-101"><span class="linenos">101</span></a>
-</span><span id="DataStore-102"><a href="#DataStore-102"><span class="linenos">102</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore-103"><a href="#DataStore-103"><span class="linenos">103</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-104"><a href="#DataStore-104"><span class="linenos">104</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
-</span><span id="DataStore-105"><a href="#DataStore-105"><span class="linenos">105</span></a><span class="sd">            </span>
-</span><span id="DataStore-106"><a href="#DataStore-106"><span class="linenos">106</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore-107"><a href="#DataStore-107"><span class="linenos">107</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
-</span><span id="DataStore-108"><a href="#DataStore-108"><span class="linenos">108</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-109"><a href="#DataStore-109"><span class="linenos">109</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span><span id="DataStore-110"><a href="#DataStore-110"><span class="linenos">110</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
-</span><span id="DataStore-111"><a href="#DataStore-111"><span class="linenos">111</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
-</span><span id="DataStore-112"><a href="#DataStore-112"><span class="linenos">112</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
-</span><span id="DataStore-113"><a href="#DataStore-113"><span class="linenos">113</span></a>
-</span><span id="DataStore-114"><a href="#DataStore-114"><span class="linenos">114</span></a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-</span><span id="DataStore-115"><a href="#DataStore-115"><span class="linenos">115</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore-116"><a href="#DataStore-116"><span class="linenos">116</span></a><span class="sd">        Get a layer from the data store. This is a shortcut for get_layer.</span>
-</span><span id="DataStore-117"><a href="#DataStore-117"><span class="linenos">117</span></a>
-</span><span id="DataStore-118"><a href="#DataStore-118"><span class="linenos">118</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore-119"><a href="#DataStore-119"><span class="linenos">119</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
-</span><span id="DataStore-120"><a href="#DataStore-120"><span class="linenos">120</span></a>
-</span><span id="DataStore-121"><a href="#DataStore-121"><span class="linenos">121</span></a><span class="sd">        Returns:</span>
-</span><span id="DataStore-122"><a href="#DataStore-122"><span class="linenos">122</span></a><span class="sd">            Layer: The layer.</span>
-</span><span id="DataStore-123"><a href="#DataStore-123"><span class="linenos">123</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore-124"><a href="#DataStore-124"><span class="linenos">124</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
+</span><span id="DataStore-81"><a href="#DataStore-81"><span class="linenos"> 81</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore-82"><a href="#DataStore-82"><span class="linenos"> 82</span></a><span class="sd">            List[str]: The names of the layers.</span>
+</span><span id="DataStore-83"><a href="#DataStore-83"><span class="linenos"> 83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-84"><a href="#DataStore-84"><span class="linenos"> 84</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+</span><span id="DataStore-85"><a href="#DataStore-85"><span class="linenos"> 85</span></a>
+</span><span id="DataStore-86"><a href="#DataStore-86"><span class="linenos"> 86</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
+</span><span id="DataStore-87"><a href="#DataStore-87"><span class="linenos"> 87</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-88"><a href="#DataStore-88"><span class="linenos"> 88</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
+</span><span id="DataStore-89"><a href="#DataStore-89"><span class="linenos"> 89</span></a><span class="sd">        None is returned.</span>
+</span><span id="DataStore-90"><a href="#DataStore-90"><span class="linenos"> 90</span></a>
+</span><span id="DataStore-91"><a href="#DataStore-91"><span class="linenos"> 91</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-92"><a href="#DataStore-92"><span class="linenos"> 92</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
+</span><span id="DataStore-93"><a href="#DataStore-93"><span class="linenos"> 93</span></a><span class="sd">        </span>
+</span><span id="DataStore-94"><a href="#DataStore-94"><span class="linenos"> 94</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore-95"><a href="#DataStore-95"><span class="linenos"> 95</span></a><span class="sd">            Layer: The layer.</span>
+</span><span id="DataStore-96"><a href="#DataStore-96"><span class="linenos"> 96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-97"><a href="#DataStore-97"><span class="linenos"> 97</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+</span><span id="DataStore-98"><a href="#DataStore-98"><span class="linenos"> 98</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
+</span><span id="DataStore-99"><a href="#DataStore-99"><span class="linenos"> 99</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+</span><span id="DataStore-100"><a href="#DataStore-100"><span class="linenos">100</span></a>            <span class="k">return</span>
+</span><span id="DataStore-101"><a href="#DataStore-101"><span class="linenos">101</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+</span><span id="DataStore-102"><a href="#DataStore-102"><span class="linenos">102</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</span><span id="DataStore-103"><a href="#DataStore-103"><span class="linenos">103</span></a>
+</span><span id="DataStore-104"><a href="#DataStore-104"><span class="linenos">104</span></a>    <span class="nd">@property</span>
+</span><span id="DataStore-105"><a href="#DataStore-105"><span class="linenos">105</span></a>    <span class="k">def</span> <span class="nf">layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="DataStore-106"><a href="#DataStore-106"><span class="linenos">106</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-107"><a href="#DataStore-107"><span class="linenos">107</span></a><span class="sd">        Generator, yields Layer stored in the data store. </span>
+</span><span id="DataStore-108"><a href="#DataStore-108"><span class="linenos">108</span></a>
+</span><span id="DataStore-109"><a href="#DataStore-109"><span class="linenos">109</span></a><span class="sd">        Yields:</span>
+</span><span id="DataStore-110"><a href="#DataStore-110"><span class="linenos">110</span></a><span class="sd">            Layer: each Layer in the data store.</span>
+</span><span id="DataStore-111"><a href="#DataStore-111"><span class="linenos">111</span></a>
+</span><span id="DataStore-112"><a href="#DataStore-112"><span class="linenos">112</span></a><span class="sd">        Example:</span>
+</span><span id="DataStore-113"><a href="#DataStore-113"><span class="linenos">113</span></a><span class="sd">            Generate a list of names of layers in the data store.</span>
+</span><span id="DataStore-114"><a href="#DataStore-114"><span class="linenos">114</span></a>
+</span><span id="DataStore-115"><a href="#DataStore-115"><span class="linenos">115</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
+</span><span id="DataStore-116"><a href="#DataStore-116"><span class="linenos">116</span></a><span class="sd">        &gt;&gt;&gt; for name in [&quot;terrain&quot;, &quot;buildings&quot;, &quot;roads&quot;]:</span>
+</span><span id="DataStore-117"><a href="#DataStore-117"><span class="linenos">117</span></a><span class="sd">        ...     ds.add_layer(Layer(name))</span>
+</span><span id="DataStore-118"><a href="#DataStore-118"><span class="linenos">118</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
+</span><span id="DataStore-119"><a href="#DataStore-119"><span class="linenos">119</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+</span><span id="DataStore-120"><a href="#DataStore-120"><span class="linenos">120</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-121"><a href="#DataStore-121"><span class="linenos">121</span></a>
+</span><span id="DataStore-122"><a href="#DataStore-122"><span class="linenos">122</span></a>        <span class="k">for</span> <span class="n">layer_name</span> <span class="ow">in</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">):</span>
+</span><span id="DataStore-123"><a href="#DataStore-123"><span class="linenos">123</span></a>            <span class="n">layer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
+</span><span id="DataStore-124"><a href="#DataStore-124"><span class="linenos">124</span></a>            <span class="k">if</span> <span class="n">layer</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="DataStore-125"><a href="#DataStore-125"><span class="linenos">125</span></a>                <span class="k">yield</span> <span class="n">layer</span>
+</span><span id="DataStore-126"><a href="#DataStore-126"><span class="linenos">126</span></a>
+</span><span id="DataStore-127"><a href="#DataStore-127"><span class="linenos">127</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore-128"><a href="#DataStore-128"><span class="linenos">128</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-129"><a href="#DataStore-129"><span class="linenos">129</span></a><span class="sd">        Add a layer to the data store. Adding a layer to the datastore persists the </span>
+</span><span id="DataStore-130"><a href="#DataStore-130"><span class="linenos">130</span></a><span class="sd">        layer onto the disk. </span>
+</span><span id="DataStore-131"><a href="#DataStore-131"><span class="linenos">131</span></a>
+</span><span id="DataStore-132"><a href="#DataStore-132"><span class="linenos">132</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-133"><a href="#DataStore-133"><span class="linenos">133</span></a><span class="sd">            layer (Layer): The layer to add.</span>
+</span><span id="DataStore-134"><a href="#DataStore-134"><span class="linenos">134</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-135"><a href="#DataStore-135"><span class="linenos">135</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore-136"><a href="#DataStore-136"><span class="linenos">136</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
+</span><span id="DataStore-137"><a href="#DataStore-137"><span class="linenos">137</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">))</span>
+</span><span id="DataStore-138"><a href="#DataStore-138"><span class="linenos">138</span></a>
+</span><span id="DataStore-139"><a href="#DataStore-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">publish_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore-140"><a href="#DataStore-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-141"><a href="#DataStore-141"><span class="linenos">141</span></a><span class="sd">        Publish a layer to the data store. Publishing stores all of the static </span>
+</span><span id="DataStore-142"><a href="#DataStore-142"><span class="linenos">142</span></a><span class="sd">        files required by the web viewer.</span>
+</span><span id="DataStore-143"><a href="#DataStore-143"><span class="linenos">143</span></a>
+</span><span id="DataStore-144"><a href="#DataStore-144"><span class="linenos">144</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-145"><a href="#DataStore-145"><span class="linenos">145</span></a><span class="sd">            layer (Layer): The layer to publish.</span>
+</span><span id="DataStore-146"><a href="#DataStore-146"><span class="linenos">146</span></a>
+</span><span id="DataStore-147"><a href="#DataStore-147"><span class="linenos">147</span></a><span class="sd">        See Also:</span>
+</span><span id="DataStore-148"><a href="#DataStore-148"><span class="linenos">148</span></a><span class="sd">            :class:`DataStore` see constructor to check the layout of the</span>
+</span><span id="DataStore-149"><a href="#DataStore-149"><span class="linenos">149</span></a><span class="sd">            publish files.</span>
+</span><span id="DataStore-150"><a href="#DataStore-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-151"><a href="#DataStore-151"><span class="linenos">151</span></a>
+</span><span id="DataStore-152"><a href="#DataStore-152"><span class="linenos">152</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore-153"><a href="#DataStore-153"><span class="linenos">153</span></a>        <span class="n">tile_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="DataStore-154"><a href="#DataStore-154"><span class="linenos">154</span></a>        <span class="k">for</span> <span class="n">tile</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="DataStore-155"><a href="#DataStore-155"><span class="linenos">155</span></a>            <span class="n">tile_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tile_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="n">tile</span><span class="p">)</span>
+</span><span id="DataStore-156"><a href="#DataStore-156"><span class="linenos">156</span></a>            <span class="n">tile_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="DataStore-157"><a href="#DataStore-157"><span class="linenos">157</span></a>                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+</span><span id="DataStore-158"><a href="#DataStore-158"><span class="linenos">158</span></a>                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+</span><span id="DataStore-159"><a href="#DataStore-159"><span class="linenos">159</span></a>                <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">tile_file</span><span class="p">,</span>
+</span><span id="DataStore-160"><a href="#DataStore-160"><span class="linenos">160</span></a>            <span class="p">})</span>
+</span><span id="DataStore-161"><a href="#DataStore-161"><span class="linenos">161</span></a>            <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">tile_file</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</span><span id="DataStore-162"><a href="#DataStore-162"><span class="linenos">162</span></a>
+</span><span id="DataStore-163"><a href="#DataStore-163"><span class="linenos">163</span></a>        <span class="n">grid_stats</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="DataStore-164"><a href="#DataStore-164"><span class="linenos">164</span></a>            <span class="s2">&quot;tile_xdim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_xdim</span><span class="p">,</span>
+</span><span id="DataStore-165"><a href="#DataStore-165"><span class="linenos">165</span></a>            <span class="s2">&quot;tile_ydim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_ydim</span><span class="p">,</span>
+</span><span id="DataStore-166"><a href="#DataStore-166"><span class="linenos">166</span></a>            <span class="s2">&quot;tile_list&quot;</span><span class="p">:</span> <span class="n">tile_list</span><span class="p">,</span>
+</span><span id="DataStore-167"><a href="#DataStore-167"><span class="linenos">167</span></a>        <span class="p">}</span>
+</span><span id="DataStore-168"><a href="#DataStore-168"><span class="linenos">168</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_layout_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">grid_stats</span><span class="p">)</span>
+</span><span id="DataStore-169"><a href="#DataStore-169"><span class="linenos">169</span></a>
+</span><span id="DataStore-170"><a href="#DataStore-170"><span class="linenos">170</span></a>
+</span><span id="DataStore-171"><a href="#DataStore-171"><span class="linenos">171</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore-172"><a href="#DataStore-172"><span class="linenos">172</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-173"><a href="#DataStore-173"><span class="linenos">173</span></a><span class="sd">        Update a layer in the data store.</span>
+</span><span id="DataStore-174"><a href="#DataStore-174"><span class="linenos">174</span></a>
+</span><span id="DataStore-175"><a href="#DataStore-175"><span class="linenos">175</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-176"><a href="#DataStore-176"><span class="linenos">176</span></a><span class="sd">            layer (Layer): The layer to update.</span>
+</span><span id="DataStore-177"><a href="#DataStore-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-178"><a href="#DataStore-178"><span class="linenos">178</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore-179"><a href="#DataStore-179"><span class="linenos">179</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</span><span id="DataStore-180"><a href="#DataStore-180"><span class="linenos">180</span></a>
+</span><span id="DataStore-181"><a href="#DataStore-181"><span class="linenos">181</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore-182"><a href="#DataStore-182"><span class="linenos">182</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-183"><a href="#DataStore-183"><span class="linenos">183</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
+</span><span id="DataStore-184"><a href="#DataStore-184"><span class="linenos">184</span></a><span class="sd">            </span>
+</span><span id="DataStore-185"><a href="#DataStore-185"><span class="linenos">185</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-186"><a href="#DataStore-186"><span class="linenos">186</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
+</span><span id="DataStore-187"><a href="#DataStore-187"><span class="linenos">187</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-188"><a href="#DataStore-188"><span class="linenos">188</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="DataStore-189"><a href="#DataStore-189"><span class="linenos">189</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="DataStore-190"><a href="#DataStore-190"><span class="linenos">190</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="DataStore-191"><a href="#DataStore-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
+</span><span id="DataStore-192"><a href="#DataStore-192"><span class="linenos">192</span></a>
+</span><span id="DataStore-193"><a href="#DataStore-193"><span class="linenos">193</span></a>    <span class="k">def</span> <span class="nf">tile_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile</span><span class="p">:</span> <span class="n">Tile</span><span class="p">):</span>
+</span><span id="DataStore-194"><a href="#DataStore-194"><span class="linenos">194</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-195"><a href="#DataStore-195"><span class="linenos">195</span></a><span class="sd">        Get the file path of a tile in the data store.</span>
+</span><span id="DataStore-196"><a href="#DataStore-196"><span class="linenos">196</span></a>
+</span><span id="DataStore-197"><a href="#DataStore-197"><span class="linenos">197</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-198"><a href="#DataStore-198"><span class="linenos">198</span></a><span class="sd">            layer_dir (str): The directory of the layer.</span>
+</span><span id="DataStore-199"><a href="#DataStore-199"><span class="linenos">199</span></a><span class="sd">            tile (Tuple[int, int]): The tile to get the file path of.</span>
+</span><span id="DataStore-200"><a href="#DataStore-200"><span class="linenos">200</span></a><span class="sd">        </span>
+</span><span id="DataStore-201"><a href="#DataStore-201"><span class="linenos">201</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore-202"><a href="#DataStore-202"><span class="linenos">202</span></a><span class="sd">            str: The file path of the tile.</span>
+</span><span id="DataStore-203"><a href="#DataStore-203"><span class="linenos">203</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-204"><a href="#DataStore-204"><span class="linenos">204</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="DataStore-205"><a href="#DataStore-205"><span class="linenos">205</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="DataStore-206"><a href="#DataStore-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+</span><span id="DataStore-207"><a href="#DataStore-207"><span class="linenos">207</span></a>
+</span><span id="DataStore-208"><a href="#DataStore-208"><span class="linenos">208</span></a>    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+</span><span id="DataStore-209"><a href="#DataStore-209"><span class="linenos">209</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore-210"><a href="#DataStore-210"><span class="linenos">210</span></a><span class="sd">        Get a layer from the data store. This is a shortcut for get_layer.</span>
+</span><span id="DataStore-211"><a href="#DataStore-211"><span class="linenos">211</span></a>
+</span><span id="DataStore-212"><a href="#DataStore-212"><span class="linenos">212</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore-213"><a href="#DataStore-213"><span class="linenos">213</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
+</span><span id="DataStore-214"><a href="#DataStore-214"><span class="linenos">214</span></a>
+</span><span id="DataStore-215"><a href="#DataStore-215"><span class="linenos">215</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore-216"><a href="#DataStore-216"><span class="linenos">216</span></a><span class="sd">            Layer: The layer.</span>
+</span><span id="DataStore-217"><a href="#DataStore-217"><span class="linenos">217</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore-218"><a href="#DataStore-218"><span class="linenos">218</span></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_layer</span><span class="p">(</span><span class="n">layer_name</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -383,16 +608,48 @@
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.__init__-19"><a href="#DataStore.__init__-19"><span class="linenos">19</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
-</span><span id="DataStore.__init__-20"><a href="#DataStore.__init__-20"><span class="linenos">20</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.__init__-21"><a href="#DataStore.__init__-21"><span class="linenos">21</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
-</span><span id="DataStore.__init__-22"><a href="#DataStore.__init__-22"><span class="linenos">22</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
-</span><span id="DataStore.__init__-23"><a href="#DataStore.__init__-23"><span class="linenos">23</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
-</span><span id="DataStore.__init__-24"><a href="#DataStore.__init__-24"><span class="linenos">24</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.__init__-25"><a href="#DataStore.__init__-25"><span class="linenos">25</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
-</span><span id="DataStore.__init__-26"><a href="#DataStore.__init__-26"><span class="linenos">26</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
-</span><span id="DataStore.__init__-27"><a href="#DataStore.__init__-27"><span class="linenos">27</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
-</span><span id="DataStore.__init__-28"><a href="#DataStore.__init__-28"><span class="linenos">28</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.__init__-33"><a href="#DataStore.__init__-33"><span class="linenos">33</span></a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">directory</span><span class="p">):</span>
+</span><span id="DataStore.__init__-34"><a href="#DataStore.__init__-34"><span class="linenos">34</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.__init__-35"><a href="#DataStore.__init__-35"><span class="linenos">35</span></a><span class="sd">        Initialize or open an existing data store. Data store contains individual layers,</span>
+</span><span id="DataStore.__init__-36"><a href="#DataStore.__init__-36"><span class="linenos">36</span></a><span class="sd">        handles storing data on the disk and loading. Internally, the data store is a </span>
+</span><span id="DataStore.__init__-37"><a href="#DataStore.__init__-37"><span class="linenos">37</span></a><span class="sd">        directory and all layers are stored in subdirectories.</span>
+</span><span id="DataStore.__init__-38"><a href="#DataStore.__init__-38"><span class="linenos">38</span></a>
+</span><span id="DataStore.__init__-39"><a href="#DataStore.__init__-39"><span class="linenos">39</span></a>
+</span><span id="DataStore.__init__-40"><a href="#DataStore.__init__-40"><span class="linenos">40</span></a><span class="sd">        The structure of the Data Store is as follows:</span>
+</span><span id="DataStore.__init__-41"><a href="#DataStore.__init__-41"><span class="linenos">41</span></a><span class="sd">        ```</span>
+</span><span id="DataStore.__init__-42"><a href="#DataStore.__init__-42"><span class="linenos">42</span></a><span class="sd">        datastore_dir/</span>
+</span><span id="DataStore.__init__-43"><a href="#DataStore.__init__-43"><span class="linenos">43</span></a><span class="sd">        └───layer_1/</span>
+</span><span id="DataStore.__init__-44"><a href="#DataStore.__init__-44"><span class="linenos">44</span></a><span class="sd">        │   │</span>
+</span><span id="DataStore.__init__-45"><a href="#DataStore.__init__-45"><span class="linenos">45</span></a><span class="sd">        │   │   BASE FILES</span>
+</span><span id="DataStore.__init__-46"><a href="#DataStore.__init__-46"><span class="linenos">46</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="DataStore.__init__-47"><a href="#DataStore.__init__-47"><span class="linenos">47</span></a><span class="sd">        │   │   main.json   │ all layer data in a single file</span>
+</span><span id="DataStore.__init__-48"><a href="#DataStore.__init__-48"><span class="linenos">48</span></a><span class="sd">        │   │  </span>
+</span><span id="DataStore.__init__-49"><a href="#DataStore.__init__-49"><span class="linenos">49</span></a><span class="sd">        │   │   PUBLISHED FILES</span>
+</span><span id="DataStore.__init__-50"><a href="#DataStore.__init__-50"><span class="linenos">50</span></a><span class="sd">        │   │   ----------------------------------------------</span>
+</span><span id="DataStore.__init__-51"><a href="#DataStore.__init__-51"><span class="linenos">51</span></a><span class="sd">        │   │   layout.json │ structure of tiles for viewer</span>
+</span><span id="DataStore.__init__-52"><a href="#DataStore.__init__-52"><span class="linenos">52</span></a><span class="sd">        │   │   x1_y1.json  │ tile data</span>
+</span><span id="DataStore.__init__-53"><a href="#DataStore.__init__-53"><span class="linenos">53</span></a><span class="sd">        │   │   x2_y2.json  │ tile data</span>
+</span><span id="DataStore.__init__-54"><a href="#DataStore.__init__-54"><span class="linenos">54</span></a><span class="sd">        │   │   ... </span>
+</span><span id="DataStore.__init__-55"><a href="#DataStore.__init__-55"><span class="linenos">55</span></a><span class="sd">        │   </span>
+</span><span id="DataStore.__init__-56"><a href="#DataStore.__init__-56"><span class="linenos">56</span></a><span class="sd">        └───layer_2/</span>
+</span><span id="DataStore.__init__-57"><a href="#DataStore.__init__-57"><span class="linenos">57</span></a><span class="sd">        │   ...</span>
+</span><span id="DataStore.__init__-58"><a href="#DataStore.__init__-58"><span class="linenos">58</span></a><span class="sd">        ```</span>
+</span><span id="DataStore.__init__-59"><a href="#DataStore.__init__-59"><span class="linenos">59</span></a><span class="sd">        </span>
+</span><span id="DataStore.__init__-60"><a href="#DataStore.__init__-60"><span class="linenos">60</span></a><span class="sd">        Important files:</span>
+</span><span id="DataStore.__init__-61"><a href="#DataStore.__init__-61"><span class="linenos">61</span></a><span class="sd">            * `main.json` contains all of the layer data, including object data, </span>
+</span><span id="DataStore.__init__-62"><a href="#DataStore.__init__-62"><span class="linenos">62</span></a><span class="sd">            geometry and metadata</span>
+</span><span id="DataStore.__init__-63"><a href="#DataStore.__init__-63"><span class="linenos">63</span></a><span class="sd">            * `layout.json` contains the structure of the tiles for the web </span>
+</span><span id="DataStore.__init__-64"><a href="#DataStore.__init__-64"><span class="linenos">64</span></a><span class="sd">            viewer - namely tile coordinates, sizes and filenames</span>
+</span><span id="DataStore.__init__-65"><a href="#DataStore.__init__-65"><span class="linenos">65</span></a><span class="sd">            * `x_y.json` contains the tile data for the tile at the specified </span>
+</span><span id="DataStore.__init__-66"><a href="#DataStore.__init__-66"><span class="linenos">66</span></a><span class="sd">            coordinates - namely the tile geometry and metadata of the objects</span>
+</span><span id="DataStore.__init__-67"><a href="#DataStore.__init__-67"><span class="linenos">67</span></a><span class="sd">            with centroids contained in the tile</span>
+</span><span id="DataStore.__init__-68"><a href="#DataStore.__init__-68"><span class="linenos">68</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.__init__-69"><a href="#DataStore.__init__-69"><span class="linenos">69</span></a><span class="sd">            directory (str): The directory of the data store.</span>
+</span><span id="DataStore.__init__-70"><a href="#DataStore.__init__-70"><span class="linenos">70</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.__init__-71"><a href="#DataStore.__init__-71"><span class="linenos">71</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">directory</span> <span class="o">=</span> <span class="n">directory</span>
+</span><span id="DataStore.__init__-72"><a href="#DataStore.__init__-72"><span class="linenos">72</span></a>        <span class="c1">#for some reason this method does not work well with temporary directories during testing</span>
+</span><span id="DataStore.__init__-73"><a href="#DataStore.__init__-73"><span class="linenos">73</span></a>        <span class="c1">#if not fs.is_pathname_valid(self.directory):</span>
+</span><span id="DataStore.__init__-74"><a href="#DataStore.__init__-74"><span class="linenos">74</span></a>        <span class="c1">#    raise ValueError(f&quot;{self.directory} is not a valid pathname.&quot;)</span>
 </span></pre></div>
 
         </details>
@@ -400,6 +657,46 @@
             <div class="docstring"><p>Initialize or open an existing data store. Data store contains individual layers,
 handles storing data on the disk and loading. Internally, the data store is a 
 directory and all layers are stored in subdirectories.</p>
+
+<p>The structure of the Data Store is as follows:</p>
+
+<pre><code>datastore_dir/
+└───layer_1/
+│   │
+│   │   BASE FILES
+│   │   ----------------------------------------------
+│   │   main.json   │ all layer data in a single file
+│   │  
+│   │   PUBLISHED FILES
+│   │   ----------------------------------------------
+│   │   layout.json │ structure of tiles for viewer
+│   │   x1_y1.json  │ tile data
+│   │   x2_y2.json  │ tile data
+│   │   ... 
+│   
+└───layer_2/
+│   ...
+</code></pre>
+
+<h6 id="important-files">Important files</h6>
+
+<blockquote>
+  <ul>
+  <li><code>main.json</code> contains all of the layer data, including object data, 
+  geometry and metadata</li>
+  <li><code>layout.json</code> contains the structure of the tiles for the web 
+  viewer - namely tile coordinates, sizes and filenames</li>
+  <li><code>x_y.json</code> contains the tile data for the tile at the specified 
+  coordinates - namely the tile geometry and metadata of the objects
+  with centroids contained in the tile</li>
+  </ul>
+</blockquote>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>directory (str):</strong>  The directory of the data store.</li>
+</ul>
 </div>
 
 
@@ -414,14 +711,14 @@ directory and all layers are stored in subdirectories.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.list_layers-31"><a href="#DataStore.list_layers-31"><span class="linenos">31</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-</span><span id="DataStore.list_layers-32"><a href="#DataStore.list_layers-32"><span class="linenos">32</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.list_layers-33"><a href="#DataStore.list_layers-33"><span class="linenos">33</span></a><span class="sd">        List all layers in the data store.</span>
-</span><span id="DataStore.list_layers-34"><a href="#DataStore.list_layers-34"><span class="linenos">34</span></a>
-</span><span id="DataStore.list_layers-35"><a href="#DataStore.list_layers-35"><span class="linenos">35</span></a><span class="sd">        Returns:</span>
-</span><span id="DataStore.list_layers-36"><a href="#DataStore.list_layers-36"><span class="linenos">36</span></a><span class="sd">            List[str]: The names of the layers.</span>
-</span><span id="DataStore.list_layers-37"><a href="#DataStore.list_layers-37"><span class="linenos">37</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.list_layers-38"><a href="#DataStore.list_layers-38"><span class="linenos">38</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.list_layers-77"><a href="#DataStore.list_layers-77"><span class="linenos">77</span></a>    <span class="k">def</span> <span class="nf">list_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+</span><span id="DataStore.list_layers-78"><a href="#DataStore.list_layers-78"><span class="linenos">78</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.list_layers-79"><a href="#DataStore.list_layers-79"><span class="linenos">79</span></a><span class="sd">        List all layers in the data store.</span>
+</span><span id="DataStore.list_layers-80"><a href="#DataStore.list_layers-80"><span class="linenos">80</span></a>
+</span><span id="DataStore.list_layers-81"><a href="#DataStore.list_layers-81"><span class="linenos">81</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore.list_layers-82"><a href="#DataStore.list_layers-82"><span class="linenos">82</span></a><span class="sd">            List[str]: The names of the layers.</span>
+</span><span id="DataStore.list_layers-83"><a href="#DataStore.list_layers-83"><span class="linenos">83</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.list_layers-84"><a href="#DataStore.list_layers-84"><span class="linenos">84</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">list_subdirectories</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -447,23 +744,23 @@ directory and all layers are stored in subdirectories.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.get_layer-40"><a href="#DataStore.get_layer-40"><span class="linenos">40</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
-</span><span id="DataStore.get_layer-41"><a href="#DataStore.get_layer-41"><span class="linenos">41</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.get_layer-42"><a href="#DataStore.get_layer-42"><span class="linenos">42</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
-</span><span id="DataStore.get_layer-43"><a href="#DataStore.get_layer-43"><span class="linenos">43</span></a><span class="sd">        None is returned.</span>
-</span><span id="DataStore.get_layer-44"><a href="#DataStore.get_layer-44"><span class="linenos">44</span></a>
-</span><span id="DataStore.get_layer-45"><a href="#DataStore.get_layer-45"><span class="linenos">45</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore.get_layer-46"><a href="#DataStore.get_layer-46"><span class="linenos">46</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
-</span><span id="DataStore.get_layer-47"><a href="#DataStore.get_layer-47"><span class="linenos">47</span></a><span class="sd">        </span>
-</span><span id="DataStore.get_layer-48"><a href="#DataStore.get_layer-48"><span class="linenos">48</span></a><span class="sd">        Returns:</span>
-</span><span id="DataStore.get_layer-49"><a href="#DataStore.get_layer-49"><span class="linenos">49</span></a><span class="sd">            Layer: The layer.</span>
-</span><span id="DataStore.get_layer-50"><a href="#DataStore.get_layer-50"><span class="linenos">50</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.get_layer-51"><a href="#DataStore.get_layer-51"><span class="linenos">51</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
-</span><span id="DataStore.get_layer-52"><a href="#DataStore.get_layer-52"><span class="linenos">52</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
-</span><span id="DataStore.get_layer-53"><a href="#DataStore.get_layer-53"><span class="linenos">53</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
-</span><span id="DataStore.get_layer-54"><a href="#DataStore.get_layer-54"><span class="linenos">54</span></a>            <span class="k">return</span>
-</span><span id="DataStore.get_layer-55"><a href="#DataStore.get_layer-55"><span class="linenos">55</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
-</span><span id="DataStore.get_layer-56"><a href="#DataStore.get_layer-56"><span class="linenos">56</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.get_layer-86"><a href="#DataStore.get_layer-86"><span class="linenos"> 86</span></a>    <span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">):</span>
+</span><span id="DataStore.get_layer-87"><a href="#DataStore.get_layer-87"><span class="linenos"> 87</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.get_layer-88"><a href="#DataStore.get_layer-88"><span class="linenos"> 88</span></a><span class="sd">        Get a layer based on its name from the data store. If the layer does not exist, </span>
+</span><span id="DataStore.get_layer-89"><a href="#DataStore.get_layer-89"><span class="linenos"> 89</span></a><span class="sd">        None is returned.</span>
+</span><span id="DataStore.get_layer-90"><a href="#DataStore.get_layer-90"><span class="linenos"> 90</span></a>
+</span><span id="DataStore.get_layer-91"><a href="#DataStore.get_layer-91"><span class="linenos"> 91</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.get_layer-92"><a href="#DataStore.get_layer-92"><span class="linenos"> 92</span></a><span class="sd">            layer_name (str): The name of the layer to get.</span>
+</span><span id="DataStore.get_layer-93"><a href="#DataStore.get_layer-93"><span class="linenos"> 93</span></a><span class="sd">        </span>
+</span><span id="DataStore.get_layer-94"><a href="#DataStore.get_layer-94"><span class="linenos"> 94</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore.get_layer-95"><a href="#DataStore.get_layer-95"><span class="linenos"> 95</span></a><span class="sd">            Layer: The layer.</span>
+</span><span id="DataStore.get_layer-96"><a href="#DataStore.get_layer-96"><span class="linenos"> 96</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.get_layer-97"><a href="#DataStore.get_layer-97"><span class="linenos"> 97</span></a>        <span class="n">layer_path</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer_name</span><span class="p">)</span>
+</span><span id="DataStore.get_layer-98"><a href="#DataStore.get_layer-98"><span class="linenos"> 98</span></a>        <span class="n">data_file</span> <span class="o">=</span> <span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_path</span><span class="p">)</span>
+</span><span id="DataStore.get_layer-99"><a href="#DataStore.get_layer-99"><span class="linenos"> 99</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">file_exists</span><span class="p">(</span><span class="n">data_file</span><span class="p">):</span>
+</span><span id="DataStore.get_layer-100"><a href="#DataStore.get_layer-100"><span class="linenos">100</span></a>            <span class="k">return</span>
+</span><span id="DataStore.get_layer-101"><a href="#DataStore.get_layer-101"><span class="linenos">101</span></a>        <span class="n">data</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span>
+</span><span id="DataStore.get_layer-102"><a href="#DataStore.get_layer-102"><span class="linenos">102</span></a>        <span class="k">return</span> <span class="n">Layer</span><span class="o">.</span><span class="n">deserialize</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </span></pre></div>
 
         </details>
@@ -527,27 +824,92 @@ None is returned.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.add_layer-81"><a href="#DataStore.add_layer-81"><span class="linenos">81</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore.add_layer-82"><a href="#DataStore.add_layer-82"><span class="linenos">82</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.add_layer-83"><a href="#DataStore.add_layer-83"><span class="linenos">83</span></a><span class="sd">        Add a layer to the data store.</span>
-</span><span id="DataStore.add_layer-84"><a href="#DataStore.add_layer-84"><span class="linenos">84</span></a>
-</span><span id="DataStore.add_layer-85"><a href="#DataStore.add_layer-85"><span class="linenos">85</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore.add_layer-86"><a href="#DataStore.add_layer-86"><span class="linenos">86</span></a><span class="sd">            layer (Layer): The layer to add.</span>
-</span><span id="DataStore.add_layer-87"><a href="#DataStore.add_layer-87"><span class="linenos">87</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.add_layer-88"><a href="#DataStore.add_layer-88"><span class="linenos">88</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="DataStore.add_layer-89"><a href="#DataStore.add_layer-89"><span class="linenos">89</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
-</span><span id="DataStore.add_layer-90"><a href="#DataStore.add_layer-90"><span class="linenos">90</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.add_layer-127"><a href="#DataStore.add_layer-127"><span class="linenos">127</span></a>    <span class="k">def</span> <span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore.add_layer-128"><a href="#DataStore.add_layer-128"><span class="linenos">128</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.add_layer-129"><a href="#DataStore.add_layer-129"><span class="linenos">129</span></a><span class="sd">        Add a layer to the data store. Adding a layer to the datastore persists the </span>
+</span><span id="DataStore.add_layer-130"><a href="#DataStore.add_layer-130"><span class="linenos">130</span></a><span class="sd">        layer onto the disk. </span>
+</span><span id="DataStore.add_layer-131"><a href="#DataStore.add_layer-131"><span class="linenos">131</span></a>
+</span><span id="DataStore.add_layer-132"><a href="#DataStore.add_layer-132"><span class="linenos">132</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.add_layer-133"><a href="#DataStore.add_layer-133"><span class="linenos">133</span></a><span class="sd">            layer (Layer): The layer to add.</span>
+</span><span id="DataStore.add_layer-134"><a href="#DataStore.add_layer-134"><span class="linenos">134</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.add_layer-135"><a href="#DataStore.add_layer-135"><span class="linenos">135</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore.add_layer-136"><a href="#DataStore.add_layer-136"><span class="linenos">136</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">create_dir_if_not_exists</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">)</span>
+</span><span id="DataStore.add_layer-137"><a href="#DataStore.add_layer-137"><span class="linenos">137</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">))</span>
 </span></pre></div>
 
         </details>
 
-            <div class="docstring"><p>Add a layer to the data store.</p>
+            <div class="docstring"><p>Add a layer to the data store. Adding a layer to the datastore persists the 
+layer onto the disk. </p>
 
 <h6 id="args">Args</h6>
 
 <ul>
 <li><strong>layer (Layer):</strong>  The layer to add.</li>
 </ul>
+</div>
+
+
+                            </div>
+                            <div id="DataStore.publish_layer" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#DataStore.publish_layer">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">publish_layer</span><span class="signature">(self, layer: <a href="layer.html#Layer">metacity.datamodel.layer.Layer</a>)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.publish_layer-139"><a href="#DataStore.publish_layer-139"><span class="linenos">139</span></a>    <span class="k">def</span> <span class="nf">publish_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore.publish_layer-140"><a href="#DataStore.publish_layer-140"><span class="linenos">140</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.publish_layer-141"><a href="#DataStore.publish_layer-141"><span class="linenos">141</span></a><span class="sd">        Publish a layer to the data store. Publishing stores all of the static </span>
+</span><span id="DataStore.publish_layer-142"><a href="#DataStore.publish_layer-142"><span class="linenos">142</span></a><span class="sd">        files required by the web viewer.</span>
+</span><span id="DataStore.publish_layer-143"><a href="#DataStore.publish_layer-143"><span class="linenos">143</span></a>
+</span><span id="DataStore.publish_layer-144"><a href="#DataStore.publish_layer-144"><span class="linenos">144</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.publish_layer-145"><a href="#DataStore.publish_layer-145"><span class="linenos">145</span></a><span class="sd">            layer (Layer): The layer to publish.</span>
+</span><span id="DataStore.publish_layer-146"><a href="#DataStore.publish_layer-146"><span class="linenos">146</span></a>
+</span><span id="DataStore.publish_layer-147"><a href="#DataStore.publish_layer-147"><span class="linenos">147</span></a><span class="sd">        See Also:</span>
+</span><span id="DataStore.publish_layer-148"><a href="#DataStore.publish_layer-148"><span class="linenos">148</span></a><span class="sd">            :class:`DataStore` see constructor to check the layout of the</span>
+</span><span id="DataStore.publish_layer-149"><a href="#DataStore.publish_layer-149"><span class="linenos">149</span></a><span class="sd">            publish files.</span>
+</span><span id="DataStore.publish_layer-150"><a href="#DataStore.publish_layer-150"><span class="linenos">150</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.publish_layer-151"><a href="#DataStore.publish_layer-151"><span class="linenos">151</span></a>
+</span><span id="DataStore.publish_layer-152"><a href="#DataStore.publish_layer-152"><span class="linenos">152</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore.publish_layer-153"><a href="#DataStore.publish_layer-153"><span class="linenos">153</span></a>        <span class="n">tile_list</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="DataStore.publish_layer-154"><a href="#DataStore.publish_layer-154"><span class="linenos">154</span></a>        <span class="k">for</span> <span class="n">tile</span> <span class="ow">in</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tiles</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="DataStore.publish_layer-155"><a href="#DataStore.publish_layer-155"><span class="linenos">155</span></a>            <span class="n">tile_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tile_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="n">tile</span><span class="p">)</span>
+</span><span id="DataStore.publish_layer-156"><a href="#DataStore.publish_layer-156"><span class="linenos">156</span></a>            <span class="n">tile_list</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+</span><span id="DataStore.publish_layer-157"><a href="#DataStore.publish_layer-157"><span class="linenos">157</span></a>                <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-158"><a href="#DataStore.publish_layer-158"><span class="linenos">158</span></a>                <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-159"><a href="#DataStore.publish_layer-159"><span class="linenos">159</span></a>                <span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="n">tile_file</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-160"><a href="#DataStore.publish_layer-160"><span class="linenos">160</span></a>            <span class="p">})</span>
+</span><span id="DataStore.publish_layer-161"><a href="#DataStore.publish_layer-161"><span class="linenos">161</span></a>            <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">tile_file</span><span class="p">,</span> <span class="n">tile</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+</span><span id="DataStore.publish_layer-162"><a href="#DataStore.publish_layer-162"><span class="linenos">162</span></a>
+</span><span id="DataStore.publish_layer-163"><a href="#DataStore.publish_layer-163"><span class="linenos">163</span></a>        <span class="n">grid_stats</span> <span class="o">=</span> <span class="p">{</span>
+</span><span id="DataStore.publish_layer-164"><a href="#DataStore.publish_layer-164"><span class="linenos">164</span></a>            <span class="s2">&quot;tile_xdim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_xdim</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-165"><a href="#DataStore.publish_layer-165"><span class="linenos">165</span></a>            <span class="s2">&quot;tile_ydim&quot;</span><span class="p">:</span> <span class="n">layer</span><span class="o">.</span><span class="n">grid</span><span class="o">.</span><span class="n">tile_ydim</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-166"><a href="#DataStore.publish_layer-166"><span class="linenos">166</span></a>            <span class="s2">&quot;tile_list&quot;</span><span class="p">:</span> <span class="n">tile_list</span><span class="p">,</span>
+</span><span id="DataStore.publish_layer-167"><a href="#DataStore.publish_layer-167"><span class="linenos">167</span></a>        <span class="p">}</span>
+</span><span id="DataStore.publish_layer-168"><a href="#DataStore.publish_layer-168"><span class="linenos">168</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_layout_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">grid_stats</span><span class="p">)</span>
+</span></pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Publish a layer to the data store. Publishing stores all of the static 
+files required by the web viewer.</p>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>layer (Layer):</strong>  The layer to publish.</li>
+</ul>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#DataStore">DataStore</a></code> see constructor to check the layout of the
+  publish files.</p>
+</blockquote>
 </div>
 
 
@@ -562,15 +924,15 @@ None is returned.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.update_layer-92"><a href="#DataStore.update_layer-92"><span class="linenos"> 92</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore.update_layer-93"><a href="#DataStore.update_layer-93"><span class="linenos"> 93</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.update_layer-94"><a href="#DataStore.update_layer-94"><span class="linenos"> 94</span></a><span class="sd">        Update a layer in the data store.</span>
-</span><span id="DataStore.update_layer-95"><a href="#DataStore.update_layer-95"><span class="linenos"> 95</span></a>
-</span><span id="DataStore.update_layer-96"><a href="#DataStore.update_layer-96"><span class="linenos"> 96</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore.update_layer-97"><a href="#DataStore.update_layer-97"><span class="linenos"> 97</span></a><span class="sd">            layer (Layer): The layer to update.</span>
-</span><span id="DataStore.update_layer-98"><a href="#DataStore.update_layer-98"><span class="linenos"> 98</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.update_layer-99"><a href="#DataStore.update_layer-99"><span class="linenos"> 99</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
-</span><span id="DataStore.update_layer-100"><a href="#DataStore.update_layer-100"><span class="linenos">100</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.update_layer-171"><a href="#DataStore.update_layer-171"><span class="linenos">171</span></a>    <span class="k">def</span> <span class="nf">update_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore.update_layer-172"><a href="#DataStore.update_layer-172"><span class="linenos">172</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.update_layer-173"><a href="#DataStore.update_layer-173"><span class="linenos">173</span></a><span class="sd">        Update a layer in the data store.</span>
+</span><span id="DataStore.update_layer-174"><a href="#DataStore.update_layer-174"><span class="linenos">174</span></a>
+</span><span id="DataStore.update_layer-175"><a href="#DataStore.update_layer-175"><span class="linenos">175</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.update_layer-176"><a href="#DataStore.update_layer-176"><span class="linenos">176</span></a><span class="sd">            layer (Layer): The layer to update.</span>
+</span><span id="DataStore.update_layer-177"><a href="#DataStore.update_layer-177"><span class="linenos">177</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.update_layer-178"><a href="#DataStore.update_layer-178"><span class="linenos">178</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
+</span><span id="DataStore.update_layer-179"><a href="#DataStore.update_layer-179"><span class="linenos">179</span></a>        <span class="n">fs</span><span class="o">.</span><span class="n">write_json</span><span class="p">(</span><span class="n">layer_main_file</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">),</span> <span class="n">layer</span><span class="o">.</span><span class="n">serialize</span><span class="p">())</span>
 </span></pre></div>
 
         </details>
@@ -596,17 +958,17 @@ None is returned.</p>
 
             <details>
             <summary>View Source</summary>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.layer_dir-102"><a href="#DataStore.layer_dir-102"><span class="linenos">102</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
-</span><span id="DataStore.layer_dir-103"><a href="#DataStore.layer_dir-103"><span class="linenos">103</span></a>        <span class="sd">&quot;&quot;&quot;</span>
-</span><span id="DataStore.layer_dir-104"><a href="#DataStore.layer_dir-104"><span class="linenos">104</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
-</span><span id="DataStore.layer_dir-105"><a href="#DataStore.layer_dir-105"><span class="linenos">105</span></a><span class="sd">            </span>
-</span><span id="DataStore.layer_dir-106"><a href="#DataStore.layer_dir-106"><span class="linenos">106</span></a><span class="sd">        Args:</span>
-</span><span id="DataStore.layer_dir-107"><a href="#DataStore.layer_dir-107"><span class="linenos">107</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
-</span><span id="DataStore.layer_dir-108"><a href="#DataStore.layer_dir-108"><span class="linenos">108</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="DataStore.layer_dir-109"><a href="#DataStore.layer_dir-109"><span class="linenos">109</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-</span><span id="DataStore.layer_dir-110"><a href="#DataStore.layer_dir-110"><span class="linenos">110</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
-</span><span id="DataStore.layer_dir-111"><a href="#DataStore.layer_dir-111"><span class="linenos">111</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
-</span><span id="DataStore.layer_dir-112"><a href="#DataStore.layer_dir-112"><span class="linenos">112</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.layer_dir-181"><a href="#DataStore.layer_dir-181"><span class="linenos">181</span></a>    <span class="k">def</span> <span class="nf">layer_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer</span><span class="p">:</span> <span class="n">Layer</span><span class="p">):</span>
+</span><span id="DataStore.layer_dir-182"><a href="#DataStore.layer_dir-182"><span class="linenos">182</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.layer_dir-183"><a href="#DataStore.layer_dir-183"><span class="linenos">183</span></a><span class="sd">        Get the directory of the layer in the Data Store.</span>
+</span><span id="DataStore.layer_dir-184"><a href="#DataStore.layer_dir-184"><span class="linenos">184</span></a><span class="sd">            </span>
+</span><span id="DataStore.layer_dir-185"><a href="#DataStore.layer_dir-185"><span class="linenos">185</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.layer_dir-186"><a href="#DataStore.layer_dir-186"><span class="linenos">186</span></a><span class="sd">            layer (Layer): The layer to get the directory of.</span>
+</span><span id="DataStore.layer_dir-187"><a href="#DataStore.layer_dir-187"><span class="linenos">187</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.layer_dir-188"><a href="#DataStore.layer_dir-188"><span class="linenos">188</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">directory</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</span><span id="DataStore.layer_dir-189"><a href="#DataStore.layer_dir-189"><span class="linenos">189</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="DataStore.layer_dir-190"><a href="#DataStore.layer_dir-190"><span class="linenos">190</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="DataStore.layer_dir-191"><a href="#DataStore.layer_dir-191"><span class="linenos">191</span></a>        <span class="k">return</span> <span class="n">layer_dir</span>
 </span></pre></div>
 
         </details>
@@ -618,6 +980,52 @@ None is returned.</p>
 <ul>
 <li><strong>layer (Layer):</strong>  The layer to get the directory of.</li>
 </ul>
+</div>
+
+
+                            </div>
+                            <div id="DataStore.tile_file" class="classattr">
+                                        <div class="attr function"><a class="headerlink" href="#DataStore.tile_file">#&nbsp;&nbsp</a>
+
+        
+            <span class="def">def</span>
+            <span class="name">tile_file</span><span class="signature">(self, layer_dir: str, tile: <a href="grid.html#Tile">metacity.datamodel.grid.Tile</a>)</span>:
+    </div>
+
+            <details>
+            <summary>View Source</summary>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="DataStore.tile_file-193"><a href="#DataStore.tile_file-193"><span class="linenos">193</span></a>    <span class="k">def</span> <span class="nf">tile_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">layer_dir</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">tile</span><span class="p">:</span> <span class="n">Tile</span><span class="p">):</span>
+</span><span id="DataStore.tile_file-194"><a href="#DataStore.tile_file-194"><span class="linenos">194</span></a>        <span class="sd">&quot;&quot;&quot;</span>
+</span><span id="DataStore.tile_file-195"><a href="#DataStore.tile_file-195"><span class="linenos">195</span></a><span class="sd">        Get the file path of a tile in the data store.</span>
+</span><span id="DataStore.tile_file-196"><a href="#DataStore.tile_file-196"><span class="linenos">196</span></a>
+</span><span id="DataStore.tile_file-197"><a href="#DataStore.tile_file-197"><span class="linenos">197</span></a><span class="sd">        Args:</span>
+</span><span id="DataStore.tile_file-198"><a href="#DataStore.tile_file-198"><span class="linenos">198</span></a><span class="sd">            layer_dir (str): The directory of the layer.</span>
+</span><span id="DataStore.tile_file-199"><a href="#DataStore.tile_file-199"><span class="linenos">199</span></a><span class="sd">            tile (Tuple[int, int]): The tile to get the file path of.</span>
+</span><span id="DataStore.tile_file-200"><a href="#DataStore.tile_file-200"><span class="linenos">200</span></a><span class="sd">        </span>
+</span><span id="DataStore.tile_file-201"><a href="#DataStore.tile_file-201"><span class="linenos">201</span></a><span class="sd">        Returns:</span>
+</span><span id="DataStore.tile_file-202"><a href="#DataStore.tile_file-202"><span class="linenos">202</span></a><span class="sd">            str: The file path of the tile.</span>
+</span><span id="DataStore.tile_file-203"><a href="#DataStore.tile_file-203"><span class="linenos">203</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="DataStore.tile_file-204"><a href="#DataStore.tile_file-204"><span class="linenos">204</span></a>        <span class="k">if</span> <span class="ow">not</span> <span class="n">fs</span><span class="o">.</span><span class="n">is_pathname_valid</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">):</span>
+</span><span id="DataStore.tile_file-205"><a href="#DataStore.tile_file-205"><span class="linenos">205</span></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">layer_dir</span><span class="si">}</span><span class="s2"> is not a valid pathname.&quot;</span><span class="p">)</span>
+</span><span id="DataStore.tile_file-206"><a href="#DataStore.tile_file-206"><span class="linenos">206</span></a>        <span class="k">return</span> <span class="n">fs</span><span class="o">.</span><span class="n">join_path</span><span class="p">(</span><span class="n">layer_dir</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">x</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">tile</span><span class="o">.</span><span class="n">y</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+</span></pre></div>
+
+        </details>
+
+            <div class="docstring"><p>Get the file path of a tile in the data store.</p>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>layer_dir (str):</strong>  The directory of the layer.</li>
+<li><strong>tile (Tuple[int, int]):</strong>  The tile to get the file path of.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>str: The file path of the tile.</p>
+</blockquote>
 </div>
 
 
