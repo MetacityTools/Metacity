@@ -293,10 +293,13 @@
 
             <div class="docstring"><p>Initialize a layer. Layer represents a collection of objects.</p>
 
-<p>Args:
-    name (str): The name of the layer.
-    tile_xdim (float): The x dimension of the tiles. Default is 1000.0.
-    tile_ydim (float): The y dimension of the tiles. Default is 1000.0.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>name (str):</strong>  The name of the layer.</li>
+<li><strong>tile_xdim (float):</strong>  The x dimension of the tiles. Default is 1000.0.</li>
+<li><strong>tile_ydim (float):</strong>  The y dimension of the tiles. Default is 1000.0.</li>
+</ul>
 </div>
 
 
@@ -325,8 +328,11 @@
 
             <div class="docstring"><p>Add an object to the layer.</p>
 
-<p>Args:
-    obj (Object): The object to add.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>obj (Object):</strong>  The object to add.</li>
+</ul>
 </div>
 
 
@@ -356,8 +362,11 @@
 
             <div class="docstring"><p>Add objects to the layer. </p>
 
-<p>Args:
-    objs (List[Object]): The objects to add.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>objs (List[Object]):</strong>  The objects to add.</li>
+</ul>
 </div>
 
 
@@ -408,11 +417,17 @@
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>Returns:
-    Dict: The serialized layer.</p>
+<h6 id="returns">Returns</h6>
 
-<p>See Also:
-    <code><a href="grid.html#Grid.serialize">metacity.datamodel.grid.Grid.serialize</a></code> for the serialization of a grid into JSON</p>
+<blockquote>
+  <p>Dict: The serialized layer.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="grid.html#Grid.serialize">metacity.datamodel.grid.Grid.serialize</a></code> for the serialization of a grid into JSON</p>
+</blockquote>
 </div>
 
 
@@ -452,14 +467,23 @@
 
             <div class="docstring"><p>Deserialize the layer, static method.</p>
 
-<p>Args:
-    data (Dict): The data to deserialize.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    Layer: The deserialized layer.</p>
+<ul>
+<li><strong>data (Dict):</strong>  The data to deserialize.</li>
+</ul>
 
-<p>See Also:
-    <code><a href="#Layer.serialize">Layer.serialize</a></code> for the serialization of a layer into a dictionary</p>
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Layer: The deserialized layer.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#Layer.serialize">Layer.serialize</a></code> for the serialization of a layer into a dictionary</p>
+</blockquote>
 </div>
 
 
@@ -474,8 +498,11 @@
     
             <div class="docstring"><p>Generator, yields objects in the layer.</p>
 
-<p>Yields:
-    Object: The objects in the layer.</p>
+<h6 id="yields">Yields</h6>
+
+<blockquote>
+  <p>Object: The objects in the layer.</p>
+</blockquote>
 </div>
 
 

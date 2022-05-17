@@ -229,10 +229,10 @@
 </span><span id="L-137"><a href="#L-137"><span class="linenos">137</span></a>
 </span><span id="L-138"><a href="#L-138"><span class="linenos">138</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
 </span><span id="L-139"><a href="#L-139"><span class="linenos">139</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;]</span>
-</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;roads&quot;))</span>
+</span><span id="L-140"><a href="#L-140"><span class="linenos">140</span></a><span class="sd">        []</span>
+</span><span id="L-141"><a href="#L-141"><span class="linenos">141</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;terrain&quot;))</span>
 </span><span id="L-142"><a href="#L-142"><span class="linenos">142</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+</span><span id="L-143"><a href="#L-143"><span class="linenos">143</span></a><span class="sd">        [&#39;terrain&#39;]</span>
 </span><span id="L-144"><a href="#L-144"><span class="linenos">144</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="L-145"><a href="#L-145"><span class="linenos">145</span></a>        
 </span><span id="L-146"><a href="#L-146"><span class="linenos">146</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
@@ -350,11 +350,17 @@
 
             <div class="docstring"><p>Get the main file of the layer.</p>
 
-<p>Args:
-    layer_dir (str): The directory path of the layer.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    str: Path to the main file of the layer.</p>
+<ul>
+<li><strong>layer_dir (str):</strong>  The directory path of the layer.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>str: Path to the main file of the layer.</p>
+</blockquote>
 </div>
 
 
@@ -386,11 +392,17 @@
 
             <div class="docstring"><p>Get the main file of the layer.</p>
 
-<p>Args:
-    layer_dir (str): The directory path of the layer.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    str: Path to the main file of the layer.</p>
+<ul>
+<li><strong>layer_dir (str):</strong>  The directory path of the layer.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>str: Path to the main file of the layer.</p>
+</blockquote>
 </div>
 
 
@@ -514,10 +526,10 @@
 </span><span id="DataStore-138"><a href="#DataStore-138"><span class="linenos">138</span></a>
 </span><span id="DataStore-139"><a href="#DataStore-139"><span class="linenos">139</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
 </span><span id="DataStore-140"><a href="#DataStore-140"><span class="linenos">140</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="DataStore-141"><a href="#DataStore-141"><span class="linenos">141</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;]</span>
-</span><span id="DataStore-142"><a href="#DataStore-142"><span class="linenos">142</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;roads&quot;))</span>
+</span><span id="DataStore-141"><a href="#DataStore-141"><span class="linenos">141</span></a><span class="sd">        []</span>
+</span><span id="DataStore-142"><a href="#DataStore-142"><span class="linenos">142</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;terrain&quot;))</span>
 </span><span id="DataStore-143"><a href="#DataStore-143"><span class="linenos">143</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="DataStore-144"><a href="#DataStore-144"><span class="linenos">144</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+</span><span id="DataStore-144"><a href="#DataStore-144"><span class="linenos">144</span></a><span class="sd">        [&#39;terrain&#39;]</span>
 </span><span id="DataStore-145"><a href="#DataStore-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="DataStore-146"><a href="#DataStore-146"><span class="linenos">146</span></a>        
 </span><span id="DataStore-147"><a href="#DataStore-147"><span class="linenos">147</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
@@ -688,16 +700,25 @@ directory and all layers are stored in subdirectories.</p>
 │   ...
 </code></pre>
 
-<p>Important files:
-    * <code>main.json</code> contains all of the layer data, including object data, 
-    geometry and metadata
-    * <code>layout.json</code> contains the structure of the tiles for the web 
-    viewer - namely tile coordinates, sizes and filenames
-    * <code>x_y.json</code> contains the tile data for the tile at the specified 
-    coordinates - namely the tile geometry and metadata of the objects
-    with centroids contained in the tile
-Args:
-    directory (str): The directory of the data store.</p>
+<h6 id="important-files">Important files</h6>
+
+<blockquote>
+  <ul>
+  <li><code>main.json</code> contains all of the layer data, including object data, 
+  geometry and metadata</li>
+  <li><code>layout.json</code> contains the structure of the tiles for the web 
+  viewer - namely tile coordinates, sizes and filenames</li>
+  <li><code>x_y.json</code> contains the tile data for the tile at the specified 
+  coordinates - namely the tile geometry and metadata of the objects
+  with centroids contained in the tile</li>
+  </ul>
+</blockquote>
+
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>directory (str):</strong>  The directory of the data store.</li>
+</ul>
 </div>
 
 
@@ -726,8 +747,11 @@ Args:
 
             <div class="docstring"><p>List all layers in the data store.</p>
 
-<p>Returns:
-    List[str]: The names of the layers.</p>
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>List[str]: The names of the layers.</p>
+</blockquote>
 </div>
 
 
@@ -766,11 +790,17 @@ Args:
             <div class="docstring"><p>Get a layer based on its name from the data store. If the layer does not exist, 
 None is returned.</p>
 
-<p>Args:
-    layer_name (str): The name of the layer to get.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    Layer: The layer.</p>
+<ul>
+<li><strong>layer_name (str):</strong>  The name of the layer to get.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Layer: The layer.</p>
+</blockquote>
 </div>
 
 
@@ -785,11 +815,17 @@ None is returned.</p>
     
             <div class="docstring"><p>Generator, yields Layer stored in the data store. </p>
 
-<p>Yields:
-    Layer: each Layer in the data store.</p>
+<h6 id="yields">Yields</h6>
 
-<p>Example:
-    Generate a list of names of layers in the data store.</p>
+<blockquote>
+  <p>Layer: each Layer in the data store.</p>
+</blockquote>
+
+<h6 id="example">Example</h6>
+
+<blockquote>
+  <p>Generate a list of names of layers in the data store.</p>
+</blockquote>
 
 <div class="pdoc-code codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">DataStore</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;terrain&quot;</span><span class="p">,</span> <span class="s2">&quot;buildings&quot;</span><span class="p">,</span> <span class="s2">&quot;roads&quot;</span><span class="p">]:</span>
@@ -825,10 +861,10 @@ None is returned.</p>
 </span><span id="DataStore.add_layer-138"><a href="#DataStore.add_layer-138"><span class="linenos">138</span></a>
 </span><span id="DataStore.add_layer-139"><a href="#DataStore.add_layer-139"><span class="linenos">139</span></a><span class="sd">        &gt;&gt;&gt; ds = DataStore(&quot;store&quot;)</span>
 </span><span id="DataStore.add_layer-140"><a href="#DataStore.add_layer-140"><span class="linenos">140</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="DataStore.add_layer-141"><a href="#DataStore.add_layer-141"><span class="linenos">141</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;]</span>
-</span><span id="DataStore.add_layer-142"><a href="#DataStore.add_layer-142"><span class="linenos">142</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;roads&quot;))</span>
+</span><span id="DataStore.add_layer-141"><a href="#DataStore.add_layer-141"><span class="linenos">141</span></a><span class="sd">        []</span>
+</span><span id="DataStore.add_layer-142"><a href="#DataStore.add_layer-142"><span class="linenos">142</span></a><span class="sd">        &gt;&gt;&gt; ds.add_layer(Layer(&quot;terrain&quot;))</span>
 </span><span id="DataStore.add_layer-143"><a href="#DataStore.add_layer-143"><span class="linenos">143</span></a><span class="sd">        &gt;&gt;&gt; [l.name for l in ds.layers]</span>
-</span><span id="DataStore.add_layer-144"><a href="#DataStore.add_layer-144"><span class="linenos">144</span></a><span class="sd">        [&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+</span><span id="DataStore.add_layer-144"><a href="#DataStore.add_layer-144"><span class="linenos">144</span></a><span class="sd">        [&#39;terrain&#39;]</span>
 </span><span id="DataStore.add_layer-145"><a href="#DataStore.add_layer-145"><span class="linenos">145</span></a><span class="sd">        &quot;&quot;&quot;</span>
 </span><span id="DataStore.add_layer-146"><a href="#DataStore.add_layer-146"><span class="linenos">146</span></a>        
 </span><span id="DataStore.add_layer-147"><a href="#DataStore.add_layer-147"><span class="linenos">147</span></a>        <span class="n">layer_dir</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer_dir</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
@@ -840,18 +876,24 @@ None is returned.</p>
             <div class="docstring"><p>Add a layer to the data store. Adding a layer to the datastore persists the 
 layer onto the disk. </p>
 
-<p>Args:
-    layer (Layer): The layer to add.</p>
+<h6 id="args">Args</h6>
 
-<p>Example:
-    Add layer to existing datastore.</p>
+<ul>
+<li><strong>layer (Layer):</strong>  The layer to add.</li>
+</ul>
+
+<h6 id="example">Example</h6>
+
+<blockquote>
+  <p>Add layer to existing datastore.</p>
+</blockquote>
 
 <div class="pdoc-code codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span> <span class="o">=</span> <span class="n">DataStore</span><span class="p">(</span><span class="s2">&quot;store&quot;</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">layers</span><span class="p">]</span>
-<span class="go">[&#39;terrain&#39;, &#39;buildings&#39;]</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;roads&quot;</span><span class="p">))</span>
+<span class="go">[]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ds</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">Layer</span><span class="p">(</span><span class="s2">&quot;terrain&quot;</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">ds</span><span class="o">.</span><span class="n">layers</span><span class="p">]</span>
-<span class="go">[&#39;terrain&#39;, &#39;buildings&#39;, &#39;roads&#39;]</span>
+<span class="go">[&#39;terrain&#39;]</span>
 </code></pre></div>
 </div>
 
@@ -904,12 +946,18 @@ layer onto the disk. </p>
             <div class="docstring"><p>Publish a layer to the data store. Publishing stores all of the static 
 files required by the web viewer.</p>
 
-<p>Args:
-    layer (Layer): The layer to publish.</p>
+<h6 id="args">Args</h6>
 
-<p>See Also:
-    <code><a href="#DataStore">DataStore</a></code> see constructor to check the layout of the
-    publish files.</p>
+<ul>
+<li><strong>layer (Layer):</strong>  The layer to publish.</li>
+</ul>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#DataStore">DataStore</a></code> see constructor to check the layout of the
+  publish files.</p>
+</blockquote>
 </div>
 
 
@@ -939,8 +987,11 @@ files required by the web viewer.</p>
 
             <div class="docstring"><p>Update a layer in the data store.</p>
 
-<p>Args:
-    layer (Layer): The layer to update.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>layer (Layer):</strong>  The layer to update.</li>
+</ul>
 </div>
 
 
@@ -972,8 +1023,11 @@ files required by the web viewer.</p>
 
             <div class="docstring"><p>Get the directory of the layer in the Data Store.</p>
 
-<p>Args:
-    layer (Layer): The layer to get the directory of.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>layer (Layer):</strong>  The layer to get the directory of.</li>
+</ul>
 </div>
 
 
@@ -1008,12 +1062,18 @@ files required by the web viewer.</p>
 
             <div class="docstring"><p>Get the file path of a tile in the data store.</p>
 
-<p>Args:
-    layer_dir (str): The directory of the layer.
-    tile (Tuple[int, int]): The tile to get the file path of.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    str: The file path of the tile.</p>
+<ul>
+<li><strong>layer_dir (str):</strong>  The directory of the layer.</li>
+<li><strong>tile (Tuple[int, int]):</strong>  The tile to get the file path of.</li>
+</ul>
+
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>str: The file path of the tile.</p>
+</blockquote>
 </div>
 
 

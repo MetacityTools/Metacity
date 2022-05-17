@@ -423,11 +423,14 @@
 Parameters x and y always define the origin coordinates and the width and height define 
 the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 
-<p>Args:
-    x (float): The base x coordinate of the tile.
-    y (float): The base y coordinate of the tile.
-    width (float): The width of the tile.
-    height (float): The height of the tile.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>x (float):</strong>  The base x coordinate of the tile.</li>
+<li><strong>y (float):</strong>  The base y coordinate of the tile.</li>
+<li><strong>width (float):</strong>  The width of the tile.</li>
+<li><strong>height (float):</strong>  The height of the tile.</li>
+</ul>
 </div>
 
 
@@ -456,8 +459,11 @@ the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 
             <div class="docstring"><p>Add an object to the tile. </p>
 
-<p>Args:
-    object (Object): The object to add.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>object (Object):</strong>  The object to add.</li>
+</ul>
 </div>
 
 
@@ -524,11 +530,17 @@ the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>Returns:
-    Dict: The serialized tile.</p>
+<h6 id="returns">Returns</h6>
 
-<p>See Also:
-    <code><a href="object.html#Object.serialize">metacity.datamodel.object.Object.serialize</a></code> for the serialization of an Object into JSON</p>
+<blockquote>
+  <p>Dict: The serialized tile.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="object.html#Object.serialize">metacity.datamodel.object.Object.serialize</a></code> for the serialization of an Object into JSON</p>
+</blockquote>
 </div>
 
 
@@ -567,14 +579,23 @@ the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 
             <div class="docstring"><p>Deserialize the tile, static method.</p>
 
-<p>Args:
-    data (Dict): The data to deserialize.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    Tile: The deserialized tile.</p>
+<ul>
+<li><strong>data (Dict):</strong>  The data to deserialize.</li>
+</ul>
 
-<p>See Also:
-    <code><a href="#Tile.serialize">Tile.serialize</a></code> for the serialization of a tile into a dictionary</p>
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Tile: The deserialized tile.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#Tile.serialize">Tile.serialize</a></code> for the serialization of a tile into a dictionary</p>
+</blockquote>
 </div>
 
 
@@ -735,9 +756,12 @@ the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 
             <div class="docstring"><p>Initialize a regular grid. All tiles are rectangles, aligned to axis with fixed dimensions.</p>
 
-<p>Args:
-    tile_xdim (float): The x dimension of a single tile. Default is 1000.0.
-    tile_ydim (float): The y dimension of a single tile. Default is 1000.0.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>tile_xdim (float):</strong>  The x dimension of a single tile. Default is 1000.0.</li>
+<li><strong>tile_ydim (float):</strong>  The y dimension of a single tile. Default is 1000.0.</li>
+</ul>
 </div>
 
 
@@ -782,8 +806,11 @@ the area of the tile spanning from x to x + width, analogous for y-axis.</p>
 If object has multiple geometries, take average of all geometry centroids and 
 use it as the tile selection pivot.</p>
 
-<p>Args:
-    object (Object): The object to add.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>object (Object):</strong>  The object to add.</li>
+</ul>
 </div>
 
 
@@ -817,9 +844,12 @@ use it as the tile selection pivot.</p>
 
             <div class="docstring"><p>Get the tile at the given coordinates. If the tile does not exist, it will be created.</p>
 
-<p>Args:
-    x (float): The x coordinate of the pivot to get the tile for.
-    y (float): The y coordinate of the pivot to get the tile for.</p>
+<h6 id="args">Args</h6>
+
+<ul>
+<li><strong>x (float):</strong>  The x coordinate of the pivot to get the tile for.</li>
+<li><strong>y (float):</strong>  The y coordinate of the pivot to get the tile for.</li>
+</ul>
 </div>
 
 
@@ -878,11 +908,17 @@ The structure of returned data follows:</p>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p>Returns:
-    Dict: The serialized grid.</p>
+<h6 id="returns">Returns</h6>
 
-<p>See Also:
-    <code><a href="#Tile.serialize">Tile.serialize</a></code> for the structure of a tile JSON.</p>
+<blockquote>
+  <p>Dict: The serialized grid.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#Tile.serialize">Tile.serialize</a></code> for the structure of a tile JSON.</p>
+</blockquote>
 </div>
 
 
@@ -926,14 +962,23 @@ The structure of returned data follows:</p>
 
             <div class="docstring"><p>Deserialize the grid, static method The tiles are deserialized separately.</p>
 
-<p>Args:
-    data (Dict): The data to deserialize.</p>
+<h6 id="args">Args</h6>
 
-<p>Returns:
-    Grid: The deserialized grid.</p>
+<ul>
+<li><strong>data (Dict):</strong>  The data to deserialize.</li>
+</ul>
 
-<p>See Also:
-    <code><a href="#Grid.serialize">Grid.serialize</a></code> see for the structure of the data.</p>
+<h6 id="returns">Returns</h6>
+
+<blockquote>
+  <p>Grid: The deserialized grid.</p>
+</blockquote>
+
+<h6 id="see-also">See Also</h6>
+
+<blockquote>
+  <p><code><a href="#Grid.serialize">Grid.serialize</a></code> see for the structure of the data.</p>
+</blockquote>
 </div>
 
 
@@ -948,8 +993,11 @@ The structure of returned data follows:</p>
     
             <div class="docstring"><p>Iterate over all objects in the grid.</p>
 
-<p>Yields:
-    Object: The objects in the grid.</p>
+<h6 id="yields">Yields</h6>
+
+<blockquote>
+  <p>Object: The objects in the grid.</p>
+</blockquote>
 </div>
 
 

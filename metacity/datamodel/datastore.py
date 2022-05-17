@@ -137,10 +137,10 @@ class DataStore:
 
         >>> ds = DataStore("store")
         >>> [l.name for l in ds.layers]
-        ['terrain', 'buildings']
-        >>> ds.add_layer(Layer("roads"))
+        []
+        >>> ds.add_layer(Layer("terrain"))
         >>> [l.name for l in ds.layers]
-        ['terrain', 'buildings', 'roads']
+        ['terrain']
         """
         
         layer_dir = self.layer_dir(layer)
