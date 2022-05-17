@@ -261,6 +261,9 @@ dev/*
 *.obj
 
 #test data
-data/
 projects/
 Praha/
+html/
+data/
+tmp/
+ng_*

@@ -7,7 +7,7 @@ def test_empty_bbox():
     empty = bbox.empty_bbox()
     fl = np.finfo(np.float32)
     assert np.all(empty == np.array([[fl.max, fl.max, fl.max], [fl.min, fl.min, fl.min]]))
-
+    
 
 def subtest_vertices(low, high, vertices):
     for vertex in vertices:

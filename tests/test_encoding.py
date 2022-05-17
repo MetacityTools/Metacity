@@ -10,8 +10,8 @@ def test_float32(random_vertices):
     assert np.all(data == data3)
 
 
-def test_int32(random_semantics):
-    data = random_semantics.flatten()
+def test_int32(random_integers):
+    data = random_integers.flatten()
     buffer = en.npint32_to_buffer(data)
     data2 = en.base64_to_int32(buffer)
     data3 = en.base64_to_type(buffer, np.int32)

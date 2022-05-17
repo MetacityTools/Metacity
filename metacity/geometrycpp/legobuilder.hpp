@@ -1,10 +1,10 @@
-#include "polygons.hpp"
 #include "bbox.hpp"
+#include "mesh.hpp"
 
 class LegoBuilder {
 public:
     LegoBuilder();
-    void insert_model(const shared_ptr<TriangularMesh> model);
+    void insert_model(const shared_ptr<Mesh> model);
     void build_heightmap(const tfloat xmin, const tfloat ymin, const tfloat xmax, const tfloat ymax, const size_t xresolution);
     json legofy(const size_t box_size);
     void lego_to_png(const string & name) const;

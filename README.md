@@ -13,7 +13,7 @@ Install with:
 pip install metacity
 ```
 
-This repository relies on system packages `CGAL`, `GDAL`, and `CMake`, please make sure they are installed before trying to install this package. On Ubuntu, you can try something like:
+This repository relies on system packages `GDAL` and `CMake`, please make sure they are installed before trying to install this package. On Ubuntu, you can try something like:
 
 1. Install [GDAL](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
 ```
@@ -24,16 +24,32 @@ sudo apt-get install libgdal-dev
 export CPLUS_INCLUDE_PATH=/usr/include/gdal
 export C_INCLUDE_PATH=/usr/include/gdal
 ```
-2. Install [CGAL](https://www.cgal.org/download/linux.html)
-```
-sudo apt-get install libcgal-dev
-```
-3. Install [CMake](https://cmake.org/download/)
+2. Install [CMake](https://cmake.org/download/)
 ```
 sudo apt-get install cmake
 ```
 
-
+## Development
+1. Clone this repository:
+```
+git clone git@github.com:MetacitySuite/Metacity.git
+```
+2. Initialize submodules:
+```
+git submodule update --init --recursive
+```
+3. Install requirements:
+```
+pip install -r requirements.txt
+```
+4. Build C++ with:
+```
+python setup.py build_ext --inplace
+```
+If you encounter any problems, make sure you installed dependencies listed above, generally:
+- have `GDAL` and `CMake` installed
+- install packages based on `requirements.txt`
+- make sure you have c++ compiler supporting c++17 installed
 
 ## Branches
 | Branch | Status | Description |

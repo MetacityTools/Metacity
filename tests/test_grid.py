@@ -1,32 +1,24 @@
+from metacity.datamodel.grid import Grid
 from metacity.io.parse import parse
-from tests.conftest import project_tree, geojson_dataset
-from metacity.core.grid.grid import build_grid
-from metacity.datamodel import project
-from metacity.filesystem import base as fs 
-import os
 
 
-def test_grid(project_tree: str, geojson_dataset: str):
-    objects = parse(geojson_dataset)
-    assert len(objects) == 14
-    project_dir = os.path.join(project_tree, 'test_project')
-    layer_name = 'test_layer'
-    grid_dir = os.path.join(project_dir, layer_name, fs.GRID, fs.GRID_TILES)
+def test_grid_poly(shp_poly_dataset: str):
+    objects = parse(shp_poly_dataset)
+    assert len(objects) == 2826
 
-    p = project.Project(project_dir)
-    l = p.create_layer('test_layer')
+
+    grid = Grid(tile_xdim=1000, tile_ydim=1000)
     for o in objects:
-        l.add(o)
-    l.persist()
-    
-    g = build_grid(l)
+        grid.add_object(o)
 
-    tiles = os.listdir(grid_dir)
-    assert len(tiles) == 100
+    assert len(grid.tiles) == 6
+    tilecounts = [len(t.objects) for t in grid.tiles.values()]
 
+    data = grid.serialize()
+    grid2 = Grid.deserialize(data)
 
-
-
-    
+    assert len(grid2.tiles) == 6
+    tilecounts2 = [len(t.objects) for t in grid2.tiles.values()]
+    assert tilecounts == tilecounts2
 
 

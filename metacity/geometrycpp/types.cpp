@@ -1,4 +1,5 @@
 #include "types.hpp"
+#include <iomanip>
 
 void grid_coords(const tvec3 &point, const tfloat tile_size, pair<int, int> &coords)
 {
@@ -111,23 +112,42 @@ vector<tvec3> string_to_vec2_to_vec3(const string &s)
     return uint8_to_vec2_to_vec3(ui8);
 }
 
-size_t pair_hash::operator()(const pair<int, int> &p) const
-{
-    auto h1 = hash<int>{}(p.first);
-    auto h2 = hash<int>{}(p.second);
-
-    // Mainly for demonstration purposes, i.e. works but is overly simple
-    // In the real world, use sth. like boost.hash_combine
-    return h1 ^ h2;
-}
-
 ostream &operator<<(ostream &os, const tvec3 &vec)
 {
     os << vec.x << " " << vec.y << " " << vec.z;
     return os;
 }
 
+ostream &operator<<(ostream &os, const tvec2 &vec)
+{
+    os << vec.x << " " << vec.y;
+    return os;
+}
+
 ostream &operator<<(ostream &os, const vector<tvec3> &vec)
+{
+    os << "[\n";
+    os << fixed;
+    os << setprecision(2);
+    for (const auto &v : vec)
+        os << "   " << v << "\n";
+    os << "]";
+    return os;
+}
+
+ostream &operator<<(ostream &os, const vector<tvec2> &vec)
+{
+    os << "[\n";
+    os << fixed;
+    os << setprecision(2);
+    for (const auto &v : vec)
+        os << "   " << v << "\n";
+    os << "]";
+    return os;
+}
+
+
+ostream &operator<<(ostream &os, const vector<uint32_t> &vec)
 {
     os << "[\n";
     for (const auto &v : vec)

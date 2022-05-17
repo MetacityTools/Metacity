@@ -1,6 +1,6 @@
 include setup.py
 include CMakeLists.txt
-include *.pyi
+include metacity/*.pyi
 recursive-include pybind11 CMakeLists.txt *.cmake
 graft metacity/geometrycpp
 graft pybind11/include
