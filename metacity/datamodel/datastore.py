@@ -131,7 +131,18 @@ class DataStore:
 
         Args:
             layer (Layer): The layer to add.
+
+        Example:
+            Add layer to existing datastore.
+
+        >>> ds = DataStore("store")
+        >>> [l.name for l in ds.layers]
+        ['terrain', 'buildings']
+        >>> ds.add_layer(Layer("roads"))
+        >>> [l.name for l in ds.layers]
+        ['terrain', 'buildings', 'roads']
         """
+        
         layer_dir = self.layer_dir(layer)
         fs.create_dir_if_not_exists(layer_dir)
         fs.write_json(layer_main_file(layer_dir), layer.serialize())
