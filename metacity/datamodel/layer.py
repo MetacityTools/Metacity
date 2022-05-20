@@ -11,6 +11,16 @@ class Layer:
             name (str): The name of the layer.
             tile_xdim (float): The x dimension of the tiles. Default is 1000.0.
             tile_ydim (float): The y dimension of the tiles. Default is 1000.0.
+
+        Example:
+            Initialize a layer with a name and a grid:
+
+        >>> layer = Layer("layer1", 1000.0, 1000.0)
+        >>> layer.name
+        "layer1"
+        >>> layer.grid.width
+        1000.0
+
         """
         self.name = name
         self.grid = Grid(tile_xdim, tile_ydim)
@@ -21,6 +31,15 @@ class Layer:
         
         Args:
             obj (Object): The object to add.
+
+        Example:
+            Add an object to the layer:
+
+        >>> layer = Layer("layer1", 1000.0, 1000.0)
+        >>> object = metacity.io.parse('single_point_object.shp')[0]
+        >>> layer.add_object(object)
+        >>> len(layer.grid.tiles)
+        1   
         """
         self.grid.add_object(obj)
 
@@ -51,6 +70,19 @@ class Layer:
 
         See Also:
             :func:`metacity.datamodel.grid.Grid.serialize` for the serialization of a grid into JSON
+
+        Example:
+            Serialize a layer:
+
+        >>> layer = Layer("layer1", 1000.0, 1000.0)
+        >>> object = metacity.io.parse('single_point_object.shp')[0]
+        >>> layer.add_object(object)
+        >>> layer.serialize()
+        {
+            "name": "layer1",
+            "grid": JSON
+        }
+
         """
         return {
             "name": self.name,
