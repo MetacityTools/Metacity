@@ -115,6 +115,17 @@ class Layer:
 
         Yields:
             Object: The objects in the layer.
+
+
+        Example:
+            Print all objects in the layer:
+
+        >>> layer = Layer("layer1", 1000.0, 1000.0)
+        >>> object = metacity.io.parse('single_point_object.shp')[0]
+        >>> layer.add_object(object)
+        >>> for obj in layer.objects:
+        ...     print(obj.meta)
+        {"key" : "value"}
         """
         for obj in self.grid.objects:
             yield obj
