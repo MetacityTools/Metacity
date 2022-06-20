@@ -1,6 +1,12 @@
 #pragma once
 #include "models.hpp"
 
+class ModelLoader
+{
+public:
+    virtual const char * type() const = 0;
+    virtual shared_ptr<Model> transform() const = 0;
+};
 
 class MultiPoint : public ModelLoader
 {

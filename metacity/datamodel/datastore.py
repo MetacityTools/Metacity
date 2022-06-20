@@ -163,13 +163,15 @@ class DataStore:
         layer_dir = self.layer_dir(layer)
         tile_list = []
         for tile in layer.grid.tiles.values():
-            tile_file = self.tile_file(layer_dir, tile)
             tile_list.append({
                 "x": tile.x,
                 "y": tile.y,
-                "file": tile_file,
+                "file": self.tile_name(tile),
             })
-            fs.write_json(tile_file, tile.serialize())
+            fs.write_json(
+                self.tile_path(layer_dir, tile), 
+                tile.serialize()
+                )
 
         grid_stats = {
             "tile_xdim": layer.grid.tile_xdim,
@@ -201,7 +203,7 @@ class DataStore:
             raise ValueError(f"{layer_dir} is not a valid pathname.")
         return layer_dir
 
-    def tile_file(self, layer_dir: str, tile: Tile):
+    def tile_path(self, layer_dir: str, tile: Tile):
         """
         Get the file path of a tile in the data store.
 
@@ -214,7 +216,21 @@ class DataStore:
         """
         if not fs.is_pathname_valid(layer_dir):
             raise ValueError(f"{layer_dir} is not a valid pathname.")
-        return fs.join_path(layer_dir, f"{tile.x}_{tile.y}.json")
+        return fs.join_path(layer_dir, self.tile_name(tile))
+
+
+    def tile_name(self, tile: Tile):
+        """
+        Get the name of a tile.
+
+        Args:
+            tile (Tile): The tile to get the name of.
+
+        Returns:
+            str: The name of the tile.
+        """
+        return f"{tile.x}_{tile.y}.json"
+
 
     def __getitem__(self, layer_name: str):
         """

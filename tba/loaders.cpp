@@ -1,8 +1,5 @@
 #include <stdexcept>
 #include "loaders.hpp"
-#include "points.hpp"
-#include "segments.hpp"
-#include "mesh.hpp"
 #include "triangulation.hpp"
 
 //===============================================================================

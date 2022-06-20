@@ -16,27 +16,10 @@ add_compile_options(-Wall -pedantic -O3) #-fsanitize=address -fno-omit-frame-poi
 pybind11_add_module(${PROJECT_NAME} metacity/geometrycpp/geometry.cpp 
                                     metacity/geometrycpp/models.cpp 
                                     metacity/geometrycpp/models.hpp 
-                                    metacity/geometrycpp/loaders.cpp 
-                                    metacity/geometrycpp/loaders.hpp 
-                                    metacity/geometrycpp/points.cpp
-                                    metacity/geometrycpp/points.hpp
-                                    metacity/geometrycpp/segments.cpp
-                                    metacity/geometrycpp/segments.hpp
-                                    metacity/geometrycpp/mesh.cpp
-                                    metacity/geometrycpp/mesh.hpp
-                                    metacity/geometrycpp/triangulation.cpp
-                                    metacity/geometrycpp/triangulation.hpp
-                                    metacity/geometrycpp/bbox.hpp
-                                    metacity/geometrycpp/bbox.cpp
-                                    metacity/geometrycpp/types.cpp
+                                    metacity/geometrycpp/attribute.cpp 
+                                    metacity/geometrycpp/attribute.hpp 
                                     metacity/geometrycpp/types.hpp
-                                    metacity/geometrycpp/attributes.cpp
-                                    metacity/geometrycpp/attributes.hpp
-                                    metacity/geometrycpp/bvh.hpp
-                                    metacity/geometrycpp/bvh.cpp
-                                    metacity/geometrycpp/png.hpp
-                                    metacity/geometrycpp/png.cpp
-                                    metacity/geometrycpp/legobuilder.hpp
-                                    metacity/geometrycpp/legobuilder.cpp)
+                                    metacity/geometrycpp/triangulation.cpp
+                                    metacity/geometrycpp/triangulation.hpp)
 
 
