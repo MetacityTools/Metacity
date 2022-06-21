@@ -2,7 +2,7 @@ include setup.py
 include CMakeLists.txt
 include metacity/*.pyi
 recursive-include pybind11 CMakeLists.txt *.cmake
-graft metacity/geometrycpp
+graft metacity/geometry
 graft metacity/viewer
 prune metacity/viewer/node_modules
 prune metacity/viewer/src

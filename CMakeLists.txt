@@ -6,20 +6,20 @@ add_subdirectory(pybind11)
 
 find_package(Python COMPONENTS Interpreter Development REQUIRED)
 
-include_directories(metacity/geometrycpp)
-link_directories(metacity/geometrycpp)
+include_directories(metacity/geometry)
+link_directories(metacity/geometry)
 
 add_compile_options(-Wall -pedantic -O3) #-fsanitize=address -fno-omit-frame-pointer -shared-libasan)
 #add_link_options(-fsanitize=address -shared-libasan)
 
 
-pybind11_add_module(${PROJECT_NAME} metacity/geometrycpp/geometry.cpp 
-                                    metacity/geometrycpp/models.cpp 
-                                    metacity/geometrycpp/models.hpp 
-                                    metacity/geometrycpp/attribute.cpp 
-                                    metacity/geometrycpp/attribute.hpp 
-                                    metacity/geometrycpp/types.hpp
-                                    metacity/geometrycpp/triangulation.cpp
-                                    metacity/geometrycpp/triangulation.hpp)
+pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp 
+                                    metacity/geometry/model.cpp 
+                                    metacity/geometry/model.hpp 
+                                    metacity/geometry/attribute.cpp 
+                                    metacity/geometry/attribute.hpp 
+                                    metacity/geometry/types.hpp
+                                    metacity/geometry/triangulation.cpp
+                                    metacity/geometry/triangulation.hpp)
 
 

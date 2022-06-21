@@ -1,0 +1,240 @@
+#include "attribute.hpp"
+#include "triangulation.hpp"
+
+Attribute::Attribute() : type(AttributeType::NONE) {}
+
+void Attribute::allowedAttributeType(AttributeType type) {
+    if (this->type != AttributeType::NONE || type != this->type) {
+        throw runtime_error("Attribute type already set");
+    }
+    this->type = type;
+}
+
+void Attribute::push_point2D(const vector<tfloat> & ivertices)
+{
+    allowedAttributeType(AttributeType::POINT);
+
+    if (ivertices.size() % tvec2::length())
+        throw runtime_error("Unexpected number of elements in input array");
+
+    for (size_t i = 0; i < ivertices.size(); i += tvec2::length())
+        data.emplace_back(ivertices[i], ivertices[i + 1], 0);
+}
+
+void Attribute::push_point3D(const vector<tfloat> & ivertices)
+{
+    allowedAttributeType(AttributeType::POINT);
+
+    if (ivertices.size() % tvec3::length())
+        throw runtime_error("Unexpected number of elements in input array");
+
+    for (size_t i = 0; i < ivertices.size(); i += tvec3::length())
+        data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
+}
+
+void Attribute::push_line2D(const vector<tfloat> & ivertices)
+{
+    allowedAttributeType(AttributeType::SEGMENT);
+
+    if (ivertices.size() % tvec2::length() || (ivertices.size() < tvec2::length() * 2))
+        throw runtime_error("Unexpected number of elements in input array");
+
+    for (size_t i = 1; i < ivertices.size() - 1; i += tvec2::length())
+    {
+        data.emplace_back(ivertices[i], ivertices[i + 1], 0);
+        data.emplace_back(ivertices[i + 2], ivertices[i + 3], 0);
+    }
+}
+
+void Attribute::push_line3D(const vector<tfloat> & ivertices)
+{
+    allowedAttributeType(AttributeType::SEGMENT);
+
+    if (ivertices.size() % tvec3::length() || (ivertices.size() < tvec3::length() * 2))
+        throw runtime_error("Unexpected number of elements in input array");
+
+    for (size_t i = 1; i < ivertices.size() - 1; i += tvec3::length())
+    {
+        data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
+        data.emplace_back(ivertices[i + 2], ivertices[i + 3], ivertices[i + 4]);
+    }
+}
+
+void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
+{
+    allowedAttributeType(AttributeType::POLYGON);
+
+    vector<vector<tvec3>> polygon;
+    for (const auto &iring : ivertices)
+    {
+        if (iring.size() % tvec2::length())
+            throw runtime_error("Unexpected number of elements in input array");
+
+        if ((iring.size() / tvec2::length()) < 3) // only a single point or a line
+            continue;
+
+        vector<tvec3> ring;
+        for (size_t i = 0; i < iring.size(); i += tvec2::length())
+            ring.emplace_back(iring[i], iring[i + 1], 0);
+        polygon.emplace_back(move(ring));
+    }
+
+    triangulate(polygon, data);
+}
+
+void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
+{
+    allowedAttributeType(AttributeType::POLYGON);
+
+    vector<vector<tvec3>> polygon;
+    for (const auto &iring : ivertices)
+    {
+        if (iring.size() % tvec3::length())
+            throw runtime_error("Unexpected number of elements in input array");
+
+        if ((iring.size() / tvec3::length()) < 3) // only a single point or a line
+            continue;
+
+        vector<tvec3> ring;
+        for (size_t i = 0; i < iring.size(); i += tvec3::length())
+            ring.emplace_back(iring[i], iring[i + 1], iring[i + 2]);
+        polygon.emplace_back(move(ring));
+    }
+
+    triangulate(polygon, data);
+}
+
+tvec3 Attribute::vmin() const
+{
+    if (data.empty())
+        return tvec3(INFINITY);
+
+    tvec3 min = data[0];
+    for (const auto &v : data)
+        min = glm::min(min, v);
+    return min;
+}
+tvec3 Attribute::vmax() const
+{
+    if (data.empty())
+        return tvec3(-INFINITY);
+
+    tvec3 max = data[0];
+    for (const auto &v : data)
+        max = glm::max(max, v);
+    return max;
+}
+
+
+void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_index)
+{
+    int buffer_index, buffer_size, buffer_view_index;
+    to_gltf_buffer(model, buffer_index, buffer_size);
+    to_gltf_buffer_view(model, buffer_view_index, buffer_index, buffer_size);
+    to_gltf_accessor(model, buffer_view_index, accessor_index);
+    mode = get_gltf_mode();
+}
+
+void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size)
+{
+    tinygltf::Buffer buffer;
+    size = data.size() * sizeof(tvec3);
+    buffer.data = vector<unsigned char>(size);
+    memcpy(buffer.data.data(), data.data(), buffer.data.size());
+    model.buffers.push_back(buffer);
+    buffer_index = model.buffers.size() - 1;
+}
+
+void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_index, const int size, int & buffer_view_index)
+{
+    tinygltf::BufferView bufferView;
+    bufferView.buffer = buffer_index;
+    bufferView.byteLength = size;
+    bufferView.byteOffset = 0;
+    bufferView.target = TINYGLTF_TARGET_ARRAY_BUFFER;
+    model.bufferViews.push_back(bufferView);
+    buffer_view_index = model.bufferViews.size() - 1;
+}
+
+void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_index, int & accessor_index)
+{
+    tinygltf::Accessor accessor;
+    accessor.bufferView = buffer_view_index;
+    accessor.byteOffset = 0;
+    accessor.componentType = TINYGLTF_COMPONENT_TYPE_FLOAT;
+    accessor.count = data.size();
+    accessor.type = TINYGLTF_TYPE_VEC3;
+    tvec3 min = vmin();
+    tvec3 max = vmax();
+    accessor.minValues = {min.x, min.y, min.z};
+    accessor.maxValues = {max.x, max.y, max.z};
+    model.accessors.push_back(accessor);
+    accessor_index = model.accessors.size() - 1;
+}
+
+int Attribute::get_gltf_mode() const
+{
+    switch (type)
+    {
+    case AttributeType::POINT:
+        return TINYGLTF_MODE_POINTS;
+    case AttributeType::SEGMENT:
+        return TINYGLTF_MODE_LINE;
+    case AttributeType::POLYGON:
+        return TINYGLTF_MODE_TRIANGLES;
+    default:
+        throw runtime_error("Undefined attribute type");
+    }
+}
+
+//===============================================================================
+
+void Attribute::from_gltf(const tinygltf::Model & model, const int attr_index)
+{
+    attr_type_check(model, attr_index);
+    const tinygltf::Accessor & accessor = model.accessors[attr_index];
+    const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
+    const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+
+    data.resize(accessor.count);
+    memcpy(data.data(), buffer.data.data() + bufferView.byteOffset + accessor.byteOffset, bufferView.byteLength);
+    set_gltf_mode(accessor.type);
+}
+
+void Attribute::set_gltf_mode(int mode)
+{
+    switch (mode)
+    {
+    case TINYGLTF_MODE_POINTS:
+        type = AttributeType::POINT;
+        break;
+    case TINYGLTF_MODE_LINE:
+        type = AttributeType::SEGMENT;
+        break;
+    case TINYGLTF_MODE_TRIANGLES:
+        type = AttributeType::POLYGON;
+        break;
+    default:
+        throw runtime_error("Undefined attribute type");
+    }
+}
+
+//===============================================================================
+// Checks
+
+void Attribute::attr_type_check(const tinygltf::Model & model, const int attribute_index)
+{
+    const tinygltf::Accessor & accessor = model.accessors[attribute_index];
+    const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
+    const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+
+    if (accessor.type != TINYGLTF_TYPE_VEC3)
+        throw runtime_error("Attribute type mismatch");
+    if (accessor.componentType != TINYGLTF_COMPONENT_TYPE_FLOAT)
+        throw runtime_error("Attribute component type mismatch");
+    if (bufferView.target != TINYGLTF_TARGET_ARRAY_BUFFER)
+        throw runtime_error("Attribute buffer view target mismatch");
+    if (bufferView.byteLength % sizeof(tvec3) != 0)
+        throw runtime_error("Attribute buffer view size mismatch");
+}
+
