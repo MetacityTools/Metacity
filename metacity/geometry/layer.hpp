@@ -1,6 +1,6 @@
 #pragma once
-#include "types.hpp";
-#include "model.hpp";
+#include "types.hpp"
+#include "model.hpp"
 using namespace std;
 
 class Layer {

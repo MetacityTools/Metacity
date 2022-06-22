@@ -27,7 +27,7 @@ void Layer::to_gltf(const string &filename) const {
     }
 
     tinygltf::TinyGLTF gltf;
-    gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, true);
+    gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
 }
 
 void Layer::from_gltf(const string &filename) {
@@ -35,7 +35,7 @@ void Layer::from_gltf(const string &filename) {
     tinygltf::Model gltf_model;
     string err, warn;
 
-    bool ret = gltf.LoadBinaryFromFile(&gltf_model, &err, &warn, filename);
+    bool ret = gltf.LoadASCIIFromFile(&gltf_model, &err, &warn, filename);
 
     if (!err.empty()) {
         cout << err << endl;

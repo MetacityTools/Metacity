@@ -24,7 +24,7 @@ public:
     void push_polygon2D(const vector<vector<tfloat>> & ivertices);
     void push_polygon3D(const vector<vector<tfloat>> & ivertices); 
     void to_gltf(tinygltf::Model & model, int & mode, int & accessor_index);
-    void from_gltf(const tinygltf::Model & model, const int attr_index);
+    void from_gltf(const tinygltf::Model & model, const int mode, const int accessor_index);
 
 protected:
     tvec3 vmin() const;

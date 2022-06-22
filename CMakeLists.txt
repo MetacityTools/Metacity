@@ -16,6 +16,8 @@ add_compile_options(-Wall -pedantic -O3) #-fsanitize=address -fno-omit-frame-poi
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp 
                                     metacity/geometry/model.cpp 
                                     metacity/geometry/model.hpp 
+                                    metacity/geometry/layer.cpp 
+                                    metacity/geometry/layer.hpp 
                                     metacity/geometry/attribute.cpp 
                                     metacity/geometry/attribute.hpp 
                                     metacity/geometry/types.hpp

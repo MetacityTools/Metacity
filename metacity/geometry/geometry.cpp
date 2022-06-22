@@ -6,6 +6,11 @@
 #include "attribute.hpp"
 #include "layer.hpp"
 
+#define TINYGLTF_IMPLEMENTATION
+#define STB_IMAGE_IMPLEMENTATION
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "gltf/tiny_gltf.h"
+
 namespace py = pybind11;
 using namespace std;
 

@@ -4,8 +4,8 @@
 Attribute::Attribute() : type(AttributeType::NONE) {}
 
 void Attribute::allowedAttributeType(AttributeType type) {
-    if (this->type != AttributeType::NONE || type != this->type) {
-        throw runtime_error("Attribute type already set");
+    if (this->type != AttributeType::NONE && this->type != type) {
+        throw runtime_error("Attribute type already set to " + to_string(this->type));
     }
     this->type = type;
 }
@@ -114,6 +114,7 @@ tvec3 Attribute::vmin() const
         min = glm::min(min, v);
     return min;
 }
+
 tvec3 Attribute::vmax() const
 {
     if (data.empty())
@@ -125,12 +126,11 @@ tvec3 Attribute::vmax() const
     return max;
 }
 
-
 void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_index)
 {
     int buffer_index, buffer_size, buffer_view_index;
     to_gltf_buffer(model, buffer_index, buffer_size);
-    to_gltf_buffer_view(model, buffer_view_index, buffer_index, buffer_size);
+    to_gltf_buffer_view(model, buffer_index, buffer_size, buffer_view_index);
     to_gltf_accessor(model, buffer_view_index, accessor_index);
     mode = get_gltf_mode();
 }
@@ -189,16 +189,16 @@ int Attribute::get_gltf_mode() const
 
 //===============================================================================
 
-void Attribute::from_gltf(const tinygltf::Model & model, const int attr_index)
+void Attribute::from_gltf(const tinygltf::Model & model, const int mode, const int accessor_index)
 {
-    attr_type_check(model, attr_index);
-    const tinygltf::Accessor & accessor = model.accessors[attr_index];
+    attr_type_check(model, accessor_index);
+    const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
     const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
 
     data.resize(accessor.count);
     memcpy(data.data(), buffer.data.data() + bufferView.byteOffset + accessor.byteOffset, bufferView.byteLength);
-    set_gltf_mode(accessor.type);
+    set_gltf_mode(mode);
 }
 
 void Attribute::set_gltf_mode(int mode)
@@ -222,9 +222,9 @@ void Attribute::set_gltf_mode(int mode)
 //===============================================================================
 // Checks
 
-void Attribute::attr_type_check(const tinygltf::Model & model, const int attribute_index)
+void Attribute::attr_type_check(const tinygltf::Model & model, const int accessor_index)
 {
-    const tinygltf::Accessor & accessor = model.accessors[attribute_index];
+    const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
     const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
 
@@ -236,5 +236,12 @@ void Attribute::attr_type_check(const tinygltf::Model & model, const int attribu
         throw runtime_error("Attribute buffer view target mismatch");
     if (bufferView.byteLength % sizeof(tvec3) != 0)
         throw runtime_error("Attribute buffer view size mismatch");
+
+    if (accessor.minValues.size() != 3)
+        throw runtime_error("Attribute min values size mismatch");
+    if (accessor.maxValues.size() != 3)
+        throw runtime_error("Attribute max values size mismatch");
+    if (accessor.minValues[0] > accessor.maxValues[0])
+        throw runtime_error("Attribute min values out of range");
 }
 

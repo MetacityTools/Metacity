@@ -38,6 +38,7 @@ void Model::to_gltf_scene(tinygltf::Model & model, const int mesh_index)
     if (model.scenes.size() == 0) {
         tinygltf::Scene scene;
         model.scenes.push_back(scene);
+        model.defaultScene = 0;
     }
 
     int node_index;
@@ -97,7 +98,7 @@ void Model::from_gltf_attribute(const tinygltf::Model & model, const tinygltf::P
 
     int attribute_index = primitive.attributes.at(name);
     shared_ptr<Attribute> attribute = make_shared<Attribute>();
-    attribute->from_gltf(model, attribute_index);
+    attribute->from_gltf(model, primitive.mode, attribute_index);
     add_attribute(name, attribute);
 }
 
