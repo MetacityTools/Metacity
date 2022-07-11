@@ -5,6 +5,7 @@
 #include "model.hpp"
 #include "attribute.hpp"
 #include "layer.hpp"
+#include "grid.hpp"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -39,4 +40,9 @@ PYBIND11_MODULE(geometry, m) {
         .def("to_gltf", &Layer::to_gltf)
         .def("from_gltf", &Layer::from_gltf);
 
+    py::class_<Grid, std::shared_ptr<Grid>>(m, "Grid")
+        .def(py::init<tfloat, tfloat>())
+        .def("add_layer", &Grid::add_layer)
+        .def("add_model", &Grid::add_model)
+        .def("to_gltf", &Grid::to_gltf);
 }

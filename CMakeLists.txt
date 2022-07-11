@@ -21,6 +21,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp
                                     metacity/geometry/attribute.cpp 
                                     metacity/geometry/attribute.hpp 
                                     metacity/geometry/types.hpp
+                                    metacity/geometry/grid.cpp
+                                    metacity/geometry/grid.hpp
                                     metacity/geometry/triangulation.cpp
                                     metacity/geometry/triangulation.hpp)
 

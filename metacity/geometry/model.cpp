@@ -15,25 +15,37 @@ void Model::add_attribute(const string &name, shared_ptr<Attribute> attribute) {
     attrib[name] = attribute;
 }
 
-shared_ptr<Attribute> Model::get_attribute(const string &name) {
+tvec3 Model::get_centroid() const
+{
+    if (attrib.find("POSITION") == attrib.end()) {
+        throw runtime_error("No position data");
+    }  
+
+    const auto positions = attrib.at("POSITION");
+    auto centroid = positions->sum();
+    centroid /= positions->size();
+    return centroid;
+}
+
+shared_ptr<Attribute> Model::get_attribute(const string &name) const {
     if (attrib.find(name) == attrib.end()) {
         throw runtime_error("Attribute does not exist");
     }
-    return attrib[name];
+    return attrib.at(name);
 }
 
 bool Model::attribute_exists(const string &name) {
     return attrib.find(name) != attrib.end();
 }
 
-void Model::to_gltf(tinygltf::Model & model)
+void Model::to_gltf(tinygltf::Model & model) const
 {
     int mesh_index;
     to_gltf_mesh(model, mesh_index);
     to_gltf_scene(model, mesh_index);
 }
 
-void Model::to_gltf_scene(tinygltf::Model & model, const int mesh_index)
+void Model::to_gltf_scene(tinygltf::Model & model, const int mesh_index) const
 {
     if (model.scenes.size() == 0) {
         tinygltf::Scene scene;
@@ -46,7 +58,7 @@ void Model::to_gltf_scene(tinygltf::Model & model, const int mesh_index)
     model.scenes[0].nodes.push_back(node_index);
 }
 
-void Model::to_gltf_node(tinygltf::Model & model, const int mesh_index, int & node_index)
+void Model::to_gltf_node(tinygltf::Model & model, const int mesh_index, int & node_index) const
 {
     tinygltf::Node node;
     node.mesh = mesh_index;
@@ -54,7 +66,7 @@ void Model::to_gltf_node(tinygltf::Model & model, const int mesh_index, int & no
     node_index = model.nodes.size() - 1;
 }
 
-void Model::to_gltf_mesh(tinygltf::Model & model, int & mesh_index)
+void Model::to_gltf_mesh(tinygltf::Model & model, int & mesh_index) const
 {
     tinygltf::Mesh mesh;
     to_gltf_primitive(model, mesh);
@@ -62,14 +74,14 @@ void Model::to_gltf_mesh(tinygltf::Model & model, int & mesh_index)
     mesh_index = model.meshes.size() - 1;
 }
 
-void Model::to_gltf_primitive(tinygltf::Model & model, tinygltf::Mesh & mesh)
+void Model::to_gltf_primitive(tinygltf::Model & model, tinygltf::Mesh & mesh) const
 {
     tinygltf::Primitive primitive;
     to_gltf_attribute(model, primitive, "POSITION");
     mesh.primitives.push_back(primitive);
 }
 
-void Model::to_gltf_attribute(tinygltf::Model & model, tinygltf::Primitive & primitive, const string &name)
+void Model::to_gltf_attribute(tinygltf::Model & model, tinygltf::Primitive & primitive, const string &name) const
 {
     int accessor_index, mode;
     shared_ptr<Attribute> position_attribute = get_attribute(name);

@@ -126,7 +126,20 @@ tvec3 Attribute::vmax() const
     return max;
 }
 
-void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_index)
+tvec3 Attribute::sum() const
+{
+    tvec3 sum = tvec3(0);
+    for (const auto &v : data)
+        sum += v;
+    return sum;
+}
+
+size_t Attribute::size() const
+{
+    return data.size();
+}
+
+void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_index) const
 {
     int buffer_index, buffer_size, buffer_view_index;
     to_gltf_buffer(model, buffer_index, buffer_size);
@@ -135,7 +148,7 @@ void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_inde
     mode = get_gltf_mode();
 }
 
-void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size)
+void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size) const
 {
     tinygltf::Buffer buffer;
     size = data.size() * sizeof(tvec3);
@@ -145,7 +158,7 @@ void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int 
     buffer_index = model.buffers.size() - 1;
 }
 
-void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_index, const int size, int & buffer_view_index)
+void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_index, const int size, int & buffer_view_index) const
 {
     tinygltf::BufferView bufferView;
     bufferView.buffer = buffer_index;
@@ -156,7 +169,7 @@ void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_in
     buffer_view_index = model.bufferViews.size() - 1;
 }
 
-void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_index, int & accessor_index)
+void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_index, int & accessor_index) const
 {
     tinygltf::Accessor accessor;
     accessor.bufferView = buffer_view_index;
@@ -222,7 +235,7 @@ void Attribute::set_gltf_mode(int mode)
 //===============================================================================
 // Checks
 
-void Attribute::attr_type_check(const tinygltf::Model & model, const int accessor_index)
+void Attribute::attr_type_check(const tinygltf::Model & model, const int accessor_index) const
 {
     const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
