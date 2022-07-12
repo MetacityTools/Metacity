@@ -3,6 +3,7 @@
 
 Attribute::Attribute() : type(AttributeType::NONE) {}
 
+
 void Attribute::allowedAttributeType(AttributeType type) {
     if (this->type != AttributeType::NONE && this->type != type) {
         throw runtime_error("Attribute type already set to " + to_string(this->type));
@@ -104,6 +105,14 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
     triangulate(polygon, data);
 }
 
+void Attribute::fill_normal_triangle(const tvec3 & normal)
+{
+    allowedAttributeType(AttributeType::NORMAL);
+    data.push_back(normal);
+    data.push_back(normal);
+    data.push_back(normal);
+}
+
 tvec3 Attribute::vmin() const
 {
     if (data.empty())
@@ -139,13 +148,13 @@ size_t Attribute::size() const
     return data.size();
 }
 
-void Attribute::to_gltf(tinygltf::Model & model, int & mode, int & accessor_index) const
+void Attribute::to_gltf(tinygltf::Model & model, AttributeType & type_, int & accessor_index) const
 {
     int buffer_index, buffer_size, buffer_view_index;
     to_gltf_buffer(model, buffer_index, buffer_size);
     to_gltf_buffer_view(model, buffer_index, buffer_size, buffer_view_index);
     to_gltf_accessor(model, buffer_view_index, accessor_index);
-    mode = get_gltf_mode();
+    type_ = type;
 }
 
 void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size) const
@@ -185,51 +194,18 @@ void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_
     accessor_index = model.accessors.size() - 1;
 }
 
-int Attribute::get_gltf_mode() const
-{
-    switch (type)
-    {
-    case AttributeType::POINT:
-        return TINYGLTF_MODE_POINTS;
-    case AttributeType::SEGMENT:
-        return TINYGLTF_MODE_LINE;
-    case AttributeType::POLYGON:
-        return TINYGLTF_MODE_TRIANGLES;
-    default:
-        throw runtime_error("Undefined attribute type");
-    }
-}
-
 //===============================================================================
 
-void Attribute::from_gltf(const tinygltf::Model & model, const int mode, const int accessor_index)
+void Attribute::from_gltf(const tinygltf::Model & model, AttributeType type_, const int accessor_index)
 {
     attr_type_check(model, accessor_index);
     const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
     const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+    type = type_;
 
     data.resize(accessor.count);
     memcpy(data.data(), buffer.data.data() + bufferView.byteOffset + accessor.byteOffset, bufferView.byteLength);
-    set_gltf_mode(mode);
-}
-
-void Attribute::set_gltf_mode(int mode)
-{
-    switch (mode)
-    {
-    case TINYGLTF_MODE_POINTS:
-        type = AttributeType::POINT;
-        break;
-    case TINYGLTF_MODE_LINE:
-        type = AttributeType::SEGMENT;
-        break;
-    case TINYGLTF_MODE_TRIANGLES:
-        type = AttributeType::POLYGON;
-        break;
-    default:
-        throw runtime_error("Undefined attribute type");
-    }
 }
 
 //===============================================================================
@@ -239,7 +215,7 @@ void Attribute::attr_type_check(const tinygltf::Model & model, const int accesso
 {
     const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
-    const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+    //const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
 
     if (accessor.type != TINYGLTF_TYPE_VEC3)
         throw runtime_error("Attribute type mismatch");

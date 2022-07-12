@@ -1,6 +1,7 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shapefile
 import metacity.utils.filesystem as fs
+from tqdm import tqdm
 
 __all__ = ["parse", "parse_recursively"]
 
@@ -13,7 +14,7 @@ def parse(file: str):
 
 def parse_recursively(directory: str):
     models = []
-    for file in fs.list_files_recursive(directory):
+    for file in tqdm(fs.list_files_recursive(directory)):
         data = parse(file)
         if data is not None:
             models.extend(parse(file))

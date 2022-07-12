@@ -1,5 +1,6 @@
 #include "layer.hpp"
 #include "gltf/tiny_gltf.h"
+#include "progress.hpp"
 
 Layer::Layer() {}
 
@@ -22,7 +23,9 @@ void Layer::to_gltf(const string &filename) const {
     asset.generator = "Metacity";
     gltf_model.asset = asset;
     
+    Progress bar("Exporting models");
     for (auto model : models) {
+        bar.update();
         model->to_gltf(gltf_model);
     }
 
@@ -35,6 +38,7 @@ void Layer::from_gltf(const string &filename) {
     tinygltf::Model gltf_model;
     string err, warn;
 
+    Progress bar("Importing models");
     bool ret = gltf.LoadASCIIFromFile(&gltf_model, &err, &warn, filename);
 
     if (!err.empty()) {
@@ -51,6 +55,7 @@ void Layer::from_gltf(const string &filename) {
     }
 
     for (int mesh_idx = 0; mesh_idx < gltf_model.meshes.size(); mesh_idx++) {
+        bar.update();
         auto model = make_shared<Model>();
         model->from_gltf(gltf_model, mesh_idx);
         add_model(model);

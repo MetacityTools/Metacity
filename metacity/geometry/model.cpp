@@ -38,9 +38,56 @@ bool Model::attribute_exists(const string &name) {
     return attrib.find(name) != attrib.end();
 }
 
+
+void Model::compute_normals()
+{
+    /*if (attrib.find("POSITION") == attrib.end()) {
+        throw runtime_error("No position data");
+    }  
+
+    const auto positions = attrib.at("POSITION");
+    auto normals = make_shared<Attribute>();
+
+    for (int i = 0; i < positions->size(); i++) {
+        auto normal = tvec3(0, 0, 0);
+        for (int j = 0; j < positions->size(); j++) {
+            if (i == j) {
+                continue;
+            }
+            auto edge = positions->at(i) - positions->at(j);
+            auto edge_length = edge.length();
+            auto edge_normal = edge / edge_length;
+            normal += edge_normal;
+        }
+        normal /= positions->size();
+        normals->push_back(normal);
+    }
+
+
+    attrib["NORMAL"] = normals;*/
+}
+
+bool Model::has_any_geometry() const
+{
+    if (attrib.find("POSITION") == attrib.end()) {
+        return false;
+    }
+
+    if (attrib.at("POSITION")->size() < 3) {
+        return false;
+    }
+
+    return true;
+}
+
 void Model::to_gltf(tinygltf::Model & model) const
 {
     int mesh_index;
+    
+    if (!has_any_geometry()) {
+        return;
+    }
+
     to_gltf_mesh(model, mesh_index);
     to_gltf_scene(model, mesh_index);
 }
@@ -74,24 +121,64 @@ void Model::to_gltf_mesh(tinygltf::Model & model, int & mesh_index) const
     mesh_index = model.meshes.size() - 1;
 }
 
+int type_to_gltf(AttributeType type)
+{
+    switch (type)
+    {
+    case AttributeType::POINT:
+        return TINYGLTF_MODE_POINTS;
+    case AttributeType::SEGMENT:
+        return TINYGLTF_MODE_LINE;
+    case AttributeType::POLYGON:
+        return TINYGLTF_MODE_TRIANGLES;
+    default:
+        throw runtime_error("Undefined attribute type");
+    }
+}
+
 void Model::to_gltf_primitive(tinygltf::Model & model, tinygltf::Mesh & mesh) const
 {
     tinygltf::Primitive primitive;
     to_gltf_attribute(model, primitive, "POSITION");
+    //to_gltf_attribute(model, primitive, "NORMAL");
+    primitive.indices = -1; //no indices
     mesh.primitives.push_back(primitive);
 }
 
 void Model::to_gltf_attribute(tinygltf::Model & model, tinygltf::Primitive & primitive, const string &name) const
 {
-    int accessor_index, mode;
+    int accessor_index;
+    AttributeType type;
     shared_ptr<Attribute> position_attribute = get_attribute(name);
-    position_attribute->to_gltf(model, mode, accessor_index);
-    primitive.mode = mode;
-    primitive.indices = -1; //no indices
+    position_attribute->to_gltf(model, type, accessor_index);
+
+    if (name == "POSITION") {
+        primitive.mode = type_to_gltf(type);
+    } 
+
     primitive.attributes[name] = accessor_index;
 }
 
 //===============================================================================
+
+
+AttributeType type_from_gltf(int mode)
+{
+    switch (mode)
+    {
+    case TINYGLTF_MODE_POINTS:
+        return AttributeType::POINT;
+        break;
+    case TINYGLTF_MODE_LINE:
+        return AttributeType::SEGMENT;
+        break;
+    case TINYGLTF_MODE_TRIANGLES:
+        return AttributeType::POLYGON;
+        break;
+    default:
+        throw runtime_error("Undefined attribute type");
+    }
+}
 
 
 void Model::from_gltf(const tinygltf::Model & model, const int mesh_index)
@@ -99,10 +186,11 @@ void Model::from_gltf(const tinygltf::Model & model, const int mesh_index)
     mesh_validity_check(model, mesh_index);
     const tinygltf::Mesh & mesh = model.meshes[mesh_index];
     const tinygltf::Primitive & primitive = mesh.primitives[0];
-    from_gltf_attribute(model, primitive, "POSITION");
+    from_gltf_attribute(model, primitive, "POSITION", type_from_gltf(primitive.mode));
+    //from_gltf_attribute(model, primitive, "NORMAL", AttributeType::NORMAL);
 }
 
-void Model::from_gltf_attribute(const tinygltf::Model & model, const tinygltf::Primitive & primitive, const string &name)
+void Model::from_gltf_attribute(const tinygltf::Model & model, const tinygltf::Primitive & primitive, const string &name, AttributeType type)
 {
     if (primitive.attributes.find(name) == primitive.attributes.end()) {
         throw runtime_error("Attribute does not exist");
@@ -110,7 +198,7 @@ void Model::from_gltf_attribute(const tinygltf::Model & model, const tinygltf::P
 
     int attribute_index = primitive.attributes.at(name);
     shared_ptr<Attribute> attribute = make_shared<Attribute>();
-    attribute->from_gltf(model, primitive.mode, attribute_index);
+    attribute->from_gltf(model, type, attribute_index);
     add_attribute(name, attribute);
 }
 
