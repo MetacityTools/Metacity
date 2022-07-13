@@ -36,7 +36,10 @@ class Geometry:
 class Feature:
     def __init__(self, data):
         self.geometry = Geometry(data['geometry'])
-        #self.properties = data['properties']    
+        if 'properties' in data:
+            self.properties = data['properties']
+        else:
+            self.properties = { 'data': None } 
 
 
 def flatten(data):
@@ -131,16 +134,18 @@ typedict = {
 
 
 def parse_feature(feature: Feature):
-    try:
-        model_list = typedict[feature.geometry.geometry_type](feature.geometry)
-        #TODO parse metadata
-        return model_list
-    except:
-        message = f"""
-        Skipping unsupported or empty features:
-            type: {feature.geometry.geometry_type}
-        """
-        print(message)
+    #try:
+    model_list = typedict[feature.geometry.geometry_type](feature.geometry)
+    #TODO parse metadata
+    for model in model_list:
+        model.set_metadata(feature.properties)
+    return model_list
+    #except:
+    #    message = f"""
+    #    Skipping unsupported or empty features:
+    #        type: {feature.geometry.geometry_type}
+    #    """
+    #    print(message)
     return []
 
 

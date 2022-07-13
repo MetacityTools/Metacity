@@ -22,7 +22,7 @@ public:
     Grid(tfloat width, tfloat height);
     void add_layer(shared_ptr<Layer> layer);
     void add_model(shared_ptr<Model> model);
-    void to_gltf(const string & folder) const;
+    void to_gltf(const string & folder, bool merge) const;
 
 protected:
     void export_layout(const string & folder) const;

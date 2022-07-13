@@ -148,6 +148,21 @@ size_t Attribute::size() const
     return data.size();
 }
 
+shared_ptr<Attribute> Attribute::clone() const
+{
+    auto clone = make_shared<Attribute>();
+    clone->type = type;
+    clone->data = data;
+    return clone;
+}
+
+void Attribute::merge(shared_ptr<Attribute> other)
+{
+    if (type != other->type)
+        throw runtime_error("Cannot merge attributes of different types");
+    data.insert(data.end(), other->data.begin(), other->data.end());
+}
+
 void Attribute::to_gltf(tinygltf::Model & model, AttributeType & type_, int & accessor_index) const
 {
     int buffer_index, buffer_size, buffer_view_index;

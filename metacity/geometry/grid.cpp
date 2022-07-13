@@ -27,7 +27,7 @@ void Grid::add_model(shared_ptr<Model> model)
     grid[key].push_back(model);
 }
 
-void Grid::to_gltf(const string & folder) const
+void Grid::to_gltf(const string & folder, bool merge) const
 {
     Progress bar("Exporting grid");
     for (auto & pair : grid) {
@@ -40,11 +40,18 @@ void Grid::to_gltf(const string & folder) const
         asset.version = "2.0";
         asset.generator = "Metacity";
         gltf_model.asset = asset;
-        for (auto & model : pair.second) {
+
+        if (merge) {
+            const auto & model = merge_models(pair.second);
             model->to_gltf(gltf_model);
+        } else {
+            for (auto & model : pair.second) {
+                model->to_gltf(gltf_model);
+            }
         }
         
         tinygltf::TinyGLTF gltf;
+        gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
         gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
     }
 

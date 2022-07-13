@@ -30,11 +30,13 @@ void Layer::to_gltf(const string &filename) const {
     }
 
     tinygltf::TinyGLTF gltf;
+    //gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
     gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
 }
 
 void Layer::from_gltf(const string &filename) {
     tinygltf::TinyGLTF gltf;
+    //gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
     tinygltf::Model gltf_model;
     string err, warn;
 

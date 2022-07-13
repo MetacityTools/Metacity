@@ -29,6 +29,8 @@ public:
     void from_gltf(const tinygltf::Model & model, AttributeType type, const int accessor_index);
     tvec3 sum() const;
     size_t size() const;
+    shared_ptr<Attribute> clone() const;
+    void merge(shared_ptr<Attribute> attribute);
 
 protected:
     tvec3 vmin() const;

@@ -2,6 +2,7 @@
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
 #include <filesystem>
+#include "gltf/pybind11_json.hpp"
 #include "model.hpp"
 #include "attribute.hpp"
 #include "layer.hpp"
@@ -30,6 +31,8 @@ PYBIND11_MODULE(geometry, m) {
         .def(py::init<>())
         .def("add_attribute", &Model::add_attribute)
         .def("get_attribute", &Model::get_attribute)
+        .def("set_metadata", &Model::set_metadata)
+        .def_property_readonly("metadata", &Model::get_metadata)
         .def("attribute_exists", &Model::attribute_exists);
 
     py::class_<Layer, std::shared_ptr<Layer>>(m, "Layer")

@@ -7055,6 +7055,7 @@ static void SerializeGltfMesh(Mesh &mesh, json &o) {
   }
 
   SerializeExtensionMap(mesh.extensions, o);
+
   if (mesh.extras.Type() != NULL_TYPE) {
     SerializeValue("extras", mesh.extras, o);
   }

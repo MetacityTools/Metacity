@@ -4,9 +4,32 @@
 #include "triangulation.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
 #include "gltf/tiny_gltf.h"
+#include "convert.hpp"
 
 //===============================================================================
 Model::Model() {}
+
+
+void Model::merge(shared_ptr<Model> model)
+{
+    for (auto & pair : model->attrib) {
+        if (attrib.find(pair.first) == attrib.end()) {
+            throw runtime_error("Merging Failed: Attribute " + pair.first + " found in RModel does not exist in LModel");
+        } else {
+            attrib[pair.first]->merge(pair.second);
+        }
+    }
+}
+
+shared_ptr<Model> Model::clone() const
+{
+    auto clone = make_shared<Model>();
+    for (auto & pair : attrib) {
+        clone->attrib[pair.first] = pair.second->clone();
+    }
+    clone->metadata = metadata;
+    return clone;
+}
 
 void Model::add_attribute(const string &name, shared_ptr<Attribute> attribute) {
     if (attrib.find(name) != attrib.end()) {
@@ -26,6 +49,19 @@ tvec3 Model::get_centroid() const
     centroid /= positions->size();
     return centroid;
 }
+
+void Model::set_metadata(nlohmann::json data)
+{
+    for (auto & pair : data.items()) {
+        metadata[pair.key()] = pair.value();
+    }
+}
+
+nlohmann::json Model::get_metadata() const
+{
+    return metadata;
+}
+
 
 shared_ptr<Attribute> Model::get_attribute(const string &name) const {
     if (attrib.find(name) == attrib.end()) {
@@ -117,6 +153,7 @@ void Model::to_gltf_mesh(tinygltf::Model & model, int & mesh_index) const
 {
     tinygltf::Mesh mesh;
     to_gltf_primitive(model, mesh);
+    mesh.extras = to_gltf_value(metadata);
     model.meshes.push_back(mesh);
     mesh_index = model.meshes.size() - 1;
 }
@@ -185,6 +222,7 @@ void Model::from_gltf(const tinygltf::Model & model, const int mesh_index)
 {
     mesh_validity_check(model, mesh_index);
     const tinygltf::Mesh & mesh = model.meshes[mesh_index];
+    metadata = to_json_value(model.meshes[mesh_index].extras);
     const tinygltf::Primitive & primitive = mesh.primitives[0];
     from_gltf_attribute(model, primitive, "POSITION", type_from_gltf(primitive.mode));
     //from_gltf_attribute(model, primitive, "NORMAL", AttributeType::NORMAL);
@@ -225,3 +263,18 @@ void Model::mesh_validity_check(const tinygltf::Model & model, const int mesh_in
     }
 }
 
+
+//===============================================================================
+
+shared_ptr<Model> merge_models(vector<shared_ptr<Model>> models)
+{
+    if (models.size() == 0)
+        return make_shared<Model>();
+
+    shared_ptr<Model> model = models[0]->clone();
+
+    for (int i = 1; i < models.size(); i++) {
+        model->merge(models[i]);
+    }
+    return model;
+}
