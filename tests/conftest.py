@@ -96,7 +96,7 @@ def railway_dataset_stats():
 
 @pytest.fixture(scope="function")
 def tmp_directory(tmpdir_factory):
-    dir = tmpdir_factory.mktemp("tmp_directory")
+    dir = str(tmpdir_factory.mktemp("tmp_directory"))
     return dir
 
 

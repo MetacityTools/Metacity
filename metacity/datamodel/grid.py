@@ -15,6 +15,14 @@ class Tile:
             y (float): The base y coordinate of the tile.
             width (float): The width of the tile.
             height (float): The height of the tile.
+
+
+        Example:
+            Initialize a tile with the origin coordinates (0, 0) and the dimensions of (100, 100):
+
+        >>> tile = Tile(0.0, 0.0, 100.0, 100.0)
+        >>> tile.width
+        100.0
         """
         self.x = x
         self.y = y
@@ -55,6 +63,22 @@ class Tile:
 
         See Also:
             :func:`metacity.datamodel.object.Object.serialize` for the serialization of an Object into JSON
+
+        Example:
+            Serialize a tile:
+
+        >>> tile = Tile(0.0, 0.0, 1000.0, 1000.0)
+        >>> object = metacity.io.parse('single_point_object.shp')[0]
+        >>> tile.add_object(object)
+        >>> tile.serialize()
+        {
+            "x": 0.0,
+            "y": 0.0,
+            "width": 1000.0,
+            "height": 1000.0,
+            "objects": [JSON]
+        }
+
         """
         return {
             "x": self.x,
@@ -77,6 +101,16 @@ class Tile:
 
         See Also:
             :func:`Tile.serialize` for the serialization of a tile into a dictionary
+
+        Example:
+            Deserialize a tile:
+
+        >>> tile = Tile(0, 0, 100, 100)
+        >>> tile.width
+        100
+        >>> tile = Tile.deserialize({"x": 0.0, "y": 0.0, "width": 1000.0, "height": 1000.0, "objects": [JSON, JSON, ...]})
+        >>> tile.width
+        1000
         """
         tile = Tile(data["x"], data["y"], data["width"], data["height"])
         tile.objects = [Object.deserialize(obj) for obj in data["objects"]]
@@ -91,6 +125,15 @@ class Grid:
         Args:
             tile_xdim (float): The x dimension of a single tile. Default is 1000.0.
             tile_ydim (float): The y dimension of a single tile. Default is 1000.0.
+
+        Example:
+            Initialize an empty grid with tile dimensions of 1000.0:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> grid.tile_xdim
+        1000.0
+        >>> grid.tiles
+        {}
         """
         self.tiles: Dict[Tuple[int, int], Tile] = {}
         self.tile_xdim = tile_xdim
@@ -104,6 +147,17 @@ class Grid:
 
         Args:
             object (Object): The object to add.
+
+        Example:
+            Add an object to the grid:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> object = metacity.io.parse('single_point_object.shp')[0]
+        >>> grid.tiles
+        {}
+        >>> grid.add_object(object)
+        >>> grid.tiles
+        {(0, 0): Tile(0, 0, 1000.0, 1000.0)}
         """
 
         pivot = [0, 0]
@@ -127,6 +181,19 @@ class Grid:
         Args:
             x (float): The x coordinate of the pivot to get the tile for.
             y (float): The y coordinate of the pivot to get the tile for.
+
+        Example:
+            Get a tile at the given coordinates:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> grid.tiles
+        {}
+        >>> grid.get_tile(15000, 15000)
+        Tile(15000, 15000, 1000.0, 1000.0)
+        >>> grid.add_object(metacity.io.parse('single_point_object.shp')[0])
+        >>> grid.tiles
+        {(0, 0): Tile(0, 0, 1000.0, 1000.0), (15000, 15000): Tile(15000, 15000, 1000.0, 1000.0)}
+
         """
         x = int(x / self.tile_xdim)
         y = int(y / self.tile_ydim)
@@ -155,6 +222,26 @@ class Grid:
 
         See Also:
             :func:`Tile.serialize` for the structure of a tile JSON.
+
+        Example:
+            Serialize a grid:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> grid.get_tile(15000, 15000)
+        >>> grid.serialize()
+        {
+            "tiles": [
+                {
+                    "x": 15000,
+                    "y": 1500,
+                    "width": 1000.0,
+                    "height": 1000.0,
+                    "objects": []
+                }
+            ],
+            "tile_xdim": 1000.0,
+            "tile_ydim": 1000.0
+        }
         """
         return {
             "tiles": [tile.serialize() for tile in self.tiles.values()],
@@ -175,6 +262,38 @@ class Grid:
         
         See Also:
             :func:`Grid.serialize` see for the structure of the data.
+
+        Example:
+            Deserialize a grid:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> grid.get_tile(15000, 15000)
+        Tile(15000, 15000, 1000.0, 1000.0)
+        >>> grid.add_object(metacity.io.parse('single_point_object.shp')[0])
+        >>> grid.serialize()
+        {
+            "tiles": [
+                {
+                    "x": 15000,
+                    "y": 15000,
+                    "width": 1000.0,
+                    "height": 1000.0,
+                    "objects": []
+                },
+                {
+                    "x": 0,
+                    "y": 0,
+                    "width": 1000.0,
+                    "height": 1000.0,
+                    "objects": [JSON]
+                }
+            ],
+            "tile_xdim": 1000.0,
+            "tile_ydim": 1000.0
+        >>> grid_deserialized = Grid.deserialize(grid.serialize())
+        >>> grid_deserialized.tiles
+        {(0, 0): Tile(0, 0, 1000.0, 1000.0), (15000, 15000): Tile(15000, 15000, 1000.0, 1000.0)}
+
         """
         grid = Grid()
         grid.tile_xdim = data["tile_xdim"]
@@ -192,6 +311,14 @@ class Grid:
 
         Yields:
             Object: The objects in the grid.
+
+        Example:
+
+        >>> grid = Grid(1000.0, 1000.0)
+        >>> grid.add_object(metacity.io.parse('single_point_object.shp')[0])
+        >>> grid.objects
+        [Object(single_point_object.shp)]
+
         """
         for tile in self.tiles.values():
             for object in tile.objects:

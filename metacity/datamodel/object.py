@@ -40,6 +40,16 @@ class Object:
         Initialize an empty object. Each objects represents a collection of geometries and metadata.
         Single object can have multiple instances of geometry and a single dictionary of key-value pairs.
         All values in the metadata dictionary need to be serializable.
+
+        Example:
+            Initialize an empty object:
+
+        >>> obj = Object()
+        >>> obj.meta
+        {}
+        >>> obj.geometry
+        []
+
         """
         self.meta = {}
         self.geometry: List[Model] = []
@@ -61,6 +71,19 @@ class Object:
 
         Returns:
             Dict: The serialized object.
+
+        Example:
+            Serialize an object:
+
+        >>> obj = Object()
+        >>> obj.meta["name"] = "object1"
+        >>> obj.geometry.append(Points([[0, 0], [1, 1]]))
+        >>> obj.geometry.append(Segments([[0, 0], [1, 1]]))
+        >>> obj.serialize()
+        {
+            "meta": { "name": "object1" },
+            "geometry": [ JSON, JSON ]
+        }   
         """
         return {
             "meta": self.meta,
@@ -80,6 +103,18 @@ class Object:
 
         See Also:
             :func:`Object.serialize` for the serialization of an object into JSON
+
+        Example:
+            Deserialize an object:
+
+        >>> obj = Object()
+        >>> obj_data = {"meta": { "name": "object1" },"geometry": [ JSON, JSON ]}
+        >>> obj.deserialize(obj_data)
+        >>> obj.meta
+        { "name": "object1" }
+        >>> len(obj.geometry)
+        2
+
         """
         obj = Object()
         obj.meta = data["meta"]

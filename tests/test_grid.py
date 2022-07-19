@@ -8,10 +8,12 @@ def test_grid_poly(shp_poly_dataset: str):
 
 
     grid = Grid(tile_xdim=1000, tile_ydim=1000)
+    assert len(grid.tiles) == 0
+
     for o in objects:
         grid.add_object(o)
-
     assert len(grid.tiles) == 6
+    
     tilecounts = [len(t.objects) for t in grid.tiles.values()]
 
     data = grid.serialize()

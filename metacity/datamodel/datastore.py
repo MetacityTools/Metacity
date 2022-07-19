@@ -1,3 +1,4 @@
+from importlib.resources import path
 from typing import Tuple
 from metacity.datamodel.grid import Tile
 from metacity.utils import filesystem as fs
@@ -28,6 +29,70 @@ def layer_layout_file(layer_dir: str):
         str: Path to the main file of the layer.
     """
     return fs.join_path(layer_dir, "layout.json")
+
+
+def debug_pathname(pathname):
+    import os
+    import sys
+    try:
+        print(pathname)
+        if not isinstance(pathname, str) or not pathname:
+            raise ValueError("Pathname must be a non-empty string."+str(type(pathname))+str(isinstance(pathname,str)))
+            #return False
+
+        # Strip this pathname's Windows-specific drive specifier (e.g., `C:\`)
+        # if any. Since Windows prohibits path components from containing `:`
+        # characters, failing to strip this `:`-suffixed prefix would
+        # erroneously invalidate all valid absolute Windows pathnames.
+        _, pathname = os.path.splitdrive(pathname)
+
+        # Directory guaranteed to exist. If the current OS is Windows, this is
+        # the drive to which Windows was installed (e.g., the "%HOMEDRIVE%"
+        # environment variable); else, the typical root directory.
+        root_dirname = os.environ.get('HOMEDRIVE', 'C:') \
+            if sys.platform == 'win32' else os.path.sep
+        assert os.path.isdir(root_dirname)   # ...Murphy and her ironclad Law
+
+        # Append a path separator to this directory if needed.
+        root_dirname = root_dirname.rstrip(os.path.sep) + os.path.sep
+
+        # Test whether each path component split from this pathname is valid or
+        # not, ignoring non-existent and non-readable path components.
+        for pathname_part in pathname.split(os.path.sep):
+            try:
+                os.lstat(root_dirname + pathname_part)
+            # If an OS-specific exception is raised, its error code
+            # indicates whether this pathname is valid or not. Unless this
+            # is the case, this exception implies an ignorable kernel or
+            # filesystem complaint (e.g., path not found or inaccessible).
+            #
+            # Only the following exceptions indicate invalid pathnames:
+            #
+            # * Instances of the Windows-specific "WindowsError" class
+            #   defining the "winerror" attribute whose value is
+            #   "ERROR_INVALID_NAME". Under Windows, "winerror" is more
+            #   fine-grained and hence useful than the generic "errno"
+            #   attribute. When a too-long pathname is passed, for example,
+            #   "errno" is "ENOENT" (i.e., no such file or directory) rather
+            #   than "ENAMETOOLONG" (i.e., file name too long).
+            # * Instances of the cross-platform "OSError" class defining the
+            #   generic "errno" attribute whose value is either:
+            #   * Under most POSIX-compatible OSes, "ENAMETOOLONG".
+            #   * Under some edge-case OSes (e.g., SunOS, *BSD), "ERANGE".
+            except OSError as exc:
+                return False
+    # If a "TypeError" exception was raised, it almost certainly has the
+    # error message "embedded NUL character" indicating an invalid pathname.
+    except TypeError as exc:
+        return False
+    # If no exception was raised, all path components and hence this
+    # pathname itself are valid. (Praise be to the curmudgeonly python.)
+    else:
+        return True
+    # If any other exception was raised, this is an unrelated fatal issue
+    # (e.g., a bug). Permit this exception to unwind the call stack.
+    #
+    # Did we mention this should be shipped with Python already?
 
 class DataStore:
     def __init__(self, directory):
@@ -67,11 +132,22 @@ class DataStore:
             with centroids contained in the tile
         Args:
             directory (str): The directory of the data store.
+
+        Example:
+            Create an empty data store.
+
+        >>> ds = DataStore("store")
+        >>> os.listdir(ds.directory)
+        []
+        >>> ds = DataStore("*")
+        ValueError: * is not a valid pathname.
         """
+
         self.directory = directory
         #for some reason this method does not work well with temporary directories during testing
-        #if not fs.is_pathname_valid(self.directory):
-        #    raise ValueError(f"{self.directory} is not a valid pathname.")
+        #debug_pathname(self.directory)
+        if not fs.is_pathname_valid(self.directory):
+            raise ValueError(f"{self.directory} is not a valid pathname.")
 
 
     def list_layers(self):
@@ -80,6 +156,15 @@ class DataStore:
 
         Returns:
             List[str]: The names of the layers.
+
+        Example:
+            Create a data store and add a layer, list existing layers.
+
+        >>> ds = DataStore("store")
+        >>> ds.add_layer(Layer("terrain"))
+        >>> ds.list_layers()
+        ["terrain"]
+
         """
         return fs.list_subdirectories(self.directory)
 
@@ -137,10 +222,10 @@ class DataStore:
 
         >>> ds = DataStore("store")
         >>> [l.name for l in ds.layers]
-        ['terrain', 'buildings']
-        >>> ds.add_layer(Layer("roads"))
+        []
+        >>> ds.add_layer(Layer("terrain"))
         >>> [l.name for l in ds.layers]
-        ['terrain', 'buildings', 'roads']
+        ['terrain']
         """
         
         layer_dir = self.layer_dir(layer)
@@ -225,5 +310,16 @@ class DataStore:
 
         Returns:
             Layer: The layer.
+
+        Example:
+            Get a layer from the data store.
+        
+        >>> ds = DataStore("store")
+        >>> ds.add_layer(Layer("terrain"))
+        >>> ds.get_layer('terrain')
+        Layer(name='terrain', grid=Grid(tile_xdim=1, tile_ydim=1, tiles={}))
+        >>> ds['terrain']
+        Layer(name='terrain', grid=Grid(tile_xdim=1, tile_ydim=1, tiles={}))
+
         """
         return self.get_layer(layer_name)

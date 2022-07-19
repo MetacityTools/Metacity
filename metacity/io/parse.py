@@ -46,6 +46,13 @@ def parse(input_file: str):
 
     Returns:
         list: List of Metacity objects or None if the file could not be parsed.
+
+    Example:
+        Parse a file:
+
+    >>> objects = metacity.io.parse('single_point_object.shp')
+    >>> len(objects)
+    1
     """
     suffix = fs.get_suffix(input_file)
     if suffix == 'json':

@@ -13,10 +13,10 @@
 namespace py = pybind11;
 using jsonref = const json;
 
-
 class PyBaseModel : public BaseModel {
 public:
     /* Inherit the constructors */
+    ///Base Model Base model constructor
     using BaseModel::BaseModel;
 
     /* Trampoline (need one for each virtual function) */
@@ -123,6 +123,10 @@ public:
 };
 
 
+/**
+*   Python binding class, wrapper for MultiPoint.
+*/
+
 class PyMultiPoint : public MultiPoint {
 public:
     /* Inherit the constructors */
@@ -148,6 +152,7 @@ public:
         );
     }
 };
+
 
 class PyPoints : public Points {
 public:
@@ -343,14 +348,13 @@ public:
 };
 
 
-
-
 PYBIND11_MODULE(geometry, m) {
     py::class_<BaseModel, std::shared_ptr<BaseModel>, PyBaseModel>(m, "BaseModel")
-        .def(py::init<>())
+        .def(py::init<>(), "Base model constructor")
         .def_property_readonly("type", &BaseModel::type)
         .def_property_readonly("tags", &BaseModel::get_tags)
-        .def("add_tag", &BaseModel::add_tag);
+        .def("add_tag", &BaseModel::add_tag)
+        .doc() = "Doc test base model";
 
 
     py::class_<ModelLoader, std::shared_ptr<ModelLoader>, PyLoaderModel>(m, "ModelLoader")

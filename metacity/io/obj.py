@@ -13,6 +13,15 @@ def export_obj(output_file: str, objects: Iterable[Object]):
     
     Returns:
         int: The number of vertices exported.
+
+    Example:
+        Load objects from SHP file and export to an OBJ file:
+
+    >>> objects = metacity.io.parse('single_point_object.shp')
+    >>> len(objects)
+    1
+    >>> metacity.io.export_obj('single_point_object.obj', objects)
+    1   // 1 vertex exported
     """
     written_verts = 0
     for obj in objects:
