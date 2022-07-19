@@ -6,46 +6,52 @@ import ntpath
 import errno
 
 # basics
-def filename(file_path):
+def filename(file_path: str):
     return ntpath.basename(file_path)
 
 
-def create_dir_if_not_exists(dir):
+def create_dir_if_not_exists(dir: str):
     if not os.path.exists(dir):
         os.makedirs(dir)
 
 
-def recreate_dir(dir):
+def recreate_dir(dir: str):
     if os.path.exists(dir):
         shutil.rmtree(dir)
     create_dir_if_not_exists(dir)
 
 
-def file_exists(file):
+def file_exists(file: str):
     return os.path.exists(file)
 
 
-def list_subdirectories(dir):
+def list_subdirectories(dir: str):
     return [f for f in os.listdir(dir) if os.path.isdir(os.path.join(dir, f))]
 
 
-def join_path(path, *args):
+def list_files_recursive(dir: str):
+    for root, dirs, files in os.walk(dir):
+        for file in files:
+            yield os.path.join(root, file)
+
+
+def join_path(path: str, *args: str):
     return os.path.join(path, *args)
 
 
-def rename(old, new):
+def rename(old: str, new: str):
     if file_exists(old) and not file_exists(new):
         os.rename(old, new)
         return True
     return False
 
 
-def readable(file):
+def readable(file: str):
     f = open(file, "r")
     return f.readable()
 
 
-def writable(file):
+def writable(file: str):
     f = open(file, "w")
     return f.writable()
 

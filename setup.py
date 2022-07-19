@@ -140,7 +140,7 @@ setup(
     ],
     python_requires='>=3.8',   
     install_requires = [
-        "numpy>=1.21.1",
+        "numpy>=1.22.0",
         "tqdm>=4.62.0",
         "geopandas>=0.9.0",
         "setuptools>=42",

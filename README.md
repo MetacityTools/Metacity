@@ -4,32 +4,44 @@
 [![Coverage Status](https://coveralls.io/repos/github/MetacitySuite/Metacity/badge.svg?branch=main)](https://coveralls.io/github/MetacitySuite/Metacity?branch=main)
 [![Pypi version](https://badge.fury.io/py/metacity.svg)](https://pypi.org/project/metacity/)
 
-Toolkit for Urban Data Processing
+Toolkit for Urban Data Preprocessing
 
 ## Installation
 
-Install with:
+Generally, if you have `GDAL` and `CMake` installed on your system, all you need to do is:
 ```
 pip install metacity
 ```
 
-This repository relies on system packages `GDAL` and `CMake`, please make sure they are installed before trying to install this package. On Ubuntu, you can try something like:
+---
+
+## Dependencies
+
+This repository relies on system packages `GDAL` and `CMake`, please make sure they are installed before trying to install this package. 
 
 1. Install [GDAL](https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
 ```
 sudo add-apt-repository ppa:ubuntugis/ppa
 sudo apt-get update
 sudo apt-get install gdal-bin
-sudo apt-get install libgdal-dev
-export CPLUS_INCLUDE_PATH=/usr/include/gdal
-export C_INCLUDE_PATH=/usr/include/gdal
 ```
 2. Install [CMake](https://cmake.org/download/)
 ```
 sudo apt-get install cmake
 ```
 
-## Development
+---
+
+## For Contributors
+If you wish to contribute, please follow these 2 steps:
+1. Push your code into your own separate branch
+2. Once you are satisfied with the changes, create a pull request
+
+Please, make sure to:
+ - never push code into `main` or `dev` branches
+ - check if you haven't accidentally pushed any files that should be in `.gitignore`
+
+### Development
 1. Clone this repository:
 ```
 git clone git@github.com:MetacitySuite/Metacity.git
@@ -46,19 +58,25 @@ pip install -r requirements.txt
 ```
 python setup.py build_ext --inplace
 ```
+
+### Debugging
+
 If you encounter any problems, make sure you installed dependencies listed above, generally:
 - have `GDAL` and `CMake` installed
 - install packages based on `requirements.txt`
-- make sure you have c++ compiler supporting c++17 installed
+- make sure you have c++ compiler supporting c++14 installed
 
-## Branches
+---
+
+## For Maintainers
+
+### Branches
 | Branch | Status | Description |
 | ------ | ------ | ----------- |
 | main   | [![Build Status](https://github.com/MetacitySuite/Metacity/workflows/Metacity%20CI/badge.svg?branch=main)](https://github.com/MetacitySuite/Metacity/actions?query=workflow%3A%22Metacity+CI%22) | protected, merged PRs auto tested and deployed to PyPI |
 | dev    | [![Build Status](https://github.com/MetacitySuite/Metacity/workflows/Metacity%20CI/badge.svg?branch=dev)](https://github.com/MetacitySuite/Metacity/actions?query=workflow%3A%22Metacity+CI%22) | merged PRs auto tested and version bumped if tag present |
 
-
-## PR Merge Commit message conventions
+### PR Merge Commit message conventions
 Use any of the following tags in the merge commit message title to indicate the type of PR:
 
 | In commit message | Descrition | Branches |
