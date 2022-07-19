@@ -1,33 +1,23 @@
-from metacity.io.parse import parse
-from tests.conftest import project_tree, geojson_dataset, carsim_dataset
-from metacity.datamodel import project
-import os
+from metacity.io.geojson import parse as parse_geojson
+from metacity.io.shapefile import parse as parse_shp
+from metacity.io import parse_recursively
 
 
-def test_geojson(project_tree: str, geojson_dataset: str):
-    objects = parse(geojson_dataset)
-    assert len(objects) == 14
+def test_geojson(geojson_dataset: str):
+    objects = parse_geojson(geojson_dataset)
+    assert len(objects) == 24
 
-    p = project.Project(os.path.join(project_tree, 'test_project'))
-    l = p.create_layer('test_layer')
-    for o in objects:
-        l.add(o)
+def test_shp_line(shp_line_dataset: str):
+    objects = parse_shp(shp_line_dataset)
+    assert len(objects) == 5041
 
-    assert l.size == 14
+def test_shp_poly(shp_poly_dataset: str):
+    objects = parse_shp(shp_poly_dataset)
+    assert len(objects) == 2826
 
-def test_sim(project_tree: str, carsim_dataset: str):
-    objects = parse(carsim_dataset)
-    assert len(objects) == 20
-
-    p = project.Project(os.path.join(project_tree, 'test_project'))
-    l = p.create_layer('test_layer')
-    for o in objects:
-        l.add(o)
-
-    assert l.size == 20  
-
-
-
+def test_recursive_parse(data_directory):
+    objects = [ o for o in parse_recursively(data_directory) ]
+    assert len(objects) == 2826 + 5041 + 24
     
 
 

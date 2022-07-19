@@ -126,7 +126,7 @@ setup(
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=[CMakeExtension('metacity.geometry')],
     cmdclass={"build_ext": CMakeBuild},
-    version="0.2.5",
+    version="0.4.0",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -140,7 +140,7 @@ setup(
     ],
     python_requires='>=3.8',   
     install_requires = [
-        "numpy>=1.21.1",
+        "numpy>=1.22.0",
         "tqdm>=4.62.0",
         "geopandas>=0.9.0",
         "setuptools>=42",
