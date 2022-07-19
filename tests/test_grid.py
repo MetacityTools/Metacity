@@ -1,24 +1,24 @@
-from metacity.datamodel.grid import Grid
-from metacity.io.parse import parse
+from metacity.geometry import Grid
+from metacity.io.shapefile import parse
+import os
 
+def test_grid_poly(shp_poly_dataset: str, tmp_directory: str):
+    models = parse(shp_poly_dataset)
+    assert len(models) == 2826
 
-def test_grid_poly(shp_poly_dataset: str):
-    objects = parse(shp_poly_dataset)
-    assert len(objects) == 2826
+    grid = Grid(1000, 1000)
+    for m in models:
+        grid.add_model(m)
 
+    g = grid.grid
+    assert len(g) == 6
+    tile_counts = { key: len(tile) for key, tile in g.items() }
+    
+    expected_counts = {(-749, -1054): 1265, (-748, -1054): 208, (-750, -1053): 318, (-749, -1053): 211, (-748, -1053): 477, (-750, -1054): 347}
+    assert tile_counts == expected_counts
 
-    grid = Grid(tile_xdim=1000, tile_ydim=1000)
-    for o in objects:
-        grid.add_object(o)
+    grid.to_gltf(os.path.join(tmp_directory, "test.gltf"), False)
+    grid.to_gltf(os.path.join(tmp_directory, "test.gltf"), True)
 
-    assert len(grid.tiles) == 6
-    tilecounts = [len(t.objects) for t in grid.tiles.values()]
-
-    data = grid.serialize()
-    grid2 = Grid.deserialize(data)
-
-    assert len(grid2.tiles) == 6
-    tilecounts2 = [len(t.objects) for t in grid2.tiles.values()]
-    assert tilecounts == tilecounts2
 
 

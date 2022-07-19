@@ -41,11 +41,13 @@ PYBIND11_MODULE(geometry, m) {
         .def("add_models", &Layer::add_models)
         .def("get_models", &Layer::get_models)
         .def("to_gltf", &Layer::to_gltf)
-        .def("from_gltf", &Layer::from_gltf);
+        .def("from_gltf", &Layer::from_gltf)
+        .def_property_readonly("size", &Layer::size);
 
     py::class_<Grid, std::shared_ptr<Grid>>(m, "Grid")
         .def(py::init<tfloat, tfloat>())
         .def("add_layer", &Grid::add_layer)
         .def("add_model", &Grid::add_model)
-        .def("to_gltf", &Grid::to_gltf);
+        .def("to_gltf", &Grid::to_gltf)
+        .def_property_readonly("grid", &Grid::get_grid);
 }

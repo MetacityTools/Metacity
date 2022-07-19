@@ -23,6 +23,10 @@ public:
     void add_layer(shared_ptr<Layer> layer);
     void add_model(shared_ptr<Model> model);
     void to_gltf(const string & folder, bool merge) const;
+    
+    unordered_map<pair<int, int>, vector<shared_ptr<Model>>, hash_pair> get_grid() const {
+        return grid;
+    }
 
 protected:
     void export_layout(const string & folder) const;
