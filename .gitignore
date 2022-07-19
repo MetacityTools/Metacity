@@ -407,16 +407,13 @@ dev/*
 *.obj
 
 #test data
-projects/
 Praha/
 html/
-data/
-data2/
 tmp/
 ng_*
-data-buildings/
 terrain/
-data-terrain/
 buildings/
 bridges/
+data-buildings/
+data-terrain/
 data-bridges/
