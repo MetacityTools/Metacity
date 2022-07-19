@@ -9,7 +9,7 @@ find_package(Python COMPONENTS Interpreter Development REQUIRED)
 include_directories(metacity/geometry)
 link_directories(metacity/geometry)
 
-add_compile_options(-Wall -pedantic -O3) #-fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+add_compile_options(-Wall -pedantic -O3 -lpthreads) #-fsanitize=address -fno-omit-frame-pointer -shared-libasan)
 #add_link_options(-fsanitize=address -shared-libasan)
 
 
