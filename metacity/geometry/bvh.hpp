@@ -1,7 +1,9 @@
 #pragma once
 #include "types.hpp"
+#include "model.hpp"
 #include "bbox.hpp"
-#include "mesh.hpp"
+
+using namespace std;
 
 enum BVHNodeType
 {
@@ -92,7 +94,7 @@ struct BVHInternalNode : public BVHNode
 class BVH
 {
 public:
-    BVH(const vector<tvec3> & triangles);
+    BVH(const vector<shared_ptr<Model>> & models_);
     tfloat traceDownRegualarRay(const tfloat x, const tfloat y, const tfloat z) const;
     inline BBox bbox() const { if (root) return root->bbox; return empty_bbox(); };
 
@@ -106,6 +108,7 @@ protected:
 
     void recursiveTrace(Ray & ray, shared_ptr<BVHNode> node) const;
 
+    vector<shared_ptr<Model>> models;
     shared_ptr<BVHNode> root;
     vector<shared_ptr<BVHNode>> nodes;
 };

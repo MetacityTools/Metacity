@@ -1,14 +1,14 @@
 #include "attribute.hpp"
 #include "triangulation.hpp"
 
-Attribute::Attribute() : type(AttributeType::NONE) {}
+Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
 
 void Attribute::allowedAttributeType(AttributeType type) {
-    if (this->type != AttributeType::NONE && this->type != type) {
-        throw runtime_error("Attribute type already set to " + to_string(this->type));
+    if (this->dtype != AttributeType::NONE && this->dtype != type) {
+        throw runtime_error("Attribute type already set to " + to_string(this->dtype));
     }
-    this->type = type;
+    this->dtype = type;
 }
 
 void Attribute::push_point2D(const vector<tfloat> & ivertices)
@@ -107,7 +107,7 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
 
 void Attribute::fill_normal_triangle(const tvec3 & normal)
 {
-    allowedAttributeType(AttributeType::NORMAL);
+    //allowedAttributeType(AttributeType::NORMAL);
     data.push_back(normal);
     data.push_back(normal);
     data.push_back(normal);
@@ -151,25 +151,25 @@ size_t Attribute::size() const
 shared_ptr<Attribute> Attribute::clone() const
 {
     auto clone = make_shared<Attribute>();
-    clone->type = type;
+    clone->dtype = dtype;
     clone->data = data;
     return clone;
 }
 
 void Attribute::merge(shared_ptr<Attribute> other)
 {
-    if (type != other->type)
+    if (dtype != other->dtype)
         throw runtime_error("Cannot merge attributes of different types");
     data.insert(data.end(), other->data.begin(), other->data.end());
 }
 
-void Attribute::to_gltf(tinygltf::Model & model, AttributeType & type_, int & accessor_index) const
+void Attribute::to_gltf(tinygltf::Model & model, AttributeType & dtype_, int & accessor_index) const
 {
     int buffer_index, buffer_size, buffer_view_index;
     to_gltf_buffer(model, buffer_index, buffer_size);
     to_gltf_buffer_view(model, buffer_index, buffer_size, buffer_view_index);
     to_gltf_accessor(model, buffer_view_index, accessor_index);
-    type_ = type;
+    dtype_ = dtype;
 }
 
 void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size) const
@@ -211,13 +211,13 @@ void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_
 
 //===============================================================================
 
-void Attribute::from_gltf(const tinygltf::Model & model, AttributeType type_, const int accessor_index)
+void Attribute::from_gltf(const tinygltf::Model & model, AttributeType dtype_, const int accessor_index)
 {
     attr_type_check(model, accessor_index);
     const tinygltf::Accessor & accessor = model.accessors[accessor_index];
     const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
     const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
-    type = type_;
+    dtype = dtype_;
 
     data.resize(accessor.count);
     memcpy(data.data(), buffer.data.data() + bufferView.byteOffset + accessor.byteOffset, bufferView.byteLength);

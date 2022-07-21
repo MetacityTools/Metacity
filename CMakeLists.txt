@@ -9,13 +9,20 @@ find_package(Python COMPONENTS Interpreter Development REQUIRED)
 include_directories(metacity/geometry)
 link_directories(metacity/geometry)
 
-add_compile_options(-Wall -pedantic -O3 -lpthreads) #-fsanitize=address -fno-omit-frame-pointer -shared-libasan)
+add_compile_options(-Wall -pedantic -O3) #-fsanitize=address -fno-omit-frame-pointer -shared-libasan)
 #add_link_options(-fsanitize=address -shared-libasan)
+add_link_options(-pthread)
 
 
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp 
                                     metacity/geometry/progress.hpp 
                                     metacity/geometry/model.cpp 
+                                    metacity/geometry/bbox.cpp 
+                                    metacity/geometry/bbox.hpp 
+                                    metacity/geometry/mapping.hpp 
+                                    metacity/geometry/mapping.cpp 
+                                    metacity/geometry/bvh.cpp 
+                                    metacity/geometry/bvh.hpp 
                                     metacity/geometry/model.hpp 
                                     metacity/geometry/layer.cpp 
                                     metacity/geometry/layer.hpp 

@@ -1,6 +1,6 @@
 from metacity.utils.filesystem import read_json
 from metacity.geometry import Attribute, Model
-
+from metacity.geometry import Progress
 
 __all__ = ["parse", "parse_data"]
 
@@ -133,11 +133,13 @@ typedict = {
 }
 
 
-def parse_feature(feature: Feature):
+def parse_feature(feature: Feature, progress: Progress = None):
     #try:
     model_list = typedict[feature.geometry.geometry_type](feature.geometry)
     #TODO parse metadata
     for model in model_list:
+        if progress is not None:
+            progress.update()
         model.set_metadata(feature.properties)
     return model_list
     #except:
@@ -149,16 +151,16 @@ def parse_feature(feature: Feature):
     return []
 
 
-def parse_data(data):
+def parse_data(data, progress: Progress = None):
     models = []
     for f in data['features']:
         feature = Feature(f)
-        models.extend(parse_feature(feature))
+        models.extend(parse_feature(feature, progress))
     return models
 
 
-def parse(input_file: str):
+def parse(input_file: str, progress: Progress = None):
     contents = read_json(input_file)
-    return parse_data(contents)
+    return parse_data(contents, progress)
 
 

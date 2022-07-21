@@ -1,6 +1,8 @@
 #include "layer.hpp"
+#include "bvh.hpp"
 #include "gltf/tiny_gltf.h"
 #include "progress.hpp"
+#include "mapping.hpp"
 
 Layer::Layer() {}
 
@@ -12,8 +14,13 @@ void Layer::add_models(const vector<shared_ptr<Model>> & models) {
     this->models.insert(this->models.end(), models.begin(), models.end());
 }
 
-vector<shared_ptr<Model>> Layer::get_models() const {
+const vector<shared_ptr<Model>> & Layer::get_models() const {
     return models;
+}
+
+void Layer::map_to_height(shared_ptr<Layer> height_layer) {
+    auto bvh = BVH(height_layer->get_models());
+    to_height(bvh, models);
 }
 
 void Layer::to_gltf(const string &filename) const {

@@ -10,8 +10,7 @@ enum AttributeType {
     NONE,
     POINT,
     SEGMENT,
-    POLYGON,
-    NORMAL
+    POLYGON
 };
 
 
@@ -25,12 +24,41 @@ public:
     void push_polygon2D(const vector<vector<tfloat>> & ivertices);
     void push_polygon3D(const vector<vector<tfloat>> & ivertices); 
     void fill_normal_triangle(const tvec3 & normal);
+    
+    int type() const {
+        return this->dtype;
+    }
+
     void to_gltf(tinygltf::Model & model, AttributeType & type, int & accessor_index) const;
     void from_gltf(const tinygltf::Model & model, AttributeType type, const int accessor_index);
     tvec3 sum() const;
     size_t size() const;
     shared_ptr<Attribute> clone() const;
     void merge(shared_ptr<Attribute> attribute);
+
+    tvec3 & operator[](const size_t index) {
+        if (index >= 0 && index < data.size()) {
+            return data[index];
+        }
+
+        if (index < 0 && index >= -data.size()) {
+            return data[data.size() + index];
+        }
+
+        throw runtime_error("Index out of range");
+    };
+
+    const tvec3 & operator[](const size_t index) const {
+        if (index >= 0 && index < data.size()) {
+            return data[index];
+        }
+
+        if (index < 0 && index >= -data.size()) {
+            return data[data.size() + index];
+        }
+
+        throw runtime_error("Index out of range");
+    };
 
 protected:
     tvec3 vmin() const;
@@ -44,7 +72,7 @@ protected:
     void attr_type_check(const tinygltf::Model & model, const int attribute_index) const;
 
     vector<tvec3> data;
-    AttributeType type;
+    AttributeType dtype;
 };
 
 
