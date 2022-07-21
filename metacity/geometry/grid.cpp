@@ -27,7 +27,7 @@ void Grid::add_model(shared_ptr<Model> model)
     grid[key].push_back(model);
 }
 
-void Grid::to_gltf(const string & folder, bool merge) const
+void Grid::to_gltf(const string & folder, bool merge, bool simplify) const
 {
     Progress bar("Exporting grid");
     for (auto & pair : grid) {
@@ -41,12 +41,23 @@ void Grid::to_gltf(const string & folder, bool merge) const
         asset.generator = "Metacity";
         gltf_model.asset = asset;
 
+
         if (merge) {
-            const auto & model = merge_models(pair.second);
-            model->to_gltf(gltf_model);
+            auto model = merge_models(pair.second);
+            if (simplify) {
+                model = model->get_simplified();
+            }
+            if (model)
+                model->to_gltf(gltf_model);
         } else {
             for (auto & model : pair.second) {
-                model->to_gltf(gltf_model);
+                if (simplify) {
+                    auto m = model->get_simplified();
+                    if (m)
+                        m->to_gltf(gltf_model);
+                } else {
+                    model->to_gltf(gltf_model);
+                }
             }
         }
         

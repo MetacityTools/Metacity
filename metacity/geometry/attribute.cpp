@@ -105,12 +105,55 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
     triangulate(polygon, data);
 }
 
+void Attribute::push_triangles(const vector<tvec3> & ivertices)
+{
+    allowedAttributeType(AttributeType::POLYGON);
+
+    if (ivertices.size() % 3)
+        throw runtime_error("Unexpected number of elements in input array");
+
+    data.insert(data.end(), ivertices.begin(), ivertices.end());
+}
+
 void Attribute::fill_normal_triangle(const tvec3 & normal)
 {
     //allowedAttributeType(AttributeType::NORMAL);
     data.push_back(normal);
     data.push_back(normal);
     data.push_back(normal);
+}
+
+int Attribute::type() const {
+    return this->dtype;
+}
+
+tvec3 & Attribute::operator[](const size_t index) {
+    if (index >= 0 && index < data.size()) {
+        return data[index];
+    }
+
+    if (index < 0 && index >= -data.size()) {
+        return data[data.size() + index];
+    }
+
+    throw runtime_error("Index out of range");
+}
+
+const tvec3 & Attribute::operator[](const size_t index) const {
+    if (index >= 0 && index < data.size()) {
+        return data[index];
+    }
+
+    if (index < 0 && index >= -data.size()) {
+        return data[data.size() + index];
+    }
+
+    throw runtime_error("Index out of range");
+}
+
+pair<tvec3, tvec3> Attribute::bbox() const
+{
+    return make_pair(vmin(), vmax());
 }
 
 tvec3 Attribute::vmin() const

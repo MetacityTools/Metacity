@@ -23,11 +23,13 @@ public:
     shared_ptr<Attribute> get_attribute(const string &name) const;
     bool attribute_exists(const string &name);
 
-    void set_metadata(nlohmann::json data);
+    void set_metadata(const nlohmann::json & data);
     nlohmann::json get_metadata() const;
 
     void from_gltf(const tinygltf::Model & model, const int mesh_index);
     void to_gltf(tinygltf::Model & model) const;
+
+    shared_ptr<Model> get_simplified() const;
 
 protected:
     bool has_any_geometry() const;
