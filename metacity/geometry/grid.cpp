@@ -33,7 +33,7 @@ void Grid::to_gltf(const string & folder, bool merge, bool simplify) const
     for (auto & pair : grid) {
         bar.update();
 
-        string filename = folder + "/tile" + to_string(pair.first.first) + "_" + to_string(pair.first.second) + ".gltf";
+        string filename = folder + "/tile" + to_string(pair.first.first) + "_" + to_string(pair.first.second) + ".glb";
 
         tinygltf::Model gltf_model;
         tinygltf::Asset asset;
@@ -63,7 +63,7 @@ void Grid::to_gltf(const string & folder, bool merge, bool simplify) const
         
         tinygltf::TinyGLTF gltf;
         gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
-        gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
+        gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, true);
     }
 
     export_layout(folder);
@@ -80,7 +80,7 @@ void Grid::export_layout(const string & folder) const
         nlohmann::json tile;
         tile["x"] = pair.first.first;
         tile["y"] = pair.first.second;
-        tile["file"] = "tile" + to_string(pair.first.first) + "_" + to_string(pair.first.second) + ".gltf";
+        tile["file"] = "tile" + to_string(pair.first.first) + "_" + to_string(pair.first.second) + ".glb";
         tile["size"] = pair.second.size();
         layout["tiles"].push_back(tile);
     }
