@@ -97,6 +97,7 @@ public:
     BVH(const vector<shared_ptr<Model>> & models_);
     tfloat traceDownRegualarRay(const tfloat x, const tfloat y, const tfloat z) const;
     inline BBox bbox() const { if (root) return root->bbox; return empty_bbox(); };
+    inline bool is_empty() const { return root == nullptr; }
 
 protected:
 

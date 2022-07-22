@@ -29,8 +29,6 @@ public:
     void from_gltf(const tinygltf::Model & model, const int mesh_index);
     void to_gltf(tinygltf::Model & model) const;
 
-    shared_ptr<Model> get_simplified() const;
-
 protected:
     bool has_any_geometry() const;
 
@@ -51,6 +49,4 @@ protected:
     unordered_map<string, shared_ptr<Attribute>> attrib;
     nlohmann::json metadata;
 };
-
-shared_ptr<Model> merge_models(vector<shared_ptr<Model>> models);
 

@@ -19,6 +19,9 @@ public:
         return models.size();
     }
 
+    void simplify_envelope();
+    void simplify_remesh_height(tfloat tile_side, size_t tile_divisions);
+
 protected:
     vector<shared_ptr<Model>> models;
 };

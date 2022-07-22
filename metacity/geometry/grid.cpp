@@ -1,6 +1,7 @@
 #include <fstream>
 #include "grid.hpp"
 #include "progress.hpp"
+#include "simplify.hpp"
 #include "gltf/json.hpp"
 
 
@@ -27,7 +28,19 @@ void Grid::add_model(shared_ptr<Model> model)
     grid[key].push_back(model);
 }
 
-void Grid::to_gltf(const string & folder, bool merge, bool simplify) const
+void Grid::tile_merge()
+{
+    Progress bar("Merging tiles");
+    for (auto & pair : grid) {
+        bar.update();
+        auto models = pair.second;
+        auto merged = simplify::merge_models(models);
+        pair.second.clear();
+        pair.second.push_back(merged);
+    }
+}
+
+void Grid::to_gltf(const string & folder) const
 {
     Progress bar("Exporting grid");
     for (auto & pair : grid) {
@@ -41,24 +54,8 @@ void Grid::to_gltf(const string & folder, bool merge, bool simplify) const
         asset.generator = "Metacity";
         gltf_model.asset = asset;
 
-
-        if (merge) {
-            auto model = merge_models(pair.second);
-            if (simplify) {
-                model = model->get_simplified();
-            }
-            if (model)
-                model->to_gltf(gltf_model);
-        } else {
-            for (auto & model : pair.second) {
-                if (simplify) {
-                    auto m = model->get_simplified();
-                    if (m)
-                        m->to_gltf(gltf_model);
-                } else {
-                    model->to_gltf(gltf_model);
-                }
-            }
+        for (auto & model : pair.second) {
+            model->to_gltf(gltf_model);
         }
         
         tinygltf::TinyGLTF gltf;

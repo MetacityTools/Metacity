@@ -4,7 +4,6 @@
 #include "triangulation.hpp"
 #include "cppcodec/base64_rfc4648.hpp"
 #include "gltf/tiny_gltf.h"
-#include "graham.hpp"
 #include "convert.hpp"
 
 //===============================================================================
@@ -99,68 +98,6 @@ bool Model::has_any_geometry() const
     }
 
     return true;
-}
-
-shared_ptr<Model> Model::get_simplified() const
-{
-    const auto attribute = get_attribute("POSITION");
-    if (attribute == nullptr) {
-        return nullptr;
-    }
-
-    if (attribute->type() != AttributeType::POLYGON) {
-        return clone();
-    }
-
-    vector<tvec2> projected;
-    for (int i = 0; i < attribute->size(); i++) {
-        projected.emplace_back((*attribute)[i]);
-    }
-
-    const auto bbox = attribute->bbox();
-    const auto polygon = grahamScan(projected);
-    const auto new_attribute = make_shared<Attribute>();
-
-
-    vector<vector<tfloat>> npolygon;
-    vector<tfloat> bottom;
-    
-    for (const auto & point : polygon) {
-        bottom.push_back(point.x);
-        bottom.push_back(point.y);
-        bottom.push_back(bbox.first.z);
-    }
-
-    npolygon.emplace_back(move(bottom));
-    new_attribute->push_polygon3D(npolygon);
-    npolygon.clear();
-
-    vector<tfloat> top;
-    for (const auto & point : polygon ) {
-        top.push_back(point.x);
-        top.push_back(point.y);
-        top.push_back(bbox.second.z);
-    }
-    npolygon.emplace_back(move(top));
-    new_attribute->push_polygon3D(npolygon);
-    npolygon.clear();
-
-    vector<tvec3> sides;
-    for (int i = 0; i < polygon.size(); i++) {
-        sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.first.z));
-        sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.first.z));
-        sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.second.z));
-        sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.second.z));
-        sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.first.z));
-        sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.second.z));
-    }
-
-    new_attribute->push_triangles(sides);
-
-    auto simple_model = make_shared<Model>();
-    simple_model->add_attribute("POSITION", new_attribute);
-    simple_model->set_metadata(metadata);
-    return simple_model;
 }
 
 void Model::to_gltf(tinygltf::Model & model) const

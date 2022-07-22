@@ -3,6 +3,8 @@
 #include "gltf/tiny_gltf.h"
 #include "progress.hpp"
 #include "mapping.hpp"
+#include "simplify.hpp"
+
 
 Layer::Layer() {}
 
@@ -39,6 +41,20 @@ void Layer::to_gltf(const string &filename) const {
     tinygltf::TinyGLTF gltf;
     //gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
     gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
+}
+
+void Layer::simplify_envelope()
+{
+    Progress bar("Simplifying envelope");
+    for (auto & model : models) {
+        bar.update();
+        model = simplify::simplify_envelope(model);
+    }
+}
+
+void Layer::simplify_remesh_height(tfloat tile_side, size_t tile_divisions)
+{
+    simplify::simplify_remesh_height(models, tile_side, tile_divisions);
 }
 
 void Layer::from_gltf(const string &filename) {
