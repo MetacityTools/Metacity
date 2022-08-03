@@ -44,6 +44,8 @@ public:
     Graph();
     void add_node(const shared_ptr<Node> & node);
     void add_edge(const shared_ptr<Edge> & edge);
+    int get_node_count() const;
+    int get_edge_count() const;
 
 protected:
     unordered_map<size_t, shared_ptr<Node>> nodes;

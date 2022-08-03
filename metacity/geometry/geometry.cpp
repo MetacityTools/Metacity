@@ -69,5 +69,7 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<Graph, std::shared_ptr<Graph>>(m, "Graph")
         .def(py::init<>())
         .def("add_node", &Graph::add_node)
-        .def("add_edge", &Graph::add_edge);
+        .def("add_edge", &Graph::add_edge)
+        .def_property_readonly("node_count", &Graph::get_node_count)
+        .def_property_readonly("edge_count", &Graph::get_edge_count);
 }

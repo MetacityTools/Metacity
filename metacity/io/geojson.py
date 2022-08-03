@@ -133,7 +133,7 @@ def attr_from_point(geometry: Geometry):
 def attr_from_multipoint(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
-    parse_point(geometry, attr, geometry.dim, geometry.coordinates)
+    parse_point(geometry, attr, geometry.dim, vertices)
     return [attr]
 
 

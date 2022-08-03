@@ -27,10 +27,10 @@ void Graph::add_node(const shared_ptr<Node> & node)
 
 void Graph::add_edge(const shared_ptr<Edge> & edge)
 {
-    if (this->nodes.find(edge->from) == this->nodes.end())
+    if (this->nodes.find(edge->from) == nodes.end())
         throw runtime_error("Node " + to_string(edge->from) + " not found");
 
-    if (this->nodes.find(edge->to) == this->nodes.end())
+    if (this->nodes.find(edge->to) == nodes.end())
         throw runtime_error("Node " + to_string(edge->to) + " not found");
 
     edges[edge->id] = edge;
@@ -38,3 +38,11 @@ void Graph::add_edge(const shared_ptr<Edge> & edge)
     nodes[edge->to]->edges.push_back(edge);
 }
 
+int Graph::get_node_count() const
+{
+    return nodes.size();
+}
+int Graph::get_edge_count() const
+{
+    return edges.size();
+}
