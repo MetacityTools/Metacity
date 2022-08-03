@@ -8,6 +8,26 @@ from pyproj import Proj, Transformer
 __all__ = ["parse", "parse_data"]
 
 
+
+class Projector:
+    def __init__(self, from_crs: str = None, to_crs: str = None):
+        self.from_crs = from_crs
+        self.to_crs = to_crs
+        self.transform = None
+
+        if from_crs is None or to_crs is None:
+            return
+
+        proj_from = Proj(from_crs, preserve_units=False)
+        proj_to = Proj(to_crs, preserve_units=False)
+        self.transform = Transformer.from_proj(proj_from, proj_to)
+
+    def project(self, coordinates: List[List[float]]):
+        if self.transform is None:
+            return coordinates
+        return [ p for p in self.transform.itransform(coordinates) ]
+
+
 class Geometry:
     def __init__(self, data):
         self.data = data
@@ -24,14 +44,10 @@ class Geometry:
                 f"Encountered primitive with unsupported dimension {d}")
         return d
 
-    def set_projection(self, from_crs: str, to_crs: str):
-        if from_crs is None or to_crs is None:
+    def set_projection(self, projector: Projector):
+        if projector is None:
             return
-
-        proj_from = Proj(from_crs, preserve_units=False)
-        proj_to = Proj(to_crs, preserve_units=False)
-        self.transform = Transformer.from_proj(proj_from, proj_to)
-
+        self.transform = projector.transform
 
     def project(self, coordinates: List[List[float]]):
         if self.transform is None:
@@ -172,8 +188,8 @@ typedict = {
 }
 
 
-def parse_geometry(feature: Feature, from_crs: str = None, to_crs: str = None):
-    feature.geometry.set_projection(from_crs, to_crs)
+def parse_geometry(feature: Feature, projector: Projector):
+    feature.geometry.set_projection(projector)
     if feature.geometry.geometry_type not in typedict:
         raise Exception(f"Unknown geometry type {feature.geometry.geometry_type}")
     attr_list = typedict[feature.geometry.geometry_type](feature.geometry)
@@ -191,17 +207,18 @@ def parse_models(feature: Feature, attr_list: List[Attribute], progress: Union[P
     return models
 
 
-def parse_feature(feature: Feature, from_crs: str, to_crs: str, progress: Progress):
-    attr_list = parse_geometry(feature, from_crs, to_crs)
+def parse_feature(feature: Feature, projector: Projector, progress: Progress):
+    attr_list = parse_geometry(feature, projector)
     models = parse_models(feature, attr_list, progress)
     return models
 
 
 def parse_data(data, from_crs: str, to_crs: str, progress: Progress = None):
     models = []
+    projector = Projector(from_crs, to_crs)
     for f in data['features']:
         feature = Feature(f)
-        models.extend(parse_feature(feature, from_crs, to_crs, progress))
+        models.extend(parse_feature(feature, projector, progress))
     return models
 
 
