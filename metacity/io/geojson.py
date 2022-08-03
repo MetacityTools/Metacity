@@ -58,7 +58,7 @@ class Feature:
         if 'properties' in data:
             self.properties = data['properties']
         else:
-            self.properties = { 'data': None } 
+            self.properties = {} 
 
 
 def flatten(data):
@@ -108,84 +108,97 @@ def parse_polygon(g: Geometry, attr: Attribute, dim: int, polygon: List[List[Lis
 ###############################################################################
 
 
-def model_from_point(geometry: Geometry):
+def attr_from_point(geometry: Geometry):
     attr = Attribute()
     vertices = [geometry.coordinates]
     parse_point(geometry, attr, geometry.dim, vertices)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_multipoint(geometry: Geometry):
+def attr_from_multipoint(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
     parse_point(geometry, attr, geometry.dim, geometry.coordinates)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_linestring(geometry: Geometry):
+def attr_from_linestring(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
     parse_line(geometry, attr, geometry.dim, vertices)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_multilinestring(geometry: Geometry):
+def attr_from_multilinestring(geometry: Geometry):
     attr = Attribute()
     dim = geometry.dim
     for line in geometry.coordinates:
         parse_line(geometry, attr, dim, line)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_polygon(geometry: Geometry):
+def attr_from_polygon(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
     parse_polygon(geometry, attr, geometry.dim, vertices)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_multipolygon(geometry: Geometry):
+def attr_from_multipolygon(geometry: Geometry):
     attr = Attribute()
     dim = geometry.dim
     for polygon in geometry.coordinates:
         parse_polygon(geometry, attr, dim, polygon)
-    return [to_model(attr)]
+    return [attr]
 
 
-def model_from_geometrycollection(geometry: Geometry):
-    models = []
+def attr_from_geometrycollection(geometry: Geometry):
+    attrs = []
     for subgeometry in geometry.geometries:
-        model_list = typedict[subgeometry.geometry_type](subgeometry)
-        models.extend(model_list)
-    return models
+        attr_list = typedict[subgeometry.geometry_type](subgeometry)
+        attrs.extend(attr_list)
+    return attrs
 
 
 typedict = {
-    "point": model_from_point,
-    "multipoint": model_from_multipoint,
-    "linestring": model_from_linestring,
-    "multilinestring": model_from_multilinestring,
-    "polygon": model_from_polygon,
-    "multipolygon": model_from_multipolygon,
-    "geometrycollection": model_from_geometrycollection
+    "point": attr_from_point,
+    "multipoint": attr_from_multipoint,
+    "linestring": attr_from_linestring,
+    "multilinestring": attr_from_multilinestring,
+    "polygon": attr_from_polygon,
+    "multipolygon": attr_from_multipolygon,
+    "geometrycollection": attr_from_geometrycollection
 }
 
 
-def parse_feature(feature: Feature, from_crs: str, to_crs: str, progress: Progress = None):
-    #try:
+def parse_geometry(feature: Feature, from_crs: str = None, to_crs: str = None):
     feature.geometry.set_projection(from_crs, to_crs)
-    model_list = typedict[feature.geometry.geometry_type](feature.geometry)
-    for model in model_list:
+    attr_list = typedict[feature.geometry.geometry_type](feature.geometry)
+    return attr_list
+
+
+def parse_models(feature: Feature, attrs: List[Attribute], progress: Progress):
+    models = []
+    for attr in attrs:
         if progress is not None:
             progress.update()
+        model = to_model(attr)
         model.set_metadata(feature.properties)
-    return model_list
-    #except:
-    #    message = f"""
-    #    Skipping unsupported or empty features:
-    #        type: {feature.geometry.geometry_type}
-    #    """
-    #    print(message)
+        models.append(model)
+    return models
+
+
+def parse_feature(feature: Feature, from_crs: str, to_crs: str, progress: Progress = None):
+    try:
+        attr_list = parse_geometry(feature, from_crs, to_crs, progress)
+        models = parse_models(feature, attr_list, progress)
+        return models
+    except:
+        message = f"""
+        Skipping unsupported or empty features:
+            type: {feature.geometry.geometry_type}
+        """
+        print(message)
     return []
 
 
