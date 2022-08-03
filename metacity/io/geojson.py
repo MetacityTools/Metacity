@@ -1,8 +1,7 @@
 from numpy import number
 from metacity.utils.filesystem import read_json
-from metacity.geometry import Attribute, Model
-from metacity.geometry import Progress
-from typing import List
+from metacity.geometry import Attribute, Model, Progress
+from typing import List, Union
 from pyproj import Proj, Transformer
 
 
@@ -155,6 +154,8 @@ def attr_from_multipolygon(geometry: Geometry):
 def attr_from_geometrycollection(geometry: Geometry):
     attrs = []
     for subgeometry in geometry.geometries:
+        if subgeometry.geometry_type not in typedict:
+            raise Exception(f"Unknown geometry type {subgeometry.geometry_type}")
         attr_list = typedict[subgeometry.geometry_type](subgeometry)
         attrs.extend(attr_list)
     return attrs
@@ -173,13 +174,15 @@ typedict = {
 
 def parse_geometry(feature: Feature, from_crs: str = None, to_crs: str = None):
     feature.geometry.set_projection(from_crs, to_crs)
+    if feature.geometry.geometry_type not in typedict:
+        raise Exception(f"Unknown geometry type {feature.geometry.geometry_type}")
     attr_list = typedict[feature.geometry.geometry_type](feature.geometry)
     return attr_list
 
 
-def parse_models(feature: Feature, attrs: List[Attribute], progress: Progress):
+def parse_models(feature: Feature, attr_list: List[Attribute], progress: Union[Progress, None]):
     models = []
-    for attr in attrs:
+    for attr in attr_list:
         if progress is not None:
             progress.update()
         model = to_model(attr)
@@ -188,18 +191,10 @@ def parse_models(feature: Feature, attrs: List[Attribute], progress: Progress):
     return models
 
 
-def parse_feature(feature: Feature, from_crs: str, to_crs: str, progress: Progress = None):
-    try:
-        attr_list = parse_geometry(feature, from_crs, to_crs, progress)
-        models = parse_models(feature, attr_list, progress)
-        return models
-    except:
-        message = f"""
-        Skipping unsupported or empty features:
-            type: {feature.geometry.geometry_type}
-        """
-        print(message)
-    return []
+def parse_feature(feature: Feature, from_crs: str, to_crs: str, progress: Progress):
+    attr_list = parse_geometry(feature, from_crs, to_crs)
+    models = parse_models(feature, attr_list, progress)
+    return models
 
 
 def parse_data(data, from_crs: str, to_crs: str, progress: Progress = None):

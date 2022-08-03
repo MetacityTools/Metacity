@@ -1,6 +1,5 @@
-import fiona
+#import fiona #<- needed on some older pythons
 import geopandas
-from metacity.utils import filesystem as fs
 from metacity.io.geojson import parse_data as parse_geojson
 from metacity.geometry import Progress
 

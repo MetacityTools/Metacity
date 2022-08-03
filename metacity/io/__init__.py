@@ -16,8 +16,8 @@ def parse_recursively(directory: str, from_crs: str = None, to_crs: str = None):
     models = []
     progress = Progress("Loading Models")
     for file in fs.list_files_recursive(directory):
-        data = parse(file, progress)
-        if data is not None:
-            models.extend(parse(file, from_crs, to_crs))
+        submodels = parse(file, from_crs, to_crs, progress)
+        if submodels is not None:
+            models.extend(submodels)
     return models
 
