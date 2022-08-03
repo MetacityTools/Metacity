@@ -50,7 +50,7 @@ def random_bboxes():
 
 
 def data_dir():
-    package_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
+    package_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'testdata')
     return package_dir
 
 
