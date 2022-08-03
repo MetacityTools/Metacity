@@ -4,6 +4,7 @@
 #include <filesystem>
 #include "gltf/pybind11_json.hpp"
 #include "model.hpp"
+#include "graph.hpp"
 #include "attribute.hpp"
 #include "progress.hpp"
 #include "layer.hpp"
@@ -58,4 +59,15 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<Progress, std::shared_ptr<Progress>>(m, "Progress")
         .def(py::init<string>())
         .def("update", &Progress::update);
+
+    py::class_<Edge, std::shared_ptr<Edge>>(m, "Edge")
+        .def(py::init<size_t, size_t, size_t, Attribute, nlohmann::json>());
+
+    py::class_<Node, std::shared_ptr<Node>>(m, "Node")
+        .def(py::init<size_t, tfloat, tfloat, nlohmann::json>());
+
+    py::class_<Graph, std::shared_ptr<Graph>>(m, "Graph")
+        .def(py::init<>())
+        .def("add_node", &Graph::add_node)
+        .def("add_edge", &Graph::add_edge);
 }
