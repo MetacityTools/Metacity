@@ -1,47 +1,7 @@
 import os
 
-import metacity.utils.bbox as bbox
 import numpy as np
 import pytest
-
-
-######################################
-# GEOMETRY
-######################################
-
-def gen_random_integers(count=30):
-    return np.random.randint(0, 100, count).astype(np.int32)
-
-@pytest.fixture(scope='function')
-def random_integers():
-    return gen_random_integers()
-
-def gen_random_vertices(count=30):
-    coordinates = np.random.rand(count, 3).astype(np.float32) * 1000
-    return coordinates
-
-
-@pytest.fixture(scope="function")
-def random_vertices():
-    yield gen_random_vertices()
-
-
-def gen_random_bbox():
-    return bbox.vertices_bbox(gen_random_vertices())
-
-
-@pytest.fixture(scope="function")
-def random_bbox():
-    yield gen_random_bbox()
-
-
-def gen_random_bboxes():
-    return [bbox.vertices_bbox(gen_random_vertices()) for i in range(30)]
-
-
-@pytest.fixture(scope="function")
-def random_bboxes():
-    yield gen_random_bboxes()
 
 
 ######################################
