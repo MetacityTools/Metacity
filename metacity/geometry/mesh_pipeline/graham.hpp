@@ -1,7 +1,7 @@
 #pragma once
 #include <stack>
 #include <algorithm>
-#include "types.hpp"
+#include "../types.hpp"
 
 using namespace std;
 

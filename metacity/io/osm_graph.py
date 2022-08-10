@@ -13,7 +13,7 @@ def iparse_edges(edge_file: str, projector: Projector):
             continue
 
         attr_list = parse_geometry(feature, projector)
-        attr = attr_list[0] # assume linestring has only one attribute
+        attr = attr_list[0] #assume linestring has only one attribute
         yield attr, feature.properties
 
 
@@ -50,6 +50,24 @@ def parse_nodes(node_file: str, graph: Graph, projector: Projector):
 
 
 def parse_graph(node_file: str, edge_file: str, from_crs: str = None, to_crs: str = None):
+    """
+    Load OSM network data exported to GeoJSON format. The required data can be obtained 
+    in a following way:
+
+    >>> from pyrosm import OSM
+    >>> data = OSM('data.osm.pbf')
+    >>> nodes, edges = data.get_network(nodes=True)
+    >>> nodes.to_file("nodes.json", driver="GeoJSON") #node_file
+    >>> edges.to_file("edges.json", driver="GeoJSON") #edge_file
+
+    The files "nodes.json" and "edges.json" can be then parsed by this function.
+
+    Args:
+        node_file (str): path to the GeoJSON file containing the nodes
+        edge_file (str): path to the GeoJSON file containing the edges
+        from_crs (str): optional CRS to convert the data from
+        to_crs (str): optional CRS to convert the data to
+    """
     graph = Graph()
     projector = Projector(from_crs, to_crs)
     parse_nodes(node_file, graph, projector)
@@ -57,8 +75,8 @@ def parse_graph(node_file: str, edge_file: str, from_crs: str = None, to_crs: st
     return graph
 
 
-        
-        
+
+
         
 
 

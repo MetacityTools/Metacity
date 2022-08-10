@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "types.hpp"
-#include "gltf/tiny_gltf.h"
+#include "../types.hpp"
+#include "../deps/gltf/tiny_gltf.h"
 
 using namespace std;
 

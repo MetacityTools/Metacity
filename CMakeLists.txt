@@ -16,29 +16,30 @@ add_link_options(-pthread)
 
 
 pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp 
-                                    metacity/geometry/progress.hpp 
                                     metacity/geometry/types.hpp
-                                    metacity/geometry/bbox.hpp 
-                                    metacity/geometry/bbox.cpp 
-                                    metacity/geometry/simplify.hpp 
-                                    metacity/geometry/simplify.cpp 
-                                    metacity/geometry/mapping.hpp 
-                                    metacity/geometry/mapping.cpp 
-                                    metacity/geometry/graham.hpp 
-                                    metacity/geometry/graham.cpp 
-                                    metacity/geometry/bvh.hpp 
-                                    metacity/geometry/bvh.cpp 
-                                    metacity/geometry/model.hpp 
-                                    metacity/geometry/model.cpp 
-                                    metacity/geometry/layer.hpp 
-                                    metacity/geometry/layer.cpp 
-                                    metacity/geometry/attribute.hpp 
-                                    metacity/geometry/attribute.cpp 
-                                    metacity/geometry/grid.hpp
-                                    metacity/geometry/grid.cpp
-                                    metacity/geometry/triangulation.hpp
-                                    metacity/geometry/triangulation.cpp
-                                    metacity/geometry/graph.hpp
-                                    metacity/geometry/graph.cpp)
+                                    metacity/geometry/convert.hpp
+                                    metacity/geometry/progress.hpp 
+                                    metacity/geometry/mesh_pipeline/bbox.hpp 
+                                    metacity/geometry/mesh_pipeline/bbox.cpp 
+                                    metacity/geometry/mesh_pipeline/simplify.hpp 
+                                    metacity/geometry/mesh_pipeline/simplify.cpp 
+                                    metacity/geometry/mesh_pipeline/mapping.hpp 
+                                    metacity/geometry/mesh_pipeline/mapping.cpp 
+                                    metacity/geometry/mesh_pipeline/graham.hpp 
+                                    metacity/geometry/mesh_pipeline/graham.cpp 
+                                    metacity/geometry/mesh_pipeline/bvh.hpp 
+                                    metacity/geometry/mesh_pipeline/bvh.cpp 
+                                    metacity/geometry/mesh_pipeline/model.hpp 
+                                    metacity/geometry/mesh_pipeline/model.cpp 
+                                    metacity/geometry/mesh_pipeline/layer.hpp 
+                                    metacity/geometry/mesh_pipeline/layer.cpp 
+                                    metacity/geometry/mesh_pipeline/attribute.hpp 
+                                    metacity/geometry/mesh_pipeline/attribute.cpp 
+                                    metacity/geometry/mesh_pipeline/grid.hpp
+                                    metacity/geometry/mesh_pipeline/grid.cpp
+                                    metacity/geometry/mesh_pipeline/triangulation.hpp
+                                    metacity/geometry/mesh_pipeline/triangulation.cpp
+                                    metacity/geometry/vector_pipeline/graph.hpp
+                                    metacity/geometry/vector_pipeline/graph.cpp)
 
 

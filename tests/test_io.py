@@ -1,6 +1,6 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shp
-from metacity.io.osm_graph import parse_graph
+from metacity.io import parse_graph
 from metacity.io import parse_recursively
 
 

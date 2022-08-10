@@ -2,18 +2,18 @@
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
 #include <filesystem>
-#include "gltf/pybind11_json.hpp"
-#include "model.hpp"
-#include "graph.hpp"
-#include "attribute.hpp"
+#include "deps/gltf/pybind11_json.hpp"
 #include "progress.hpp"
-#include "layer.hpp"
-#include "grid.hpp"
+#include "mesh_pipeline/model.hpp"
+#include "mesh_pipeline/attribute.hpp"
+#include "mesh_pipeline/layer.hpp"
+#include "mesh_pipeline/grid.hpp"
+#include "vector_pipeline/graph.hpp"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include "gltf/tiny_gltf.h"
+#include "deps/gltf/tiny_gltf.h"
 
 namespace py = pybind11;
 using namespace std;

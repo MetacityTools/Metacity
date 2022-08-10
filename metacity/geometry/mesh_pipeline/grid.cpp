@@ -2,7 +2,7 @@
 #include "grid.hpp"
 #include "progress.hpp"
 #include "simplify.hpp"
-#include "gltf/json.hpp"
+#include "../deps/gltf/json.hpp"
 
 
 Grid::Grid(tfloat _width, tfloat _height) : width(_width), height(_height) {}

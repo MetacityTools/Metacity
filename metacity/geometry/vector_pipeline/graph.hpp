@@ -1,7 +1,7 @@
 #pragma once
-#include "gltf/json.hpp"
-#include "types.hpp"
-#include "attribute.hpp"
+#include "../deps/gltf/json.hpp"
+#include "../types.hpp"
+#include "../mesh_pipeline/attribute.hpp"
 #include <unordered_map>
 
 using namespace std;

@@ -1,7 +1,7 @@
+#include "../deps/gltf/tiny_gltf.h"
+#include "../progress.hpp"
 #include "layer.hpp"
 #include "bvh.hpp"
-#include "gltf/tiny_gltf.h"
-#include "progress.hpp"
 #include "mapping.hpp"
 #include "simplify.hpp"
 

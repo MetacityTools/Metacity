@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "mapbox/earcut.hpp"
-#include "types.hpp"
+#include "../deps/mapbox/earcut.hpp"
+#include "../types.hpp"
 
 using namespace std;
 

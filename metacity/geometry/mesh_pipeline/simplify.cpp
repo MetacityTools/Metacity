@@ -1,7 +1,7 @@
 #include "simplify.hpp"
 #include "graham.hpp"
 #include "bvh.hpp"
-#include "progress.hpp"
+#include "../progress.hpp"
 
 namespace simplify
 {

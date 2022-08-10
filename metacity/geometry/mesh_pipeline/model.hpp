@@ -1,9 +1,9 @@
 #pragma once
 #include <vector>
 #include <unordered_map>
-#include "types.hpp"
+#include "../types.hpp"
 #include "attribute.hpp"
-#include "gltf/json.hpp"
+#include "../deps/gltf/json.hpp"
 
 using namespace std;
 
