@@ -66,7 +66,7 @@ BVH::BVH(const vector<shared_ptr<Model>> & models_)
         if (!attr)
             continue;
 
-        if (attr->type() != AttributeType::POLYGON)
+        if (attr->type() != AttributeType::TRIANGLE)
             continue;
         
         //iterate over triangles

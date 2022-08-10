@@ -68,6 +68,15 @@ nlohmann::json Model::get_metadata() const
     return metadata;
 }
 
+int Model::geom_type() const
+{
+    if (attrib.find("POSITION") == attrib.end()) 
+        throw runtime_error("No geometry data");
+
+    const auto positions = attrib.at("POSITION");
+    return positions->geom_type();
+}
+
 
 shared_ptr<Attribute> Model::get_attribute(const string &name) const {
     if (attrib.find(name) == attrib.end()) {
@@ -79,12 +88,6 @@ shared_ptr<Attribute> Model::get_attribute(const string &name) const {
 
 bool Model::attribute_exists(const string &name) {
     return attrib.find(name) != attrib.end();
-}
-
-
-void Model::compute_normals()
-{
-    //TODO
 }
 
 bool Model::has_any_geometry() const
@@ -150,7 +153,7 @@ int type_to_gltf(AttributeType type)
         return TINYGLTF_MODE_POINTS;
     case AttributeType::SEGMENT:
         return TINYGLTF_MODE_LINE;
-    case AttributeType::POLYGON:
+    case AttributeType::TRIANGLE:
         return TINYGLTF_MODE_TRIANGLES;
     default:
         throw runtime_error("Undefined attribute type");
@@ -194,7 +197,7 @@ AttributeType type_from_gltf(int mode)
         return AttributeType::SEGMENT;
         break;
     case TINYGLTF_MODE_TRIANGLES:
-        return AttributeType::POLYGON;
+        return AttributeType::TRIANGLE;
         break;
     default:
         throw runtime_error("Undefined attribute type");

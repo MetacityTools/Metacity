@@ -25,6 +25,7 @@ public:
 
     void set_metadata(const nlohmann::json & data);
     nlohmann::json get_metadata() const;
+    int geom_type() const;
 
     void from_gltf(const tinygltf::Model & model, const int mesh_index);
     void to_gltf(tinygltf::Model & model) const;
@@ -41,7 +42,6 @@ protected:
     void to_gltf_scene(tinygltf::Model & model, tinygltf::Scene & scene) const;
 
     void from_gltf_attribute(const tinygltf::Model & model, const tinygltf::Primitive & primitive, const string &name, AttributeType type);
-    void compute_normals();
 
     void mesh_validity_check(const tinygltf::Model & model, const int mesh_index);
     void attr_validity_check(const tinygltf::Model & model, const int attribute_index);

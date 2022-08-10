@@ -27,7 +27,8 @@ PYBIND11_MODULE(geometry, m) {
         .def("push_line2D", &Attribute::push_line2D)
         .def("push_line3D", &Attribute::push_line3D)
         .def("push_polygon2D", &Attribute::push_polygon2D)
-        .def("push_polygon3D", &Attribute::push_polygon3D);
+        .def("push_polygon3D", &Attribute::push_polygon3D)
+        .def_property_readonly("geom_type", &Attribute::geom_type);
 
     py::class_<Model, std::shared_ptr<Model>>(m, "Model")
         .def(py::init<>())
@@ -35,7 +36,8 @@ PYBIND11_MODULE(geometry, m) {
         .def("get_attribute", &Model::get_attribute)
         .def("set_metadata", &Model::set_metadata)
         .def_property_readonly("metadata", &Model::get_metadata)
-        .def("attribute_exists", &Model::attribute_exists);
+        .def("attribute_exists", &Model::attribute_exists)
+        .def_property_readonly("geom_type", &Model::geom_type);
 
     py::class_<Layer, std::shared_ptr<Layer>>(m, "Layer")
         .def(py::init<>())

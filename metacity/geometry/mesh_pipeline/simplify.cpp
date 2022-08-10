@@ -13,7 +13,7 @@ namespace simplify
             return nullptr;
         }
 
-        if (attribute->type() != AttributeType::POLYGON)
+        if (attribute->type() != AttributeType::TRIANGLE)
         {
             return model->clone();
         }

@@ -63,7 +63,7 @@ void Attribute::push_line3D(const vector<tfloat> & ivertices)
 
 void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
 {
-    allowedAttributeType(AttributeType::POLYGON);
+    allowedAttributeType(AttributeType::TRIANGLE);
 
     vector<vector<tvec3>> polygon;
     for (const auto &iring : ivertices)
@@ -85,7 +85,7 @@ void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
 
 void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
 {
-    allowedAttributeType(AttributeType::POLYGON);
+    allowedAttributeType(AttributeType::TRIANGLE);
 
     vector<vector<tvec3>> polygon;
     for (const auto &iring : ivertices)
@@ -107,20 +107,12 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
 
 void Attribute::push_triangles(const vector<tvec3> & ivertices)
 {
-    allowedAttributeType(AttributeType::POLYGON);
+    allowedAttributeType(AttributeType::TRIANGLE);
 
     if (ivertices.size() % 3)
         throw runtime_error("Unexpected number of elements in input array");
 
     data.insert(data.end(), ivertices.begin(), ivertices.end());
-}
-
-void Attribute::fill_normal_triangle(const tvec3 & normal)
-{
-    //allowedAttributeType(AttributeType::NORMAL);
-    data.push_back(normal);
-    data.push_back(normal);
-    data.push_back(normal);
 }
 
 int Attribute::type() const {
@@ -204,6 +196,11 @@ void Attribute::merge(shared_ptr<Attribute> other)
     if (dtype != other->dtype)
         throw runtime_error("Cannot merge attributes of different types");
     data.insert(data.end(), other->data.begin(), other->data.end());
+}
+
+int Attribute::geom_type() const
+{
+    return dtype;
 }
 
 void Attribute::to_gltf(tinygltf::Model & model, AttributeType & dtype_, int & accessor_index) const
