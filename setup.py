@@ -7,6 +7,7 @@ import sys
 from setuptools import Extension, find_packages, setup
 from setuptools.command.build_ext import build_ext
 
+
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
 
@@ -146,6 +147,7 @@ setup(
         "pytest-cov>=2.12.1",
         "twine>=3.4.2",
         "orjson>=3.6.4",
+        "colored>=1.4.3",
         "setuptools>=42",
         "wheel"
     ],
