@@ -147,6 +147,7 @@ setup(
         "pytest-cov>=2.12.1",
         "twine>=3.4.2",
         "orjson>=3.6.4",
+        "colored>=1.4.3",
         "setuptools>=42",
         "wheel"
     ],
