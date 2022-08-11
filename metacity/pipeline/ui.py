@@ -37,7 +37,6 @@ def processing_sequence_end():
     free_space = width - len_no_ansi(message)
     print(f"{Colors.dim}{Colors.gray_bg}{Colors.white_fg}{message}{free_space * ' '}{Colors.reset}")   
 
-
 def print_intro_bar(left_text: str, center_text: str, right_text: str):
     size = os.get_terminal_size()
     prompt = f"{Colors.pink_bg}{Colors.white_fg} {left_text} {Colors.gray_bg} {center_text}"
@@ -78,7 +77,7 @@ def get_path(title: str):
 
 def get_yes_no(title: str):
     while True:
-        answer = input(">>> " + title + f" {Colors.dim}[y to continue, blank to pass]{Colors.reset} ")
+        answer = input(">>> " + title + f" {Colors.dim}[y to apply, blank to skip]{Colors.reset} ")
         if answer.lower() == 'y':
             return True
         return False
