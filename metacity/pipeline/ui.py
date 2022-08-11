@@ -78,7 +78,7 @@ def get_path(title: str):
 
 def get_yes_no(title: str):
     while True:
-        answer = input(">>> " + title + f" {Colors.dim}[y to continue, blank to pass]{Colors.reset} ")
+        answer = input(">>> " + title + f" {Colors.dim}[y to apply, blank to skip]{Colors.reset} ")
         if answer.lower() == 'y':
             return True
         return False
