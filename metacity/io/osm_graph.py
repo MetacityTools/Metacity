@@ -12,8 +12,10 @@ def iparse_edges(edge_file: str, projector: Projector):
             print(f"Skipping non-linestring feature while parsing graph edges: {feature.geometry.geometry_type}")
             continue
 
+        # TODO here replace parse_geometry with something more efficient
+        # avoid using mesh_pipeline functionalities (Attributes)
         attr_list = parse_geometry(feature, projector)
-        attr = attr_list[0] #assume linestring has only one attribute
+        attr = attr_list[0] #assume edge has only one attribute
         yield attr, feature.properties
 
 
@@ -33,18 +35,18 @@ def iparse_nodes(node_file: str, projector: Projector):
 
 
 def parse_edges(edge_file: str, graph: Graph, projector: Projector):
-    edges_load = Progress(f"Loading edges")
+    progress = Progress(f"Loading edges")
     for i, (attr, props) in enumerate(iparse_edges(edge_file, projector)):
-        edges_load.update()
+        progress.update()
         u, v = props['u'], props['v']
         edge = Edge(i, u, v, attr, props)
         graph.add_edge(edge)
 
 
 def parse_nodes(node_file: str, graph: Graph, projector: Projector):
-    nodes_load = Progress(f"Loading nodes")
+    progress = Progress(f"Loading nodes")
     for x, y, props in iparse_nodes(node_file, projector):
-        nodes_load.update()
+        progress.update()
         node = Node(props['id'], x, y, props)
         graph.add_node(node)
 
