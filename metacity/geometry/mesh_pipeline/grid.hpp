@@ -29,7 +29,6 @@ public:
 protected:
     void export_layout(const string & folder) const;
 
-
     tfloat width;
     tfloat height;
     unordered_map<pair<int, int>, vector<shared_ptr<Model>>, hash_pair> grid;

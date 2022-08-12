@@ -21,10 +21,8 @@ pybind11_add_module(${PROJECT_NAME} metacity/geometry/geometry.cpp
                                     metacity/geometry/progress.hpp 
                                     metacity/geometry/mesh_pipeline/bbox.hpp 
                                     metacity/geometry/mesh_pipeline/bbox.cpp 
-                                    metacity/geometry/mesh_pipeline/simplify.hpp 
-                                    metacity/geometry/mesh_pipeline/simplify.cpp 
-                                    metacity/geometry/mesh_pipeline/mapping.hpp 
-                                    metacity/geometry/mesh_pipeline/mapping.cpp 
+                                    metacity/geometry/mesh_pipeline/modifiers.hpp 
+                                    metacity/geometry/mesh_pipeline/modifiers.cpp 
                                     metacity/geometry/mesh_pipeline/graham.hpp 
                                     metacity/geometry/mesh_pipeline/graham.cpp 
                                     metacity/geometry/mesh_pipeline/bvh.hpp 

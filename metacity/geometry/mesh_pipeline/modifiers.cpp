@@ -1,9 +1,9 @@
-#include "simplify.hpp"
+#include "modifiers.hpp"
 #include "graham.hpp"
 #include "bvh.hpp"
 #include "../progress.hpp"
 
-namespace simplify
+namespace modifiers
 {
     shared_ptr<Model> simplify_envelope(const shared_ptr<Model> model)
     {
@@ -90,7 +90,8 @@ namespace simplify
     {
         Progress bar("Remeshing height");
         auto bvh = BVH(models);
-        if (bvh.is_empty()) {
+        if (bvh.is_empty())
+        {
             models.clear();
             return;
         }
@@ -99,7 +100,8 @@ namespace simplify
         const tfloat step = tile_side / tile_divisions;
 
         vector<vector<tvec3>> vertices;
-        for (tfloat x = bbox.min.x; x <= bbox.max.x; x += step){
+        for (tfloat x = bbox.min.x; x <= bbox.max.x; x += step)
+        {
             vector<tvec3> row;
             for (tfloat y = bbox.min.y; y <= bbox.max.y; y += step)
             {
@@ -109,11 +111,11 @@ namespace simplify
             vertices.emplace_back(move(row));
         }
 
-        //todo smoothing and removing infinities
+        // todo smoothing and removing infinities
 
         const size_t count_tiles_x = ceil((bbox.max.x - bbox.min.x) / tile_side);
         const size_t count_tiles_y = ceil((bbox.max.y - bbox.min.y) / tile_side);
-        size_t x_start,  y_start, x_end, y_end;
+        size_t x_start, y_start, x_end, y_end;
         vector<tvec3> tile_triangles;
         vector<shared_ptr<Model>> new_models;
 
@@ -147,4 +149,26 @@ namespace simplify
         models = move(new_models);
     }
 
+    void map_to_height(BVH &bvh, vector<shared_ptr<Model>> &models)
+    {
+        Progress bar("Height mapping");
+        for (auto &model : models)
+        {
+            bar.update();
+
+            auto attr = model->get_attribute("POSITION");
+            if (!attr)
+                continue;
+
+            tvec3 pos;
+            tfloat h;
+            for (size_t i = 0; i < attr->size(); i++)
+            {
+                pos = (*attr)[i];
+                h = bvh.traceDownRegualarRay(pos.x, pos.y, pos.z);
+                pos.z = h;
+                (*attr)[i] = pos;
+            }
+        }
+    }
 }

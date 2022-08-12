@@ -2,8 +2,7 @@
 #include "../progress.hpp"
 #include "layer.hpp"
 #include "bvh.hpp"
-#include "mapping.hpp"
-#include "simplify.hpp"
+#include "modifiers.hpp"
 
 
 Layer::Layer() {}
@@ -22,7 +21,7 @@ const vector<shared_ptr<Model>> & Layer::get_models() const {
 
 void Layer::map_to_height(shared_ptr<Layer> height_layer) {
     auto bvh = BVH(height_layer->get_models());
-    to_height(bvh, models);
+    modifiers::map_to_height(bvh, models);
 }
 
 void Layer::to_gltf(const string &filename) const {
@@ -48,13 +47,13 @@ void Layer::simplify_envelope()
     Progress bar("Simplifying envelope");
     for (auto & model : models) {
         bar.update();
-        model = simplify::simplify_envelope(model);
+        model = modifiers::simplify_envelope(model);
     }
 }
 
 void Layer::simplify_remesh_height(tfloat tile_side, size_t tile_divisions)
 {
-    simplify::simplify_remesh_height(models, tile_side, tile_divisions);
+    modifiers::simplify_remesh_height(models, tile_side, tile_divisions);
 }
 
 void Layer::from_gltf(const string &filename) {

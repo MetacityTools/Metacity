@@ -1,7 +1,7 @@
 #include <fstream>
 #include "grid.hpp"
 #include "progress.hpp"
-#include "simplify.hpp"
+#include "modifiers.hpp"
 #include "../deps/gltf/json.hpp"
 
 
@@ -34,7 +34,7 @@ void Grid::tile_merge()
     for (auto & pair : grid) {
         bar.update();
         auto models = pair.second;
-        auto merged = simplify::merge_models(models);
+        auto merged = modifiers::merge_models(models);
         pair.second.clear();
         pair.second.push_back(merged);
     }
