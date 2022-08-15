@@ -4,10 +4,17 @@ import textwrap
 
 from colored import attr, bg, fg
 
+
 COMMANDS = ['extra', 'extension', 'stuff', 'errors',
             'email', 'foobar', 'foo']
 
 RE_SPACE = re.compile('.*\s+$', re.M)
+
+
+def remove_prefix(text: str, prefix: str):
+    if text.startswith(prefix):
+        return text[len(prefix):]
+    return text  # or whatever
 
 class Colors:
     pink_bg = bg('#FE5E87')
@@ -51,7 +58,7 @@ def print_intro_bar(left_text: str, center_text: str, right_text: str):
 
 def format_message(message: str):
     message = re.sub(r'\s+', ' ', message)
-    message = message.removeprefix(' ')
+    message = remove_prefix(message, ' ')
     message = textwrap.fill(message, width=40)
     message = textwrap.indent(message, '    ')
     message = f"\n{Colors.dim}{message}{Colors.reset}"
