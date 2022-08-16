@@ -1,6 +1,6 @@
 #pragma once
-#include "gltf/json.hpp"
-#include "gltf/tiny_gltf.h"
+#include "deps/gltf/json.hpp"
+#include "deps/gltf/tiny_gltf.h"
 
 using namespace std;
 
