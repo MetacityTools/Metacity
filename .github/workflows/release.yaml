@@ -8,11 +8,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    if: contains(github.event.base_ref, 'main')
     steps:
     - uses: actions/checkout@v2
-    - name: 'see ref'
-      run: |
-        echo "ref: {{ github.ref }}"
     - uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
