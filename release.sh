@@ -20,7 +20,6 @@ done
 
 VERSION=$version
 TAG_VERSION="v$VERSION"
-sed -i '' "s/${CURRENT_VERSION}/${VERSION}/" setup.py
 
 exit 1
 git checkout main
@@ -33,19 +32,22 @@ if [ $? -ne 0 ]; then
     echo "Failed to pull main"
     exit 1
 fi
-git add package.json
+
+sed -i '' "s/${CURRENT_VERSION}/${VERSION}/" setup.py
+
+git add setup.py
 if [ $? -ne 0 ]; then
-    echo "Failed to add package.json"
+    echo "Failed to add setup.py"
     exit 1
 fi
 git commit -m "Release ${TAG_VERSION}"
 if [ $? -ne 0 ]; then
-    echo "Failed to commit package.json"
+    echo "Failed to commit setup.py"
     exit 1
 fi
 git push origin main
 if [ $? -ne 0 ]; then
-    echo "Failed to push package.json"
+    echo "Failed to push setup.py"
     exit 1
 fi
 git tag $TAG_VERSION
