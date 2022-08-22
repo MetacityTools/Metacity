@@ -56,6 +56,11 @@ void Layer::simplify_remesh_height(tfloat tile_side, size_t tile_divisions)
     modifiers::simplify_remesh_height(models, tile_side, tile_divisions);
 }
 
+void Layer::move_to_plane_z(tfloat plane)
+{
+    modifiers::move_to_plane_z(models, plane);
+}
+
 void Layer::from_gltf(const string &filename) {
     tinygltf::TinyGLTF gltf;
     //gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);

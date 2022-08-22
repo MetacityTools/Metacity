@@ -15,6 +15,7 @@ public:
 
 
     tvec3 get_centroid() const;
+    pair<tvec3, tvec3> get_bbox() const;
     void merge(shared_ptr<Model> model);
     shared_ptr<Model> clone() const;
 

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Releasing new version of BananaGL 🍌"
+echo "Releasing new version of Metacity 🏙"
 echo "--------------------------------"
 GIT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null)
 if [ -z "$GIT_VERSION" ]; then

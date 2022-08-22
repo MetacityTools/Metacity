@@ -171,4 +171,24 @@ namespace modifiers
             }
         }
     }
+
+    void move_to_plane_z(vector<shared_ptr<Model>> &models, const tfloat plane)
+    {
+        Progress bar("Moving to z-plane=" + to_string(plane));
+        for (auto &model : models)
+        {
+            bar.update();
+            auto attr = model->get_attribute("POSITION");
+            if (!attr)
+                continue;
+
+            tfloat model_min_z = attr->bbox().first.z;
+            tfloat shift = plane - model_min_z;
+
+            for (size_t i = 0; i < attr->size(); i++)
+            {
+                (*attr)[i].z += shift;
+            }
+        }
+    }
 }
