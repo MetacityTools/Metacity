@@ -127,7 +127,7 @@ setup(
     packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=[CMakeExtension('metacity.geometry')],
     cmdclass={"build_ext": CMakeBuild},
-    version="0.4.0",
+    version="0.4.1",
     description="Python toolkit for Urban Data processing",
     long_description=README,
     long_description_content_type="text/markdown",
