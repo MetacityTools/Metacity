@@ -65,8 +65,4 @@ jobs:
     - uses: rickstaa/action-create-tag@v1
       with:
         tag: ${{ env.CURRENT_VERSION }}
-    - uses: ncipollo/release-action@v1
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        generateReleaseNotes: true
 
