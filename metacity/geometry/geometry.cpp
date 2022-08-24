@@ -49,6 +49,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("map_to_height", &Layer::map_to_height)
         .def("simplify_envelope", &Layer::simplify_envelope)
         .def("simplify_remesh_height", &Layer::simplify_remesh_height)
+        .def("move_to_plane_z", &Layer::move_to_plane_z)
         .def_property_readonly("size", &Layer::size);
 
     py::class_<Grid, std::shared_ptr<Grid>>(m, "Grid")

@@ -56,6 +56,16 @@ tvec3 Model::get_centroid() const
     return centroid;
 }
 
+pair<tvec3, tvec3> Model::get_bbox() const {
+    if (attrib.find("POSITION") == attrib.end()) {
+        throw runtime_error("No position data");
+    }  
+
+    const auto positions = attrib.at("POSITION");
+    auto bbox = positions->bbox();
+    return bbox;
+}
+
 void Model::set_metadata(const nlohmann::json & data)
 {
     for (auto & pair : data.items()) {

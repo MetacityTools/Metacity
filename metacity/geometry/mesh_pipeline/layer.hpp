@@ -21,6 +21,7 @@ public:
 
     void simplify_envelope();
     void simplify_remesh_height(tfloat tile_side, size_t tile_divisions);
+    void move_to_plane_z(tfloat plane);
 
 protected:
     vector<shared_ptr<Model>> models;
