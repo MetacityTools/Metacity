@@ -61,7 +61,7 @@ jobs:
       run: |
         CURRENT_VERSION=$(python3 setup.py --version) 
         echo "Current version: $CURRENT_VERSION"
-        echo "::set-env name=CURRENT_VERSION::v$CURRENT_VERSION"
+        echo "CURRENT_VERSION=v$CURRENT_VERSION" >> $GITHUB_ENV
     - uses: rickstaa/action-create-tag@v1
       with:
         tag: ${{ env.CURRENT_VERSION }}
