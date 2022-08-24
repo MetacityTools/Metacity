@@ -11,6 +11,8 @@ jobs:
     if: github.event_name == 'push' && contains(github.event.base_ref, 'release')
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
     - uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
