@@ -38,8 +38,8 @@ void Layer::to_gltf(const string &filename) const {
     }
 
     tinygltf::TinyGLTF gltf;
-    //gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
-    gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, false);
+    gltf.SetStoreOriginalJSONForExtrasAndExtensions(true);
+    gltf.WriteGltfSceneToFile(&gltf_model, filename, true, true, true, true);
 }
 
 void Layer::simplify_envelope()
@@ -68,7 +68,7 @@ void Layer::from_gltf(const string &filename) {
     string err, warn;
 
     Progress bar("Importing models");
-    bool ret = gltf.LoadASCIIFromFile(&gltf_model, &err, &warn, filename);
+    bool ret = gltf.LoadBinaryFromFile(&gltf_model, &err, &warn, filename);
 
     if (!err.empty()) {
         cout << err << endl;
