@@ -7,25 +7,25 @@ from metacity.geometry import Progress
 __all__ = ["parse", "parse_recursively"]
 
 
-def parse(file: str, from_crs: str = None, to_crs: str = None, progress: Progress = None):
+def parse(file: str, progress: Progress = None):
     if progress is None:
         progress = Progress("Loading Model")
 
     if file.endswith('.shp'):
-        return parse_shapefile(file, from_crs, to_crs, progress)
+        return parse_shapefile(file, progress)
     elif file.endswith('.json'):
-        return parse_geojson(file, from_crs, to_crs, progress)
+        return parse_geojson(file, progress)
 
 
-def parse_graph(node_file: str, edge_file: str, from_crs: str = None, to_crs: str = None):
-    return parse_osm_graph(node_file, edge_file, from_crs, to_crs)
+def parse_graph(node_file: str, edge_file: str):
+    return parse_osm_graph(node_file, edge_file)
 
 
-def parse_recursively(directory: str, from_crs: str = None, to_crs: str = None):
+def parse_recursively(directory: str):
     models = []
     progress = Progress("Loading Models")
     for file in fs.list_files_recursive(directory):
-        submodels = parse(file, from_crs, to_crs, progress)
+        submodels = parse(file, progress)
         if submodels is not None:
             models.extend(submodels)
     return models

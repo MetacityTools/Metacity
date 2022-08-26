@@ -1,12 +1,11 @@
-#import fiona #<- needed on some older pythons
-import geopandas
+import metacity.io.loaders.pyshp as shapefile
 from metacity.io.geojson import parse_data as parse_geojson
 from metacity.geometry import Progress
 
 __all__ = ["parse"]
 
 
-def parse(shp_file: str, from_crs: str = None, to_crs: str = None, progress: Progress = None):
+def parse(shp_file: str, progress: Progress = None):
     """
     Parse a SHP file. All contents are transformed into Metacity objects, and returned as a list.
 
@@ -22,7 +21,9 @@ def parse(shp_file: str, from_crs: str = None, to_crs: str = None, progress: Pro
             :func:`metacity.io.parse' to see other formats.
 
     """
-    file = geopandas.read_file(shp_file)
-    data = file._to_geo()
-    return parse_geojson(data, from_crs, to_crs, progress)
+    shapefile.VERBOSE = False
+    sf = shapefile.Reader(shp_file)
+    geo = sf.shapeRecords().__geo_interface__
+    return parse_geojson(geo, progress)
+
 
