@@ -30,7 +30,7 @@ jobs:
           CIBW_ARCHS: native
           CIBW_BUILD_FRONTEND: pip
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest tests/*
+          CIBW_TEST_COMMAND: pytest ./tests/*
           CIBW_BUILD_VERBOSITY: 3 
 
       - name: "Upload wheel as artifact"

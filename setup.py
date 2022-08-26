@@ -4,7 +4,7 @@ import re
 import subprocess
 import sys
 
-from setuptools import Extension, find_packages, setup
+from setuptools import Extension, find_namespace_packages, setup
 from setuptools.command.build_ext import build_ext
 
 
@@ -124,7 +124,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name="metacity",
-    packages = find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
+    packages = find_namespace_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     ext_modules=[CMakeExtension('metacity.geometry')],
     cmdclass={"build_ext": CMakeBuild},
     version="0.5.1",
@@ -144,7 +144,5 @@ setup(
         "orjson>=3.6.4",
         "setuptools>=42",
         "wheel"
-    ],
-    zip_safe=False,
-    include_package_data=True
+    ]
 )

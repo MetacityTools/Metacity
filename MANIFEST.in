@@ -3,8 +3,5 @@ include CMakeLists.txt
 include metacity/*.pyi
 recursive-include pybind11 CMakeLists.txt *.cmake
 graft metacity/geometry
-graft metacity/viewer
-prune metacity/viewer/node_modules
-prune metacity/viewer/src
 graft pybind11/include
 graft pybind11/tools
