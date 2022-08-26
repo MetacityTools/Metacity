@@ -1,37 +1,14 @@
-from numpy import number
 from metacity.utils.filesystem import read_json
 from metacity.geometry import Attribute, Model, Progress
 from typing import List, Union
-from pyproj import Proj, Transformer
 
 
 __all__ = ["parse", "parse_data"]
 
 
-
-class Projector:
-    def __init__(self, from_crs: str = None, to_crs: str = None):
-        self.from_crs = from_crs
-        self.to_crs = to_crs
-        self.transform = None
-
-        if from_crs is None or to_crs is None:
-            return
-
-        proj_from = Proj(from_crs, preserve_units=False)
-        proj_to = Proj(to_crs, preserve_units=False)
-        self.transform = Transformer.from_proj(proj_from, proj_to)
-
-    def project(self, coordinates: List[List[float]]):
-        if self.transform is None:
-            return coordinates
-        return [ p for p in self.transform.itransform(coordinates) ]
-
-
 class Geometry:
     def __init__(self, data):
         self.data = data
-        self.transform = None
 
     @property
     def dim(self):
@@ -43,16 +20,6 @@ class Geometry:
             raise Exception(
                 f"Encountered primitive with unsupported dimension {d}")
         return d
-
-    def set_projection(self, projector: Projector):
-        if projector is None:
-            return
-        self.transform = projector.transform
-
-    def project(self, coordinates: List[List[float]]):
-        if self.transform is None:
-            return coordinates
-        return [ p for p in self.transform.itransform(coordinates) ]
 
     @property
     def coordinates(self):
@@ -93,8 +60,7 @@ def to_model(attr: Attribute):
 ###############################################################################
 
 
-def parse_point(g: Geometry, attr: Attribute, dim: int, vertices: List[List[float]]):
-    vertices = g.project(vertices)
+def parse_point(attr: Attribute, dim: int, vertices: List[List[float]]):
     vertices = flatten(vertices)
     if dim == 2:
         attr.push_point2D(vertices)
@@ -102,8 +68,7 @@ def parse_point(g: Geometry, attr: Attribute, dim: int, vertices: List[List[floa
         attr.push_point3D(vertices)
 
 
-def parse_line(g: Geometry, attr: Attribute, dim: int, line: List[List[float]]):
-    l = g.project(line)
+def parse_line(attr: Attribute, dim: int, line: List[List[float]]):
     l = flatten(line)
     if dim == 2:
         attr.push_line2D(l)
@@ -111,8 +76,7 @@ def parse_line(g: Geometry, attr: Attribute, dim: int, line: List[List[float]]):
         attr.push_line3D(l)
 
 
-def parse_polygon(g: Geometry, attr: Attribute, dim: int, polygon: List[List[List[float]]]):
-    polygon = [ g.project(p) for p in polygon ]
+def parse_polygon(attr: Attribute, dim: int, polygon: List[List[List[float]]]):
     p = flatten_polygon(polygon)
     if dim == 2:
         attr.push_polygon2D(p)
@@ -126,21 +90,21 @@ def parse_polygon(g: Geometry, attr: Attribute, dim: int, polygon: List[List[Lis
 def attr_from_point(geometry: Geometry):
     attr = Attribute()
     vertices = [geometry.coordinates]
-    parse_point(geometry, attr, geometry.dim, vertices)
+    parse_point(attr, geometry.dim, vertices)
     return [attr]
 
 
 def attr_from_multipoint(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
-    parse_point(geometry, attr, geometry.dim, vertices)
+    parse_point(attr, geometry.dim, vertices)
     return [attr]
 
 
 def attr_from_linestring(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
-    parse_line(geometry, attr, geometry.dim, vertices)
+    parse_line(attr, geometry.dim, vertices)
     return [attr]
 
 
@@ -148,14 +112,14 @@ def attr_from_multilinestring(geometry: Geometry):
     attr = Attribute()
     dim = geometry.dim
     for line in geometry.coordinates:
-        parse_line(geometry, attr, dim, line)
+        parse_line(attr, dim, line)
     return [attr]
 
 
 def attr_from_polygon(geometry: Geometry):
     attr = Attribute()
     vertices = geometry.coordinates
-    parse_polygon(geometry, attr, geometry.dim, vertices)
+    parse_polygon(attr, geometry.dim, vertices)
     return [attr]
 
 
@@ -163,7 +127,7 @@ def attr_from_multipolygon(geometry: Geometry):
     attr = Attribute()
     dim = geometry.dim
     for polygon in geometry.coordinates:
-        parse_polygon(geometry, attr, dim, polygon)
+        parse_polygon(attr, dim, polygon)
     return [attr]
 
 
@@ -188,8 +152,7 @@ typedict = {
 }
 
 
-def parse_geometry(feature: Feature, projector: Projector):
-    feature.geometry.set_projection(projector)
+def parse_geometry(feature: Feature):
     if feature.geometry.geometry_type not in typedict:
         raise Exception(f"Unknown geometry type {feature.geometry.geometry_type}")
     attr_list = typedict[feature.geometry.geometry_type](feature.geometry)
@@ -207,23 +170,22 @@ def parse_models(feature: Feature, attr_list: List[Attribute], progress: Union[P
     return models
 
 
-def parse_feature(feature: Feature, projector: Projector, progress: Progress):
-    attr_list = parse_geometry(feature, projector)
+def parse_feature(feature: Feature, progress: Progress):
+    attr_list = parse_geometry(feature)
     models = parse_models(feature, attr_list, progress)
     return models
 
 
-def parse_data(data, from_crs: str, to_crs: str, progress: Progress = None):
+def parse_data(data, progress: Progress = None):
     models = []
-    projector = Projector(from_crs, to_crs)
     for f in data['features']:
         feature = Feature(f)
-        models.extend(parse_feature(feature, projector, progress))
+        models.extend(parse_feature(feature, progress))
     return models
 
 
-def parse(input_file: str, from_crs: str = None, to_crs: str = None, progress: Progress = None):
+def parse(input_file: str, progress: Progress = None):
     contents = read_json(input_file)
-    return parse_data(contents, from_crs, to_crs, progress)
+    return parse_data(contents, progress)
 
 
