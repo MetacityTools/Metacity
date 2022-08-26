@@ -142,7 +142,6 @@ setup(
     python_requires='>=3.8',   
     install_requires = [
         "orjson>=3.6.4",
-        "colored>=1.4.3",
         "setuptools>=42",
         "wheel"
     ],
