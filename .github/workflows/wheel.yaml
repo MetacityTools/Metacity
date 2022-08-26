@@ -6,9 +6,6 @@ on:
   workflow_dispatch: {}
 
 
-env:
-  STAN_BACKEND: "CMDSTANPY"
-
 jobs:
   make-wheels:
     name: Make ${{ matrix.os }} wheels
@@ -25,15 +22,13 @@ jobs:
       - name: "Build wheels"
         uses: pypa/cibuildwheel@v2.6.0
         env:
-          CIBW_ENVIRONMENT: >
-            STAN_BACKEND="${{ env.STAN_BACKEND }}"
           CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_BUILD: cp37-* cp38-* cp39-* cp310-*
           CIBW_SKIP: "*musllinux*"
           CIBW_ARCHS: native
-          CIBW_BUILD_FRONTEND: build
+          CIBW_BUILD_FRONTEND: pip
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest --pyargs prophet
+          CIBW_TEST_COMMAND: pytest tests/* 
 
       - name: "Upload wheel as artifact"
         uses: actions/upload-artifact@v3
