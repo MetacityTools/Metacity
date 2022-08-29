@@ -27,7 +27,7 @@ jobs:
           CIBW_BUILD: cp37-* cp38-* cp39-* cp310-*
           CIBW_ARCHS_MACOS: auto universal2
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: pytest ./tests/*
+          CIBW_TEST_COMMAND: pytest {package}/tests
           CIBW_BUILD_VERBOSITY: 3 
 
       - name: Verify clean directory
