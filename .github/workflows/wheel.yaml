@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: ["windows-latest"]
+        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
     steps:
       - name: "Checkout repo"
         uses: actions/checkout@v3
@@ -53,7 +53,7 @@ jobs:
         path: dist/*.tar.gz
 
   upload:
-    name: Upload to PyPI
+    name: Checkout Artifacts
     needs: [make-wheels, make-sdist]
     runs-on: ubuntu-latest
     steps:
@@ -64,12 +64,13 @@ jobs:
 
     - name: Copy artifacts to dist/ folder
       run: |
-        echo "Downloaded artifacts:"
+        echo "* Downloaded artifacts:"
         ls dist/
         cd dist/
-        echo "Copying artifacts to dist/ folder:"
+        echo "* Copying artifacts to dist/ folder:"
         find . -mindepth 2 -maxdepth 2 -type f -print -exec mv {} . \;
+        echo "* Deleting empty directories:"
         find . -maxdepth 1 -type d -empty -print -exec rmdir {} +
         cd ..
-        echo "===\nCopied artifacts:"
+        echo "* Prepared artifacts:"
         ls dist/
