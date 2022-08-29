@@ -1,3 +1,4 @@
+from importlib.metadata import requires
 import sys
 
 try:
@@ -30,7 +31,7 @@ setup(
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
     include_package_data=True,
-    dependencies = [
+    install_requires = [
         "orjson>=3.6.4"
     ],
     extras_require={"test": ["pytest"]},
