@@ -22,22 +22,28 @@ inline int to_number(AttributeType type) {
 class Attribute {
 public:
     Attribute();
-    void push_point2D(const vector<tfloat> & ivertices);
-    void push_point3D(const vector<tfloat> & ivertices);
-    void push_line2D(const vector<tfloat> & ivertices);
-    void push_line3D(const vector<tfloat> & ivertices); 
-    void push_polygon2D(const vector<vector<tfloat>> & ivertices);
-    void push_polygon3D(const vector<vector<tfloat>> & ivertices); 
-    void push_triangles(const vector<tvec3> & ivertices);
+    void push_point2D  (vector<tfloat> ivertices);
+    void push_point3D  (vector<tfloat> ivertices);
+    void push_line2D   (vector<tfloat> ivertices);
+    void push_line3D   (vector<tfloat> ivertices); 
+    void push_polygon2D(vector<vector<tfloat>> ivertices);
+    void push_polygon3D(vector<vector<tfloat>> ivertices); 
+    void push_triangles(vector<tvec3> ivertices);
+
     AttributeType type() const;
     void to_gltf(tinygltf::Model & model, AttributeType & type, int & accessor_index) const;
     void from_gltf(const tinygltf::Model & model, AttributeType type, const int accessor_index);
+
     tvec3 sum() const;
     size_t size() const;
+
     shared_ptr<Attribute> clone() const;
+
     void merge(shared_ptr<Attribute> attribute);
+
     tvec3 & operator[](const size_t index);
     const tvec3 & operator[](const size_t index) const;
+    
     pair<tvec3, tvec3> bbox() const;
     AttributeType geom_type() const;
 

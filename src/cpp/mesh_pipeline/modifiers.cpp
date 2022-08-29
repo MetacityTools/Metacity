@@ -5,7 +5,7 @@
 
 namespace modifiers
 {
-    shared_ptr<Model> simplify_envelope(const shared_ptr<Model> model)
+    shared_ptr<Model> simplify_envelope(shared_ptr<Model> model)
     {
         const auto attribute = model->get_attribute("POSITION");
         if (attribute == nullptr)
