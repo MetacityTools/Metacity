@@ -14,10 +14,9 @@ test-extras = ["test"]
 test-skip = ["*universal2:arm64"]
 build = ["cp37-*", "cp38-*", "cp39-*", "cp310-*"]
 test-requires = ["pytest", "orjson>=3.6.4"]
-build-verbosity = 3 
 
 [tool.cibuildwheel.macos]
-archs = ["auto", "universal2"]
+archs = ["universal2"]
 
 [tool.cibuildwheel.linux]
 archs = ["auto64"]

@@ -6,27 +6,16 @@
 using namespace std;
 
 
-enum class AttributeType {
-    NONE,
+enum class AttributeType : uint8_t {
+    NONE = 0,
     POINT,
     SEGMENT,
-    TRIANGLE
+    TRIANGLE,
 };
 
 
 inline int to_number(AttributeType type) {
-    switch (type) {
-    case AttributeType::NONE:
-        return 0;
-    case AttributeType::POINT:
-        return 1;
-    case AttributeType::SEGMENT:
-        return 2;
-    case AttributeType::TRIANGLE:
-        return 3;
-    default:
-        return -1;
-    }
+    return static_cast<int>(type);
 }
 
 

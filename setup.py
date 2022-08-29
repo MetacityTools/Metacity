@@ -20,7 +20,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metacity",
-    version="0.5.1",
+    version="0.5.2",
     author="Metacity",
     license="MIT",
     description="Python toolkit for Urban Data processing",
@@ -32,7 +32,7 @@ setup(
     include_package_data=True,
     extras_require={"test": ["pytest"]},
     url="https://github.com/MetacitySuite/Metacity",
-    python_requires='>=3.7',
+    python_requires='>=3.',
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
