@@ -34,7 +34,6 @@ setup(
     install_requires = [
         "orjson>=3.6.4"
     ],
-    extras_require={"test": ["pytest"]},
     url="https://github.com/MetacitySuite/Metacity",
     python_requires='>=3.',
     classifiers=[
