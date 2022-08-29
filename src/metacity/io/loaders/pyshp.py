@@ -220,7 +220,10 @@ def rewind(coords):
 def ring_bbox(coords):
     """Calculates and returns the bounding box of a ring.
     """
-    xs,ys = zip(*coords)
+    if len(coords[0]) > 2:
+        xs, ys, _ = zip(*coords)
+    else:
+        xs, ys = zip(*coords)
     bbox = min(xs),min(ys),max(xs),max(ys)
     return bbox
 
