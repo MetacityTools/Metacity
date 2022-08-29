@@ -19,8 +19,8 @@ endif()
 # Now we can find pybind11
 find_package(pybind11 CONFIG REQUIRED)
 
-add_compile_options(-Wall -pedantic -g) 
-#add_compile_options(-Wall -pedantic -O3)
+#add_compile_options(-Wall -pedantic -g) 
+add_compile_options(-Wall -pedantic -O3)
 #add_link_options(-fsanitize=address -shared-libasan -pthread)
 add_link_options(-pthread)
 
