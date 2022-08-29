@@ -41,10 +41,60 @@ jobs:
         coveralls
 
 
-  tag-and-release:
-    runs-on: ubuntu-latest
+  make-wheels:
+    name: Make ${{ matrix.os }} wheels
     if: github.event_name == 'push' && contains(github.ref, 'release')
     needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: "Build wheels"
+        uses: pypa/cibuildwheel@v2.9.0
+
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+
+      - name: "Upload wheel as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-${{ matrix.os }}-wheel
+          path: ./wheelhouse/*.whl
+
+
+  make-sdist:
+    name: Make source distribution
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - name: Check metadata
+      run: pipx run twine check dist/*
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifact-source-dist
+        path: dist/*.tar.gz
+
+
+  tag-and-release:
+    name: Tag commit and create a release
+    needs: [make-wheels, make-sdist]
+    if: github.event_name == 'push' && contains(github.ref, 'release')
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
@@ -71,16 +121,25 @@ jobs:
         generateReleaseNotes: true
         tag: ${{ env.CURRENT_VERSION }}
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
 
-    - name: Prepare for dist
+  upload:
+    name: Upload to PyPI
+    needs: tag-and-release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: dist
+
+    - name: Copy artifacts to dist/ folder
       run: |
-        python setup.py sdist
-        
+        ls dist/
+
     - name: Publish package
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+
+  
