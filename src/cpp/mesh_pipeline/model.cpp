@@ -66,7 +66,7 @@ pair<tvec3, tvec3> Model::get_bbox() const {
     return bbox;
 }
 
-void Model::set_metadata(const nlohmann::json & data)
+void Model::set_metadata(nlohmann::json data)
 {
     for (auto & pair : data.items()) {
         metadata[pair.key()] = pair.value();

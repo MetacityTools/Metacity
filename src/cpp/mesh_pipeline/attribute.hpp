@@ -28,7 +28,7 @@ public:
     void push_line3D   (vector<tfloat> ivertices); 
     void push_polygon2D(vector<vector<tfloat>> ivertices);
     void push_polygon3D(vector<vector<tfloat>> ivertices); 
-    void push_triangles(vector<tvec3> ivertices);
+    void push_triangles(const vector<tvec3> & ivertices);
 
     AttributeType type() const;
     void to_gltf(tinygltf::Model & model, AttributeType & type, int & accessor_index) const;
