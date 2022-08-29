@@ -69,5 +69,5 @@ jobs:
       run: |
         ls dist/
         find . -mindepth 2 -maxdepth 2 -type f -print -exec mv {} . \;
-        find . -maxdepth 1 -type d -empty -print -exec rmdir {} + \;
+        find . -maxdepth 1 -type d -empty -print -exec rmdir {} + 
         ls dist/
