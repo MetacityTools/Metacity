@@ -11,9 +11,9 @@ jobs:
     name: Make ${{ matrix.os }} wheels
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: ["macos-latest", "ubuntu-latest", "windows-latest"]
-      fail-fast: false
 
     steps:
       - name: "Checkout repo"
@@ -22,16 +22,17 @@ jobs:
           submodules: 'recursive'
 
       - name: "Build wheels"
-        uses: pypa/cibuildwheel@v2.6.0
+        uses: pypa/cibuildwheel@v2.9.0
         env:
-          CIBW_MANYLINUX_X86_64_IMAGE: manylinux2014
           CIBW_BUILD: cp37-* cp38-* cp39-* cp310-*
-          CIBW_SKIP: "*musllinux*"
-          CIBW_ARCHS: native
-          CIBW_BUILD_FRONTEND: pip
+          CIBW_ARCHS_MACOS: auto universal2
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: pytest ./tests/*
           CIBW_BUILD_VERBOSITY: 3 
+
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
 
       - name: "Upload wheel as artifact"
         uses: actions/upload-artifact@v3
