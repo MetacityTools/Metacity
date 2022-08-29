@@ -32,7 +32,7 @@ setup(
     include_package_data=True,
     extras_require={"test": ["pytest"]},
     url="https://github.com/MetacitySuite/Metacity",
-    python_requires='>=3.8',
+    python_requires='>=3.6',
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",
