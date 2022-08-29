@@ -84,7 +84,7 @@ int Model::geom_type() const
         throw runtime_error("No geometry data");
 
     const auto positions = attrib.at("POSITION");
-    return positions->geom_type();
+    return to_number(positions->geom_type());
 }
 
 

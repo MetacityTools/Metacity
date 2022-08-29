@@ -6,12 +6,28 @@
 using namespace std;
 
 
-enum AttributeType {
+enum class AttributeType {
     NONE,
     POINT,
     SEGMENT,
     TRIANGLE
 };
+
+
+inline int to_number(AttributeType type) {
+    switch (type) {
+    case AttributeType::NONE:
+        return 0;
+    case AttributeType::POINT:
+        return 1;
+    case AttributeType::SEGMENT:
+        return 2;
+    case AttributeType::TRIANGLE:
+        return 3;
+    default:
+        return -1;
+    }
+}
 
 
 class Attribute {
@@ -24,7 +40,7 @@ public:
     void push_polygon2D(const vector<vector<tfloat>> & ivertices);
     void push_polygon3D(const vector<vector<tfloat>> & ivertices); 
     void push_triangles(const vector<tvec3> & ivertices);
-    int type() const;
+    AttributeType type() const;
     void to_gltf(tinygltf::Model & model, AttributeType & type, int & accessor_index) const;
     void from_gltf(const tinygltf::Model & model, AttributeType type, const int accessor_index);
     tvec3 sum() const;
@@ -34,7 +50,7 @@ public:
     tvec3 & operator[](const size_t index);
     const tvec3 & operator[](const size_t index) const;
     pair<tvec3, tvec3> bbox() const;
-    int geom_type() const;
+    AttributeType geom_type() const;
 
 protected:
     tvec3 vmin() const;

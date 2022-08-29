@@ -6,7 +6,7 @@ Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
 void Attribute::allowedAttributeType(AttributeType type) {
     if (this->dtype != AttributeType::NONE && this->dtype != type) {
-        throw runtime_error("Attribute type already set to " + to_string(this->dtype));
+        throw runtime_error("Attribute type already set to a different type");
     }
     this->dtype = type;
 }
@@ -115,8 +115,8 @@ void Attribute::push_triangles(const vector<tvec3> & ivertices)
     data.insert(data.end(), ivertices.begin(), ivertices.end());
 }
 
-int Attribute::type() const {
-    return this->dtype;
+AttributeType Attribute::type() const {
+    return dtype;
 }
 
 tvec3 & Attribute::operator[](const size_t index) {
@@ -198,7 +198,7 @@ void Attribute::merge(shared_ptr<Attribute> other)
     data.insert(data.end(), other->data.begin(), other->data.end());
 }
 
-int Attribute::geom_type() const
+AttributeType Attribute::geom_type() const
 {
     return dtype;
 }
