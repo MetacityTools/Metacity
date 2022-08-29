@@ -17,7 +17,6 @@ test-extras = ["test"]
 test-skip = ["*universal2:arm64"]
 build = ["cp37-*", "cp38-*", "cp39-*", "cp310-*"]
 test-requires = ["pytest", "orjson>=3.6.4"]
-test-command = "pytest {package}/tests"
 build-verbosity = 3 
 
 [tool.cibuildwheel.macos]
