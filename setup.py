@@ -30,6 +30,9 @@ setup(
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
     include_package_data=True,
+    dependencies = [
+        "orjson>=3.6.4"
+    ],
     extras_require={"test": ["pytest"]},
     url="https://github.com/MetacitySuite/Metacity",
     python_requires='>=3.',
