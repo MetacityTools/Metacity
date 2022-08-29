@@ -35,7 +35,7 @@ setup(
         "orjson>=3.6.4"
     ],
     url="https://github.com/MetacitySuite/Metacity",
-    python_requires='>=3.7',
+    python_requires='>=3.8',
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3",

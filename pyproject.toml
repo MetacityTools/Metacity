@@ -11,7 +11,7 @@ build-backend = "setuptools.build_meta"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
 test-skip = ["*universal2:arm64"]
-build = ["cp37-*", "cp38-*", "cp39-*", "cp310-*"]
+build = ["cp38-*", "cp39-*", "cp310-*"]
 test-requires = ["pytest"]
 build-verbosity = 3
 
