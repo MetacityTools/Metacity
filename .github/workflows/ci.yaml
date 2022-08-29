@@ -72,6 +72,8 @@ jobs:
 
   make-sdist:
     name: Make source distribution
+    if: github.event_name == 'push' && contains(github.ref, 'release')
+    needs: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -93,7 +95,6 @@ jobs:
   tag-and-release:
     name: Tag commit and create a release
     needs: [make-wheels, make-sdist]
-    if: github.event_name == 'push' && contains(github.ref, 'release')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
