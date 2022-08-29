@@ -18,3 +18,9 @@ build-verbosity = 3
 
 [tool.cibuildwheel.macos]
 archs = ["auto", "universal2"]
+
+[tool.cibuildwheel.linux]
+archs = ["auto64"]
+
+[tool.cibuildwheel.windows]
+archs = ["auto64"]
