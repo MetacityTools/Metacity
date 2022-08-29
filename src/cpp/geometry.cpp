@@ -1,7 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/functional.h>
-#include <filesystem>
 #include "deps/gltf/pybind11_json.hpp"
 #include "progress.hpp"
 #include "mesh_pipeline/model.hpp"
@@ -64,7 +63,7 @@ PYBIND11_MODULE(geometry, m) {
         .def("update", &Progress::update);
 
     py::class_<Edge, std::shared_ptr<Edge>>(m, "Edge")
-        .def(py::init<size_t, size_t, size_t, Attribute, nlohmann::json>());
+        .def(py::init<size_t, size_t, size_t, std::shared_ptr<Attribute>, nlohmann::json>());
 
     py::class_<Node, std::shared_ptr<Node>>(m, "Node")
         .def(py::init<size_t, tfloat, tfloat, nlohmann::json>());

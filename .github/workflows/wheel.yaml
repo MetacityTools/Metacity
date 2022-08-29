@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: artifact-${{ matrix.os }}-wheel
-          path: "./**/*.whl"
+          path: ./wheelhouse/*.whl
 
 
   make-sdist:
@@ -42,11 +42,6 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-
     - name: Build SDist
       run: pipx run build --sdist
 
@@ -56,7 +51,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: artifact-source-dist
-        path: "./**/dist/*.tar.gz"
+        path: dist/*.tar.gz
 
   upload:
     name: Upload to PyPI
@@ -65,11 +60,12 @@ jobs:
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v3
+      with:
+        # unpacks default artifact into dist/
+        # if `name: artifact` is omitted, the action will create extra parent dir
+        name: artifact
+        path: dist
 
     - name: Copy artifacts to dist/ folder
       run: |
-        find . -name 'artifact-*' -exec unzip '{}' \;
-        mkdir -p dist/
-        find . -name '*.tar.gz' -exec mv '{}' dist/ \;
-        find . -name '*.whl' -exec mv '{}' dist/ \;
         ls dist/
