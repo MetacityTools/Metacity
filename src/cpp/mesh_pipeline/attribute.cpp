@@ -11,7 +11,7 @@ void Attribute::allowedAttributeType(AttributeType type) {
     this->dtype = type;
 }
 
-void Attribute::push_point2D(const vector<tfloat> & ivertices)
+void Attribute::push_point2D(vector<tfloat> ivertices)
 {
     allowedAttributeType(AttributeType::POINT);
 
@@ -22,7 +22,7 @@ void Attribute::push_point2D(const vector<tfloat> & ivertices)
         data.emplace_back(ivertices[i], ivertices[i + 1], 0);
 }
 
-void Attribute::push_point3D(const vector<tfloat> & ivertices)
+void Attribute::push_point3D(vector<tfloat> ivertices)
 {
     allowedAttributeType(AttributeType::POINT);
 
@@ -33,7 +33,7 @@ void Attribute::push_point3D(const vector<tfloat> & ivertices)
         data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
 }
 
-void Attribute::push_line2D(const vector<tfloat> & ivertices)
+void Attribute::push_line2D(vector<tfloat> ivertices)
 {
     allowedAttributeType(AttributeType::SEGMENT);
 
@@ -47,7 +47,7 @@ void Attribute::push_line2D(const vector<tfloat> & ivertices)
     }
 }
 
-void Attribute::push_line3D(const vector<tfloat> & ivertices)
+void Attribute::push_line3D(vector<tfloat> ivertices)
 {
     allowedAttributeType(AttributeType::SEGMENT);
 
@@ -61,7 +61,7 @@ void Attribute::push_line3D(const vector<tfloat> & ivertices)
     }
 }
 
-void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
+void Attribute::push_polygon2D(vector<vector<tfloat>> ivertices)
 {
     allowedAttributeType(AttributeType::TRIANGLE);
 
@@ -83,7 +83,7 @@ void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
     triangulate(polygon, data);
 }
 
-void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
+void Attribute::push_polygon3D(vector<vector<tfloat>> ivertices)
 {
     allowedAttributeType(AttributeType::TRIANGLE);
 
