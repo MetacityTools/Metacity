@@ -5,7 +5,6 @@ on:
     branches: [ ci ]
   workflow_dispatch: {}
 
-
 jobs:
   make-wheels:
     name: Make ${{ matrix.os }} wheels
@@ -61,15 +60,16 @@ jobs:
     - name: Download all artifacts
       uses: actions/download-artifact@v3
       with:
-        # unpacks default artifact into dist/
-        # if `name: artifact` is omitted, the action will create extra parent dir
         path: dist
 
     - name: Copy artifacts to dist/ folder
       run: |
+        echo "Downloaded artifacts:"
         ls dist/
         cd dist/
+        echo "Copying artifacts to dist/ folder:"
         find . -mindepth 2 -maxdepth 2 -type f -print -exec mv {} . \;
         find . -maxdepth 1 -type d -empty -print -exec rmdir {} +
         cd ..
+        echo "===\nCopied artifacts:"
         ls dist/
