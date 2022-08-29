@@ -4,7 +4,7 @@
 #include "triangulation.hpp"
 #include "../deps/cppcodec/base64_rfc4648.hpp"
 #include "../deps/gltf/tiny_gltf.h"
-#include "convert.hpp"
+#include "../convert.hpp"
 
 //===============================================================================
 Model::Model() {}
@@ -66,7 +66,7 @@ pair<tvec3, tvec3> Model::get_bbox() const {
     return bbox;
 }
 
-void Model::set_metadata(const nlohmann::json & data)
+void Model::set_metadata(nlohmann::json data)
 {
     for (auto & pair : data.items()) {
         metadata[pair.key()] = pair.value();
@@ -84,7 +84,7 @@ int Model::geom_type() const
         throw runtime_error("No geometry data");
 
     const auto positions = attrib.at("POSITION");
-    return positions->geom_type();
+    return to_number(positions->geom_type());
 }
 
 
