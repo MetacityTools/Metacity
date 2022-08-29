@@ -40,7 +40,7 @@ void Attribute::push_line2D(vector<tfloat> ivertices)
     if (ivertices.size() % tvec2::length() || (ivertices.size() < tvec2::length() * 2))
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 1; i < ivertices.size() - 1; i += tvec2::length())
+    for (size_t i = 0; i < ivertices.size() - 3; i += tvec2::length())
     {
         data.emplace_back(ivertices[i], ivertices[i + 1], 0);
         data.emplace_back(ivertices[i + 2], ivertices[i + 3], 0);
@@ -54,10 +54,10 @@ void Attribute::push_line3D(vector<tfloat> ivertices)
     if (ivertices.size() % tvec3::length() || (ivertices.size() < tvec3::length() * 2))
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 1; i < ivertices.size() - 1; i += tvec3::length())
+    for (size_t i = 0; i < ivertices.size() - 5; i += tvec3::length())
     {
         data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
-        data.emplace_back(ivertices[i + 2], ivertices[i + 3], ivertices[i + 4]);
+        data.emplace_back(ivertices[i + 3], ivertices[i + 4], ivertices[i + 5]);
     }
 }
 
@@ -75,7 +75,7 @@ void Attribute::push_polygon2D(vector<vector<tfloat>> ivertices)
             continue;
 
         vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec2::length())
+        for (size_t i = 0; i < iring.size() - 1; i += tvec2::length())
             ring.emplace_back(iring[i], iring[i + 1], 0);
         polygon.emplace_back(move(ring));
     }
@@ -97,7 +97,7 @@ void Attribute::push_polygon3D(vector<vector<tfloat>> ivertices)
             continue;
 
         vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec3::length())
+        for (size_t i = 0; i < iring.size() - 2; i += tvec3::length())
             ring.emplace_back(iring[i], iring[i + 1], iring[i + 2]);
         polygon.emplace_back(move(ring));
     }
