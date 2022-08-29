@@ -3,65 +3,66 @@
 
 Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
-
-void Attribute::allowedAttributeType(AttributeType type) {
-    if (this->dtype != AttributeType::NONE && this->dtype != type) {
-        throw runtime_error("Attribute type already set to " + to_string(this->dtype));
+void Attribute::allowedAttributeType(AttributeType type)
+{
+    if (this->dtype != AttributeType::NONE && this->dtype != type)
+    {
+        throw runtime_error("Attribute type already set to a different type");
     }
     this->dtype = type;
 }
 
-void Attribute::push_point2D(const vector<tfloat> & ivertices)
+void Attribute::push_point2D(const vector<tfloat> &ivertices)
 {
     allowedAttributeType(AttributeType::POINT);
 
     if (ivertices.size() % tvec2::length())
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 0; i < ivertices.size(); i += tvec2::length())
+    for (size_t i = 0; i < ivertices.size() - 1; i += tvec2::length())
         data.emplace_back(ivertices[i], ivertices[i + 1], 0);
 }
 
-void Attribute::push_point3D(const vector<tfloat> & ivertices)
+void Attribute::push_point3D(const vector<tfloat> &ivertices)
 {
     allowedAttributeType(AttributeType::POINT);
 
     if (ivertices.size() % tvec3::length())
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 0; i < ivertices.size(); i += tvec3::length())
+    for (size_t i = 0; i < ivertices.size() - 2; i += tvec3::length())
         data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
 }
 
-void Attribute::push_line2D(const vector<tfloat> & ivertices)
+void Attribute::push_line2D(const vector<tfloat> &ivertices)
 {
     allowedAttributeType(AttributeType::SEGMENT);
 
     if (ivertices.size() % tvec2::length() || (ivertices.size() < tvec2::length() * 2))
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 1; i < ivertices.size() - 1; i += tvec2::length())
+    for (size_t i = 0; i < ivertices.size() - 3; i += tvec2::length())
     {
         data.emplace_back(ivertices[i], ivertices[i + 1], 0);
         data.emplace_back(ivertices[i + 2], ivertices[i + 3], 0);
     }
 }
 
-void Attribute::push_line3D(const vector<tfloat> & ivertices)
+void Attribute::push_line3D(const vector<tfloat> &ivertices)
 {
     allowedAttributeType(AttributeType::SEGMENT);
 
     if (ivertices.size() % tvec3::length() || (ivertices.size() < tvec3::length() * 2))
         throw runtime_error("Unexpected number of elements in input array");
 
-    for (size_t i = 1; i < ivertices.size() - 1; i += tvec3::length())
+    for (size_t i = 0; i < ivertices.size() - 5; i += tvec3::length())
     {
         data.emplace_back(ivertices[i], ivertices[i + 1], ivertices[i + 2]);
-        data.emplace_back(ivertices[i + 2], ivertices[i + 3], ivertices[i + 4]);
+        data.emplace_back(ivertices[i + 3], ivertices[i + 4], ivertices[i + 5]);
     }
 }
 
-void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
+void Attribute::push_polygon2D(const vector<vector<tfloat>> &ivertices)
 {
     allowedAttributeType(AttributeType::TRIANGLE);
 
@@ -75,7 +76,7 @@ void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
             continue;
 
         vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec2::length())
+        for (size_t i = 0; i < iring.size() - 1; i += tvec2::length())
             ring.emplace_back(iring[i], iring[i + 1], 0);
         polygon.emplace_back(move(ring));
     }
@@ -83,7 +84,7 @@ void Attribute::push_polygon2D(const vector<vector<tfloat>> & ivertices)
     triangulate(polygon, data);
 }
 
-void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
+void Attribute::push_polygon3D(const vector<vector<tfloat>> &ivertices)
 {
     allowedAttributeType(AttributeType::TRIANGLE);
 
@@ -97,7 +98,7 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
             continue;
 
         vector<tvec3> ring;
-        for (size_t i = 0; i < iring.size(); i += tvec3::length())
+        for (size_t i = 0; i < iring.size() - 2; i += tvec3::length())
             ring.emplace_back(iring[i], iring[i + 1], iring[i + 2]);
         polygon.emplace_back(move(ring));
     }
@@ -105,7 +106,7 @@ void Attribute::push_polygon3D(const vector<vector<tfloat>> & ivertices)
     triangulate(polygon, data);
 }
 
-void Attribute::push_triangles(const vector<tvec3> & ivertices)
+void Attribute::push_triangles(const vector<tvec3> &ivertices)
 {
     allowedAttributeType(AttributeType::TRIANGLE);
 
@@ -115,28 +116,35 @@ void Attribute::push_triangles(const vector<tvec3> & ivertices)
     data.insert(data.end(), ivertices.begin(), ivertices.end());
 }
 
-int Attribute::type() const {
-    return this->dtype;
+AttributeType Attribute::type() const
+{
+    return dtype;
 }
 
-tvec3 & Attribute::operator[](const size_t index) {
-    if (index >= 0 && index < data.size()) {
+tvec3 &Attribute::operator[](const size_t index)
+{
+    if (index >= 0 && index < data.size())
+    {
         return data[index];
     }
 
-    if (index < 0 && index >= -data.size()) {
+    if (index < 0 && index >= -data.size())
+    {
         return data[data.size() + index];
     }
 
     throw runtime_error("Index out of range");
 }
 
-const tvec3 & Attribute::operator[](const size_t index) const {
-    if (index >= 0 && index < data.size()) {
+const tvec3 &Attribute::operator[](const size_t index) const
+{
+    if (index >= 0 && index < data.size())
+    {
         return data[index];
     }
 
-    if (index < 0 && index >= -data.size()) {
+    if (index < 0 && index >= -data.size())
+    {
         return data[data.size() + index];
     }
 
@@ -198,12 +206,12 @@ void Attribute::merge(shared_ptr<Attribute> other)
     data.insert(data.end(), other->data.begin(), other->data.end());
 }
 
-int Attribute::geom_type() const
+AttributeType Attribute::geom_type() const
 {
     return dtype;
 }
 
-void Attribute::to_gltf(tinygltf::Model & model, AttributeType & dtype_, int & accessor_index) const
+void Attribute::to_gltf(tinygltf::Model &model, AttributeType &dtype_, int &accessor_index) const
 {
     int buffer_index, buffer_size, buffer_view_index;
     to_gltf_buffer(model, buffer_index, buffer_size);
@@ -212,7 +220,7 @@ void Attribute::to_gltf(tinygltf::Model & model, AttributeType & dtype_, int & a
     dtype_ = dtype;
 }
 
-void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int & size) const
+void Attribute::to_gltf_buffer(tinygltf::Model &model, int &buffer_index, int &size) const
 {
     tinygltf::Buffer buffer;
     size = data.size() * sizeof(tvec3);
@@ -222,7 +230,7 @@ void Attribute::to_gltf_buffer(tinygltf::Model & model, int & buffer_index, int 
     buffer_index = model.buffers.size() - 1;
 }
 
-void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_index, const int size, int & buffer_view_index) const
+void Attribute::to_gltf_buffer_view(tinygltf::Model &model, const int buffer_index, const int size, int &buffer_view_index) const
 {
     tinygltf::BufferView bufferView;
     bufferView.buffer = buffer_index;
@@ -233,7 +241,7 @@ void Attribute::to_gltf_buffer_view(tinygltf::Model & model, const int buffer_in
     buffer_view_index = model.bufferViews.size() - 1;
 }
 
-void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_index, int & accessor_index) const
+void Attribute::to_gltf_accessor(tinygltf::Model &model, const int buffer_view_index, int &accessor_index) const
 {
     tinygltf::Accessor accessor;
     accessor.bufferView = buffer_view_index;
@@ -251,12 +259,12 @@ void Attribute::to_gltf_accessor(tinygltf::Model & model, const int buffer_view_
 
 //===============================================================================
 
-void Attribute::from_gltf(const tinygltf::Model & model, AttributeType dtype_, const int accessor_index)
+void Attribute::from_gltf(const tinygltf::Model &model, AttributeType dtype_, const int accessor_index)
 {
     attr_type_check(model, accessor_index);
-    const tinygltf::Accessor & accessor = model.accessors[accessor_index];
-    const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
-    const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+    const tinygltf::Accessor &accessor = model.accessors[accessor_index];
+    const tinygltf::BufferView &bufferView = model.bufferViews[accessor.bufferView];
+    const tinygltf::Buffer &buffer = model.buffers[bufferView.buffer];
     dtype = dtype_;
 
     data.resize(accessor.count);
@@ -266,11 +274,11 @@ void Attribute::from_gltf(const tinygltf::Model & model, AttributeType dtype_, c
 //===============================================================================
 // Checks
 
-void Attribute::attr_type_check(const tinygltf::Model & model, const int accessor_index) const
+void Attribute::attr_type_check(const tinygltf::Model &model, const int accessor_index) const
 {
-    const tinygltf::Accessor & accessor = model.accessors[accessor_index];
-    const tinygltf::BufferView & bufferView = model.bufferViews[accessor.bufferView];
-    //const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
+    const tinygltf::Accessor &accessor = model.accessors[accessor_index];
+    const tinygltf::BufferView &bufferView = model.bufferViews[accessor.bufferView];
+    // const tinygltf::Buffer & buffer = model.buffers[bufferView.buffer];
 
     if (accessor.type != TINYGLTF_TYPE_VEC3)
         throw runtime_error("Attribute type mismatch");
@@ -288,4 +296,3 @@ void Attribute::attr_type_check(const tinygltf::Model & model, const int accesso
     if (accessor.minValues[0] > accessor.maxValues[0])
         throw runtime_error("Attribute min values out of range");
 }
-

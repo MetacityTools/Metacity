@@ -13,30 +13,25 @@ jobs:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Install system requirements
-      run: |
-        sudo add-apt-repository ppa:ubuntugis/ppa
-        sudo apt-get update
-        sudo apt-get install gdal-bin
-        sudo apt-get install libgdal-dev
-        export CPLUS_INCLUDE_PATH=/usr/include/gdal
-        export C_INCLUDE_PATH=/usr/include/gdal
-        sudo apt-get install cmake
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest pytest-cov
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
     - name: Build Geometry package
       run: |
-        python setup.py build_ext --inplace
+        pip install .
+
     - name: Test with pytest
       run: |
-        pytest tests/* --cov=metacity
+        pytest ./tests/* --cov=metacity
+
     - name: Upload to Coveralls
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -45,39 +40,116 @@ jobs:
         pip install coveralls
         coveralls
 
-  tag-and-release:
-    runs-on: ubuntu-latest
+
+  make-wheels:
+    name: Make ${{ matrix.os }} wheels
     if: github.event_name == 'push' && contains(github.ref, 'release')
     needs: test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["macos-latest", "ubuntu-latest", "windows-latest"]
+    steps:
+      - name: "Checkout repo"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'recursive'
+
+      - name: "Build wheels"
+        uses: pypa/cibuildwheel@v2.9.0
+
+      - name: Verify clean directory
+        run: git diff --exit-code
+        shell: bash
+
+      - name: "Upload wheel as artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifact-${{ matrix.os }}-wheel
+          path: ./wheelhouse/*.whl
+
+
+  make-sdist:
+    name: Make source distribution
+    if: github.event_name == 'push' && contains(github.ref, 'release')
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: 'recursive'
+
+    - name: Build SDist
+      run: pipx run build --sdist
+
+    - name: Check metadata
+      run: pipx run twine check dist/*
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: artifact-source-dist
+        path: dist/*.tar.gz
+
+
+  tag-and-release:
+    name: Tag commit and create a release
+    needs: [make-wheels, make-sdist]
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: 'recursive'
+
     - name: Set up Python 3.8
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
+
     - name: "Get release version"
       run: |
         CURRENT_VERSION=$(python3 setup.py --version) 
         echo "Current version: $CURRENT_VERSION"
         echo "CURRENT_VERSION=v$CURRENT_VERSION" >> $GITHUB_ENV
+
     - uses: rickstaa/action-create-tag@v1
       with:
         tag: ${{ env.CURRENT_VERSION }}
+
     - uses: ncipollo/release-action@v1
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         generateReleaseNotes: true
         tag: ${{ env.CURRENT_VERSION }}
-    - name: Install dependencies
+
+
+  upload:
+    name: Upload to PyPI
+    needs: tag-and-release
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: dist
+
+    - name: Copy artifacts to dist/ folder
       run: |
-        python -m pip install --upgrade pip
-    - name: Prepare for dist
-      run: |
-        python setup.py sdist
+        echo "* Downloaded artifacts:"
+        ls dist/
+        cd dist/
+        echo "* Copying artifacts to dist/ folder:"
+        find . -mindepth 2 -maxdepth 2 -type f -print -exec mv {} . \;
+        echo "* Deleting empty directories:"
+        find . -maxdepth 1 -type d -empty -print -exec rmdir {} +
+        cd ..
+        echo "* Prepared artifacts:"
+        ls dist/
+
     - name: Publish package
-      uses: pypa/gh-action-pypi-publish@release/v1
+      uses: pypa/gh-action-pypi-publish@v1.5.0
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
+
+  

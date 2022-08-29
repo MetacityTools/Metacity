@@ -1,7 +1,7 @@
 #include <fstream>
-#include "grid.hpp"
-#include "progress.hpp"
 #include "modifiers.hpp"
+#include "grid.hpp"
+#include "../progress.hpp"
 #include "../deps/gltf/json.hpp"
 
 

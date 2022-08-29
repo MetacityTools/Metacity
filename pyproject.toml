@@ -1,0 +1,24 @@
+[build-system]
+requires = [
+    "setuptools>=42",
+    "pybind11~=2.9.2",
+    "cmake>=3.22",
+    "scikit-build>=0.15.0"
+]
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+test-command = "pytest {project}/tests"
+test-skip = ["*universal2:arm64"]
+build = ["cp38-*", "cp39-*", "cp310-*"]
+test-requires = ["pytest"]
+build-verbosity = 1
+
+[tool.cibuildwheel.macos]
+archs = ["universal2"]
+
+[tool.cibuildwheel.linux]
+archs = ["auto64"]
+
+[tool.cibuildwheel.windows]
+archs = ["auto64"]

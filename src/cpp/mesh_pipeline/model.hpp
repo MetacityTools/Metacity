@@ -21,11 +21,13 @@ public:
 
 
     void add_attribute(const string &name, shared_ptr<Attribute> attribute);
+
     shared_ptr<Attribute> get_attribute(const string &name) const;
     bool attribute_exists(const string &name);
 
-    void set_metadata(const nlohmann::json & data);
+    void set_metadata(nlohmann::json data);
     nlohmann::json get_metadata() const;
+
     int geom_type() const;
 
     void from_gltf(const tinygltf::Model & model, const int mesh_index);
