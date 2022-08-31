@@ -30,7 +30,6 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
-    include_package_data=True,
     install_requires = [
         "orjson>=3.6.4"
     ],
