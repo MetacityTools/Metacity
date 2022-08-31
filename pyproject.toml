@@ -22,9 +22,3 @@ archs = ["auto64"]
 
 [tool.cibuildwheel.windows]
 archs = ["auto64"]
-
-[tool.pytest.ini_options]
-pythonpath = [
-  ".",
-  "./src",
-]
