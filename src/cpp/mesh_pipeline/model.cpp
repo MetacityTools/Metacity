@@ -2,7 +2,6 @@
 #include <numeric>
 #include "model.hpp"
 #include "triangulation.hpp"
-#include "../deps/cppcodec/base64_rfc4648.hpp"
 #include "../deps/gltf/tiny_gltf.h"
 #include "../convert.hpp"
 
