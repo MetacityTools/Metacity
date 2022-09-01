@@ -1,6 +1,5 @@
 #pragma once
 #include "deps/glm/glm.hpp"
-#include "deps/cppcodec/base64_rfc4648.hpp"
 #include <vector>
 #include <iostream>
 #include <memory>

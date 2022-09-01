@@ -21,7 +21,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metacity",
-    version="0.5.2",
+    version="0.5.3",
     author="Metacity",
     license="MIT",
     description="Python toolkit for Urban Data processing",
@@ -30,7 +30,6 @@ setup(
     packages=find_packages(where="src"),
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
-    include_package_data=True,
     install_requires = [
         "orjson>=3.6.4"
     ],

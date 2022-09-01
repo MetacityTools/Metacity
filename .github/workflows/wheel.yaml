@@ -1,8 +1,6 @@
-name: "Create Python distributions and upload to PyPI"
+name: "Create Python distributions"
 
 on:
-  push:
-    branches: [ ci ]
   workflow_dispatch: {}
 
 jobs:
