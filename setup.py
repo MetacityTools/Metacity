@@ -21,7 +21,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metacity",
-    version="0.5.2",
+    version="0.5.3",
     author="Metacity",
     license="MIT",
     description="Python toolkit for Urban Data processing",

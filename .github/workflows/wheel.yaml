@@ -1,4 +1,4 @@
-name: "Create Python distributions and upload to PyPI"
+name: "Create Python distributions"
 
 on:
   workflow_dispatch: {}
