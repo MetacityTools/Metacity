@@ -31,7 +31,8 @@ setup(
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
     install_requires = [
-        "orjson>=3.6.4"
+        "orjson>=3.6.4",
+        "colored>=1.4.3",
     ],
     url="https://github.com/MetacitySuite/Metacity",
     python_requires='>=3.8',
