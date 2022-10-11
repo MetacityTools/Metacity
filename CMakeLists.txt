@@ -29,25 +29,23 @@ pybind11_add_module(geometry        src/metacity/geometry/geometry.cpp
                                     src/metacity/geometry/types.hpp
                                     src/metacity/geometry/convert.hpp
                                     src/metacity/geometry/progress.hpp 
-                                    src/metacity/geometry/mesh_pipeline/bbox.hpp 
-                                    src/metacity/geometry/mesh_pipeline/bbox.cpp 
-                                    src/metacity/geometry/mesh_pipeline/modifiers.hpp 
-                                    src/metacity/geometry/mesh_pipeline/modifiers.cpp 
-                                    src/metacity/geometry/mesh_pipeline/graham.hpp 
-                                    src/metacity/geometry/mesh_pipeline/graham.cpp 
-                                    src/metacity/geometry/mesh_pipeline/bvh.hpp 
-                                    src/metacity/geometry/mesh_pipeline/bvh.cpp 
-                                    src/metacity/geometry/mesh_pipeline/model.hpp 
-                                    src/metacity/geometry/mesh_pipeline/model.cpp 
-                                    src/metacity/geometry/mesh_pipeline/layer.hpp 
-                                    src/metacity/geometry/mesh_pipeline/layer.cpp 
-                                    src/metacity/geometry/mesh_pipeline/attribute.hpp 
-                                    src/metacity/geometry/mesh_pipeline/attribute.cpp 
-                                    src/metacity/geometry/mesh_pipeline/grid.hpp
-                                    src/metacity/geometry/mesh_pipeline/grid.cpp
-                                    src/metacity/geometry/mesh_pipeline/triangulation.hpp
-                                    src/metacity/geometry/mesh_pipeline/triangulation.cpp
-                                    src/metacity/geometry/vector_pipeline/graph.hpp
-                                    src/metacity/geometry/vector_pipeline/graph.cpp)
+                                    src/metacity/geometry/mesh/bbox.hpp 
+                                    src/metacity/geometry/mesh/bbox.cpp 
+                                    src/metacity/geometry/mesh/modifiers.hpp 
+                                    src/metacity/geometry/mesh/modifiers.cpp 
+                                    src/metacity/geometry/mesh/graham.hpp 
+                                    src/metacity/geometry/mesh/graham.cpp 
+                                    src/metacity/geometry/mesh/bvh.hpp 
+                                    src/metacity/geometry/mesh/bvh.cpp 
+                                    src/metacity/geometry/mesh/model.hpp 
+                                    src/metacity/geometry/mesh/model.cpp 
+                                    src/metacity/geometry/mesh/layer.hpp 
+                                    src/metacity/geometry/mesh/layer.cpp 
+                                    src/metacity/geometry/mesh/attribute.hpp 
+                                    src/metacity/geometry/mesh/attribute.cpp 
+                                    src/metacity/geometry/mesh/grid.hpp
+                                    src/metacity/geometry/mesh/grid.cpp
+                                    src/metacity/geometry/mesh/triangulation.hpp
+                                    src/metacity/geometry/mesh/triangulation.cpp)
 
 install(TARGETS geometry DESTINATION .)
