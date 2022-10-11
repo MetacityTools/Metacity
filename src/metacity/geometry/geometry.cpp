@@ -3,11 +3,10 @@
 #include <pybind11/functional.h>
 #include "deps/gltf/pybind11_json.hpp"
 #include "progress.hpp"
-#include "mesh_pipeline/model.hpp"
-#include "mesh_pipeline/attribute.hpp"
-#include "mesh_pipeline/layer.hpp"
-#include "mesh_pipeline/grid.hpp"
-#include "vector_pipeline/graph.hpp"
+#include "mesh/model.hpp"
+#include "mesh/attribute.hpp"
+#include "mesh/layer.hpp"
+#include "mesh/grid.hpp"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -61,17 +60,4 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<Progress, std::shared_ptr<Progress>>(m, "Progress")
         .def(py::init<string>())
         .def("update", &Progress::update);
-
-    py::class_<Edge, std::shared_ptr<Edge>>(m, "Edge")
-        .def(py::init<size_t, size_t, size_t, std::shared_ptr<Attribute>, nlohmann::json>());
-
-    py::class_<Node, std::shared_ptr<Node>>(m, "Node")
-        .def(py::init<size_t, tfloat, tfloat, nlohmann::json>());
-
-    py::class_<Graph, std::shared_ptr<Graph>>(m, "Graph")
-        .def(py::init<>())
-        .def("add_node", &Graph::add_node)
-        .def("add_edge", &Graph::add_edge)
-        .def_property_readonly("node_count", &Graph::get_node_count)
-        .def_property_readonly("edge_count", &Graph::get_edge_count);
 }

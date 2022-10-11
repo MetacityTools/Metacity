@@ -1,6 +1,5 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shp
-from metacity.io import parse_graph
 from metacity.io import parse_recursively
 
 
@@ -24,8 +23,8 @@ def test_recursive_parse(geometry_directory):
     assert len(objects) == 2826 + 5041 + 24
     
 
-def test_graph(graph_nodes_dataset, graph_edges_dataset):
-    graph = parse_graph(graph_nodes_dataset, graph_edges_dataset)
-    assert graph.node_count == 35703
-    assert graph.edge_count == 37315    
+#def test_graph(graph_nodes_dataset, graph_edges_dataset):
+#    graph = parse_graph(graph_nodes_dataset, graph_edges_dataset)
+#    assert graph.node_count == 35703
+#    assert graph.edge_count == 37315    
 
