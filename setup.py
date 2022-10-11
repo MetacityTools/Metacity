@@ -33,6 +33,8 @@ setup(
     install_requires = [
         "orjson>=3.6.4",
         "colored>=1.4.3",
+        "six",
+        "protobuf>=4.21.7"
     ],
     url="https://github.com/MetacitySuite/Metacity",
     python_requires='>=3.8',

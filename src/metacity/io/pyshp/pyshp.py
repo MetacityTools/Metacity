@@ -488,7 +488,7 @@ def triangle_fan_to_polygons(points, start, end):
 
 def end_staged_polygon(stagedPolygonRings, polys, _errors):
     if len(stagedPolygonRings) > 0:
-        polys.extend(organize_polygon_rings(stagedPolygonRings, _errors))
+        polys.append(stagedPolygonRings)
 
 
 

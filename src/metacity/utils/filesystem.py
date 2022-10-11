@@ -9,6 +9,9 @@ import errno
 def filename(file_path: str):
     return ntpath.basename(file_path)
 
+def concat(*args):
+    return os.path.join(*args)
+
 
 def create_dir_if_not_exists(dir: str):
     if not os.path.exists(dir):
