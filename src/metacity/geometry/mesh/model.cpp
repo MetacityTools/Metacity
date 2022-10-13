@@ -6,7 +6,7 @@
 #include "../convert.hpp"
 
 //===============================================================================
-Model::Model() {}
+Model::Model() : bbox_cached(false) {}
 
 
 void Model::merge(shared_ptr<Model> model)
@@ -55,14 +55,20 @@ tvec3 Model::get_centroid() const
     return centroid;
 }
 
-pair<tvec3, tvec3> Model::get_bbox() const {
+BBox Model::get_bbox(bool cached) {
     if (attrib.find("POSITION") == attrib.end()) {
         throw runtime_error("No position data");
     }  
 
+    if (bbox_cached && cached) {
+        return bbox;
+    }
+
     const auto positions = attrib.at("POSITION");
-    auto bbox = positions->bbox();
-    return bbox;
+    auto computed_bbox = positions->bbox();
+    bbox = computed_bbox;
+    bbox_cached = true;
+    return computed_bbox;
 }
 
 void Model::set_metadata(nlohmann::json data)

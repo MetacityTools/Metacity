@@ -21,4 +21,5 @@ void set_empty(BBox &box);
 BBox empty_bbox();
 void extend(BBox &b1, const BBox &b2);
 void extend(BBox &b1, const tvec3 &p);
+BBox toEqualXY(const BBox &b1);
 tfloat midpoint(const BBox &b1, uint8_t axis);

@@ -4,6 +4,7 @@
 #include "../types.hpp"
 #include "attribute.hpp"
 #include "../deps/gltf/json.hpp"
+#include "bbox.hpp"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
 
 
     tvec3 get_centroid() const;
-    pair<tvec3, tvec3> get_bbox() const;
+    BBox get_bbox(bool cached = false);
     void merge(shared_ptr<Model> model);
     shared_ptr<Model> clone() const;
 
@@ -47,5 +48,8 @@ protected:
     
     unordered_map<string, shared_ptr<Attribute>> attrib;
     nlohmann::json metadata;
+
+    BBox bbox;
+    bool bbox_cached;
 };
 

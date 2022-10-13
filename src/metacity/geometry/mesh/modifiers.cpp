@@ -35,7 +35,7 @@ namespace modifiers
         {
             bottom.push_back(point.x);
             bottom.push_back(point.y);
-            bottom.push_back(bbox.first.z);
+            bottom.push_back(bbox.min.z);
         }
 
         npolygon.emplace_back(move(bottom));
@@ -47,7 +47,7 @@ namespace modifiers
         {
             top.push_back(point.x);
             top.push_back(point.y);
-            top.push_back(bbox.second.z);
+            top.push_back(bbox.max.z);
         }
         npolygon.emplace_back(move(top));
         new_attribute->push_polygon3D(npolygon);
@@ -56,12 +56,12 @@ namespace modifiers
         vector<tvec3> sides;
         for (int i = 0; i < polygon.size(); i++)
         {
-            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.first.z));
-            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.first.z));
-            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.second.z));
-            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.second.z));
-            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.first.z));
-            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.second.z));
+            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.min.z));
+            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.min.z));
+            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.max.z));
+            sides.emplace_back(tvec3(polygon[i].x, polygon[i].y, bbox.max.z));
+            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.min.z));
+            sides.emplace_back(tvec3(polygon[(i + 1) % polygon.size()].x, polygon[(i + 1) % polygon.size()].y, bbox.max.z));
         }
 
         new_attribute->push_triangles(sides);
@@ -182,7 +182,7 @@ namespace modifiers
             if (!attr)
                 continue;
 
-            tfloat model_min_z = attr->bbox().first.z;
+            tfloat model_min_z = attr->bbox().min.z;
             tfloat shift = plane - model_min_z;
 
             for (size_t i = 0; i < attr->size(); i++)
