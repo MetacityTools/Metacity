@@ -1,5 +1,6 @@
 #include "../types.hpp"
 #include "model.hpp"
+#include "layer.hpp"
 #include "../progress.hpp"
 
 
@@ -13,8 +14,9 @@ class QuadTreeLevel {
 public:
     QuadTreeLevel(size_t depth, BBox border);
     void add_models(const vector<shared_ptr<Model>> & models, size_t max_depth, Progress & progress);
-    nlohmann::json to_json(const string & dirname, size_t yield_models_at_level, Progress & progress) const; 
-
+    nlohmann::json to_json(const string & dirname, size_t yield_models_at_level, bool store_metadata, Progress & progress) const; 
+    void grid_layout(const string & dirname, size_t yield_models_at_level, nlohmann::json  & layout, Progress & progress) const;
+    void quad_merge(size_t merge_models_at_level);
 protected:
     static size_t gen_id() { return id_counter++; }
     static size_t id_counter;
@@ -26,6 +28,7 @@ protected:
     void to_gltf(const string & filename) const;
     void aggregate_metadata();
     void consolidate_metadata(const MetadataAggregate & metadata);
+    string glb_filename() const;
 
 
     size_t id;
@@ -40,7 +43,10 @@ protected:
 class QuadTree {
 public:
     QuadTree(const vector<shared_ptr<Model>> & models, size_t max_depth = 0);
-    void to_json(const string & dirname, size_t yield_models_at_level) const;
+    QuadTree(shared_ptr<Layer> layer, size_t max_depth = 0);
+    void merge_at_level(size_t merge_models_at_level);
+    void to_json(const string & dirname, size_t yield_models_at_level, bool store_metadata = true) const;
 protected:
+    void init(const vector<shared_ptr<Model>> & models, size_t max_depth);
     shared_ptr<QuadTreeLevel> root;
 };

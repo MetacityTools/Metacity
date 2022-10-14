@@ -166,7 +166,11 @@ namespace modifiers
             {
                 pos = (*attr)[i];
                 h = bvh.traceDownRegualarRay(pos.x, pos.y, pos.z);
-                pos.z = h;
+
+                if (h != RTINFINITY)
+                    pos.z = h;
+
+                //TODO fix if nothing is hit
                 (*attr)[i] = pos;
             }
         }

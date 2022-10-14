@@ -18,12 +18,6 @@ void Model::merge(shared_ptr<Model> model)
             attrib[pair.first]->merge(pair.second);
         }
     }
-
-    /*if (metadata.is_array()) {
-        metadata.push_back(model->metadata);
-    } else {
-        metadata = { metadata, model->metadata };
-    }*/
 }
 
 shared_ptr<Model> Model::clone() const
