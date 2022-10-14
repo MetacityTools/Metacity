@@ -1,16 +1,16 @@
 import os
 import re
 import textwrap
-#from colored import attr, bg, fg
+from colored import attr, bg, fg
 
-def bg(color: str):
-    return f""
-
-def fg(color: str):
-    return f""
-
-def attr(color: str):
-    return f""
+#def bg(color: str):
+#    return f""
+#
+#def fg(color: str):
+#    return f""
+#
+#def attr(color: str):
+#    return f""
 
 COMMANDS = ['extra', 'extension', 'stuff', 'errors',
             'email', 'foobar', 'foo']

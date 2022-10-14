@@ -21,8 +21,9 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metacity",
-    version="0.5.3",
-    author="Metacity",
+    version="0.6.0",
+    author="Vojtěch Tomas",
+    author_email="hello@vojtatom.cz",
     license="MIT",
     description="Python toolkit for Urban Data processing",
     long_description=README,
@@ -31,7 +32,10 @@ setup(
     package_dir={"": "src"},
     cmake_install_dir="src/metacity",
     install_requires = [
-        "orjson>=3.6.4"
+        "orjson>=3.6.4",
+        "colored>=1.4.3",
+        "six",
+        "protobuf>=4.21.7"
     ],
     url="https://github.com/MetacitySuite/Metacity",
     python_requires='>=3.8',

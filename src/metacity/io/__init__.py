@@ -1,6 +1,7 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shapefile
-from metacity.io.osm_graph import parse_graph as parse_osm_graph
+from metacity.io.convert import shp_to_pbf
+
 import metacity.utils.filesystem as fs
 from metacity.geometry import Progress 
 
@@ -17,9 +18,6 @@ def parse(file: str, progress: Progress = None):
         return parse_geojson(file, progress)
 
 
-def parse_graph(node_file: str, edge_file: str):
-    return parse_osm_graph(node_file, edge_file)
-
 
 def parse_recursively(directory: str):
     models = []
@@ -30,3 +28,9 @@ def parse_recursively(directory: str):
             models.extend(submodels)
     return models
 
+
+def convert_to_pbf(file: str, output: str):
+    if file.endswith('.shp'):
+        shp_to_pbf(file, output)
+
+        

@@ -1,4 +1,4 @@
-import metacity.io.loaders.pyshp as shapefile
+import metacity.io.pyshp.pyshp as shapefile
 from metacity.io.geojson import parse_data as parse_geojson
 from metacity.geometry import Progress
 
