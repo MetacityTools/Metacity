@@ -1,11 +1,23 @@
 #include <fstream>
 #include "quadtree.hpp"
 #include "../progress.hpp"
+#include "modifiers.hpp"
 
 using json = nlohmann::json;
 size_t QuadTreeLevel::id_counter = 0;
 
 QuadTree::QuadTree(const vector<shared_ptr<Model>> &models, size_t max_depth)
+{
+    init(models, max_depth);
+}
+
+QuadTree::QuadTree(shared_ptr<Layer> layer, size_t max_depth)
+{
+    const auto &models = layer->get_models();
+    init(models, max_depth);
+}
+
+void QuadTree::init(const vector<shared_ptr<Model>> &models, size_t max_depth)
 {
     if (models.size() == 0)
     {
@@ -23,15 +35,31 @@ QuadTree::QuadTree(const vector<shared_ptr<Model>> &models, size_t max_depth)
     root->add_models(models, max_depth, bar);
 }
 
-void QuadTree::to_json(const string &dirname, size_t yield_models_at_level) const
+void QuadTree::merge_at_level(size_t merge_models_at_level)
+{
+    if (root)
+        root->quad_merge(merge_models_at_level);
+}
+
+void QuadTree::to_json(const string &dirname, size_t yield_models_at_level, bool store_metadata) const
 {
     if (root)
     {
         Progress bar("QuadTree to json");
-        auto meta = root->to_json(dirname, yield_models_at_level, bar);
+        auto meta = root->to_json(dirname, yield_models_at_level, store_metadata, bar);
         ofstream metafile(dirname + "/meta.json");
         metafile << meta.dump(-1);
         metafile.close();
+    }
+
+    if (root)
+    {
+        Progress bar("QuadTree grid layout");
+        json layout;
+        root->grid_layout(dirname, yield_models_at_level, layout, bar);
+        ofstream layoutfile(dirname + "/layout.json");
+        layoutfile << layout.dump(-1);
+        layoutfile.close();
     }
 }
 
@@ -46,10 +74,10 @@ bool QuadTreeLevel::is_leaf() const
 }
 bool QuadTreeLevel::is_empty() const
 {
-    return models.empty();
+    return models.empty() || border.min.z == INFINITY || border.max.z == -INFINITY;
 }
 
-void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, size_t max_depth, Progress & bar)
+void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, size_t max_depth, Progress &bar)
 {
     // reset the z.coord of the bbox
     border.min.z = INFINITY;
@@ -89,7 +117,7 @@ void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, size_t 
     }
 }
 
-shared_ptr<QuadTreeLevel> QuadTreeLevel::init_child(BBox border, size_t max_depth, Progress & bar)
+shared_ptr<QuadTreeLevel> QuadTreeLevel::init_child(BBox border, size_t max_depth, Progress &bar)
 {
     auto child = make_shared<QuadTreeLevel>(depth + 1, border);
     child->add_models(models, max_depth, bar);
@@ -171,13 +199,20 @@ void QuadTreeLevel::consolidate_metadata(const MetadataAggregate &metadata_)
     }
 }
 
-json QuadTreeLevel::to_json(const string &dirname, size_t yield_models_at_level, Progress & bar) const
+string QuadTreeLevel::glb_filename() const
 {
-    const string base_name = "quad" + to_string(depth) + "_" + to_string(id);
+    return "quad" + to_string(depth) + "_" + to_string(id) + ".glb";
+}
+
+json QuadTreeLevel::to_json(const string &dirname, size_t yield_models_at_level, bool store_metadata, Progress &bar) const
+{
+    const string glb_name = glb_filename();
 
     json out = {
-        {"metadata", metadata},
         {"z", {border.min.z, border.max.z}}};
+
+    if (store_metadata)
+        out["metadata"] = metadata;
 
     if (depth == 0)
     {
@@ -188,23 +223,93 @@ json QuadTreeLevel::to_json(const string &dirname, size_t yield_models_at_level,
 
     if ((is_leaf() && depth < yield_models_at_level) || depth == yield_models_at_level - 1)
     {
-        const string filename = dirname + "/" + base_name + ".glb";
-        out["file"] = base_name + ".glb";
+        const string filename = dirname + "/" + glb_name;
+        out["file"] = glb_name;
         out["size"] = models.size();
         to_gltf(filename);
     }
 
     if (ne != nullptr)
-        out["ne"] = ne->to_json(dirname, yield_models_at_level, bar);
+        out["ne"] = ne->to_json(dirname, yield_models_at_level, store_metadata, bar);
     if (se != nullptr)
-        out["se"] = se->to_json(dirname, yield_models_at_level, bar);
+        out["se"] = se->to_json(dirname, yield_models_at_level, store_metadata, bar);
     if (sw != nullptr)
-        out["sw"] = sw->to_json(dirname, yield_models_at_level, bar);
+        out["sw"] = sw->to_json(dirname, yield_models_at_level, store_metadata, bar);
     if (nw != nullptr)
-        out["nw"] = nw->to_json(dirname, yield_models_at_level, bar);
+        out["nw"] = nw->to_json(dirname, yield_models_at_level, store_metadata, bar);
 
     bar.update();
     return out;
+}
+
+void QuadTreeLevel::grid_layout(const string &dirname, size_t yield_models_at_level, json &layout, Progress &bar) const
+{
+
+    if (depth == 0)
+    {
+        const size_t p = (1 << (yield_models_at_level - 1));
+        layout["tileWidth"] = (border.max.x - border.min.x) / p;
+        layout["tileHeight"] = (border.max.y - border.min.y) / p;
+        layout["tiles"] = json::array();
+    }
+
+    if ((is_leaf() && depth < yield_models_at_level) || depth == yield_models_at_level - 1)
+    {
+
+        const tfloat tw = layout["tileWidth"].get<tfloat>();
+        const tfloat th = layout["tileHeight"].get<tfloat>();
+
+        const int x = floor(border.min.x / tw);
+        const int y = floor(border.min.y / th);
+
+        json tile;
+        tile["x"] = x;
+        tile["y"] = y;
+        tile["file"] = glb_filename();
+        tile["size"] = models.size();
+        layout["tiles"].push_back(tile);
+    }
+
+    if (ne != nullptr)
+        ne->grid_layout(dirname, yield_models_at_level, layout, bar);
+    if (se != nullptr)
+        se->grid_layout(dirname, yield_models_at_level, layout, bar);
+    if (sw != nullptr)
+        sw->grid_layout(dirname, yield_models_at_level, layout, bar);
+    if (nw != nullptr)
+        nw->grid_layout(dirname, yield_models_at_level, layout, bar);
+
+    bar.update();
+}
+
+void QuadTreeLevel::quad_merge(size_t merge_models_at_level)
+{
+    if ((is_leaf() && depth < merge_models_at_level) || depth == merge_models_at_level - 1)
+    {
+
+        // filter nodels inside
+        vector<shared_ptr<Model>> models_;
+        for (auto &model : models)
+        {
+            if (inside(border, model->get_centroid()))
+                models_.push_back(model);
+        }
+
+        auto model = modifiers::merge_models(models_);
+        models.clear();
+        models.push_back(model);
+    }
+    else
+    {
+        if (ne != nullptr)
+            ne->quad_merge(merge_models_at_level);
+        if (se != nullptr)
+            se->quad_merge(merge_models_at_level);
+        if (sw != nullptr)
+            sw->quad_merge(merge_models_at_level);
+        if (nw != nullptr)
+            nw->quad_merge(merge_models_at_level);
+    }
 }
 
 void QuadTreeLevel::to_gltf(const string &filename) const
@@ -215,10 +320,18 @@ void QuadTreeLevel::to_gltf(const string &filename) const
     asset.generator = "Metacity";
     gltf_model.asset = asset;
 
-    for (auto &model : models)
+    if (models.size() == 1)
     {
-        if (inside(border, model->get_centroid()))
-            model->to_gltf(gltf_model);
+        auto model = models[0];
+        model->to_gltf(gltf_model);
+    }
+    else
+    {
+        for (auto &model : models)
+        {
+            if (inside(border, model->get_centroid()))
+                model->to_gltf(gltf_model);
+        }
     }
 
     tinygltf::TinyGLTF gltf;
