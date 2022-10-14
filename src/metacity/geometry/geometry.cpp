@@ -66,5 +66,5 @@ PYBIND11_MODULE(geometry, m) {
         .def(py::init<const vector<shared_ptr<Model>> &, size_t>())
         .def(py::init<shared_ptr<Layer>, size_t>())
         .def("merge_at_level", &QuadTree::merge_at_level)
-        .def("to_json", &QuadTree::to_json);
+        .def("to_json", &QuadTree::to_json, py::arg("store_metadata") = true);
 }
