@@ -7,6 +7,7 @@
 #include "mesh/attribute.hpp"
 #include "mesh/layer.hpp"
 #include "mesh/grid.hpp"
+#include "mesh/quadtree.hpp"
 
 #define TINYGLTF_IMPLEMENTATION
 #define STB_IMAGE_IMPLEMENTATION
@@ -60,4 +61,10 @@ PYBIND11_MODULE(geometry, m) {
     py::class_<Progress, std::shared_ptr<Progress>>(m, "Progress")
         .def(py::init<string>())
         .def("update", &Progress::update);
+
+    py::class_<QuadTree, std::shared_ptr<QuadTree>>(m, "QuadTree")
+        .def(py::init<const vector<shared_ptr<Model>> &, size_t>())
+        .def(py::init<shared_ptr<Layer>, size_t>())
+        .def("merge_at_level", &QuadTree::merge_at_level)
+        .def("to_json", &QuadTree::to_json, py::arg("dirname"), py::arg("yield_models_at_level"), py::arg("store_metadata") = true);
 }

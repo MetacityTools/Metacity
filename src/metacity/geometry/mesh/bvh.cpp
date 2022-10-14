@@ -198,6 +198,10 @@ tfloat BVH::traceDownRegualarRay(const tfloat x, const tfloat y, const tfloat z)
         return ray.t;
 
     recursiveTrace(ray, root);
+
+    if (ray.t == RTINFINITY)
+        return RTINFINITY;
+
     return 10000 - ray.t;
 }
 

@@ -47,7 +47,6 @@ void Grid::to_gltf(const string & folder) const
         bar.update();
 
         string filename = folder + "/tile" + to_string(pair.first.first) + "_" + to_string(pair.first.second) + ".glb";
-
         tinygltf::Model gltf_model;
         tinygltf::Asset asset;
         asset.version = "2.0";

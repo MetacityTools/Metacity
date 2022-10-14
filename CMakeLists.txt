@@ -45,6 +45,8 @@ pybind11_add_module(geometry        src/metacity/geometry/geometry.cpp
                                     src/metacity/geometry/mesh/attribute.cpp 
                                     src/metacity/geometry/mesh/grid.hpp
                                     src/metacity/geometry/mesh/grid.cpp
+                                    src/metacity/geometry/mesh/quadtree.hpp
+                                    src/metacity/geometry/mesh/quadtree.cpp
                                     src/metacity/geometry/mesh/triangulation.hpp
                                     src/metacity/geometry/mesh/triangulation.cpp)
 

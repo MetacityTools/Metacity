@@ -1,6 +1,7 @@
 #include "attribute.hpp"
 #include "triangulation.hpp"
 
+
 Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
 void Attribute::allowedAttributeType(AttributeType type)
@@ -151,9 +152,9 @@ const tvec3 &Attribute::operator[](const size_t index) const
     throw runtime_error("Index out of range");
 }
 
-pair<tvec3, tvec3> Attribute::bbox() const
+BBox Attribute::bbox() const
 {
-    return make_pair(vmin(), vmax());
+    return BBox{vmin(), vmax()};
 }
 
 tvec3 Attribute::vmin() const

@@ -29,7 +29,7 @@ def parse_recursively(directory: str):
     return models
 
 
-def convert(file: str, output: str):
+def convert_to_pbf(file: str, output: str):
     if file.endswith('.shp'):
         shp_to_pbf(file, output)
 

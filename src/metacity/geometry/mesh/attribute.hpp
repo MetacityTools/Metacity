@@ -2,6 +2,7 @@
 #include <vector>
 #include "../types.hpp"
 #include "../deps/gltf/tiny_gltf.h"
+#include "bbox.hpp"
 
 using namespace std;
 
@@ -44,7 +45,7 @@ public:
     tvec3 &operator[](const size_t index);
     const tvec3 &operator[](const size_t index) const;
 
-    pair<tvec3, tvec3> bbox() const;
+    BBox bbox() const;
     AttributeType geom_type() const;
 
 protected:

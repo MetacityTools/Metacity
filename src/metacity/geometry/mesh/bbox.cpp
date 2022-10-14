@@ -40,7 +40,7 @@ bool overlaps(const BBox &b1, const BBox &b2)
 
 bool inside(const BBox &b, const tvec3 &p)
 {
-    return ((b.min.x <= p.x) && (p.x <= b.max.x)) && ((b.min.y <= p.y) && (p.y <= b.max.y));
+    return ((b.min.x <= p.x) && (p.x < b.max.x)) && ((b.min.y <= p.y) && (p.y < b.max.y));
 }
 
 void set_empty(BBox &box)
@@ -80,4 +80,17 @@ void extend(BBox &b1, const tvec3 &p)
 tfloat midpoint(const BBox &b1, uint8_t axis)
 {
     return (b1.min[axis] + b1.max[axis]) / 2;
+}
+
+BBox toEqualXY(const BBox &b1) {
+    BBox b2 = b1;
+    tvec3 mid = b1.centroid();
+    tfloat hx = (b1.max.x - b1.min.x) / 2;
+    tfloat hy = (b1.max.y - b1.min.y) / 2;
+    tfloat rad = max(hx, hy);
+    b2.min.x = mid.x - rad;
+    b2.min.y = mid.y - rad;
+    b2.max.x = mid.x + rad;
+    b2.max.y = mid.y + rad;
+    return b2;
 }
