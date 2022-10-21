@@ -2,11 +2,6 @@ import os
 import pytest
 
 
-def pytest_configure(config):
-    config.addinivalue_line(
-        "markers", "network: marks tests requiring network access"
-    )
-
 ######################################
 # DATASETS
 ######################################
@@ -25,12 +20,6 @@ def geometry_dir():
 def graph_dir():
     package_dir = os.path.join(data_dir(), 'graph')
     return package_dir
-
-
-@pytest.fixture(scope='function')
-def pyshp_shapefiles():
-    dataset_path = os.path.join(data_dir(), 'pyshp')
-    yield dataset_path
 
 
 @pytest.fixture(scope='function')

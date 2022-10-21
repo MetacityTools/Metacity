@@ -6,18 +6,18 @@
 using json = nlohmann::json;
 size_t QuadTreeLevel::id_counter = 0;
 
-QuadTree::QuadTree(const vector<shared_ptr<Model>> &models, MetadataMode num_values_mode, size_t max_depth)
+QuadTree::QuadTree(const vector<shared_ptr<Model>> &models, size_t max_depth)
 {
-    init(models, num_values_mode, max_depth);
+    init(models, max_depth);
 }
 
-QuadTree::QuadTree(shared_ptr<Layer> layer, MetadataMode num_values_mode, size_t max_depth)
+QuadTree::QuadTree(shared_ptr<Layer> layer, size_t max_depth)
 {
     const auto &models = layer->get_models();
-    init(models, num_values_mode, max_depth);
+    init(models, max_depth);
 }
 
-void QuadTree::init(const vector<shared_ptr<Model>> &models, MetadataMode num_values_mode, size_t max_depth)
+void QuadTree::init(const vector<shared_ptr<Model>> &models, size_t max_depth)
 {
     if (models.size() == 0)
     {
@@ -26,25 +26,19 @@ void QuadTree::init(const vector<shared_ptr<Model>> &models, MetadataMode num_va
 
     BBox root_bbox = models[0]->get_bbox();
     for (size_t i = 1; i < models.size(); i++)
-        root_bbox.extend(models[i]->get_bbox());
+        extend(root_bbox, models[i]->get_bbox());
 
-    root_bbox.toEqualXY();
+    root_bbox = toEqualXY(root_bbox);
     root = make_shared<QuadTreeLevel>(0, root_bbox);
 
     Progress bar("QuadTree build");
-    root->add_models(models, num_values_mode, max_depth, bar);
+    root->add_models(models, max_depth, bar);
 }
 
 void QuadTree::merge_at_level(size_t merge_models_at_level)
 {
     if (root)
         root->quad_merge(merge_models_at_level);
-}
-
-void QuadTree::filter_metadata(const vector<string> &keys)
-{
-    if (root)
-        root->filter_metadata(keys);
 }
 
 void QuadTree::to_json(const string &dirname, size_t yield_models_at_level, bool store_metadata) const
@@ -83,21 +77,20 @@ bool QuadTreeLevel::is_empty() const
     return models.empty() || border.min.z == INFINITY || border.max.z == -INFINITY;
 }
 
-void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, MetadataMode num_values_mode, size_t max_depth, Progress &bar)
+void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, size_t max_depth, Progress &bar)
 {
     // reset the z.coord of the bbox
     border.min.z = INFINITY;
     border.max.z = -INFINITY;
 
-    size_t i = 0;
     for (auto model : models_)
     {
-        if (model->overlaps(border))
+        BBox model_box = model->get_bbox(true);
+        if (overlaps(border, model_box))
         {
-            BBox model_box = model->get_bbox(true);
             // add model to this level
             models.push_back(model);
-            // adjust z to fit model box
+            // adjust z to fut model box
             border.min.z = min(border.min.z, model_box.min.z);
             border.max.z = max(border.max.z, model_box.max.z);
         }
@@ -109,71 +102,55 @@ void QuadTreeLevel::add_models(const vector<shared_ptr<Model>> &models_, Metadat
         if (depth < max_depth)
         {
             auto center = border.centroid();
-            ne = init_child(BBox(tvec3(center.x, center.y, border.min.z), border.max), num_values_mode, max_depth, bar);
-            se = init_child(BBox(tvec3(center.x, border.min.y, border.min.z), tvec3(border.max.x, center.y, border.max.z)), num_values_mode, max_depth, bar);
-            sw = init_child(BBox(border.min, tvec3(center.x, center.y, border.max.z)), num_values_mode, max_depth, bar);
-            nw = init_child(BBox(tvec3(border.min.x, center.y, border.min.z), tvec3(center.x, border.max.y, border.max.z)), num_values_mode, max_depth, bar);
+            ne = init_child(BBox{tvec3(center.x, center.y, border.min.z), border.max}, max_depth, bar);
+            se = init_child(BBox{tvec3(center.x, border.min.y, border.min.z), tvec3(border.max.x, center.y, border.max.z)}, max_depth, bar);
+            sw = init_child(BBox{border.min, tvec3(center.x, center.y, border.max.z)}, max_depth, bar);
+            nw = init_child(BBox{tvec3(border.min.x, center.y, border.min.z), tvec3(center.x, border.max.y, border.max.z)}, max_depth, bar);
         }
     }
 
     // sort out metadata
     if (!is_empty())
     {
-        process_metadata(num_values_mode);
+        aggregate_metadata();
         bar.update();
     }
 }
 
-shared_ptr<QuadTreeLevel> QuadTreeLevel::init_child(BBox border, MetadataMode num_values_mode, size_t max_depth, Progress &bar)
+shared_ptr<QuadTreeLevel> QuadTreeLevel::init_child(BBox border, size_t max_depth, Progress &bar)
 {
     auto child = make_shared<QuadTreeLevel>(depth + 1, border);
-    child->add_models(models, num_values_mode, max_depth, bar);
+    child->add_models(models, max_depth, bar);
     if (child->is_empty())
         return nullptr;
     return child;
 }
 
-void QuadTreeLevel::process_metadata(MetadataMode num_values_mode)
-{
-    //TODO refactor
-    aggregate_metadata(num_values_mode);
-}
-
-void QuadTreeLevel::aggregate_metadata(MetadataMode num_values_mode)
+void QuadTreeLevel::aggregate_metadata()
 {
     MetadataAggregate metadata_;
     for (auto model : models)
     {
-
         const json model_meta = model->get_metadata();
         for (auto it = model_meta.begin(); it != model_meta.end(); ++it)
         {
 
             if (it.value().is_number())
             {
-                const tfloat num = it.value();
+                const tfloat value = it.value();
                 if (metadata_.num.find(it.key()) == metadata_.num.end())
                 {
-                    metadata_.num[it.key()] = unordered_map<tfloat, tfloat>();
+                    metadata_.num[it.key()] = vector<tfloat>();
                 }
-
-                auto &coutner = metadata_.num[it.key()];
-                if (coutner.find(it.value()) == coutner.end())
-                {
-                    coutner[num] = 0;
-                }
-
-                if (num_values_mode == MetadataMode::AVERAGE)
-                    coutner[num] += 1;
-                else if (num_values_mode == MetadataMode::MAX_AREA)
-                    coutner[num] += model->get_area_in_border(border);
+                metadata_.num[it.key()].push_back(value);
             }
-            else if (it.value().is_string())
+
+            if (it.value().is_string())
             {
                 const string &str = it.value();
                 if (metadata_.str.find(it.key()) == metadata_.str.end())
                 {
-                    metadata_.str[it.key()] = unordered_map<string, tfloat>();
+                    metadata_.str[it.key()] = unordered_map<string, size_t>();
                 }
 
                 auto &coutner = metadata_.str[it.key()];
@@ -182,64 +159,43 @@ void QuadTreeLevel::aggregate_metadata(MetadataMode num_values_mode)
                     coutner[str] = 0;
                 }
 
-                coutner[str] += model->get_area_in_border(border);
+                coutner[str]++;
             }
         }
     }
 
-    consolidate_aggregated_metadata(metadata_, num_values_mode);
+    consolidate_metadata(metadata_);
 }
 
-void QuadTreeLevel::consolidate_aggregated_metadata(const MetadataAggregate &metadata_, MetadataMode num_values_mode)
+void QuadTreeLevel::consolidate_metadata(const MetadataAggregate &metadata_)
 {
     for (auto it = metadata_.num.begin(); it != metadata_.num.end(); ++it)
     {
         const string &key = it->first;
-        const auto &values = it->second;
-
-        if (num_values_mode == MetadataMode::AVERAGE)
+        const vector<tfloat> &values = it->second;
+        tfloat sum = 0;
+        for (auto value : values)
         {
-            tfloat sum = 0;
-            size_t count = 0;
-            for (const auto & value : values)
-            {
-                sum += value.first * value.second;
-                count += value.second;
-            }
-            metadata[key] = sum / count;
+            sum += value;
         }
-        else if (num_values_mode == MetadataMode::MAX_AREA)
-        {
-            tfloat max_area = 0;
-            tfloat max_value;
-            for (const auto & value : values)
-            {
-                if (value.second > max_area)
-                {
-                    max_value = value.first;
-                    max_area = value.second;
-                }
-            }
-            metadata[key] = max_value;
-        }
+        metadata[key] = sum / values.size();
     }
 
     for (auto it = metadata_.str.begin(); it != metadata_.str.end(); ++it)
     {
         const string &key = it->first;
-        const auto &values = it->second;
-        
+        const unordered_map<string, size_t> &values = it->second;
         size_t max_count = 0;
-        string max_value;
-        for (const auto & value : values)
+        string max_str;
+        for (auto it2 = values.begin(); it2 != values.end(); ++it2)
         {
-            if (value.second > max_count)
+            if (it2->second > max_count)
             {
-                max_value = value.first;
-                max_count = value.second;
+                max_count = it2->second;
+                max_str = it2->first;
             }
         }
-        metadata[key] = max_value;
+        metadata[key] = max_str;
     }
 }
 
@@ -335,7 +291,7 @@ void QuadTreeLevel::quad_merge(size_t merge_models_at_level)
         vector<shared_ptr<Model>> models_;
         for (auto &model : models)
         {
-            if (border.inside(model->get_centroid()))
+            if (inside(border, model->get_centroid()))
                 models_.push_back(model);
         }
 
@@ -356,30 +312,6 @@ void QuadTreeLevel::quad_merge(size_t merge_models_at_level)
     }
 }
 
-void QuadTreeLevel::filter_metadata(const vector<string> &keys)
-{
-    for (auto it = metadata.begin(); it != metadata.end();)
-    {
-        if (find(keys.begin(), keys.end(), it.key()) == keys.end())
-        {
-            it = metadata.erase(it);
-        }
-        else
-        {
-            ++it;
-        }
-    }
-
-    if (ne != nullptr)
-        ne->filter_metadata(keys);
-    if (se != nullptr)
-        se->filter_metadata(keys);
-    if (sw != nullptr)
-        sw->filter_metadata(keys);
-    if (nw != nullptr)
-        nw->filter_metadata(keys);
-}
-
 void QuadTreeLevel::to_gltf(const string &filename) const
 {
     tinygltf::Model gltf_model;
@@ -397,7 +329,7 @@ void QuadTreeLevel::to_gltf(const string &filename) const
     {
         for (auto &model : models)
         {
-            if (border.inside(model->get_centroid()))
+            if (inside(border, model->get_centroid()))
                 model->to_gltf(gltf_model);
         }
     }

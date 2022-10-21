@@ -83,11 +83,6 @@ def read_json(filename):
     return orjson.loads(sdata)
 
 
-def read_pbf(filename):
-    with open(filename, 'rb') as file:
-        return file.read()
-
-
 def dir_from_path(path):
     return os.path.dirname(path)
 

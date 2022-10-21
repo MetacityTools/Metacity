@@ -167,7 +167,6 @@ dist
 *.nar
 *.ear
 *.zip
-!tests/**/*.zip
 *.tar.gz
 *.rar
 
