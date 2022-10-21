@@ -6,7 +6,7 @@
 #include "../convert.hpp"
 
 //===============================================================================
-Model::Model() : bbox_cached(false) {}
+Model::Model() : bbox_cached(false), area_cached(false) {}
 
 
 void Model::merge(shared_ptr<Model> model)
@@ -49,14 +49,14 @@ tvec3 Model::get_centroid() const
     return centroid;
 }
 
-BBox Model::get_bbox(bool cached) {
+BBox Model::get_bbox(bool return_cached) {
+    if (bbox_cached && return_cached) {
+        return bbox;
+    }
+
     if (attrib.find("POSITION") == attrib.end()) {
         throw runtime_error("No position data");
     }  
-
-    if (bbox_cached && cached) {
-        return bbox;
-    }
 
     const auto positions = attrib.at("POSITION");
     auto computed_bbox = positions->bbox();
@@ -84,6 +84,95 @@ int Model::geom_type() const
 
     const auto positions = attrib.at("POSITION");
     return to_number(positions->geom_type());
+}
+
+tfloat Model::get_area(bool return_cached)
+{
+    if (area_cached && return_cached) 
+        return total_area;
+
+    if (attrib.find("POSITION") == attrib.end()) 
+        throw runtime_error("No geometry data");
+
+    const auto positions = attrib.at("POSITION");
+
+    if(positions->geom_type() != AttributeType::TRIANGLE) {
+        //throw runtime_error("Area can only be computed for triangle meshes");
+        //for now, return 1 for non-trianguar models
+        return 1;
+    }
+
+    //for triangles
+    tfloat area = 0;
+    for (size_t i = 0; i < positions->size(); i += 3) {
+        auto p0 = (*positions)[i];
+        auto p1 = (*positions)[i+1];
+        auto p2 = (*positions)[i+2];
+        auto a = 0.5 * length(cross(p1-p0, p2-p0));
+        if (isnormal(a)) {
+            area += a;
+        }
+    }
+
+    total_area = area;
+    area_cached = true;
+
+    return area;
+}
+
+tfloat Model::get_area_in_border(const BBox & box)
+{
+    if (attrib.find("POSITION") == attrib.end()) 
+        throw runtime_error("No geometry data");
+
+    const auto positions = attrib.at("POSITION");
+
+    if(positions->geom_type() != AttributeType::TRIANGLE) {
+        //throw runtime_error("Area can only be computed for triangle meshes");
+        //for now, return 1 for non-trianguar models
+        return 1;
+    }
+
+    //for triangles
+    tfloat area = 0;
+    for (size_t i = 0; i < positions->size(); i += 3) {
+        auto p0 = (*positions)[i];
+        auto p1 = (*positions)[i+1];
+        auto p2 = (*positions)[i+2];
+        if (box.overlaps(p0, p1, p2)) {
+            auto a = 0.5 * length(cross(p1-p0, p2-p0));
+            if (isnormal(a)) {
+                area += a;
+            }
+        }
+    }
+
+    total_area = area;
+    area_cached = true;
+
+    return area;
+}
+
+bool Model::overlaps(const BBox &box)
+{
+    BBox model_box = get_bbox(true);
+    if (!box.overlaps(model_box))
+        return false;
+
+    const auto positions = attrib.at("POSITION");
+    if(positions->geom_type() == AttributeType::TRIANGLE) {
+        //triangle
+        for (size_t i = 0; i < positions->size(); i += 3) {
+            auto p0 = (*positions)[i];
+            auto p1 = (*positions)[i + 1];
+            auto p2 = (*positions)[i + 2];
+            if (box.overlaps(p0, p1, p2)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 
