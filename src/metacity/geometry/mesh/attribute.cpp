@@ -1,6 +1,7 @@
 #include "attribute.hpp"
 #include "triangulation.hpp"
 
+
 Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
 void Attribute::allowedAttributeType(AttributeType type)

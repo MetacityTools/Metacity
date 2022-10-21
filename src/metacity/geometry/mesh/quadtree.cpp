@@ -144,7 +144,6 @@ void QuadTreeLevel::aggregate_metadata(MetadataMode num_values_mode)
     MetadataAggregate metadata_;
     for (auto model : models)
     {
-
         const json model_meta = model->get_metadata();
         for (auto it = model_meta.begin(); it != model_meta.end(); ++it)
         {
