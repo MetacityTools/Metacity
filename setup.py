@@ -21,7 +21,7 @@ README = (HERE / "README.md").read_text()
 
 setup(
     name="metacity",
-    version="0.6.0",
+    version="0.6.1",
     author="Vojtěch Tomas",
     author_email="hello@vojtatom.cz",
     license="MIT",
