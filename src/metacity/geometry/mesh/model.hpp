@@ -13,16 +13,16 @@ class Model
 {
 public:
     Model();
-
-
+    
     tvec3 get_centroid() const;
-    BBox get_bbox(bool cached = false);
+    BBox get_bbox(bool return_cached = false);
+    tfloat get_area(bool return_cached = false);
+    tfloat get_area_in_border(const BBox &box);
+
     void merge(shared_ptr<Model> model);
     shared_ptr<Model> clone() const;
 
-
     void add_attribute(const string &name, shared_ptr<Attribute> attribute);
-
     shared_ptr<Attribute> get_attribute(const string &name) const;
     bool attribute_exists(const string &name);
 
@@ -30,6 +30,7 @@ public:
     nlohmann::json get_metadata() const;
 
     int geom_type() const;
+    bool overlaps(const BBox &box);
 
     void from_gltf(const tinygltf::Model & model, const int mesh_index);
     void to_gltf(tinygltf::Model & model) const;
@@ -51,5 +52,7 @@ protected:
 
     BBox bbox;
     bool bbox_cached;
+    tfloat total_area;
+    bool area_cached;
 };
 

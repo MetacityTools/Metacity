@@ -1,0 +1,3189 @@
+\ Loading Models 0 - 00:00:00| Loading Models 0 - 00:00:00/ Loading Models 0 - 00:00:00- Loading Models 0 - 00:00:00\ Loading Models 0 - 00:00:00| Loading Models 0 - 00:00:00/ Loading Models 0 - 00:00:00- Loading Models 0 - 00:00:00\ Loading Models 0 - 00:00:00| Loading Models 0 - 00:00:00/ Loading Models 0 - 00:00:01- Loading Models 0 - 00:00:01\ Loading Models 0 - 00:00:01| Loading Models 0 - 00:00:01/ Loading Models 0 - 00:00:01- Loading Models 0 - 00:00:01\ Loading Models 0 - 00:00:01| Loading Models 0 - 00:00:01/ Loading Models 0 - 00:00:01- Loading Models 0 - 00:00:01\ Loading Models 0 - 00:00:02| Loading Models 0 - 00:00:02/ Loading Models 0 - 00:00:02- Loading Models 0 - 00:00:02\ Loading Models 0 - 00:00:02| Loading Models 0 - 00:00:02/ Loading Models 0 - 00:00:02- Loading Models 0 - 00:00:02\ Loading Models 0 - 00:00:02| Loading Models 0 - 00:00:03/ Loading Models 0 - 00:00:03- Loading Models 0 - 00:00:03\ Loading Models 0 - 00:00:03| Loading Models 0 - 00:00:03/ Loading Models 0 - 00:00:03- Loading Models 0 - 00:00:03\ Loading Models 0 - 00:00:03| Loading Models 0 - 00:00:03/ Loading Models 0 - 00:00:03- Loading Models 0 - 00:00:04\ Loading Models 0 - 00:00:04| Loading Models 0 - 00:00:04/ Loading Models 0 - 00:00:04- Loading Models 0 - 00:00:04\ Loading Models 0 - 00:00:04| Loading Models 0 - 00:00:04/ Loading Models 0 - 00:00:04- Loading Models 0 - 00:00:04\ Loading Models 0 - 00:00:05| Loading Models 0 - 00:00:05/ Loading Models 0 - 00:00:05- Loading Models 0 - 00:00:05\ Loading Models 0 - 00:00:05| Loading Models 0 - 00:00:05/ Loading Models 0 - 00:00:05- Loading Models 0 - 00:00:05\ Loading Models 0 - 00:00:05| Loading Models 0 - 00:00:05/ Loading Models 0 - 00:00:06- Loading Models 0 - 00:00:06\ Loading Models 0 - 00:00:06| Loading Models 0 - 00:00:06/ Loading Models 0 - 00:00:06- Loading Models 0 - 00:00:06\ Loading Models 0 - 00:00:06| Loading Models 0 - 00:00:06/ Loading Models 0 - 00:00:06- Loading Models 0 - 00:00:07\ Loading Models 0 - 00:00:07| Loading Models 0 - 00:00:07/ Loading Models 0 - 00:00:07- Loading Models 0 - 00:00:07\ Loading Models 0 - 00:00:07| Loading Models 0 - 00:00:07/ Loading Models 0 - 00:00:07- Loading Models 0 - 00:00:07\ Loading Models 0 - 00:00:07| Loading Models 0 - 00:00:08/ Loading Models 0 - 00:00:08- Loading Models 0 - 00:00:08\ Loading Models 0 - 00:00:08| Loading Models 0 - 00:00:08/ Loading Models 0 - 00:00:08- Loading Models 0 - 00:00:08\ Loading Models 0 - 00:00:08| Loading Models 0 - 00:00:08/ Loading Models 0 - 00:00:09- Loading Models 0 - 00:00:09\ Loading Models 0 - 00:00:09| Loading Models 0 - 00:00:09/ Loading Models 0 - 00:00:09- Loading Models 0 - 00:00:09\ Loading Models 0 - 00:00:09| Loading Models 0 - 00:00:09/ Loading Models 0 - 00:00:09- Loading Models 0 - 00:00:09\ Loading Models 0 - 00:00:10| Loading Models 0 - 00:00:10/ Loading Models 0 - 00:00:10- Loading Models 0 - 00:00:10\ Loading Models 0 - 00:00:10| Loading Models 0 - 00:00:10/ Loading Models 0 - 00:00:10- Loading Models 0 - 00:00:10\ Loading Models 0 - 00:00:10| Loading Models 0 - 00:00:11/ Loading Models 0 - 00:00:11- Loading Models 0 - 00:00:11\ Loading Models 0 - 00:00:11| Loading Models 0 - 00:00:11/ Loading Models 0 - 00:00:11- Loading Models 0 - 00:00:11\ Loading Models 0 - 00:00:11| Loading Models 0 - 00:00:11/ Loading Models 0 - 00:00:11- Loading Models 0 - 00:00:12\ Loading Models 0 - 00:00:12| Loading Models 0 - 00:00:12/ Loading Models 0 - 00:00:12- Loading Models 0 - 00:00:12\ Loading Models 0 - 00:00:12| Loading Models 0 - 00:00:12/ Loading Models 0 - 00:00:12- Loading Models 0 - 00:00:12\ Loading Models 0 - 00:00:12| Loading Models 0 - 00:00:13/ Loading Models 0 - 00:00:13- Loading Models 0 - 00:00:13\ Loading Models 0 - 00:00:13| Loading Models 0 - 00:00:13/ Loading Models 0 - 00:00:13- Loading Models 0 - 00:00:13\ Loading Models 0 - 00:00:13| Loading Models 0 - 00:00:13/ Loading Models 0 - 00:00:14- Loading Models 0 - 00:00:14\ Loading Models 0 - 00:00:14| Loading Models 0 - 00:00:14/ Loading Models 0 - 00:00:14- Loading Models 0 - 00:00:14\ Loading Models 0 - 00:00:14| Loading Models 0 - 00:00:14/ Loading Models 0 - 00:00:14- Loading Models 0 - 00:00:14\ Loading Models 0 - 00:00:15| Loading Models 0 - 00:00:15/ Loading Models 0 - 00:00:15- Loading Models 0 - 00:00:15\ Loading Models 0 - 00:00:15| Loading Models 0 - 00:00:15/ Loading Models 0 - 00:00:15- Loading Models 0 - 00:00:15\ Loading Models 0 - 00:00:15| Loading Models 0 - 00:00:16/ Loading Models 0 - 00:00:16- Loading Models 0 - 00:00:16\ Loading Models 0 - 00:00:16| Loading Models 0 - 00:00:16/ Loading Models 0 - 00:00:16- Loading Models 0 - 00:00:16\ Loading Models 0 - 00:00:16| Loading Models 0 - 00:00:16/ Loading Models 0 - 00:00:16- Loading Models 0 - 00:00:17\ Loading Models 0 - 00:00:17| Loading Models 0 - 00:00:17/ Loading Models 0 - 00:00:17- Loading Models 1239 - 00:00:17\ Loading Models 3600 - 00:00:17| Loading Models 5779 - 00:00:17/ Loading Models 8205 - 00:00:17- Loading Models 10922 - 00:00:17\ Loading Models 13481 - 00:00:18| Loading Models 16505 - 00:00:18/ Loading Models 19717 - 00:00:18- Loading Models 22218 - 00:00:18\ Loading Models 32921 - 00:00:18| Loading Models 43200 - 00:00:18/ Loading Models 52835 - 00:00:18- Loading Models 64336 - 00:00:18\ Loading Models 75318 - 00:00:18| Loading Models 85885 - 00:00:18/ Loading Models 97212 - 00:00:19- Loading Models 107007 - 00:00:19\ Loading Models 117723 - 00:00:19| Loading Models 128985 - 00:00:19/ Loading Models 140696 - 00:00:19- Loading Models 149756 - 00:00:19\ Loading Models 162638 - 00:00:19| Loading Models 174669 - 00:00:19/ Loading Models 185619 - 00:00:19- Loading Models 198533 - 00:00:20\ Loading Models 208677 - 00:00:20| Loading Models 222636 - 00:00:20/ Loading Models 235621 - 00:00:20- Loading Models 247746 - 00:00:20\ Loading Models 260096 - 00:00:20| Loading Models 271436 - 00:00:20/ Loading Models 280898 - 00:00:20- Loading Models 288984 - 00:00:20\ Loading Models 297811 - 00:00:20| Loading Models 307322 - 00:00:21/ Loading Models 319703 - 00:00:21- Loading Models 331750 - 00:00:21\ Loading Models 341027 - 00:00:21| Loading Models 353622 - 00:00:21/ Loading Models 365740 - 00:00:21- Loading Models 377614 - 00:00:21\ Loading Models 390041 - 00:00:21| Loading Models 402115 - 00:00:21/ Loading Models 411522 - 00:00:22- Loading Models 421166 - 00:00:22\ Loading Models 433034 - 00:00:22| Loading Models 441921 - 00:00:22/ Loading Models 449120 - 00:00:22- Loading Models 455755 - 00:00:22\ Loading Models 466087 - 00:00:22| Loading Models 469796 - 00:00:22/ Loading Models 474602 - 00:00:22- Loading Models 479112 - 00:00:22\ Loading Models 482311 - 00:00:23| Loading Models 485099 - 00:00:23/ Loading Models 487957 - 00:00:23- Loading Models 490735 - 00:00:23\ Loading Models 496074 - 00:00:23| Loading Models 504635 - 00:00:23/ Loading Models 507071 - 00:00:23- Loading Models 510658 - 00:00:23\ Loading Models 517522 - 00:00:23| Loading Models 525391 - 00:00:23/ Loading Models 533460 - 00:00:24- Loading Models 543001 - 00:00:24\ Loading Models 548219 - 00:00:24| Loading Models 548220 - 00:00:24/ Loading Models 548220 - 00:00:24- Loading Models 548221 - 00:00:24\ Loading Models 548221 - 00:00:24| Loading Models 548222 - 00:00:24/ Loading Models 548223 - 00:00:24- Loading Models 548224 - 00:00:25\ Loading Models 548224 - 00:00:25| Loading Models 548225 - 00:00:25/ Loading Models 548225 - 00:00:25- Loading Models 548226 - 00:00:25\ Loading Models 548227 - 00:00:25| Loading Models 548228 - 00:00:25/ Loading Models 548228 - 00:00:25- Loading Models 548229 - 00:00:25\ Loading Models 548231 - 00:00:25| Loading Models 548232 - 00:00:26/ Loading Models 548233 - 00:00:26- Loading Models 548234 - 00:00:26\ Loading Models 548235 - 00:00:26| Loading Models 548236 - 00:00:26/ Loading Models 548237 - 00:00:26- Loading Models 548238 - 00:00:26\ Loading Models 548240 - 00:00:26| Loading Models 548241 - 00:00:26/ Loading Models 548243 - 00:00:27- Loading Models 548244 - 00:00:27\ Loading Models 548248 - 00:00:27| Loading Models 548964 - 00:00:27/ Loading Models 554003 - 00:00:27- Loading Models 554003 - 00:00:27\ Loading Models 554003 - 00:00:27| Loading Models 554003 - 00:00:27/ Loading Models 554003 - 00:00:27- Loading Models 554003 - 00:00:27
+Loading Models - finished at 554003
+\ QuadTree build 0 - 00:00:00| QuadTree build 938 - 00:00:00/ QuadTree build 2874 - 00:00:00- QuadTree build 4787 - 00:00:00\ QuadTree build 6293 - 00:00:00| QuadTree build 8136 - 00:00:00/ QuadTree build 10308 - 00:00:00- QuadTree build 12816 - 00:00:00\ QuadTree build 14999 - 00:00:00| QuadTree build 17290 - 00:00:00/ QuadTree build 18824 - 00:00:01- QuadTree build 21101 - 00:00:01\ QuadTree build 23529 - 00:00:01| QuadTree build 25310 - 00:00:01/ QuadTree build 27302 - 00:00:01- QuadTree build 29743 - 00:00:01\ QuadTree build 32217 - 00:00:01| QuadTree build 34831 - 00:00:01/ QuadTree build 36670 - 00:00:01- QuadTree build 40325 - 00:00:01\ QuadTree build 42729 - 00:00:02| QuadTree build 45136 - 00:00:02/ QuadTree build 47662 - 00:00:02- QuadTree build 49834 - 00:00:02\ QuadTree build 51723 - 00:00:02| QuadTree build 55168 - 00:00:02/ QuadTree build 58527 - 00:00:02- QuadTree build 60821 - 00:00:02\ QuadTree build 62979 - 00:00:02| QuadTree build 65667 - 00:00:03/ QuadTree build 68505 - 00:00:03- QuadTree build 70535 - 00:00:03\ QuadTree build 72359 - 00:00:03| QuadTree build 74172 - 00:00:03/ QuadTree build 75943 - 00:00:03- QuadTree build 78986 - 00:00:03\ QuadTree build 81162 - 00:00:03| QuadTree build 83887 - 00:00:03/ QuadTree build 85845 - 00:00:04- QuadTree build 87901 - 00:00:04\ QuadTree build 89000 - 00:00:04| QuadTree build 89002 - 00:00:04/ QuadTree build 91288 - 00:00:04- QuadTree build 93619 - 00:00:04\ QuadTree build 95927 - 00:00:04| QuadTree build 98076 - 00:00:04/ QuadTree build 100259 - 00:00:04- QuadTree build 101252 - 00:00:04\ QuadTree build 101253 - 00:00:05| QuadTree build 103017 - 00:00:05/ QuadTree build 105394 - 00:00:05- QuadTree build 107733 - 00:00:05\ QuadTree build 110005 - 00:00:05| QuadTree build 111970 - 00:00:05/ QuadTree build 114756 - 00:00:05- QuadTree build 117338 - 00:00:05\ QuadTree build 119264 - 00:00:05| QuadTree build 121467 - 00:00:05/ QuadTree build 123265 - 00:00:06- QuadTree build 125581 - 00:00:06\ QuadTree build 127796 - 00:00:06| QuadTree build 130237 - 00:00:06/ QuadTree build 132352 - 00:00:06- QuadTree build 134497 - 00:00:06\ QuadTree build 136715 - 00:00:06| QuadTree build 139054 - 00:00:06/ QuadTree build 141083 - 00:00:06- QuadTree build 143089 - 00:00:07\ QuadTree build 145375 - 00:00:07| QuadTree build 147499 - 00:00:07/ QuadTree build 149139 - 00:00:07- QuadTree build 151962 - 00:00:07\ QuadTree build 154052 - 00:00:07| QuadTree build 155878 - 00:00:07/ QuadTree build 158017 - 00:00:07- QuadTree build 159886 - 00:00:07\ QuadTree build 161693 - 00:00:07| QuadTree build 164251 - 00:00:08/ QuadTree build 166190 - 00:00:08- QuadTree build 166192 - 00:00:08\ QuadTree build 166808 - 00:00:08| QuadTree build 169033 - 00:00:08/ QuadTree build 171132 - 00:00:08- QuadTree build 173464 - 00:00:08\ QuadTree build 175329 - 00:00:08| QuadTree build 177037 - 00:00:08/ QuadTree build 179009 - 00:00:09- QuadTree build 181349 - 00:00:09\ QuadTree build 183168 - 00:00:09| QuadTree build 184863 - 00:00:09/ QuadTree build 186926 - 00:00:09- QuadTree build 188604 - 00:00:09\ QuadTree build 190855 - 00:00:09| QuadTree build 193145 - 00:00:09/ QuadTree build 195151 - 00:00:09- QuadTree build 197426 - 00:00:09\ QuadTree build 198828 - 00:00:10| QuadTree build 200663 - 00:00:10/ QuadTree build 202466 - 00:00:10- QuadTree build 204586 - 00:00:10\ QuadTree build 206671 - 00:00:10| QuadTree build 208996 - 00:00:10/ QuadTree build 211295 - 00:00:10- QuadTree build 212844 - 00:00:10\ QuadTree build 215099 - 00:00:10| QuadTree build 216955 - 00:00:11/ QuadTree build 219123 - 00:00:11- QuadTree build 221745 - 00:00:11\ QuadTree build 223988 - 00:00:11| QuadTree build 225405 - 00:00:11/ QuadTree build 226632 - 00:00:11- QuadTree build 228605 - 00:00:11\ QuadTree build 230082 - 00:00:11| QuadTree build 231607 - 00:00:11/ QuadTree build 232876 - 00:00:11- QuadTree build 234628 - 00:00:12\ QuadTree build 236345 - 00:00:12| QuadTree build 237883 - 00:00:12/ QuadTree build 239280 - 00:00:12- QuadTree build 241210 - 00:00:12\ QuadTree build 242788 - 00:00:12| QuadTree build 245204 - 00:00:12/ QuadTree build 247155 - 00:00:12- QuadTree build 248682 - 00:00:12\ QuadTree build 249939 - 00:00:13| QuadTree build 251298 - 00:00:13/ QuadTree build 253106 - 00:00:13- QuadTree build 255116 - 00:00:13          312561: =====================
+          312561: QuadTreeLevel::add_models 312561 5 469
+          312561: QuadTreeLevel::add_models: 276 models
+            312562: =====================
+            312562: QuadTreeLevel::add_models 312562 6 276
+            312562: QuadTreeLevel::add_models: 143 models
+              312563: =====================
+              312563: QuadTreeLevel::add_models 312563 7 143
+              312563: QuadTreeLevel::add_models: 62 models
+                312564: =====================
+                312564: QuadTreeLevel::add_models 312564 8 62
+                312564: QuadTreeLevel::add_models: 20 models
+                  312565: =====================
+                  312565: QuadTreeLevel::add_models 312565 9 20
+                  312565: QuadTreeLevel::add_models: 9 models
+                    312566: =====================
+                    312566: QuadTreeLevel::add_models 312566 10 9
+                    312566: QuadTreeLevel::add_models: 5 models
+                    312567: =====================
+                    312567: QuadTreeLevel::add_models 312567 10 9
+                    312567: QuadTreeLevel::add_models: 5 models
+                    312568: =====================
+                    312568: QuadTreeLevel::add_models 312568 10 9
+                    312568: QuadTreeLevel::add_models: 5 models
+                    312569: =====================
+                    312569: QuadTreeLevel::add_models 312569 10 9
+                    312569: QuadTreeLevel::add_models: 5 models
+                  312565: ne: 312566
+                  312565: se: 312567
+                  312565: sw: 312568
+                  312565: nw: 312569
+                  312570: =====================
+                  312570: QuadTreeLevel::add_models 312570 9 20
+                  312570: QuadTreeLevel::add_models: 2 models
+                    312571: =====================
+                    312571: QuadTreeLevel::add_models 312571 10 2
+                    312571: QuadTreeLevel::add_models: 0 models
+                    312572: =====================
+                    312572: QuadTreeLevel::add_models 312572 10 2
+                    312572: QuadTreeLevel::add_models: 0 models
+                    312573: =====================
+                    312573: QuadTreeLevel::add_models 312573 10 2
+                    312573: QuadTreeLevel::add_models: 0 models
+                    312574: =====================
+                    312574: QuadTreeLevel::add_models 312574 10 2
+                    312574: QuadTreeLevel::add_models: 2 models
+                  312570: nw: 312574
+                  312575: =====================
+                  312575: QuadTreeLevel::add_models 312575 9 20
+                  312575: QuadTreeLevel::add_models: 17 models
+                    312576: =====================
+                    312576: QuadTreeLevel::add_models 312576 10 17
+                    312576: QuadTreeLevel::add_models: 3 models
+                    312577: =====================
+                    312577: QuadTreeLevel::add_models 312577 10 17
+                    312577: QuadTreeLevel::add_models: 0 models
+                    312578: =====================
+                    312578: QuadTreeLevel::add_models 312578 10 17
+                    312578: QuadTreeLevel::add_models: 12 models
+                    312579: =====================
+                    312579: QuadTreeLevel::add_models 312579 10 17
+                    312579: QuadTreeLevel::add_models: 8 models
+                  312575: ne: 312576
+                  312575: sw: 312578
+                  312575: nw: 312579
+                  312580: =====================
+                  312580: QuadTreeLevel::add_models 312580 9 20
+                  312580: QuadTreeLevel::add_models: 6 models
+                    312581: =====================
+                    312581: QuadTreeLevel::add_models 312581 10 6
+                    312581: QuadTreeLevel::add_models: 0 models
+                    312582: =====================
+                    312582: QuadTreeLevel::add_models 312582 10 6
+                    312582: QuadTreeLevel::add_models: 5 models
+                    312583: =====================
+                    312583: QuadTreeLevel::add_models 312583 10 6
+                    312583: QuadTreeLevel::add_models: 3 models
+                    312584: =====================
+                    312584: QuadTreeLevel::add_models 312584 10 6
+                    312584: QuadTreeLevel::add_models: 2 models
+                  312580: se: 312582
+                  312580: sw: 312583
+                  312580: nw: 312584
+                312564: ne: 312565
+                312564: se: 312570
+                312564: sw: 312575
+                312564: nw: 312580
+                312585: =====================
+                312585: QuadTreeLevel::add_models 312585 8 62
+                312585: QuadTreeLevel::add_models: 6 models
+                  312586: =====================
+                  312586: QuadTreeLevel::add_models 312586 9 6
+                  312586: QuadTreeLevel::add_models: 3 models
+                    312587: =====================
+                    312587: QuadTreeLevel::add_models 312587 10 3
+                    312587: QuadTreeLevel::add_models: 0 models
+                    312588: =====================
+                    312588: QuadTreeLevel::add_models 312588 10 3
+                    312588: QuadTreeLevel::add_models: 1 models
+                    312589: =====================
+                    312589: QuadTreeLevel::add_models 312589 10 3
+                    312589: QuadTreeLevel::add_models: 1 models
+                    312590: =====================
+                    312590: QuadTreeLevel::add_models 312590 10 3
+                    312590: QuadTreeLevel::add_models: 2 models
+                  312586: se: 312588
+                  312586: sw: 312589
+                  312586: nw: 312590
+                  312591: =====================
+                  312591: QuadTreeLevel::add_models 312591 9 6
+                  312591: QuadTreeLevel::add_models: 2 models
+                    312592: =====================
+                    312592: QuadTreeLevel::add_models 312592 10 2
+                    312592: QuadTreeLevel::add_models: 0 models
+                    312593: =====================
+                    312593: QuadTreeLevel::add_models 312593 10 2
+                    312593: QuadTreeLevel::add_models: 2 models
+                    312594: =====================
+                    312594: QuadTreeLevel::add_models 312594 10 2
+                    312594: QuadTreeLevel::add_models: 1 models
+                    312595: =====================
+                    312595: QuadTreeLevel::add_models 312595 10 2
+                    312595: QuadTreeLevel::add_models: 0 models
+                  312591: se: 312593
+                  312591: sw: 312594
+                  312596: =====================
+                  312596: QuadTreeLevel::add_models 312596 9 6
+                  312596: QuadTreeLevel::add_models: 2 models
+                    312597: =====================
+                    312597: QuadTreeLevel::add_models 312597 10 2
+                    312597: QuadTreeLevel::add_models: 0 models
+                    312598: =====================
+                    312598: QuadTreeLevel::add_models 312598 10 2
+                    312598: QuadTreeLevel::add_models: 1 models
+                    312599: =====================
+                    312599: QuadTreeLevel::add_models 312599 10 2
+                    312599: QuadTreeLevel::add_models: 1 models
+                    312600: =====================
+                    312600: QuadTreeLevel::add_models 312600 10 2
+                    312600: QuadTreeLevel::add_models: 0 models
+                  312596: se: 312598
+                  312596: sw: 312599
+                  312601: =====================
+                  312601: QuadTreeLevel::add_models 312601 9 6
+                  312601: QuadTreeLevel::add_models: 4 models
+                    312602: =====================
+                    312602: QuadTreeLevel::add_models 312602 10 4
+                    312602: QuadTreeLevel::add_models: 2 models
+                    312603: =====================
+                    312603: QuadTreeLevel::add_models 312603 10 4
+                    312603: QuadTreeLevel::add_models: 0 models
+                    312604: =====================
+                    312604: QuadTreeLevel::add_models 312604 10 4
+                    312604: QuadTreeLevel::add_models: 1 models
+                    312605: =====================
+                    312605: QuadTreeLevel::add_models 312605 10 4
+                    312605: QuadTreeLevel::add_models: 4 models
+                  312601: ne: 312602
+                  312601: sw: 312604
+                  312601: nw: 312605
+                312585: ne: 312586
+                312585: se: 312591
+                312585: sw: 312596
+                312585: nw: 312601
+                312606: =====================
+                312606: QuadTreeLevel::add_models 312606 8 62
+                312606: QuadTreeLevel::add_models: 34 models
+                  312607: =====================
+                  312607: QuadTreeLevel::add_models 312607 9 34
+                  312607: QuadTreeLevel::add_models: 13 models
+                    312608: =====================
+                    312608: QuadTreeLevel::add_models 312608 10 13
+                    312608: QuadTreeLevel::add_models: 10 models
+                    312609: =====================
+                    312609: QuadTreeLevel::add_models 312609 10 13
+                    312609: QuadTreeLevel::add_models: 2 models
+                    312610: =====================
+                    312610: QuadTreeLevel::add_models 312610 10 13
+                    312610: QuadTreeLevel::add_models: 0 models
+                    312611: =====================
+                    312611: QuadTreeLevel::add_models 312611 10 13
+                    312611: QuadTreeLevel::add_models: 8 models
+                  312607: ne: 312608
+                  312607: se: 312609
+                  312607: nw: 312611
+                  312612: =====================
+                  312612: QuadTreeLevel::add_models 312612 9 34
+                  312612: QuadTreeLevel::add_models: 0 models
+                  312613: =====================
+                  312613: QuadTreeLevel::add_models 312613 9 34
+                  312613: QuadTreeLevel::add_models: 5 models
+                    312614: =====================
+                    312614: QuadTreeLevel::add_models 312614 10 5
+                    312614: QuadTreeLevel::add_models: 0 models
+                    312615: =====================
+                    312615: QuadTreeLevel::add_models 312615 10 5
+                    312615: QuadTreeLevel::add_models: 3 models
+                    312616: =====================
+                    312616: QuadTreeLevel::add_models 312616 10 5
+                    312616: QuadTreeLevel::add_models: 3 models
+                    312617: =====================
+                    312617: QuadTreeLevel::add_models 312617 10 5
+                    312617: QuadTreeLevel::add_models: 0 models
+                  312613: se: 312615
+                  312613: sw: 312616
+                  312618: =====================
+                  312618: QuadTreeLevel::add_models 312618 9 34
+                  312618: QuadTreeLevel::add_models: 22 models
+                    312619: =====================
+                    312619: QuadTreeLevel::add_models 312619 10 22
+                    312619: QuadTreeLevel::add_models: 12 models
+                    312620: =====================
+                    312620: QuadTreeLevel::add_models 312620 10 22
+                    312620: QuadTreeLevel::add_models: 0 models
+                    312621: =====================
+                    312621: QuadTreeLevel::add_models 312621 10 22
+                    312621: QuadTreeLevel::add_models: 1 models
+                    312622: =====================
+                    312622: QuadTreeLevel::add_models 312622 10 22
+                    312622: QuadTreeLevel::add_models: 14 models
+                  312618: ne: 312619
+                  312618: sw: 312621
+                  312618: nw: 312622
+                312606: ne: 312607
+                312606: sw: 312613
+                312606: nw: 312618
+                312623: =====================
+                312623: QuadTreeLevel::add_models 312623 8 62
+                312623: QuadTreeLevel::add_models: 25 models
+                  312624: =====================
+                  312624: QuadTreeLevel::add_models 312624 9 25
+                  312624: QuadTreeLevel::add_models: 2 models
+                    312625: =====================
+                    312625: QuadTreeLevel::add_models 312625 10 2
+                    312625: QuadTreeLevel::add_models: 1 models
+                    312626: =====================
+                    312626: QuadTreeLevel::add_models 312626 10 2
+                    312626: QuadTreeLevel::add_models: 2 models
+                    312627: =====================
+                    312627: QuadTreeLevel::add_models 312627 10 2
+                    312627: QuadTreeLevel::add_models: 0 models
+                    312628: =====================
+                    312628: QuadTreeLevel::add_models 312628 10 2
+                    312628: QuadTreeLevel::add_models: 0 models
+                  312624: ne: 312625
+                  312624: se: 312626
+                  312629: =====================
+                  312629: QuadTreeLevel::add_models 312629 9 25
+                  312629: QuadTreeLevel::add_models: 16 models
+                    312630: =====================
+                    312630: QuadTreeLevel::add_models 312630 10 16
+                    312630: QuadTreeLevel::add_models: 2 models
+                    312631: =====================
+                    312631: QuadTreeLevel::add_models 312631 10 16
+                    312631: QuadTreeLevel::add_models: 11 models
+                    312632: =====================
+                    312632: QuadTreeLevel::add_models 312632 10 16
+                    312632: QuadTreeLevel::add_models: 9 models
+                    312633: =====================
+                    312633: QuadTreeLevel::add_models 312633 10 16
+                    312633: QuadTreeLevel::add_models: 1 models
+                  312629: ne: 312630
+                  312629: se: 312631
+                  312629: sw: 312632
+                  312629: nw: 312633
+                  312634: =====================
+                  312634: QuadTreeLevel::add_models 312634 9 25
+                  312634: QuadTreeLevel::add_models: 12 models
+                    312635: =====================
+                    312635: QuadTreeLevel::add_models 312635 10 12
+                    312635: QuadTreeLevel::add_models: 0 models
+                    312636: =====================
+                    312636: QuadTreeLevel::add_models 312636 10 12
+                    312636: QuadTreeLevel::add_models: 9 models
+                    312637: =====================
+                    312637: QuadTreeLevel::add_models 312637 10 12
+                    312637: QuadTreeLevel::add_models: 4 models
+                    312638: =====================
+                    312638: QuadTreeLevel::add_models 312638 10 12
+                    312638: QuadTreeLevel::add_models: 2 models
+                  312634: se: 312636
+                  312634: sw: 312637
+                  312634: nw: 312638
+                  312639: =====================
+                  312639: QuadTreeLevel::add_models 312639 9 25
+                  312639: QuadTreeLevel::add_models: 1 models
+                312623: ne: 312624
+                312623: se: 312629
+                312623: sw: 312634
+                312623: nw: 312639
+              312563: ne: 312564
+              312563: se: 312585
+              312563: sw: 312606
+              312563: nw: 312623
+              312640: =====================
+              312640: QuadTreeLevel::add_models 312640 7 143
+              312640: QuadTreeLevel::add_models: 12 models
+                312641: =====================
+                312641: QuadTreeLevel::add_models 312641 8 12
+                312641: QuadTreeLevel::add_models: 2 models
+                  312642: =====================
+                  312642: QuadTreeLevel::add_models 312642 9 2
+                  312642: QuadTreeLevel::add_models: 0 models
+                  312643: =====================
+                  312643: QuadTreeLevel::add_models 312643 9 2
+                  312643: QuadTreeLevel::add_models: 0 models
+                  312644: =====================
+                  312644: QuadTreeLevel::add_models 312644 9 2
+                  312644: QuadTreeLevel::add_models: 0 models
+                  312645: =====================
+                  312645: QuadTreeLevel::add_models 312645 9 2
+                  312645: QuadTreeLevel::add_models: 2 models
+                    312646: =====================
+                    312646: QuadTreeLevel::add_models 312646 10 2
+                    312646: QuadTreeLevel::add_models: 0 models
+                    312647: =====================
+                    312647: QuadTreeLevel::add_models 312647 10 2
+                    312647: QuadTreeLevel::add_models: 0 models
+                    312648: =====================
+                    312648: QuadTreeLevel::add_models 312648 10 2
+                    312648: QuadTreeLevel::add_models: 0 models
+                    312649: =====================
+                    312649: QuadTreeLevel::add_models 312649 10 2
+                    312649: QuadTreeLevel::add_models: 2 models
+                  312645: nw: 312649
+                312641: nw: 312645
+                312650: =====================
+                312650: QuadTreeLevel::add_models 312650 8 12
+                312650: QuadTreeLevel::add_models: 1 models
+                312651: =====================
+                312651: QuadTreeLevel::add_models 312651 8 12
+                312651: QuadTreeLevel::add_models: 0 models
+                312652: =====================
+                312652: QuadTreeLevel::add_models 312652 8 12
+                312652: QuadTreeLevel::add_models: 12 models
+                  312653: =====================
+                  312653: QuadTreeLevel::add_models 312653 9 12
+                  312653: QuadTreeLevel::add_models: 5 models
+                    312654: =====================
+                    312654: QuadTreeLevel::add_models 312654 10 5
+                    312654: QuadTreeLevel::add_models: 2 models
+                    312655: =====================
+                    312655: QuadTreeLevel::add_models 312655 10 5
+                    312655: QuadTreeLevel::add_models: 0 models
+                    312656: =====================
+                    312656: QuadTreeLevel::add_models 312656 10 5
+                    312656: QuadTreeLevel::add_models: 3 models
+                    312657: =====================
+                    312657: QuadTreeLevel::add_models 312657 10 5
+                    312657: QuadTreeLevel::add_models: 2 models
+                  312653: ne: 312654
+                  312653: sw: 312656
+                  312653: nw: 312657
+                  312658: =====================
+                  312658: QuadTreeLevel::add_models 312658 9 12
+                  312658: QuadTreeLevel::add_models: 0 models
+                  312659: =====================
+                  312659: QuadTreeLevel::add_models 312659 9 12
+                  312659: QuadTreeLevel::add_models: 4 models
+                    312660: =====================
+                    312660: QuadTreeLevel::add_models 312660 10 4
+                    312660: QuadTreeLevel::add_models: 2 models
+                    312661: =====================
+                    312661: QuadTreeLevel::add_models 312661 10 4
+                    312661: QuadTreeLevel::add_models: 0 models
+                    312662: =====================
+                    312662: QuadTreeLevel::add_models 312662 10 4
+                    312662: QuadTreeLevel::add_models: 1 models
+                    312663: =====================
+                    312663: QuadTreeLevel::add_models 312663 10 4
+                    312663: QuadTreeLevel::add_models: 3 models
+                  312659: ne: 312660
+                  312659: sw: 312662
+                  312659: nw: 312663
+                  312664: =====================
+                  312664: QuadTreeLevel::add_models 312664 9 12
+                  312664: QuadTreeLevel::add_models: 11 models
+                    312665: =====================
+                    312665: QuadTreeLevel::add_models 312665 10 11
+                    312665: QuadTreeLevel::add_models: 6 models
+                    312666: =====================
+                    312666: QuadTreeLevel::add_models 312666 10 11
+                    312666: QuadTreeLevel::add_models: 4 models
+                    312667: =====================
+                    312667: QuadTreeLevel::add_models 312667 10 11
+                    312667: QuadTreeLevel::add_models: 3 models
+                    312668: =====================
+                    312668: QuadTreeLevel::add_models 312668 10 11
+                    312668: QuadTreeLevel::add_models: 4 models
+                  312664: ne: 312665
+                  312664: se: 312666
+                  312664: sw: 312667
+                  312664: nw: 312668
+                312652: ne: 312653
+                312652: sw: 312659
+                312652: nw: 312664
+              312640: ne: 312641
+              312640: se: 312650
+              312640: nw: 312652
+              312669: =====================
+              312669: QuadTreeLevel::add_models 312669 7 143
+              312669: QuadTreeLevel::add_models: 26 models
+                312670: =====================
+                312670: QuadTreeLevel::add_models 312670 8 26
+                312670: QuadTreeLevel::add_models: 19 models
+                  312671: =====================
+                  312671: QuadTreeLevel::add_models 312671 9 19
+                  312671: QuadTreeLevel::add_models: 16 models
+                    312672: =====================
+                    312672: QuadTreeLevel::add_models 312672 10 16
+                    312672: QuadTreeLevel::add_models: 7 models
+                    312673: =====================
+                    312673: QuadTreeLevel::add_models 312673 10 16
+                    312673: QuadTreeLevel::add_models: 5 models
+                    312674: =====================
+                    312674: QuadTreeLevel::add_models 312674 10 16
+                    312674: QuadTreeLevel::add_models: 0 models
+                    312675: =====================
+                    312675: QuadTreeLevel::add_models 312675 10 16
+                    312675: QuadTreeLevel::add_models: 10 models
+                  312671: ne: 312672
+                  312671: se: 312673
+                  312671: nw: 312675
+                  312676: =====================
+                  312676: QuadTreeLevel::add_models 312676 9 19
+                  312676: QuadTreeLevel::add_models: 3 models
+                    312677: =====================
+                    312677: QuadTreeLevel::add_models 312677 10 3
+                    312677: QuadTreeLevel::add_models: 0 models
+                    312678: =====================
+                    312678: QuadTreeLevel::add_models 312678 10 3
+                    312678: QuadTreeLevel::add_models: 3 models
+                    312679: =====================
+                    312679: QuadTreeLevel::add_models 312679 10 3
+                    312679: QuadTreeLevel::add_models: 3 models
+                    312680: =====================
+                    312680: QuadTreeLevel::add_models 312680 10 3
+                    312680: QuadTreeLevel::add_models: 0 models
+                  312676: se: 312678
+                  312676: sw: 312679
+                  312681: =====================
+                  312681: QuadTreeLevel::add_models 312681 9 19
+                  312681: QuadTreeLevel::add_models: 4 models
+                    312682: =====================
+                    312682: QuadTreeLevel::add_models 312682 10 4
+                    312682: QuadTreeLevel::add_models: 3 models
+                    312683: =====================
+                    312683: QuadTreeLevel::add_models 312683 10 4
+                    312683: QuadTreeLevel::add_models: 2 models
+                    312684: =====================
+                    312684: QuadTreeLevel::add_models 312684 10 4
+                    312684: QuadTreeLevel::add_models: 3 models
+                    312685: =====================
+                    312685: QuadTreeLevel::add_models 312685 10 4
+                    312685: QuadTreeLevel::add_models: 2 models
+                  312681: ne: 312682
+                  312681: se: 312683
+                  312681: sw: 312684
+                  312681: nw: 312685
+                  312686: =====================
+                  312686: QuadTreeLevel::add_models 312686 9 19
+                  312686: QuadTreeLevel::add_models: 5 models
+                    312687: =====================
+                    312687: QuadTreeLevel::add_models 312687 10 5
+                    312687: QuadTreeLevel::add_models: 2 models
+                    312688: =====================
+                    312688: QuadTreeLevel::add_models 312688 10 5
+                    312688: QuadTreeLevel::add_models: 2 models
+                    312689: =====================
+                    312689: QuadTreeLevel::add_models 312689 10 5
+                    312689: QuadTreeLevel::add_models: 3 models
+                    312690: =====================
+                    312690: QuadTreeLevel::add_models 312690 10 5
+                    312690: QuadTreeLevel::add_models: 2 models
+                  312686: ne: 312687
+                  312686: se: 312688
+                  312686: sw: 312689
+                  312686: nw: 312690
+                312670: ne: 312671
+                312670: se: 312676
+                312670: sw: 312681
+                312670: nw: 312686
+                312691: =====================
+                312691: QuadTreeLevel::add_models 312691 8 26
+                312691: QuadTreeLevel::add_models: 3 models
+                  312692: =====================
+                  312692: QuadTreeLevel::add_models 312692 9 3
+                  312692: QuadTreeLevel::add_models: 0 models
+                  312693: =====================
+                  312693: QuadTreeLevel::add_models 312693 9 3
+                  312693: QuadTreeLevel::add_models: 0 models
+                  312694: =====================
+                  312694: QuadTreeLevel::add_models 312694 9 3
+                  312694: QuadTreeLevel::add_models: 0 models
+                  312695: =====================
+                  312695: QuadTreeLevel::add_models 312695 9 3
+                  312695: QuadTreeLevel::add_models: 3 models
+                    312696: =====================
+                    312696: QuadTreeLevel::add_models 312696 10 3
+                    312696: QuadTreeLevel::add_models: 3 models
+                    312697: =====================
+                    312697: QuadTreeLevel::add_models 312697 10 3
+                    312697: QuadTreeLevel::add_models: 0 models
+                    312698: =====================
+                    312698: QuadTreeLevel::add_models 312698 10 3
+                    312698: QuadTreeLevel::add_models: 0 models
+                    312699: =====================
+                    312699: QuadTreeLevel::add_models 312699 10 3
+                    312699: QuadTreeLevel::add_models: 3 models
+                  312695: ne: 312696
+                  312695: nw: 312699
+                312691: nw: 312695
+                312700: =====================
+                312700: QuadTreeLevel::add_models 312700 8 26
+                312700: QuadTreeLevel::add_models: 6 models
+                  312701: =====================
+                  312701: QuadTreeLevel::add_models 312701 9 6
+                  312701: QuadTreeLevel::add_models: 5 models
+                    312702: =====================
+                    312702: QuadTreeLevel::add_models 312702 10 5
+                    312702: QuadTreeLevel::add_models: 3 models
+                    312703: =====================
+                    312703: QuadTreeLevel::add_models 312703 10 5
+                    312703: QuadTreeLevel::add_models: 0 models
+                    312704: =====================
+                    312704: QuadTreeLevel::add_models 312704 10 5
+                    312704: QuadTreeLevel::add_models: 3 models
+                    312705: =====================
+                    312705: QuadTreeLevel::add_models 312705 10 5
+                    312705: QuadTreeLevel::add_models: 3 models
+                  312701: ne: 312702
+                  312701: sw: 312704
+                  312701: nw: 312705
+                  312706: =====================
+                  312706: QuadTreeLevel::add_models 312706 9 6
+                  312706: QuadTreeLevel::add_models: 0 models
+                  312707: =====================
+                  312707: QuadTreeLevel::add_models 312707 9 6
+                  312707: QuadTreeLevel::add_models: 5 models
+                    312708: =====================
+                    312708: QuadTreeLevel::add_models 312708 10 5
+                    312708: QuadTreeLevel::add_models: 0 models
+                    312709: =====================
+                    312709: QuadTreeLevel::add_models 312709 10 5
+                    312709: QuadTreeLevel::add_models: 0 models
+                    312710: =====================
+                    312710: QuadTreeLevel::add_models 312710 10 5
+                    312710: QuadTreeLevel::add_models: 1 models
+                    312711: =====================
+                    312711: QuadTreeLevel::add_models 312711 10 5
+                    312711: QuadTreeLevel::add_models: 5 models
+                  312707: sw: 312710
+                  312707: nw: 312711
+                  312712: =====================
+                  312712: QuadTreeLevel::add_models 312712 9 6
+                  312712: QuadTreeLevel::add_models: 6 models
+                    312713: =====================
+                    312713: QuadTreeLevel::add_models 312713 10 6
+                    312713: QuadTreeLevel::add_models: 4 models
+                    312714: =====================
+                    312714: QuadTreeLevel::add_models 312714 10 6
+                    312714: QuadTreeLevel::add_models: 3 models
+                    312715: =====================
+                    312715: QuadTreeLevel::add_models 312715 10 6
+                    312715: QuadTreeLevel::add_models: 3 models
+                    312716: =====================
+                    312716: QuadTreeLevel::add_models 312716 10 6
+                    312716: QuadTreeLevel::add_models: 0 models
+                  312712: ne: 312713
+                  312712: se: 312714
+                  312712: sw: 312715
+                312700: ne: 312701
+                312700: sw: 312707
+                312700: nw: 312712
+                312717: =====================
+                312717: QuadTreeLevel::add_models 312717 8 26
+                312717: QuadTreeLevel::add_models: 11 models
+                  312718: =====================
+                  312718: QuadTreeLevel::add_models 312718 9 11
+                  312718: QuadTreeLevel::add_models: 9 models
+                    312719: =====================
+                    312719: QuadTreeLevel::add_models 312719 10 9
+                    312719: QuadTreeLevel::add_models: 5 models
+                    312720: =====================
+                    312720: QuadTreeLevel::add_models 312720 10 9
+                    312720: QuadTreeLevel::add_models: 7 models
+                    312721: =====================
+                    312721: QuadTreeLevel::add_models 312721 10 9
+                    312721: QuadTreeLevel::add_models: 4 models
+                    312722: =====================
+                    312722: QuadTreeLevel::add_models 312722 10 9
+                    312722: QuadTreeLevel::add_models: 3 models
+                  312718: ne: 312719
+                  312718: se: 312720
+                  312718: sw: 312721
+                  312718: nw: 312722
+                  312723: =====================
+                  312723: QuadTreeLevel::add_models 312723 9 11
+                  312723: QuadTreeLevel::add_models: 5 models
+                    312724: =====================
+                    312724: QuadTreeLevel::add_models 312724 10 5
+                    312724: QuadTreeLevel::add_models: 2 models
+                    312725: =====================
+                    312725: QuadTreeLevel::add_models 312725 10 5
+                    312725: QuadTreeLevel::add_models: 3 models
+                    312726: =====================
+                    312726: QuadTreeLevel::add_models 312726 10 5
+                    312726: QuadTreeLevel::add_models: 3 models
+                    312727: =====================
+                    312727: QuadTreeLevel::add_models 312727 10 5
+                    312727: QuadTreeLevel::add_models: 3 models
+                  312723: ne: 312724
+                  312723: se: 312725
+                  312723: sw: 312726
+                  312723: nw: 312727
+                  312728: =====================
+                  312728: QuadTreeLevel::add_models 312728 9 11
+                  312728: QuadTreeLevel::add_models: 2 models
+                    312729: =====================
+                    312729: QuadTreeLevel::add_models 312729 10 2
+                    312729: QuadTreeLevel::add_models: 2 models
+                    312730: =====================
+                    312730: QuadTreeLevel::add_models 312730 10 2
+                    312730: QuadTreeLevel::add_models: 0 models
+                    312731: =====================
+                    312731: QuadTreeLevel::add_models 312731 10 2
+                    312731: QuadTreeLevel::add_models: 0 models
+                    312732: =====================
+                    312732: QuadTreeLevel::add_models 312732 10 2
+                    312732: QuadTreeLevel::add_models: 0 models
+                  312728: ne: 312729
+                  312733: =====================
+                  312733: QuadTreeLevel::add_models 312733 9 11
+                  312733: QuadTreeLevel::add_models: 0 models
+                312717: ne: 312718
+                312717: se: 312723
+                312717: sw: 312728
+              312669: ne: 312670
+              312669: se: 312691
+              312669: sw: 312700
+              312669: nw: 312717
+              312734: =====================
+              312734: QuadTreeLevel::add_models 312734 7 143
+              312734: QuadTreeLevel::add_models: 75 models
+                312735: =====================
+                312735: QuadTreeLevel::add_models 312735 8 75
+                312735: QuadTreeLevel::add_models: 8 models
+                  312736: =====================
+                  312736: QuadTreeLevel::add_models 312736 9 8
+                  312736: QuadTreeLevel::add_models: 2 models
+                    312737: =====================
+                    312737: QuadTreeLevel::add_models 312737 10 2
+                    312737: QuadTreeLevel::add_models: 0 models
+                    312738: =====================
+                    312738: QuadTreeLevel::add_models 312738 10 2
+                    312738: QuadTreeLevel::add_models: 0 models
+                    312739: =====================
+                    312739: QuadTreeLevel::add_models 312739 10 2
+                    312739: QuadTreeLevel::add_models: 2 models
+                    312740: =====================
+                    312740: QuadTreeLevel::add_models 312740 10 2
+                    312740: QuadTreeLevel::add_models: 0 models
+                  312736: sw: 312739
+                  312741: =====================
+                  312741: QuadTreeLevel::add_models 312741 9 8
+                  312741: QuadTreeLevel::add_models: 8 models
+                    312742: =====================
+                    312742: QuadTreeLevel::add_models 312742 10 8
+                    312742: QuadTreeLevel::add_models: 1 models
+                    312743: =====================
+                    312743: QuadTreeLevel::add_models 312743 10 8
+                    312743: QuadTreeLevel::add_models: 6 models
+                    312744: =====================
+                    312744: QuadTreeLevel::add_models 312744 10 8
+                    312744: QuadTreeLevel::add_models: 5 models
+                    312745: =====================
+                    312745: QuadTreeLevel::add_models 312745 10 8
+                    312745: QuadTreeLevel::add_models: 1 models
+                  312741: ne: 312742
+                  312741: se: 312743
+                  312741: sw: 312744
+                  312741: nw: 312745
+                  312746: =====================
+                  312746: QuadTreeLevel::add_models 312746 9 8
+                  312746: QuadTreeLevel::add_models: 4 models
+                    312747: =====================
+                    312747: QuadTreeLevel::add_models 312747 10 4
+                    312747: QuadTreeLevel::add_models: 0 models
+                    312748: =====================
+                    312748: QuadTreeLevel::add_models 312748 10 4
+                    312748: QuadTreeLevel::add_models: 4 models
+                    312749: =====================
+                    312749: QuadTreeLevel::add_models 312749 10 4
+                    312749: QuadTreeLevel::add_models: 2 models
+                    312750: =====================
+                    312750: QuadTreeLevel::add_models 312750 10 4
+                    312750: QuadTreeLevel::add_models: 0 models
+                  312746: se: 312748
+                  312746: sw: 312749
+                  312751: =====================
+                  312751: QuadTreeLevel::add_models 312751 9 8
+                  312751: QuadTreeLevel::add_models: 2 models
+                    312752: =====================
+                    312752: QuadTreeLevel::add_models 312752 10 2
+                    312752: QuadTreeLevel::add_models: 2 models
+                    312753: =====================
+                    312753: QuadTreeLevel::add_models 312753 10 2
+                    312753: QuadTreeLevel::add_models: 0 models
+                    312754: =====================
+                    312754: QuadTreeLevel::add_models 312754 10 2
+                    312754: QuadTreeLevel::add_models: 0 models
+                    312755: =====================
+                    312755: QuadTreeLevel::add_models 312755 10 2
+                    312755: QuadTreeLevel::add_models: 0 models
+                  312751: ne: 312752
+                312735: ne: 312736
+                312735: se: 312741
+                312735: sw: 312746
+                312735: nw: 312751
+                312756: =====================
+                312756: QuadTreeLevel::add_models 312756 8 75
+                312756: QuadTreeLevel::add_models: 53 models
+                  312757: =====================
+                  312757: QuadTreeLevel::add_models 312757 9 53
+                  312757: QuadTreeLevel::add_models: 22 models
+                    312758: =====================
+                    312758: QuadTreeLevel::add_models 312758 10 22
+                    312758: QuadTreeLevel::add_models: 12 models
+                    312759: =====================
+                    312759: QuadTreeLevel::add_models 312759 10 22
+                    312759: QuadTreeLevel::add_models: 4 models
+                    312760: =====================
+                    312760: QuadTreeLevel::add_models 312760 10 22
+                    312760: QuadTreeLevel::add_models: 9 models
+                    312761: =====================
+                    312761: QuadTreeLevel::add_models 312761 10 22
+                    312761: QuadTreeLevel::add_models: 5 models
+                  312757: ne: 312758
+                  312757: se: 312759
+                  312757: sw: 312760
+                  312757: nw: 312761
+                  312762: =====================
+                  312762: QuadTreeLevel::add_models 312762 9 53
+                  312762: QuadTreeLevel::add_models: 25 models
+                    312763: =====================
+                    312763: QuadTreeLevel::add_models 312763 10 25
+                    312763: QuadTreeLevel::add_models: 5 models
+                    312764: =====================
+                    312764: QuadTreeLevel::add_models 312764 10 25
+                    312764: QuadTreeLevel::add_models: 5 models
+                    312765: =====================
+                    312765: QuadTreeLevel::add_models 312765 10 25
+                    312765: QuadTreeLevel::add_models: 19 models
+                    312766: =====================
+                    312766: QuadTreeLevel::add_models 312766 10 25
+                    312766: QuadTreeLevel::add_models: 11 models
+                  312762: ne: 312763
+                  312762: se: 312764
+                  312762: sw: 312765
+                  312762: nw: 312766
+                  312767: =====================
+                  312767: QuadTreeLevel::add_models 312767 9 53
+                  312767: QuadTreeLevel::add_models: 13 models
+                    312768: =====================
+                    312768: QuadTreeLevel::add_models 312768 10 13
+                    312768: QuadTreeLevel::add_models: 9 models
+                    312769: =====================
+                    312769: QuadTreeLevel::add_models 312769 10 13
+                    312769: QuadTreeLevel::add_models: 4 models
+                    312770: =====================
+                    312770: QuadTreeLevel::add_models 312770 10 13
+                    312770: QuadTreeLevel::add_models: 3 models
+                    312771: =====================
+                    312771: QuadTreeLevel::add_models 312771 10 13
+                    312771: QuadTreeLevel::add_models: 4 models
+                  312767: ne: 312768
+                  312767: se: 312769
+                  312767: sw: 312770
+                  312767: nw: 312771
+                  312772: =====================
+                  312772: QuadTreeLevel::add_models 312772 9 53
+                  312772: QuadTreeLevel::add_models: 12 models
+                    312773: =====================
+                    312773: QuadTreeLevel::add_models 312773 10 12
+                    312773: QuadTreeLevel::add_models: 3 models
+                    312774: =====================
+                    312774: QuadTreeLevel::add_models 312774 10 12
+                    312774: QuadTreeLevel::add_models: 4 models
+                    312775: =====================
+                    312775: QuadTreeLevel::add_models 312775 10 12
+                    312775: QuadTreeLevel::add_models: 7 models
+                    312776: =====================
+                    312776: QuadTreeLevel::add_models 312776 10 12
+                    312776: QuadTreeLevel::add_models: 6 models
+                  312772: ne: 312773
+                  312772: se: 312774
+                  312772: sw: 312775
+                  312772: nw: 312776
+                312756: ne: 312757
+                312756: se: 312762
+                312756: sw: 312767
+                312756: nw: 312772
+                312777: =====================
+                312777: QuadTreeLevel::add_models 312777 8 75
+                312777: QuadTreeLevel::add_models: 26 models
+                  312778: =====================
+                  312778: QuadTreeLevel::add_models 312778 9 26
+                  312778: QuadTreeLevel::add_models: 18 models
+                    312779: =====================
+                    312779: QuadTreeLevel::add_models 312779 10 18
+                    312779: QuadTreeLevel::add_models: 8 models
+                    312780: =====================
+                    312780: QuadTreeLevel::add_models 312780 10 18
+                    312780: QuadTreeLevel::add_models: 7 models
+                    312781: =====================
+                    312781: QuadTreeLevel::add_models 312781 10 18
+                    312781: QuadTreeLevel::add_models: 7 models
+                    312782: =====================
+                    312782: QuadTreeLevel::add_models 312782 10 18
+                    312782: QuadTreeLevel::add_models: 7 models
+                  312778: ne: 312779
+                  312778: se: 312780
+                  312778: sw: 312781
+                  312778: nw: 312782
+                  312783: =====================
+                  312783: QuadTreeLevel::add_models 312783 9 26
+                  312783: QuadTreeLevel::add_models: 6 models
+                    312784: =====================
+                    312784: QuadTreeLevel::add_models 312784 10 6
+                    312784: QuadTreeLevel::add_models: 2 models
+                    312785: =====================
+                    312785: QuadTreeLevel::add_models 312785 10 6
+                    312785: QuadTreeLevel::add_models: 5 models
+                    312786: =====================
+                    312786: QuadTreeLevel::add_models 312786 10 6
+                    312786: QuadTreeLevel::add_models: 0 models
+                    312787: =====================
+                    312787: QuadTreeLevel::add_models 312787 10 6
+                    312787: QuadTreeLevel::add_models: 2 models
+                  312783: ne: 312784
+                  312783: se: 312785
+                  312783: nw: 312787
+                  312788: =====================
+                  312788: QuadTreeLevel::add_models 312788 9 26
+                  312788: QuadTreeLevel::add_models: 4 models
+                    312789: =====================
+                    312789: QuadTreeLevel::add_models 312789 10 4
+                    312789: QuadTreeLevel::add_models: 4 models
+                    312790: =====================
+                    312790: QuadTreeLevel::add_models 312790 10 4
+                    312790: QuadTreeLevel::add_models: 0 models
+                    312791: =====================
+                    312791: QuadTreeLevel::add_models 312791 10 4
+                    312791: QuadTreeLevel::add_models: 0 models
+                    312792: =====================
+                    312792: QuadTreeLevel::add_models 312792 10 4
+                    312792: QuadTreeLevel::add_models: 1 models
+                  312788: ne: 312789
+                  312788: nw: 312792
+                  312793: =====================
+                  312793: QuadTreeLevel::add_models 312793 9 26
+                  312793: QuadTreeLevel::add_models: 12 models
+                    312794: =====================
+                    312794: QuadTreeLevel::add_models 312794 10 12
+                    312794: QuadTreeLevel::add_models: 5 models
+                    312795: =====================
+                    312795: QuadTreeLevel::add_models 312795 10 12
+                    312795: QuadTreeLevel::add_models: 5 models
+                    312796: =====================
+                    312796: QuadTreeLevel::add_models 312796 10 12
+                    312796: QuadTreeLevel::add_models: 4 models
+                    312797: =====================
+                    312797: QuadTreeLevel::add_models 312797 10 12
+                    312797: QuadTreeLevel::add_models: 4 models
+                  312793: ne: 312794
+                  312793: se: 312795
+                  312793: sw: 312796
+                  312793: nw: 312797
+                312777: ne: 312778
+                312777: se: 312783
+                312777: sw: 312788
+                312777: nw: 312793
+                312798: =====================
+                312798: QuadTreeLevel::add_models 312798 8 75
+                312798: QuadTreeLevel::add_models: 0 models
+              312734: ne: 312735
+              312734: se: 312756
+              312734: sw: 312777
+            312562: ne: 312563
+            312562: se: 312640
+            312562: sw: 312669
+            312562: nw: 312734
+            312799: =====================
+            312799: QuadTreeLevel::add_models 312799 6 276
+            312799: QuadTreeLevel::add_models: 49 models
+              312800: =====================
+              312800: QuadTreeLevel::add_models 312800 7 49
+              312800: QuadTreeLevel::add_models: 4 models
+                312801: =====================
+                312801: QuadTreeLevel::add_models 312801 8 4
+                312801: QuadTreeLevel::add_models: 2 models
+                  312802: =====================
+                  312802: QuadTreeLevel::add_models 312802 9 2
+                  312802: QuadTreeLevel::add_models: 2 models
+                    312803: =====================
+                    312803: QuadTreeLevel::add_models 312803 10 2
+                    312803: QuadTreeLevel::add_models: 2 models
+                    312804: =====================
+                    312804: QuadTreeLevel::add_models 312804 10 2
+                    312804: QuadTreeLevel::add_models: 0 models
+                    312805: =====================
+                    312805: QuadTreeLevel::add_models 312805 10 2
+                    312805: QuadTreeLevel::add_models: 0 models
+                    312806: =====================
+                    312806: QuadTreeLevel::add_models 312806 10 2
+                    312806: QuadTreeLevel::add_models: 0 models
+                  312802: ne: 312803
+                  312807: =====================
+                  312807: QuadTreeLevel::add_models 312807 9 2
+                  312807: QuadTreeLevel::add_models: 0 models
+                  312808: =====================
+                  312808: QuadTreeLevel::add_models 312808 9 2
+                  312808: QuadTreeLevel::add_models: 0 models
+                  312809: =====================
+                  312809: QuadTreeLevel::add_models 312809 9 2
+                  312809: QuadTreeLevel::add_models: 0 models
+                312801: ne: 312802
+                312810: =====================
+                312810: QuadTreeLevel::add_models 312810 8 4
+                312810: QuadTreeLevel::add_models: 3 models
+                  312811: =====================
+                  312811: QuadTreeLevel::add_models 312811 9 3
+                  312811: QuadTreeLevel::add_models: 2 models
+                    312812: =====================
+                    312812: QuadTreeLevel::add_models 312812 10 2
+                    312812: QuadTreeLevel::add_models: 0 models
+                    312813: =====================
+                    312813: QuadTreeLevel::add_models 312813 10 2
+                    312813: QuadTreeLevel::add_models: 0 models
+                    312814: =====================
+                    312814: QuadTreeLevel::add_models 312814 10 2
+                    312814: QuadTreeLevel::add_models: 0 models
+                    312815: =====================
+                    312815: QuadTreeLevel::add_models 312815 10 2
+                    312815: QuadTreeLevel::add_models: 2 models
+                  312811: nw: 312815
+                  312816: =====================
+                  312816: QuadTreeLevel::add_models 312816 9 3
+                  312816: QuadTreeLevel::add_models: 0 models
+                  312817: =====================
+                  312817: QuadTreeLevel::add_models 312817 9 3
+                  312817: QuadTreeLevel::add_models: 1 models
+                  312818: =====================
+                  312818: QuadTreeLevel::add_models 312818 9 3
+                  312818: QuadTreeLevel::add_models: 3 models
+                    312819: =====================
+                    312819: QuadTreeLevel::add_models 312819 10 3
+                    312819: QuadTreeLevel::add_models: 2 models
+                    312820: =====================
+                    312820: QuadTreeLevel::add_models 312820 10 3
+                    312820: QuadTreeLevel::add_models: 0 models
+                    312821: =====================
+                    312821: QuadTreeLevel::add_models 312821 10 3
+                    312821: QuadTreeLevel::add_models: 1 models
+                    312822: =====================
+                    312822: QuadTreeLevel::add_models 312822 10 3
+                    312822: QuadTreeLevel::add_models: 3 models
+                  312818: ne: 312819
+                  312818: sw: 312821
+                  312818: nw: 312822
+                312810: ne: 312811
+                312810: sw: 312817
+                312810: nw: 312818
+                312823: =====================
+                312823: QuadTreeLevel::add_models 312823 8 4
+                312823: QuadTreeLevel::add_models: 3 models
+                  312824: =====================
+                  312824: QuadTreeLevel::add_models 312824 9 3
+                  312824: QuadTreeLevel::add_models: 3 models
+                    312825: =====================
+                    312825: QuadTreeLevel::add_models 312825 10 3
+                    312825: QuadTreeLevel::add_models: 3 models
+                    312826: =====================
+                    312826: QuadTreeLevel::add_models 312826 10 3
+                    312826: QuadTreeLevel::add_models: 0 models
+                    312827: =====================
+                    312827: QuadTreeLevel::add_models 312827 10 3
+                    312827: QuadTreeLevel::add_models: 1 models
+                    312828: =====================
+                    312828: QuadTreeLevel::add_models 312828 10 3
+                    312828: QuadTreeLevel::add_models: 2 models
+                  312824: ne: 312825
+                  312824: sw: 312827
+                  312824: nw: 312828
+                  312829: =====================
+                  312829: QuadTreeLevel::add_models 312829 9 3
+                  312829: QuadTreeLevel::add_models: 0 models
+                  312830: =====================
+                  312830: QuadTreeLevel::add_models 312830 9 3
+                  312830: QuadTreeLevel::add_models: 0 models
+                  312831: =====================
+                  312831: QuadTreeLevel::add_models 312831 9 3
+                  312831: QuadTreeLevel::add_models: 3 models
+                    312832: =====================
+                    312832: QuadTreeLevel::add_models 312832 10 3
+                    312832: QuadTreeLevel::add_models: 0 models
+                    312833: =====================
+                    312833: QuadTreeLevel::add_models 312833 10 3
+                    312833: QuadTreeLevel::add_models: 2 models
+                    312834: =====================
+                    312834: QuadTreeLevel::add_models 312834 10 3
+                    312834: QuadTreeLevel::add_models: 1 models
+                    312835: =====================
+                    312835: QuadTreeLevel::add_models 312835 10 3
+                    312835: QuadTreeLevel::add_models: 2 models
+                  312831: se: 312833
+                  312831: sw: 312834
+                  312831: nw: 312835
+                312823: ne: 312824
+                312823: nw: 312831
+                312836: =====================
+                312836: QuadTreeLevel::add_models 312836 8 4
+                312836: QuadTreeLevel::add_models: 0 models
+              312800: ne: 312801
+              312800: se: 312810
+              312800: sw: 312823
+              312837: =====================
+              312837: QuadTreeLevel::add_models 312837 7 49
+              312837: QuadTreeLevel::add_models: 11 models
+                312838: =====================
+                312838: QuadTreeLevel::add_models 312838 8 11
+                312838: QuadTreeLevel::add_models: 0 models
+                312839: =====================
+                312839: QuadTreeLevel::add_models 312839 8 11
+                312839: QuadTreeLevel::add_models: 0 models
+                312840: =====================
+                312840: QuadTreeLevel::add_models 312840 8 11
+                312840: QuadTreeLevel::add_models: 11 models
+                  312841: =====================
+                  312841: QuadTreeLevel::add_models 312841 9 11
+                  312841: QuadTreeLevel::add_models: 2 models
+                    312842: =====================
+                    312842: QuadTreeLevel::add_models 312842 10 2
+                    312842: QuadTreeLevel::add_models: 0 models
+                    312843: =====================
+                    312843: QuadTreeLevel::add_models 312843 10 2
+                    312843: QuadTreeLevel::add_models: 0 models
+                    312844: =====================
+                    312844: QuadTreeLevel::add_models 312844 10 2
+                    312844: QuadTreeLevel::add_models: 2 models
+                    312845: =====================
+                    312845: QuadTreeLevel::add_models 312845 10 2
+                    312845: QuadTreeLevel::add_models: 2 models
+                  312841: sw: 312844
+                  312841: nw: 312845
+                  312846: =====================
+                  312846: QuadTreeLevel::add_models 312846 9 11
+                  312846: QuadTreeLevel::add_models: 1 models
+                  312847: =====================
+                  312847: QuadTreeLevel::add_models 312847 9 11
+                  312847: QuadTreeLevel::add_models: 11 models
+                    312848: =====================
+                    312848: QuadTreeLevel::add_models 312848 10 11
+                    312848: QuadTreeLevel::add_models: 0 models
+                    312849: =====================
+                    312849: QuadTreeLevel::add_models 312849 10 11
+                    312849: QuadTreeLevel::add_models: 9 models
+                    312850: =====================
+                    312850: QuadTreeLevel::add_models 312850 10 11
+                    312850: QuadTreeLevel::add_models: 5 models
+                    312851: =====================
+                    312851: QuadTreeLevel::add_models 312851 10 11
+                    312851: QuadTreeLevel::add_models: 0 models
+                  312847: se: 312849
+                  312847: sw: 312850
+                  312852: =====================
+                  312852: QuadTreeLevel::add_models 312852 9 11
+                  312852: QuadTreeLevel::add_models: 0 models
+                312840: ne: 312841
+                312840: se: 312846
+                312840: sw: 312847
+                312853: =====================
+                312853: QuadTreeLevel::add_models 312853 8 11
+                312853: QuadTreeLevel::add_models: 2 models
+                  312854: =====================
+                  312854: QuadTreeLevel::add_models 312854 9 2
+                  312854: QuadTreeLevel::add_models: 2 models
+                    312855: =====================
+                    312855: QuadTreeLevel::add_models 312855 10 2
+                    312855: QuadTreeLevel::add_models: 0 models
+                    312856: =====================
+                    312856: QuadTreeLevel::add_models 312856 10 2
+                    312856: QuadTreeLevel::add_models: 2 models
+                    312857: =====================
+                    312857: QuadTreeLevel::add_models 312857 10 2
+                    312857: QuadTreeLevel::add_models: 0 models
+                    312858: =====================
+                    312858: QuadTreeLevel::add_models 312858 10 2
+                    312858: QuadTreeLevel::add_models: 0 models
+                  312854: se: 312856
+                  312859: =====================
+                  312859: QuadTreeLevel::add_models 312859 9 2
+                  312859: QuadTreeLevel::add_models: 1 models
+                  312860: =====================
+                  312860: QuadTreeLevel::add_models 312860 9 2
+                  312860: QuadTreeLevel::add_models: 0 models
+                  312861: =====================
+                  312861: QuadTreeLevel::add_models 312861 9 2
+                  312861: QuadTreeLevel::add_models: 0 models
+                312853: ne: 312854
+                312853: se: 312859
+              312837: sw: 312840
+              312837: nw: 312853
+              312862: =====================
+              312862: QuadTreeLevel::add_models 312862 7 49
+              312862: QuadTreeLevel::add_models: 39 models
+                312863: =====================
+                312863: QuadTreeLevel::add_models 312863 8 39
+                312863: QuadTreeLevel::add_models: 0 models
+                312864: =====================
+                312864: QuadTreeLevel::add_models 312864 8 39
+                312864: QuadTreeLevel::add_models: 10 models
+                  312865: =====================
+                  312865: QuadTreeLevel::add_models 312865 9 10
+                  312865: QuadTreeLevel::add_models: 0 models
+                  312866: =====================
+                  312866: QuadTreeLevel::add_models 312866 9 10
+                  312866: QuadTreeLevel::add_models: 8 models
+                    312867: =====================
+                    312867: QuadTreeLevel::add_models 312867 10 8
+                    312867: QuadTreeLevel::add_models: 0 models
+                    312868: =====================
+                    312868: QuadTreeLevel::add_models 312868 10 8
+                    312868: QuadTreeLevel::add_models: 7 models
+                    312869: =====================
+                    312869: QuadTreeLevel::add_models 312869 10 8
+                    312869: QuadTreeLevel::add_models: 6 models
+                    312870: =====================
+                    312870: QuadTreeLevel::add_models 312870 10 8
+                    312870: QuadTreeLevel::add_models: 0 models
+                  312866: se: 312868
+                  312866: sw: 312869
+                  312871: =====================
+                  312871: QuadTreeLevel::add_models 312871 9 10
+                  312871: QuadTreeLevel::add_models: 6 models
+                    312872: =====================
+                    312872: QuadTreeLevel::add_models 312872 10 6
+                    312872: QuadTreeLevel::add_models: 0 models
+                    312873: =====================
+                    312873: QuadTreeLevel::add_models 312873 10 6
+                    312873: QuadTreeLevel::add_models: 4 models
+                    312874: =====================
+                    312874: QuadTreeLevel::add_models 312874 10 6
+                    312874: QuadTreeLevel::add_models: 6 models
+                    312875: =====================
+                    312875: QuadTreeLevel::add_models 312875 10 6
+                    312875: QuadTreeLevel::add_models: 3 models
+                  312871: se: 312873
+                  312871: sw: 312874
+                  312871: nw: 312875
+                  312876: =====================
+                  312876: QuadTreeLevel::add_models 312876 9 10
+                  312876: QuadTreeLevel::add_models: 4 models
+                    312877: =====================
+                    312877: QuadTreeLevel::add_models 312877 10 4
+                    312877: QuadTreeLevel::add_models: 0 models
+                    312878: =====================
+                    312878: QuadTreeLevel::add_models 312878 10 4
+                    312878: QuadTreeLevel::add_models: 0 models
+                    312879: =====================
+                    312879: QuadTreeLevel::add_models 312879 10 4
+                    312879: QuadTreeLevel::add_models: 3 models
+                    312880: =====================
+                    312880: QuadTreeLevel::add_models 312880 10 4
+                    312880: QuadTreeLevel::add_models: 3 models
+                  312876: sw: 312879
+                  312876: nw: 312880
+                312864: se: 312866
+                312864: sw: 312871
+                312864: nw: 312876
+                312881: =====================
+                312881: QuadTreeLevel::add_models 312881 8 39
+                312881: QuadTreeLevel::add_models: 22 models
+                  312882: =====================
+                  312882: QuadTreeLevel::add_models 312882 9 22
+                  312882: QuadTreeLevel::add_models: 11 models
+                    312883: =====================
+                    312883: QuadTreeLevel::add_models 312883 10 11
+                    312883: QuadTreeLevel::add_models: 7 models
+                    312884: =====================
+                    312884: QuadTreeLevel::add_models 312884 10 11
+                    312884: QuadTreeLevel::add_models: 4 models
+                    312885: =====================
+                    312885: QuadTreeLevel::add_models 312885 10 11
+                    312885: QuadTreeLevel::add_models: 4 models
+                    312886: =====================
+                    312886: QuadTreeLevel::add_models 312886 10 11
+                    312886: QuadTreeLevel::add_models: 2 models
+                  312882: ne: 312883
+                  312882: se: 312884
+                  312882: sw: 312885
+                  312882: nw: 312886
+                  312887: =====================
+                  312887: QuadTreeLevel::add_models 312887 9 22
+                  312887: QuadTreeLevel::add_models: 11 models
+                    312888: =====================
+                    312888: QuadTreeLevel::add_models 312888 10 11
+                    312888: QuadTreeLevel::add_models: 8 models
+                    312889: =====================
+                    312889: QuadTreeLevel::add_models 312889 10 11
+                    312889: QuadTreeLevel::add_models: 2 models
+                    312890: =====================
+                    312890: QuadTreeLevel::add_models 312890 10 11
+                    312890: QuadTreeLevel::add_models: 2 models
+                    312891: =====================
+                    312891: QuadTreeLevel::add_models 312891 10 11
+                    312891: QuadTreeLevel::add_models: 4 models
+                  312887: ne: 312888
+                  312887: se: 312889
+                  312887: sw: 312890
+                  312887: nw: 312891
+                  312892: =====================
+                  312892: QuadTreeLevel::add_models 312892 9 22
+                  312892: QuadTreeLevel::add_models: 3 models
+                    312893: =====================
+                    312893: QuadTreeLevel::add_models 312893 10 3
+                    312893: QuadTreeLevel::add_models: 2 models
+                    312894: =====================
+                    312894: QuadTreeLevel::add_models 312894 10 3
+                    312894: QuadTreeLevel::add_models: 2 models
+                    312895: =====================
+                    312895: QuadTreeLevel::add_models 312895 10 3
+                    312895: QuadTreeLevel::add_models: 0 models
+                    312896: =====================
+                    312896: QuadTreeLevel::add_models 312896 10 3
+                    312896: QuadTreeLevel::add_models: 0 models
+                  312892: ne: 312893
+                  312892: se: 312894
+                  312897: =====================
+                  312897: QuadTreeLevel::add_models 312897 9 22
+                  312897: QuadTreeLevel::add_models: 11 models
+                    312898: =====================
+                    312898: QuadTreeLevel::add_models 312898 10 11
+                    312898: QuadTreeLevel::add_models: 7 models
+                    312899: =====================
+                    312899: QuadTreeLevel::add_models 312899 10 11
+                    312899: QuadTreeLevel::add_models: 5 models
+                    312900: =====================
+                    312900: QuadTreeLevel::add_models 312900 10 11
+                    312900: QuadTreeLevel::add_models: 0 models
+                    312901: =====================
+                    312901: QuadTreeLevel::add_models 312901 10 11
+                    312901: QuadTreeLevel::add_models: 5 models
+                  312897: ne: 312898
+                  312897: se: 312899
+                  312897: nw: 312901
+                312881: ne: 312882
+                312881: se: 312887
+                312881: sw: 312892
+                312881: nw: 312897
+                312902: =====================
+                312902: QuadTreeLevel::add_models 312902 8 39
+                312902: QuadTreeLevel::add_models: 24 models
+                  312903: =====================
+                  312903: QuadTreeLevel::add_models 312903 9 24
+                  312903: QuadTreeLevel::add_models: 5 models
+                    312904: =====================
+                    312904: QuadTreeLevel::add_models 312904 10 5
+                    312904: QuadTreeLevel::add_models: 0 models
+                    312905: =====================
+                    312905: QuadTreeLevel::add_models 312905 10 5
+                    312905: QuadTreeLevel::add_models: 0 models
+                    312906: =====================
+                    312906: QuadTreeLevel::add_models 312906 10 5
+                    312906: QuadTreeLevel::add_models: 1 models
+                    312907: =====================
+                    312907: QuadTreeLevel::add_models 312907 10 5
+                    312907: QuadTreeLevel::add_models: 5 models
+                  312903: sw: 312906
+                  312903: nw: 312907
+                  312908: =====================
+                  312908: QuadTreeLevel::add_models 312908 9 24
+                  312908: QuadTreeLevel::add_models: 5 models
+                    312909: =====================
+                    312909: QuadTreeLevel::add_models 312909 10 5
+                    312909: QuadTreeLevel::add_models: 0 models
+                    312910: =====================
+                    312910: QuadTreeLevel::add_models 312910 10 5
+                    312910: QuadTreeLevel::add_models: 2 models
+                    312911: =====================
+                    312911: QuadTreeLevel::add_models 312911 10 5
+                    312911: QuadTreeLevel::add_models: 3 models
+                    312912: =====================
+                    312912: QuadTreeLevel::add_models 312912 10 5
+                    312912: QuadTreeLevel::add_models: 2 models
+                  312908: se: 312910
+                  312908: sw: 312911
+                  312908: nw: 312912
+                  312913: =====================
+                  312913: QuadTreeLevel::add_models 312913 9 24
+                  312913: QuadTreeLevel::add_models: 17 models
+                    312914: =====================
+                    312914: QuadTreeLevel::add_models 312914 10 17
+                    312914: QuadTreeLevel::add_models: 11 models
+                    312915: =====================
+                    312915: QuadTreeLevel::add_models 312915 10 17
+                    312915: QuadTreeLevel::add_models: 9 models
+                    312916: =====================
+                    312916: QuadTreeLevel::add_models 312916 10 17
+                    312916: QuadTreeLevel::add_models: 5 models
+                    312917: =====================
+                    312917: QuadTreeLevel::add_models 312917 10 17
+                    312917: QuadTreeLevel::add_models: 0 models
+                  312913: ne: 312914
+                  312913: se: 312915
+                  312913: sw: 312916
+                  312918: =====================
+                  312918: QuadTreeLevel::add_models 312918 9 24
+                  312918: QuadTreeLevel::add_models: 10 models
+                    312919: =====================
+                    312919: QuadTreeLevel::add_models 312919 10 10
+                    312919: QuadTreeLevel::add_models: 10 models
+                    312920: =====================
+                    312920: QuadTreeLevel::add_models 312920 10 10
+                    312920: QuadTreeLevel::add_models: 4 models
+                    312921: =====================
+                    312921: QuadTreeLevel::add_models 312921 10 10
+                    312921: QuadTreeLevel::add_models: 3 models
+                    312922: =====================
+                    312922: QuadTreeLevel::add_models 312922 10 10
+                    312922: QuadTreeLevel::add_models: 2 models
+                  312918: ne: 312919
+                  312918: se: 312920
+                  312918: sw: 312921
+                  312918: nw: 312922
+                312902: ne: 312903
+                312902: se: 312908
+                312902: sw: 312913
+                312902: nw: 312918
+              312862: se: 312864
+              312862: sw: 312881
+              312862: nw: 312902
+              312923: =====================
+              312923: QuadTreeLevel::add_models 312923 7 49
+              312923: QuadTreeLevel::add_models: 10 models
+                312924: =====================
+                312924: QuadTreeLevel::add_models 312924 8 10
+                312924: QuadTreeLevel::add_models: 3 models
+                  312925: =====================
+                  312925: QuadTreeLevel::add_models 312925 9 3
+                  312925: QuadTreeLevel::add_models: 0 models
+                  312926: =====================
+                  312926: QuadTreeLevel::add_models 312926 9 3
+                  312926: QuadTreeLevel::add_models: 3 models
+                    312927: =====================
+                    312927: QuadTreeLevel::add_models 312927 10 3
+                    312927: QuadTreeLevel::add_models: 0 models
+                    312928: =====================
+                    312928: QuadTreeLevel::add_models 312928 10 3
+                    312928: QuadTreeLevel::add_models: 0 models
+                    312929: =====================
+                    312929: QuadTreeLevel::add_models 312929 10 3
+                    312929: QuadTreeLevel::add_models: 3 models
+                    312930: =====================
+                    312930: QuadTreeLevel::add_models 312930 10 3
+                    312930: QuadTreeLevel::add_models: 2 models
+                  312926: sw: 312929
+                  312926: nw: 312930
+                  312931: =====================
+                  312931: QuadTreeLevel::add_models 312931 9 3
+                  312931: QuadTreeLevel::add_models: 2 models
+                    312932: =====================
+                    312932: QuadTreeLevel::add_models 312932 10 2
+                    312932: QuadTreeLevel::add_models: 0 models
+                    312933: =====================
+                    312933: QuadTreeLevel::add_models 312933 10 2
+                    312933: QuadTreeLevel::add_models: 2 models
+                    312934: =====================
+                    312934: QuadTreeLevel::add_models 312934 10 2
+                    312934: QuadTreeLevel::add_models: 0 models
+                    312935: =====================
+                    312935: QuadTreeLevel::add_models 312935 10 2
+                    312935: QuadTreeLevel::add_models: 0 models
+                  312931: se: 312933
+                  312936: =====================
+                  312936: QuadTreeLevel::add_models 312936 9 3
+                  312936: QuadTreeLevel::add_models: 0 models
+                312924: se: 312926
+                312924: sw: 312931
+                312937: =====================
+                312937: QuadTreeLevel::add_models 312937 8 10
+                312937: QuadTreeLevel::add_models: 3 models
+                  312938: =====================
+                  312938: QuadTreeLevel::add_models 312938 9 3
+                  312938: QuadTreeLevel::add_models: 3 models
+                    312939: =====================
+                    312939: QuadTreeLevel::add_models 312939 10 3
+                    312939: QuadTreeLevel::add_models: 3 models
+                    312940: =====================
+                    312940: QuadTreeLevel::add_models 312940 10 3
+                    312940: QuadTreeLevel::add_models: 2 models
+                    312941: =====================
+                    312941: QuadTreeLevel::add_models 312941 10 3
+                    312941: QuadTreeLevel::add_models: 0 models
+                    312942: =====================
+                    312942: QuadTreeLevel::add_models 312942 10 3
+                    312942: QuadTreeLevel::add_models: 1 models
+                  312938: ne: 312939
+                  312938: se: 312940
+                  312938: nw: 312942
+                  312943: =====================
+                  312943: QuadTreeLevel::add_models 312943 9 3
+                  312943: QuadTreeLevel::add_models: 0 models
+                  312944: =====================
+                  312944: QuadTreeLevel::add_models 312944 9 3
+                  312944: QuadTreeLevel::add_models: 0 models
+                  312945: =====================
+                  312945: QuadTreeLevel::add_models 312945 9 3
+                  312945: QuadTreeLevel::add_models: 2 models
+                    312946: =====================
+                    312946: QuadTreeLevel::add_models 312946 10 2
+                    312946: QuadTreeLevel::add_models: 2 models
+                    312947: =====================
+                    312947: QuadTreeLevel::add_models 312947 10 2
+                    312947: QuadTreeLevel::add_models: 0 models
+                    312948: =====================
+                    312948: QuadTreeLevel::add_models 312948 10 2
+                    312948: QuadTreeLevel::add_models: 0 models
+                    312949: =====================
+                    312949: QuadTreeLevel::add_models 312949 10 2
+                    312949: QuadTreeLevel::add_models: 0 models
+                  312945: ne: 312946
+                312937: ne: 312938
+                312937: nw: 312945
+                312950: =====================
+                312950: QuadTreeLevel::add_models 312950 8 10
+                312950: QuadTreeLevel::add_models: 8 models
+                  312951: =====================
+                  312951: QuadTreeLevel::add_models 312951 9 8
+                  312951: QuadTreeLevel::add_models: 0 models
+                  312952: =====================
+                  312952: QuadTreeLevel::add_models 312952 9 8
+                  312952: QuadTreeLevel::add_models: 3 models
+                    312953: =====================
+                    312953: QuadTreeLevel::add_models 312953 10 3
+                    312953: QuadTreeLevel::add_models: 0 models
+                    312954: =====================
+                    312954: QuadTreeLevel::add_models 312954 10 3
+                    312954: QuadTreeLevel::add_models: 0 models
+                    312955: =====================
+                    312955: QuadTreeLevel::add_models 312955 10 3
+                    312955: QuadTreeLevel::add_models: 3 models
+                    312956: =====================
+                    312956: QuadTreeLevel::add_models 312956 10 3
+                    312956: QuadTreeLevel::add_models: 0 models
+                  312952: sw: 312955
+                  312957: =====================
+                  312957: QuadTreeLevel::add_models 312957 9 8
+                  312957: QuadTreeLevel::add_models: 8 models
+                    312958: =====================
+                    312958: QuadTreeLevel::add_models 312958 10 8
+                    312958: QuadTreeLevel::add_models: 0 models
+                    312959: =====================
+                    312959: QuadTreeLevel::add_models 312959 10 8
+                    312959: QuadTreeLevel::add_models: 8 models
+                    312960: =====================
+                    312960: QuadTreeLevel::add_models 312960 10 8
+                    312960: QuadTreeLevel::add_models: 4 models
+                    312961: =====================
+                    312961: QuadTreeLevel::add_models 312961 10 8
+                    312961: QuadTreeLevel::add_models: 6 models
+                  312957: se: 312959
+                  312957: sw: 312960
+                  312957: nw: 312961
+                  312962: =====================
+                  312962: QuadTreeLevel::add_models 312962 9 8
+                  312962: QuadTreeLevel::add_models: 0 models
+                312950: se: 312952
+                312950: sw: 312957
+                312963: =====================
+                312963: QuadTreeLevel::add_models 312963 8 10
+                312963: QuadTreeLevel::add_models: 0 models
+              312923: ne: 312924
+              312923: se: 312937
+              312923: sw: 312950
+            312799: ne: 312800
+            312799: se: 312837
+            312799: sw: 312862
+            312799: nw: 312923
+            312964: =====================
+            312964: QuadTreeLevel::add_models 312964 6 276
+            312964: QuadTreeLevel::add_models: 30 models
+              312965: =====================
+              312965: QuadTreeLevel::add_models 312965 7 30
+              312965: QuadTreeLevel::add_models: 11 models
+                312966: =====================
+                312966: QuadTreeLevel::add_models 312966 8 11
+                312966: QuadTreeLevel::add_models: 7 models
+                  312967: =====================
+                  312967: QuadTreeLevel::add_models 312967 9 7
+                  312967: QuadTreeLevel::add_models: 6 models
+                    312968: =====================
+                    312968: QuadTreeLevel::add_models 312968 10 6
+                    312968: QuadTreeLevel::add_models: 4 models
+                    312969: =====================
+                    312969: QuadTreeLevel::add_models 312969 10 6
+                    312969: QuadTreeLevel::add_models: 5 models
+                    312970: =====================
+                    312970: QuadTreeLevel::add_models 312970 10 6
+                    312970: QuadTreeLevel::add_models: 2 models
+                    312971: =====================
+                    312971: QuadTreeLevel::add_models 312971 10 6
+                    312971: QuadTreeLevel::add_models: 3 models
+                  312967: ne: 312968
+                  312967: se: 312969
+                  312967: sw: 312970
+                  312967: nw: 312971
+                  312972: =====================
+                  312972: QuadTreeLevel::add_models 312972 9 7
+                  312972: QuadTreeLevel::add_models: 6 models
+                    312973: =====================
+                    312973: QuadTreeLevel::add_models 312973 10 6
+                    312973: QuadTreeLevel::add_models: 5 models
+                    312974: =====================
+                    312974: QuadTreeLevel::add_models 312974 10 6
+                    312974: QuadTreeLevel::add_models: 0 models
+                    312975: =====================
+                    312975: QuadTreeLevel::add_models 312975 10 6
+                    312975: QuadTreeLevel::add_models: 6 models
+                    312976: =====================
+                    312976: QuadTreeLevel::add_models 312976 10 6
+                    312976: QuadTreeLevel::add_models: 3 models
+                  312972: ne: 312973
+                  312972: sw: 312975
+                  312972: nw: 312976
+                  312977: =====================
+                  312977: QuadTreeLevel::add_models 312977 9 7
+                  312977: QuadTreeLevel::add_models: 0 models
+                  312978: =====================
+                  312978: QuadTreeLevel::add_models 312978 9 7
+                  312978: QuadTreeLevel::add_models: 0 models
+                312966: ne: 312967
+                312966: se: 312972
+                312979: =====================
+                312979: QuadTreeLevel::add_models 312979 8 11
+                312979: QuadTreeLevel::add_models: 6 models
+                  312980: =====================
+                  312980: QuadTreeLevel::add_models 312980 9 6
+                  312980: QuadTreeLevel::add_models: 6 models
+                    312981: =====================
+                    312981: QuadTreeLevel::add_models 312981 10 6
+                    312981: QuadTreeLevel::add_models: 3 models
+                    312982: =====================
+                    312982: QuadTreeLevel::add_models 312982 10 6
+                    312982: QuadTreeLevel::add_models: 3 models
+                    312983: =====================
+                    312983: QuadTreeLevel::add_models 312983 10 6
+                    312983: QuadTreeLevel::add_models: 1 models
+                    312984: =====================
+                    312984: QuadTreeLevel::add_models 312984 10 6
+                    312984: QuadTreeLevel::add_models: 6 models
+                  312980: ne: 312981
+                  312980: se: 312982
+                  312980: sw: 312983
+                  312980: nw: 312984
+                  312985: =====================
+                  312985: QuadTreeLevel::add_models 312985 9 6
+                  312985: QuadTreeLevel::add_models: 1 models
+                  312986: =====================
+                  312986: QuadTreeLevel::add_models 312986 9 6
+                  312986: QuadTreeLevel::add_models: 0 models
+                  312987: =====================
+                  312987: QuadTreeLevel::add_models 312987 9 6
+                  312987: QuadTreeLevel::add_models: 0 models
+                312979: ne: 312980
+                312979: se: 312985
+                312988: =====================
+                312988: QuadTreeLevel::add_models 312988 8 11
+                312988: QuadTreeLevel::add_models: 5 models
+                  312989: =====================
+                  312989: QuadTreeLevel::add_models 312989 9 5
+                  312989: QuadTreeLevel::add_models: 0 models
+                  312990: =====================
+                  312990: QuadTreeLevel::add_models 312990 9 5
+                  312990: QuadTreeLevel::add_models: 2 models
+                    312991: =====================
+                    312991: QuadTreeLevel::add_models 312991 10 2
+                    312991: QuadTreeLevel::add_models: 0 models
+                    312992: =====================
+                    312992: QuadTreeLevel::add_models 312992 10 2
+                    312992: QuadTreeLevel::add_models: 0 models
+                    312993: =====================
+                    312993: QuadTreeLevel::add_models 312993 10 2
+                    312993: QuadTreeLevel::add_models: 2 models
+                    312994: =====================
+                    312994: QuadTreeLevel::add_models 312994 10 2
+                    312994: QuadTreeLevel::add_models: 0 models
+                  312990: sw: 312993
+                  312995: =====================
+                  312995: QuadTreeLevel::add_models 312995 9 5
+                  312995: QuadTreeLevel::add_models: 3 models
+                    312996: =====================
+                    312996: QuadTreeLevel::add_models 312996 10 3
+                    312996: QuadTreeLevel::add_models: 2 models
+                    312997: =====================
+                    312997: QuadTreeLevel::add_models 312997 10 3
+                    312997: QuadTreeLevel::add_models: 3 models
+                    312998: =====================
+                    312998: QuadTreeLevel::add_models 312998 10 3
+                    312998: QuadTreeLevel::add_models: 0 models
+                    312999: =====================
+                    312999: QuadTreeLevel::add_models 312999 10 3
+                    312999: QuadTreeLevel::add_models: 0 models
+                  312995: ne: 312996
+                  312995: se: 312997
+                  313000: =====================
+                  313000: QuadTreeLevel::add_models 313000 9 5
+                  313000: QuadTreeLevel::add_models: 2 models
+                    313001: =====================
+                    313001: QuadTreeLevel::add_models 313001 10 2
+                    313001: QuadTreeLevel::add_models: 0 models
+                    313002: =====================
+                    313002: QuadTreeLevel::add_models 313002 10 2
+                    313002: QuadTreeLevel::add_models: 0 models
+                    313003: =====================
+                    313003: QuadTreeLevel::add_models 313003 10 2
+                    313003: QuadTreeLevel::add_models: 0 models
+                    313004: =====================
+                    313004: QuadTreeLevel::add_models 313004 10 2
+                    313004: QuadTreeLevel::add_models: 2 models
+                  313000: nw: 313004
+                312988: se: 312990
+                312988: sw: 312995
+                312988: nw: 313000
+                313005: =====================
+                313005: QuadTreeLevel::add_models 313005 8 11
+                313005: QuadTreeLevel::add_models: 2 models
+                  313006: =====================
+                  313006: QuadTreeLevel::add_models 313006 9 2
+                  313006: QuadTreeLevel::add_models: 2 models
+                    313007: =====================
+                    313007: QuadTreeLevel::add_models 313007 10 2
+                    313007: QuadTreeLevel::add_models: 2 models
+                    313008: =====================
+                    313008: QuadTreeLevel::add_models 313008 10 2
+                    313008: QuadTreeLevel::add_models: 2 models
+                    313009: =====================
+                    313009: QuadTreeLevel::add_models 313009 10 2
+                    313009: QuadTreeLevel::add_models: 0 models
+                    313010: =====================
+                    313010: QuadTreeLevel::add_models 313010 10 2
+                    313010: QuadTreeLevel::add_models: 0 models
+                  313006: ne: 313007
+                  313006: se: 313008
+                  313011: =====================
+                  313011: QuadTreeLevel::add_models 313011 9 2
+                  313011: QuadTreeLevel::add_models: 2 models
+                    313012: =====================
+                    313012: QuadTreeLevel::add_models 313012 10 2
+                    313012: QuadTreeLevel::add_models: 1 models
+                    313013: =====================
+                    313013: QuadTreeLevel::add_models 313013 10 2
+                    313013: QuadTreeLevel::add_models: 0 models
+                    313014: =====================
+                    313014: QuadTreeLevel::add_models 313014 10 2
+                    313014: QuadTreeLevel::add_models: 2 models
+                    313015: =====================
+                    313015: QuadTreeLevel::add_models 313015 10 2
+                    313015: QuadTreeLevel::add_models: 0 models
+                  313011: ne: 313012
+                  313011: sw: 313014
+                  313016: =====================
+                  313016: QuadTreeLevel::add_models 313016 9 2
+                  313016: QuadTreeLevel::add_models: 2 models
+                    313017: =====================
+                    313017: QuadTreeLevel::add_models 313017 10 2
+                    313017: QuadTreeLevel::add_models: 0 models
+                    313018: =====================
+                    313018: QuadTreeLevel::add_models 313018 10 2
+                    313018: QuadTreeLevel::add_models: 0 models
+                    313019: =====================
+                    313019: QuadTreeLevel::add_models 313019 10 2
+                    313019: QuadTreeLevel::add_models: 2 models
+                    313020: =====================
+                    313020: QuadTreeLevel::add_models 313020 10 2
+                    313020: QuadTreeLevel::add_models: 0 models
+                  313016: sw: 313019
+                  313021: =====================
+                  313021: QuadTreeLevel::add_models 313021 9 2
+                  313021: QuadTreeLevel::add_models: 0 models
+                313005: ne: 313006
+                313005: se: 313011
+                313005: sw: 313016
+              312965: ne: 312966
+              312965: se: 312979
+              312965: sw: 312988
+              312965: nw: 313005
+              313022: =====================
+              313022: QuadTreeLevel::add_models 313022 7 30
+              313022: QuadTreeLevel::add_models: 13 models
+                313023: =====================
+                313023: QuadTreeLevel::add_models 313023 8 13
+                313023: QuadTreeLevel::add_models: 5 models
+                  313024: =====================
+                  313024: QuadTreeLevel::add_models 313024 9 5
+                  313024: QuadTreeLevel::add_models: 0 models
+                  313025: =====================
+                  313025: QuadTreeLevel::add_models 313025 9 5
+                  313025: QuadTreeLevel::add_models: 3 models
+                    313026: =====================
+                    313026: QuadTreeLevel::add_models 313026 10 3
+                    313026: QuadTreeLevel::add_models: 0 models
+                    313027: =====================
+                    313027: QuadTreeLevel::add_models 313027 10 3
+                    313027: QuadTreeLevel::add_models: 3 models
+                    313028: =====================
+                    313028: QuadTreeLevel::add_models 313028 10 3
+                    313028: QuadTreeLevel::add_models: 0 models
+                    313029: =====================
+                    313029: QuadTreeLevel::add_models 313029 10 3
+                    313029: QuadTreeLevel::add_models: 0 models
+                  313025: se: 313027
+                  313030: =====================
+                  313030: QuadTreeLevel::add_models 313030 9 5
+                  313030: QuadTreeLevel::add_models: 0 models
+                  313031: =====================
+                  313031: QuadTreeLevel::add_models 313031 9 5
+                  313031: QuadTreeLevel::add_models: 3 models
+                    313032: =====================
+                    313032: QuadTreeLevel::add_models 313032 10 3
+                    313032: QuadTreeLevel::add_models: 0 models
+                    313033: =====================
+                    313033: QuadTreeLevel::add_models 313033 10 3
+                    313033: QuadTreeLevel::add_models: 0 models
+                    313034: =====================
+                    313034: QuadTreeLevel::add_models 313034 10 3
+                    313034: QuadTreeLevel::add_models: 0 models
+                    313035: =====================
+                    313035: QuadTreeLevel::add_models 313035 10 3
+                    313035: QuadTreeLevel::add_models: 3 models
+                  313031: nw: 313035
+                313023: se: 313025
+                313023: nw: 313031
+                313036: =====================
+                313036: QuadTreeLevel::add_models 313036 8 13
+                313036: QuadTreeLevel::add_models: 7 models
+                  313037: =====================
+                  313037: QuadTreeLevel::add_models 313037 9 7
+                  313037: QuadTreeLevel::add_models: 5 models
+                    313038: =====================
+                    313038: QuadTreeLevel::add_models 313038 10 5
+                    313038: QuadTreeLevel::add_models: 4 models
+                    313039: =====================
+                    313039: QuadTreeLevel::add_models 313039 10 5
+                    313039: QuadTreeLevel::add_models: 0 models
+                    313040: =====================
+                    313040: QuadTreeLevel::add_models 313040 10 5
+                    313040: QuadTreeLevel::add_models: 1 models
+                    313041: =====================
+                    313041: QuadTreeLevel::add_models 313041 10 5
+                    313041: QuadTreeLevel::add_models: 4 models
+                  313037: ne: 313038
+                  313037: sw: 313040
+                  313037: nw: 313041
+                  313042: =====================
+                  313042: QuadTreeLevel::add_models 313042 9 7
+                  313042: QuadTreeLevel::add_models: 0 models
+                  313043: =====================
+                  313043: QuadTreeLevel::add_models 313043 9 7
+                  313043: QuadTreeLevel::add_models: 0 models
+                  313044: =====================
+                  313044: QuadTreeLevel::add_models 313044 9 7
+                  313044: QuadTreeLevel::add_models: 7 models
+                    313045: =====================
+                    313045: QuadTreeLevel::add_models 313045 10 7
+                    313045: QuadTreeLevel::add_models: 5 models
+                    313046: =====================
+                    313046: QuadTreeLevel::add_models 313046 10 7
+                    313046: QuadTreeLevel::add_models: 3 models
+                    313047: =====================
+                    313047: QuadTreeLevel::add_models 313047 10 7
+                    313047: QuadTreeLevel::add_models: 3 models
+                    313048: =====================
+                    313048: QuadTreeLevel::add_models 313048 10 7
+                    313048: QuadTreeLevel::add_models: 4 models
+                  313044: ne: 313045
+                  313044: se: 313046
+                  313044: sw: 313047
+                  313044: nw: 313048
+                313036: ne: 313037
+                313036: nw: 313044
+                313049: =====================
+                313049: QuadTreeLevel::add_models 313049 8 13
+                313049: QuadTreeLevel::add_models: 6 models
+                  313050: =====================
+                  313050: QuadTreeLevel::add_models 313050 9 6
+                  313050: QuadTreeLevel::add_models: 5 models
+                    313051: =====================
+                    313051: QuadTreeLevel::add_models 313051 10 5
+                    313051: QuadTreeLevel::add_models: 2 models
+                    313052: =====================
+                    313052: QuadTreeLevel::add_models 313052 10 5
+                    313052: QuadTreeLevel::add_models: 3 models
+                    313053: =====================
+                    313053: QuadTreeLevel::add_models 313053 10 5
+                    313053: QuadTreeLevel::add_models: 2 models
+                    313054: =====================
+                    313054: QuadTreeLevel::add_models 313054 10 5
+                    313054: QuadTreeLevel::add_models: 0 models
+                  313050: ne: 313051
+                  313050: se: 313052
+                  313050: sw: 313053
+                  313055: =====================
+                  313055: QuadTreeLevel::add_models 313055 9 6
+                  313055: QuadTreeLevel::add_models: 3 models
+                    313056: =====================
+                    313056: QuadTreeLevel::add_models 313056 10 3
+                    313056: QuadTreeLevel::add_models: 1 models
+                    313057: =====================
+                    313057: QuadTreeLevel::add_models 313057 10 3
+                    313057: QuadTreeLevel::add_models: 0 models
+                    313058: =====================
+                    313058: QuadTreeLevel::add_models 313058 10 3
+                    313058: QuadTreeLevel::add_models: 0 models
+                    313059: =====================
+                    313059: QuadTreeLevel::add_models 313059 10 3
+                    313059: QuadTreeLevel::add_models: 3 models
+                  313055: ne: 313056
+                  313055: nw: 313059
+                  313060: =====================
+                  313060: QuadTreeLevel::add_models 313060 9 6
+                  313060: QuadTreeLevel::add_models: 5 models
+                    313061: =====================
+                    313061: QuadTreeLevel::add_models 313061 10 5
+                    313061: QuadTreeLevel::add_models: 3 models
+                    313062: =====================
+                    313062: QuadTreeLevel::add_models 313062 10 5
+                    313062: QuadTreeLevel::add_models: 4 models
+                    313063: =====================
+                    313063: QuadTreeLevel::add_models 313063 10 5
+                    313063: QuadTreeLevel::add_models: 1 models
+                    313064: =====================
+                    313064: QuadTreeLevel::add_models 313064 10 5
+                    313064: QuadTreeLevel::add_models: 1 models
+                  313060: ne: 313061
+                  313060: se: 313062
+                  313060: sw: 313063
+                  313060: nw: 313064
+                  313065: =====================
+                  313065: QuadTreeLevel::add_models 313065 9 6
+                  313065: QuadTreeLevel::add_models: 3 models
+                    313066: =====================
+                    313066: QuadTreeLevel::add_models 313066 10 3
+                    313066: QuadTreeLevel::add_models: 0 models
+                    313067: =====================
+                    313067: QuadTreeLevel::add_models 313067 10 3
+                    313067: QuadTreeLevel::add_models: 3 models
+                    313068: =====================
+                    313068: QuadTreeLevel::add_models 313068 10 3
+                    313068: QuadTreeLevel::add_models: 0 models
+                    313069: =====================
+                    313069: QuadTreeLevel::add_models 313069 10 3
+                    313069: QuadTreeLevel::add_models: 0 models
+                  313065: se: 313067
+                313049: ne: 313050
+                313049: se: 313055
+                313049: sw: 313060
+                313049: nw: 313065
+                313070: =====================
+                313070: QuadTreeLevel::add_models 313070 8 13
+                313070: QuadTreeLevel::add_models: 4 models
+                  313071: =====================
+                  313071: QuadTreeLevel::add_models 313071 9 4
+                  313071: QuadTreeLevel::add_models: 3 models
+                    313072: =====================
+                    313072: QuadTreeLevel::add_models 313072 10 3
+                    313072: QuadTreeLevel::add_models: 3 models
+                    313073: =====================
+                    313073: QuadTreeLevel::add_models 313073 10 3
+                    313073: QuadTreeLevel::add_models: 0 models
+                    313074: =====================
+                    313074: QuadTreeLevel::add_models 313074 10 3
+                    313074: QuadTreeLevel::add_models: 0 models
+                    313075: =====================
+                    313075: QuadTreeLevel::add_models 313075 10 3
+                    313075: QuadTreeLevel::add_models: 0 models
+                  313071: ne: 313072
+                  313076: =====================
+                  313076: QuadTreeLevel::add_models 313076 9 4
+                  313076: QuadTreeLevel::add_models: 0 models
+                  313077: =====================
+                  313077: QuadTreeLevel::add_models 313077 9 4
+                  313077: QuadTreeLevel::add_models: 0 models
+                  313078: =====================
+                  313078: QuadTreeLevel::add_models 313078 9 4
+                  313078: QuadTreeLevel::add_models: 2 models
+                    313079: =====================
+                    313079: QuadTreeLevel::add_models 313079 10 2
+                    313079: QuadTreeLevel::add_models: 2 models
+                    313080: =====================
+                    313080: QuadTreeLevel::add_models 313080 10 2
+                    313080: QuadTreeLevel::add_models: 0 models
+                    313081: =====================
+                    313081: QuadTreeLevel::add_models 313081 10 2
+                    313081: QuadTreeLevel::add_models: 0 models
+                    313082: =====================
+                    313082: QuadTreeLevel::add_models 313082 10 2
+                    313082: QuadTreeLevel::add_models: 0 models
+                  313078: ne: 313079
+                313070: ne: 313071
+                313070: nw: 313078
+              313022: ne: 313023
+              313022: se: 313036
+              313022: sw: 313049
+              313022: nw: 313070
+              313083: =====================
+              313083: QuadTreeLevel::add_models 313083 7 30
+              313083: QuadTreeLevel::add_models: 7 models
+                313084: =====================
+                313084: QuadTreeLevel::add_models 313084 8 7
+                313084: QuadTreeLevel::add_models: 5 models
+                  313085: =====================
+                  313085: QuadTreeLevel::add_models 313085 9 5
+                  313085: QuadTreeLevel::add_models: 0 models
+                  313086: =====================
+                  313086: QuadTreeLevel::add_models 313086 9 5
+                  313086: QuadTreeLevel::add_models: 2 models
+                    313087: =====================
+                    313087: QuadTreeLevel::add_models 313087 10 2
+                    313087: QuadTreeLevel::add_models: 0 models
+                    313088: =====================
+                    313088: QuadTreeLevel::add_models 313088 10 2
+                    313088: QuadTreeLevel::add_models: 1 models
+                    313089: =====================
+                    313089: QuadTreeLevel::add_models 313089 10 2
+                    313089: QuadTreeLevel::add_models: 2 models
+                    313090: =====================
+                    313090: QuadTreeLevel::add_models 313090 10 2
+                    313090: QuadTreeLevel::add_models: 1 models
+                  313086: se: 313088
+                  313086: sw: 313089
+                  313086: nw: 313090
+                  313091: =====================
+                  313091: QuadTreeLevel::add_models 313091 9 5
+                  313091: QuadTreeLevel::add_models: 5 models
+                    313092: =====================
+                    313092: QuadTreeLevel::add_models 313092 10 5
+                    313092: QuadTreeLevel::add_models: 3 models
+                    313093: =====================
+                    313093: QuadTreeLevel::add_models 313093 10 5
+                    313093: QuadTreeLevel::add_models: 3 models
+                    313094: =====================
+                    313094: QuadTreeLevel::add_models 313094 10 5
+                    313094: QuadTreeLevel::add_models: 1 models
+                    313095: =====================
+                    313095: QuadTreeLevel::add_models 313095 10 5
+                    313095: QuadTreeLevel::add_models: 4 models
+                  313091: ne: 313092
+                  313091: se: 313093
+                  313091: sw: 313094
+                  313091: nw: 313095
+                  313096: =====================
+                  313096: QuadTreeLevel::add_models 313096 9 5
+                  313096: QuadTreeLevel::add_models: 1 models
+                313084: se: 313086
+                313084: sw: 313091
+                313084: nw: 313096
+                313097: =====================
+                313097: QuadTreeLevel::add_models 313097 8 7
+                313097: QuadTreeLevel::add_models: 4 models
+                  313098: =====================
+                  313098: QuadTreeLevel::add_models 313098 9 4
+                  313098: QuadTreeLevel::add_models: 2 models
+                    313099: =====================
+                    313099: QuadTreeLevel::add_models 313099 10 2
+                    313099: QuadTreeLevel::add_models: 1 models
+                    313100: =====================
+                    313100: QuadTreeLevel::add_models 313100 10 2
+                    313100: QuadTreeLevel::add_models: 2 models
+                    313101: =====================
+                    313101: QuadTreeLevel::add_models 313101 10 2
+                    313101: QuadTreeLevel::add_models: 2 models
+                    313102: =====================
+                    313102: QuadTreeLevel::add_models 313102 10 2
+                    313102: QuadTreeLevel::add_models: 0 models
+                  313098: ne: 313099
+                  313098: se: 313100
+                  313098: sw: 313101
+                  313103: =====================
+                  313103: QuadTreeLevel::add_models 313103 9 4
+                  313103: QuadTreeLevel::add_models: 1 models
+                  313104: =====================
+                  313104: QuadTreeLevel::add_models 313104 9 4
+                  313104: QuadTreeLevel::add_models: 0 models
+                  313105: =====================
+                  313105: QuadTreeLevel::add_models 313105 9 4
+                  313105: QuadTreeLevel::add_models: 4 models
+                    313106: =====================
+                    313106: QuadTreeLevel::add_models 313106 10 4
+                    313106: QuadTreeLevel::add_models: 0 models
+                    313107: =====================
+                    313107: QuadTreeLevel::add_models 313107 10 4
+                    313107: QuadTreeLevel::add_models: 0 models
+                    313108: =====================
+                    313108: QuadTreeLevel::add_models 313108 10 4
+                    313108: QuadTreeLevel::add_models: 2 models
+                    313109: =====================
+                    313109: QuadTreeLevel::add_models 313109 10 4
+                    313109: QuadTreeLevel::add_models: 3 models
+                  313105: sw: 313108
+                  313105: nw: 313109
+                313097: ne: 313098
+                313097: se: 313103
+                313097: nw: 313105
+                313110: =====================
+                313110: QuadTreeLevel::add_models 313110 8 7
+                313110: QuadTreeLevel::add_models: 6 models
+                  313111: =====================
+                  313111: QuadTreeLevel::add_models 313111 9 6
+                  313111: QuadTreeLevel::add_models: 4 models
+                    313112: =====================
+                    313112: QuadTreeLevel::add_models 313112 10 4
+                    313112: QuadTreeLevel::add_models: 0 models
+                    313113: =====================
+                    313113: QuadTreeLevel::add_models 313113 10 4
+                    313113: QuadTreeLevel::add_models: 3 models
+                    313114: =====================
+                    313114: QuadTreeLevel::add_models 313114 10 4
+                    313114: QuadTreeLevel::add_models: 3 models
+                    313115: =====================
+                    313115: QuadTreeLevel::add_models 313115 10 4
+                    313115: QuadTreeLevel::add_models: 2 models
+                  313111: se: 313113
+                  313111: sw: 313114
+                  313111: nw: 313115
+                  313116: =====================
+                  313116: QuadTreeLevel::add_models 313116 9 6
+                  313116: QuadTreeLevel::add_models: 2 models
+                    313117: =====================
+                    313117: QuadTreeLevel::add_models 313117 10 2
+                    313117: QuadTreeLevel::add_models: 2 models
+                    313118: =====================
+                    313118: QuadTreeLevel::add_models 313118 10 2
+                    313118: QuadTreeLevel::add_models: 1 models
+                    313119: =====================
+                    313119: QuadTreeLevel::add_models 313119 10 2
+                    313119: QuadTreeLevel::add_models: 0 models
+                    313120: =====================
+                    313120: QuadTreeLevel::add_models 313120 10 2
+                    313120: QuadTreeLevel::add_models: 2 models
+                  313116: ne: 313117
+                  313116: se: 313118
+                  313116: nw: 313120
+                  313121: =====================
+                  313121: QuadTreeLevel::add_models 313121 9 6
+                  313121: QuadTreeLevel::add_models: 4 models
+                    313122: =====================
+                    313122: QuadTreeLevel::add_models 313122 10 4
+                    313122: QuadTreeLevel::add_models: 0 models
+                    313123: =====================
+                    313123: QuadTreeLevel::add_models 313123 10 4
+                    313123: QuadTreeLevel::add_models: 0 models
+                    313124: =====================
+                    313124: QuadTreeLevel::add_models 313124 10 4
+                    313124: QuadTreeLevel::add_models: 0 models
+                    313125: =====================
+                    313125: QuadTreeLevel::add_models 313125 10 4
+                    313125: QuadTreeLevel::add_models: 4 models
+                  313121: nw: 313125
+                  313126: =====================
+                  313126: QuadTreeLevel::add_models 313126 9 6
+                  313126: QuadTreeLevel::add_models: 3 models
+                    313127: =====================
+                    313127: QuadTreeLevel::add_models 313127 10 3
+                    313127: QuadTreeLevel::add_models: 0 models
+                    313128: =====================
+                    313128: QuadTreeLevel::add_models 313128 10 3
+                    313128: QuadTreeLevel::add_models: 3 models
+                    313129: =====================
+                    313129: QuadTreeLevel::add_models 313129 10 3
+                    313129: QuadTreeLevel::add_models: 2 models
+                    313130: =====================
+                    313130: QuadTreeLevel::add_models 313130 10 3
+                    313130: QuadTreeLevel::add_models: 0 models
+                  313126: se: 313128
+                  313126: sw: 313129
+                313110: ne: 313111
+                313110: se: 313116
+                313110: sw: 313121
+                313110: nw: 313126
+                313131: =====================
+                313131: QuadTreeLevel::add_models 313131 8 7
+                313131: QuadTreeLevel::add_models: 5 models
+                  313132: =====================
+                  313132: QuadTreeLevel::add_models 313132 9 5
+                  313132: QuadTreeLevel::add_models: 3 models
+                    313133: =====================
+                    313133: QuadTreeLevel::add_models 313133 10 3
+                    313133: QuadTreeLevel::add_models: 0 models
+                    313134: =====================
+                    313134: QuadTreeLevel::add_models 313134 10 3
+                    313134: QuadTreeLevel::add_models: 3 models
+                    313135: =====================
+                    313135: QuadTreeLevel::add_models 313135 10 3
+                    313135: QuadTreeLevel::add_models: 0 models
+                    313136: =====================
+                    313136: QuadTreeLevel::add_models 313136 10 3
+                    313136: QuadTreeLevel::add_models: 1 models
+                  313132: se: 313134
+                  313132: nw: 313136
+                  313137: =====================
+                  313137: QuadTreeLevel::add_models 313137 9 5
+                  313137: QuadTreeLevel::add_models: 2 models
+                    313138: =====================
+                    313138: QuadTreeLevel::add_models 313138 10 2
+                    313138: QuadTreeLevel::add_models: 1 models
+                    313139: =====================
+                    313139: QuadTreeLevel::add_models 313139 10 2
+                    313139: QuadTreeLevel::add_models: 0 models
+                    313140: =====================
+                    313140: QuadTreeLevel::add_models 313140 10 2
+                    313140: QuadTreeLevel::add_models: 0 models
+                    313141: =====================
+                    313141: QuadTreeLevel::add_models 313141 10 2
+                    313141: QuadTreeLevel::add_models: 1 models
+                  313137: ne: 313138
+                  313137: nw: 313141
+                  313142: =====================
+                  313142: QuadTreeLevel::add_models 313142 9 5
+                  313142: QuadTreeLevel::add_models: 1 models
+                  313143: =====================
+                  313143: QuadTreeLevel::add_models 313143 9 5
+                  313143: QuadTreeLevel::add_models: 2 models
+                    313144: =====================
+                    313144: QuadTreeLevel::add_models 313144 10 2
+                    313144: QuadTreeLevel::add_models: 0 models
+                    313145: =====================
+                    313145: QuadTreeLevel::add_models 313145 10 2
+                    313145: QuadTreeLevel::add_models: 1 models
+                    313146: =====================
+                    313146: QuadTreeLevel::add_models 313146 10 2
+                    313146: QuadTreeLevel::add_models: 2 models
+                    313147: =====================
+                    313147: QuadTreeLevel::add_models 313147 10 2
+                    313147: QuadTreeLevel::add_models: 2 models
+                  313143: se: 313145
+                  313143: sw: 313146
+                  313143: nw: 313147
+                313131: ne: 313132
+                313131: se: 313137
+                313131: sw: 313142
+                313131: nw: 313143
+              313083: ne: 313084
+              313083: se: 313097
+              313083: sw: 313110
+              313083: nw: 313131
+              313148: =====================
+              313148: QuadTreeLevel::add_models 313148 7 30
+              313148: QuadTreeLevel::add_models: 6 models
+                313149: =====================
+                313149: QuadTreeLevel::add_models 313149 8 6
+                313149: QuadTreeLevel::add_models: 3 models
+                  313150: =====================
+                  313150: QuadTreeLevel::add_models 313150 9 3
+                  313150: QuadTreeLevel::add_models: 2 models
+                    313151: =====================
+                    313151: QuadTreeLevel::add_models 313151 10 2
+                    313151: QuadTreeLevel::add_models: 1 models
+                    313152: =====================
+                    313152: QuadTreeLevel::add_models 313152 10 2
+                    313152: QuadTreeLevel::add_models: 1 models
+                    313153: =====================
+                    313153: QuadTreeLevel::add_models 313153 10 2
+                    313153: QuadTreeLevel::add_models: 0 models
+                    313154: =====================
+                    313154: QuadTreeLevel::add_models 313154 10 2
+                    313154: QuadTreeLevel::add_models: 0 models
+                  313150: ne: 313151
+                  313150: se: 313152
+                  313155: =====================
+                  313155: QuadTreeLevel::add_models 313155 9 3
+                  313155: QuadTreeLevel::add_models: 3 models
+                    313156: =====================
+                    313156: QuadTreeLevel::add_models 313156 10 3
+                    313156: QuadTreeLevel::add_models: 2 models
+                    313157: =====================
+                    313157: QuadTreeLevel::add_models 313157 10 3
+                    313157: QuadTreeLevel::add_models: 0 models
+                    313158: =====================
+                    313158: QuadTreeLevel::add_models 313158 10 3
+                    313158: QuadTreeLevel::add_models: 3 models
+                    313159: =====================
+                    313159: QuadTreeLevel::add_models 313159 10 3
+                    313159: QuadTreeLevel::add_models: 0 models
+                  313155: ne: 313156
+                  313155: sw: 313158
+                  313160: =====================
+                  313160: QuadTreeLevel::add_models 313160 9 3
+                  313160: QuadTreeLevel::add_models: 0 models
+                  313161: =====================
+                  313161: QuadTreeLevel::add_models 313161 9 3
+                  313161: QuadTreeLevel::add_models: 0 models
+                313149: ne: 313150
+                313149: se: 313155
+                313162: =====================
+                313162: QuadTreeLevel::add_models 313162 8 6
+                313162: QuadTreeLevel::add_models: 4 models
+                  313163: =====================
+                  313163: QuadTreeLevel::add_models 313163 9 4
+                  313163: QuadTreeLevel::add_models: 3 models
+                    313164: =====================
+                    313164: QuadTreeLevel::add_models 313164 10 3
+                    313164: QuadTreeLevel::add_models: 1 models
+                    313165: =====================
+                    313165: QuadTreeLevel::add_models 313165 10 3
+                    313165: QuadTreeLevel::add_models: 0 models
+                    313166: =====================
+                    313166: QuadTreeLevel::add_models 313166 10 3
+                    313166: QuadTreeLevel::add_models: 3 models
+                    313167: =====================
+                    313167: QuadTreeLevel::add_models 313167 10 3
+                    313167: QuadTreeLevel::add_models: 2 models
+                  313163: ne: 313164
+                  313163: sw: 313166
+                  313163: nw: 313167
+                  313168: =====================
+                  313168: QuadTreeLevel::add_models 313168 9 4
+                  313168: QuadTreeLevel::add_models: 1 models
+                  313169: =====================
+                  313169: QuadTreeLevel::add_models 313169 9 4
+                  313169: QuadTreeLevel::add_models: 3 models
+                    313170: =====================
+                    313170: QuadTreeLevel::add_models 313170 10 3
+                    313170: QuadTreeLevel::add_models: 2 models
+                    313171: =====================
+                    313171: QuadTreeLevel::add_models 313171 10 3
+                    313171: QuadTreeLevel::add_models: 0 models
+                    313172: =====================
+                    313172: QuadTreeLevel::add_models 313172 10 3
+                    313172: QuadTreeLevel::add_models: 2 models
+                    313173: =====================
+                    313173: QuadTreeLevel::add_models 313173 10 3
+                    313173: QuadTreeLevel::add_models: 0 models
+                  313169: ne: 313170
+                  313169: sw: 313172
+                  313174: =====================
+                  313174: QuadTreeLevel::add_models 313174 9 4
+                  313174: QuadTreeLevel::add_models: 2 models
+                    313175: =====================
+                    313175: QuadTreeLevel::add_models 313175 10 2
+                    313175: QuadTreeLevel::add_models: 0 models
+                    313176: =====================
+                    313176: QuadTreeLevel::add_models 313176 10 2
+                    313176: QuadTreeLevel::add_models: 0 models
+                    313177: =====================
+                    313177: QuadTreeLevel::add_models 313177 10 2
+                    313177: QuadTreeLevel::add_models: 2 models
+                    313178: =====================
+                    313178: QuadTreeLevel::add_models 313178 10 2
+                    313178: QuadTreeLevel::add_models: 0 models
+                  313174: sw: 313177
+                313162: ne: 313163
+                313162: se: 313168
+                313162: sw: 313169
+                313162: nw: 313174
+                313179: =====================
+                313179: QuadTreeLevel::add_models 313179 8 6
+                313179: QuadTreeLevel::add_models: 4 models
+                  313180: =====================
+                  313180: QuadTreeLevel::add_models 313180 9 4
+                  313180: QuadTreeLevel::add_models: 3 models
+                    313181: =====================
+                    313181: QuadTreeLevel::add_models 313181 10 3
+                    313181: QuadTreeLevel::add_models: 0 models
+                    313182: =====================
+                    313182: QuadTreeLevel::add_models 313182 10 3
+                    313182: QuadTreeLevel::add_models: 1 models
+                    313183: =====================
+                    313183: QuadTreeLevel::add_models 313183 10 3
+                    313183: QuadTreeLevel::add_models: 0 models
+                    313184: =====================
+                    313184: QuadTreeLevel::add_models 313184 10 3
+                    313184: QuadTreeLevel::add_models: 2 models
+                  313180: se: 313182
+                  313180: nw: 313184
+                  313185: =====================
+                  313185: QuadTreeLevel::add_models 313185 9 4
+                  313185: QuadTreeLevel::add_models: 0 models
+                  313186: =====================
+                  313186: QuadTreeLevel::add_models 313186 9 4
+                  313186: QuadTreeLevel::add_models: 3 models
+                    313187: =====================
+                    313187: QuadTreeLevel::add_models 313187 10 3
+                    313187: QuadTreeLevel::add_models: 0 models
+                    313188: =====================
+                    313188: QuadTreeLevel::add_models 313188 10 3
+                    313188: QuadTreeLevel::add_models: 3 models
+                    313189: =====================
+                    313189: QuadTreeLevel::add_models 313189 10 3
+                    313189: QuadTreeLevel::add_models: 0 models
+                    313190: =====================
+                    313190: QuadTreeLevel::add_models 313190 10 3
+                    313190: QuadTreeLevel::add_models: 2 models
+                  313186: se: 313188
+                  313186: nw: 313190
+                  313191: =====================
+                  313191: QuadTreeLevel::add_models 313191 9 4
+                  313191: QuadTreeLevel::add_models: 3 models
+                    313192: =====================
+                    313192: QuadTreeLevel::add_models 313192 10 3
+                    313192: QuadTreeLevel::add_models: 0 models
+                    313193: =====================
+                    313193: QuadTreeLevel::add_models 313193 10 3
+                    313193: QuadTreeLevel::add_models: 3 models
+                    313194: =====================
+                    313194: QuadTreeLevel::add_models 313194 10 3
+                    313194: QuadTreeLevel::add_models: 2 models
+                    313195: =====================
+                    313195: QuadTreeLevel::add_models 313195 10 3
+                    313195: QuadTreeLevel::add_models: 0 models
+                  313191: se: 313193
+                  313191: sw: 313194
+                313179: ne: 313180
+                313179: sw: 313186
+                313179: nw: 313191
+                313196: =====================
+                313196: QuadTreeLevel::add_models 313196 8 6
+                313196: QuadTreeLevel::add_models: 3 models
+                  313197: =====================
+                  313197: QuadTreeLevel::add_models 313197 9 3
+                  313197: QuadTreeLevel::add_models: 2 models
+                    313198: =====================
+                    313198: QuadTreeLevel::add_models 313198 10 2
+                    313198: QuadTreeLevel::add_models: 1 models
+                    313199: =====================
+                    313199: QuadTreeLevel::add_models 313199 10 2
+                    313199: QuadTreeLevel::add_models: 2 models
+                    313200: =====================
+                    313200: QuadTreeLevel::add_models 313200 10 2
+                    313200: QuadTreeLevel::add_models: 0 models
+                    313201: =====================
+                    313201: QuadTreeLevel::add_models 313201 10 2
+                    313201: QuadTreeLevel::add_models: 0 models
+                  313197: ne: 313198
+                  313197: se: 313199
+                  313202: =====================
+                  313202: QuadTreeLevel::add_models 313202 9 3
+                  313202: QuadTreeLevel::add_models: 3 models
+                    313203: =====================
+                    313203: QuadTreeLevel::add_models 313203 10 3
+                    313203: QuadTreeLevel::add_models: 2 models
+                    313204: =====================
+                    313204: QuadTreeLevel::add_models 313204 10 3
+                    313204: QuadTreeLevel::add_models: 2 models
+                    313205: =====================
+                    313205: QuadTreeLevel::add_models 313205 10 3
+                    313205: QuadTreeLevel::add_models: 0 models
+                    313206: =====================
+                    313206: QuadTreeLevel::add_models 313206 10 3
+                    313206: QuadTreeLevel::add_models: 0 models
+                  313202: ne: 313203
+                  313202: se: 313204
+                  313207: =====================
+                  313207: QuadTreeLevel::add_models 313207 9 3
+                  313207: QuadTreeLevel::add_models: 0 models
+                  313208: =====================
+                  313208: QuadTreeLevel::add_models 313208 9 3
+                  313208: QuadTreeLevel::add_models: 0 models
+                313196: ne: 313197
+                313196: se: 313202
+              313148: ne: 313149
+              313148: se: 313162
+              313148: sw: 313179
+              313148: nw: 313196
+            312964: ne: 312965
+            312964: se: 313022
+            312964: sw: 313083
+            312964: nw: 313148
+            313209: =====================
+            313209: QuadTreeLevel::add_models 313209 6 276
+            313209: QuadTreeLevel::add_models: 83 models
+              313210: =====================
+              313210: QuadTreeLevel::add_models 313210 7 83
+              313210: QuadTreeLevel::add_models: 70 models
+                313211: =====================
+                313211: QuadTreeLevel::add_models 313211 8 70
+                313211: QuadTreeLevel::add_models: 13 models
+                  313212: =====================
+                  313212: QuadTreeLevel::add_models 313212 9 13
+                  313212: QuadTreeLevel::add_models: 0 models
+                  313213: =====================
+                  313213: QuadTreeLevel::add_models 313213 9 13
+                  313213: QuadTreeLevel::add_models: 9 models
+                    313214: =====================
+                    313214: QuadTreeLevel::add_models 313214 10 9
+                    313214: QuadTreeLevel::add_models: 0 models
+                    313215: =====================
+                    313215: QuadTreeLevel::add_models 313215 10 9
+                    313215: QuadTreeLevel::add_models: 3 models
+                    313216: =====================
+                    313216: QuadTreeLevel::add_models 313216 10 9
+                    313216: QuadTreeLevel::add_models: 9 models
+                    313217: =====================
+                    313217: QuadTreeLevel::add_models 313217 10 9
+                    313217: QuadTreeLevel::add_models: 2 models
+                  313213: se: 313215
+                  313213: sw: 313216
+                  313213: nw: 313217
+                  313218: =====================
+                  313218: QuadTreeLevel::add_models 313218 9 13
+                  313218: QuadTreeLevel::add_models: 11 models
+                    313219: =====================
+                    313219: QuadTreeLevel::add_models 313219 10 11
+                    313219: QuadTreeLevel::add_models: 5 models
+                    313220: =====================
+                    313220: QuadTreeLevel::add_models 313220 10 11
+                    313220: QuadTreeLevel::add_models: 6 models
+                    313221: =====================
+                    313221: QuadTreeLevel::add_models 313221 10 11
+                    313221: QuadTreeLevel::add_models: 2 models
+                    313222: =====================
+                    313222: QuadTreeLevel::add_models 313222 10 11
+                    313222: QuadTreeLevel::add_models: 2 models
+                  313218: ne: 313219
+                  313218: se: 313220
+                  313218: sw: 313221
+                  313218: nw: 313222
+                  313223: =====================
+                  313223: QuadTreeLevel::add_models 313223 9 13
+                  313223: QuadTreeLevel::add_models: 4 models
+                    313224: =====================
+                    313224: QuadTreeLevel::add_models 313224 10 4
+                    313224: QuadTreeLevel::add_models: 2 models
+                    313225: =====================
+                    313225: QuadTreeLevel::add_models 313225 10 4
+                    313225: QuadTreeLevel::add_models: 4 models
+                    313226: =====================
+                    313226: QuadTreeLevel::add_models 313226 10 4
+                    313226: QuadTreeLevel::add_models: 0 models
+                    313227: =====================
+                    313227: QuadTreeLevel::add_models 313227 10 4
+                    313227: QuadTreeLevel::add_models: 0 models
+                  313223: ne: 313224
+                  313223: se: 313225
+                313211: se: 313213
+                313211: sw: 313218
+                313211: nw: 313223
+                313228: =====================
+                313228: QuadTreeLevel::add_models 313228 8 70
+                313228: QuadTreeLevel::add_models: 36 models
+                  313229: =====================
+                  313229: QuadTreeLevel::add_models 313229 9 36
+                  313229: QuadTreeLevel::add_models: 15 models
+                    313230: =====================
+                    313230: QuadTreeLevel::add_models 313230 10 15
+                    313230: QuadTreeLevel::add_models: 7 models
+                    313231: =====================
+                    313231: QuadTreeLevel::add_models 313231 10 15
+                    313231: QuadTreeLevel::add_models: 8 models
+                    313232: =====================
+                    313232: QuadTreeLevel::add_models 313232 10 15
+                    313232: QuadTreeLevel::add_models: 7 models
+                    313233: =====================
+                    313233: QuadTreeLevel::add_models 313233 10 15
+                    313233: QuadTreeLevel::add_models: 6 models
+                  313229: ne: 313230
+                  313229: se: 313231
+                  313229: sw: 313232
+                  313229: nw: 313233
+                  313234: =====================
+                  313234: QuadTreeLevel::add_models 313234 9 36
+                  313234: QuadTreeLevel::add_models: 8 models
+                    313235: =====================
+                    313235: QuadTreeLevel::add_models 313235 10 8
+                    313235: QuadTreeLevel::add_models: 5 models
+                    313236: =====================
+                    313236: QuadTreeLevel::add_models 313236 10 8
+                    313236: QuadTreeLevel::add_models: 1 models
+                    313237: =====================
+                    313237: QuadTreeLevel::add_models 313237 10 8
+                    313237: QuadTreeLevel::add_models: 0 models
+                    313238: =====================
+                    313238: QuadTreeLevel::add_models 313238 10 8
+                    313238: QuadTreeLevel::add_models: 6 models
+                  313234: ne: 313235
+                  313234: se: 313236
+                  313234: nw: 313238
+                  313239: =====================
+                  313239: QuadTreeLevel::add_models 313239 9 36
+                  313239: QuadTreeLevel::add_models: 12 models
+                    313240: =====================
+                    313240: QuadTreeLevel::add_models 313240 10 12
+                    313240: QuadTreeLevel::add_models: 8 models
+                    313241: =====================
+                    313241: QuadTreeLevel::add_models 313241 10 12
+                    313241: QuadTreeLevel::add_models: 2 models
+                    313242: =====================
+                    313242: QuadTreeLevel::add_models 313242 10 12
+                    313242: QuadTreeLevel::add_models: 3 models
+                    313243: =====================
+                    313243: QuadTreeLevel::add_models 313243 10 12
+                    313243: QuadTreeLevel::add_models: 3 models
+                  313239: ne: 313240
+                  313239: se: 313241
+                  313239: sw: 313242
+                  313239: nw: 313243
+                  313244: =====================
+                  313244: QuadTreeLevel::add_models 313244 9 36
+                  313244: QuadTreeLevel::add_models: 14 models
+                    313245: =====================
+                    313245: QuadTreeLevel::add_models 313245 10 14
+                    313245: QuadTreeLevel::add_models: 7 models
+                    313246: =====================
+                    313246: QuadTreeLevel::add_models 313246 10 14
+                    313246: QuadTreeLevel::add_models: 10 models
+                    313247: =====================
+                    313247: QuadTreeLevel::add_models 313247 10 14
+                    313247: QuadTreeLevel::add_models: 5 models
+                    313248: =====================
+                    313248: QuadTreeLevel::add_models 313248 10 14
+                    313248: QuadTreeLevel::add_models: 2 models
+                  313244: ne: 313245
+                  313244: se: 313246
+                  313244: sw: 313247
+                  313244: nw: 313248
+                313228: ne: 313229
+                313228: se: 313234
+                313228: sw: 313239
+                313228: nw: 313244
+                313249: =====================
+                313249: QuadTreeLevel::add_models 313249 8 70
+                313249: QuadTreeLevel::add_models: 38 models
+                  313250: =====================
+                  313250: QuadTreeLevel::add_models 313250 9 38
+                  313250: QuadTreeLevel::add_models: 10 models
+                    313251: =====================
+                    313251: QuadTreeLevel::add_models 313251 10 10
+                    313251: QuadTreeLevel::add_models: 3 models
+                    313252: =====================
+                    313252: QuadTreeLevel::add_models 313252 10 10
+                    313252: QuadTreeLevel::add_models: 7 models
+                    313253: =====================
+                    313253: QuadTreeLevel::add_models 313253 10 10
+                    313253: QuadTreeLevel::add_models: 3 models
+                    313254: =====================
+                    313254: QuadTreeLevel::add_models 313254 10 10
+                    313254: QuadTreeLevel::add_models: 2 models
+                  313250: ne: 313251
+                  313250: se: 313252
+                  313250: sw: 313253
+                  313250: nw: 313254
+                  313255: =====================
+                  313255: QuadTreeLevel::add_models 313255 9 38
+                  313255: QuadTreeLevel::add_models: 22 models
+                    313256: =====================
+                    313256: QuadTreeLevel::add_models 313256 10 22
+                    313256: QuadTreeLevel::add_models: 10 models
+                    313257: =====================
+                    313257: QuadTreeLevel::add_models 313257 10 22
+                    313257: QuadTreeLevel::add_models: 11 models
+                    313258: =====================
+                    313258: QuadTreeLevel::add_models 313258 10 22
+                    313258: QuadTreeLevel::add_models: 5 models
+                    313259: =====================
+                    313259: QuadTreeLevel::add_models 313259 10 22
+                    313259: QuadTreeLevel::add_models: 5 models
+                  313255: ne: 313256
+                  313255: se: 313257
+                  313255: sw: 313258
+                  313255: nw: 313259
+                  313260: =====================
+                  313260: QuadTreeLevel::add_models 313260 9 38
+                  313260: QuadTreeLevel::add_models: 12 models
+                    313261: =====================
+                    313261: QuadTreeLevel::add_models 313261 10 12
+                    313261: QuadTreeLevel::add_models: 8 models
+                    313262: =====================
+                    313262: QuadTreeLevel::add_models 313262 10 12
+                    313262: QuadTreeLevel::add_models: 4 models
+                    313263: =====================
+                    313263: QuadTreeLevel::add_models 313263 10 12
+                    313263: QuadTreeLevel::add_models: 0 models
+                    313264: =====================
+                    313264: QuadTreeLevel::add_models 313264 10 12
+                    313264: QuadTreeLevel::add_models: 6 models
+                  313260: ne: 313261
+                  313260: se: 313262
+                  313260: nw: 313264
+                  313265: =====================
+                  313265: QuadTreeLevel::add_models 313265 9 38
+                  313265: QuadTreeLevel::add_models: 2 models
+                    313266: =====================
+                    313266: QuadTreeLevel::add_models 313266 10 2
+                    313266: QuadTreeLevel::add_models: 1 models
+                    313267: =====================
+                    313267: QuadTreeLevel::add_models 313267 10 2
+                    313267: QuadTreeLevel::add_models: 2 models
+                    313268: =====================
+                    313268: QuadTreeLevel::add_models 313268 10 2
+                    313268: QuadTreeLevel::add_models: 2 models
+                    313269: =====================
+                    313269: QuadTreeLevel::add_models 313269 10 2
+                    313269: QuadTreeLevel::add_models: 1 models
+                  313265: ne: 313266
+                  313265: se: 313267
+                  313265: sw: 313268
+                  313265: nw: 313269
+                313249: ne: 313250
+                313249: se: 313255
+                313249: sw: 313260
+                313249: nw: 313265
+                313270: =====================
+                313270: QuadTreeLevel::add_models 313270 8 70
+                313270: QuadTreeLevel::add_models: 5 models
+                  313271: =====================
+                  313271: QuadTreeLevel::add_models 313271 9 5
+                  313271: QuadTreeLevel::add_models: 0 models
+                  313272: =====================
+                  313272: QuadTreeLevel::add_models 313272 9 5
+                  313272: QuadTreeLevel::add_models: 4 models
+                    313273: =====================
+                    313273: QuadTreeLevel::add_models 313273 10 4
+                    313273: QuadTreeLevel::add_models: 2 models
+                    313274: =====================
+                    313274: QuadTreeLevel::add_models 313274 10 4
+                    313274: QuadTreeLevel::add_models: 3 models
+                    313275: =====================
+                    313275: QuadTreeLevel::add_models 313275 10 4
+                    313275: QuadTreeLevel::add_models: 2 models
+                    313276: =====================
+                    313276: QuadTreeLevel::add_models 313276 10 4
+                    313276: QuadTreeLevel::add_models: 0 models
+                  313272: ne: 313273
+                  313272: se: 313274
+                  313272: sw: 313275
+                  313277: =====================
+                  313277: QuadTreeLevel::add_models 313277 9 5
+                  313277: QuadTreeLevel::add_models: 3 models
+                    313278: =====================
+                    313278: QuadTreeLevel::add_models 313278 10 3
+                    313278: QuadTreeLevel::add_models: 1 models
+                    313279: =====================
+                    313279: QuadTreeLevel::add_models 313279 10 3
+                    313279: QuadTreeLevel::add_models: 2 models
+                    313280: =====================
+                    313280: QuadTreeLevel::add_models 313280 10 3
+                    313280: QuadTreeLevel::add_models: 2 models
+                    313281: =====================
+                    313281: QuadTreeLevel::add_models 313281 10 3
+                    313281: QuadTreeLevel::add_models: 0 models
+                  313277: ne: 313278
+                  313277: se: 313279
+                  313277: sw: 313280
+                  313282: =====================
+                  313282: QuadTreeLevel::add_models 313282 9 5
+                  313282: QuadTreeLevel::add_models: 1 models
+                313270: se: 313272
+                313270: sw: 313277
+                313270: nw: 313282
+              313210: ne: 313211
+              313210: se: 313228
+              313210: sw: 313249
+              313210: nw: 313270
+              313283: =====================
+              313283: QuadTreeLevel::add_models 313283 7 83
+              313283: QuadTreeLevel::add_models: 19 models
+                313284: =====================
+                313284: QuadTreeLevel::add_models 313284 8 19
+                313284: QuadTreeLevel::add_models: 5 models
+                  313285: =====================
+                  313285: QuadTreeLevel::add_models 313285 9 5
+                  313285: QuadTreeLevel::add_models: 2 models
+                    313286: =====================
+                    313286: QuadTreeLevel::add_models 313286 10 2
+                    313286: QuadTreeLevel::add_models: 0 models
+                    313287: =====================
+                    313287: QuadTreeLevel::add_models 313287 10 2
+                    313287: QuadTreeLevel::add_models: 0 models
+                    313288: =====================
+                    313288: QuadTreeLevel::add_models 313288 10 2
+                    313288: QuadTreeLevel::add_models: 0 models
+                    313289: =====================
+                    313289: QuadTreeLevel::add_models 313289 10 2
+                    313289: QuadTreeLevel::add_models: 2 models
+                  313285: nw: 313289
+                  313290: =====================
+                  313290: QuadTreeLevel::add_models 313290 9 5
+                  313290: QuadTreeLevel::add_models: 3 models
+                    313291: =====================
+                    313291: QuadTreeLevel::add_models 313291 10 3
+                    313291: QuadTreeLevel::add_models: 0 models
+                    313292: =====================
+                    313292: QuadTreeLevel::add_models 313292 10 3
+                    313292: QuadTreeLevel::add_models: 2 models
+                    313293: =====================
+                    313293: QuadTreeLevel::add_models 313293 10 3
+                    313293: QuadTreeLevel::add_models: 2 models
+                    313294: =====================
+                    313294: QuadTreeLevel::add_models 313294 10 3
+                    313294: QuadTreeLevel::add_models: 0 models
+                  313290: se: 313292
+                  313290: sw: 313293
+                  313295: =====================
+                  313295: QuadTreeLevel::add_models 313295 9 5
+                  313295: QuadTreeLevel::add_models: 2 models
+                    313296: =====================
+                    313296: QuadTreeLevel::add_models 313296 10 2
+                    313296: QuadTreeLevel::add_models: 0 models
+                    313297: =====================
+                    313297: QuadTreeLevel::add_models 313297 10 2
+                    313297: QuadTreeLevel::add_models: 0 models
+                    313298: =====================
+                    313298: QuadTreeLevel::add_models 313298 10 2
+                    313298: QuadTreeLevel::add_models: 2 models
+                    313299: =====================
+                    313299: QuadTreeLevel::add_models 313299 10 2
+                    313299: QuadTreeLevel::add_models: 1 models
+                  313295: sw: 313298
+                  313295: nw: 313299
+                  313300: =====================
+                  313300: QuadTreeLevel::add_models 313300 9 5
+                  313300: QuadTreeLevel::add_models: 3 models
+                    313301: =====================
+                    313301: QuadTreeLevel::add_models 313301 10 3
+                    313301: QuadTreeLevel::add_models: 2 models
+                    313302: =====================
+                    313302: QuadTreeLevel::add_models 313302 10 3
+                    313302: QuadTreeLevel::add_models: 0 models
+                    313303: =====================
+                    313303: QuadTreeLevel::add_models 313303 10 3
+                    313303: QuadTreeLevel::add_models: 1 models
+                    313304: =====================
+                    313304: QuadTreeLevel::add_models 313304 10 3
+                    313304: QuadTreeLevel::add_models: 2 models
+                  313300: ne: 313301
+                  313300: sw: 313303
+                  313300: nw: 313304
+                313284: ne: 313285
+                313284: se: 313290
+                313284: sw: 313295
+                313284: nw: 313300
+                313305: =====================
+                313305: QuadTreeLevel::add_models 313305 8 19
+                313305: QuadTreeLevel::add_models: 7 models
+                  313306: =====================
+                  313306: QuadTreeLevel::add_models 313306 9 7
+                  313306: QuadTreeLevel::add_models: 2 models
+                    313307: =====================
+                    313307: QuadTreeLevel::add_models 313307 10 2
+                    313307: QuadTreeLevel::add_models: 0 models
+                    313308: =====================
+                    313308: QuadTreeLevel::add_models 313308 10 2
+                    313308: QuadTreeLevel::add_models: 0 models
+                    313309: =====================
+                    313309: QuadTreeLevel::add_models 313309 10 2
+                    313309: QuadTreeLevel::add_models: 2 models
+                    313310: =====================
+                    313310: QuadTreeLevel::add_models 313310 10 2
+                    313310: QuadTreeLevel::add_models: 0 models
+                  313306: sw: 313309
+                  313311: =====================
+                  313311: QuadTreeLevel::add_models 313311 9 7
+                  313311: QuadTreeLevel::add_models: 6 models
+                    313312: =====================
+                    313312: QuadTreeLevel::add_models 313312 10 6
+                    313312: QuadTreeLevel::add_models: 2 models
+                    313313: =====================
+                    313313: QuadTreeLevel::add_models 313313 10 6
+                    313313: QuadTreeLevel::add_models: 5 models
+                    313314: =====================
+                    313314: QuadTreeLevel::add_models 313314 10 6
+                    313314: QuadTreeLevel::add_models: 4 models
+                    313315: =====================
+                    313315: QuadTreeLevel::add_models 313315 10 6
+                    313315: QuadTreeLevel::add_models: 0 models
+                  313311: ne: 313312
+                  313311: se: 313313
+                  313311: sw: 313314
+                  313316: =====================
+                  313316: QuadTreeLevel::add_models 313316 9 7
+                  313316: QuadTreeLevel::add_models: 0 models
+                  313317: =====================
+                  313317: QuadTreeLevel::add_models 313317 9 7
+                  313317: QuadTreeLevel::add_models: 2 models
+                    313318: =====================
+                    313318: QuadTreeLevel::add_models 313318 10 2
+                    313318: QuadTreeLevel::add_models: 2 models
+                    313319: =====================
+                    313319: QuadTreeLevel::add_models 313319 10 2
+                    313319: QuadTreeLevel::add_models: 0 models
+                    313320: =====================
+                    313320: QuadTreeLevel::add_models 313320 10 2
+                    313320: QuadTreeLevel::add_models: 0 models
+                    313321: =====================
+                    313321: QuadTreeLevel::add_models 313321 10 2
+                    313321: QuadTreeLevel::add_models: 0 models
+                  313317: ne: 313318
+                313305: ne: 313306
+                313305: se: 313311
+                313305: nw: 313317
+                313322: =====================
+                313322: QuadTreeLevel::add_models 313322 8 19
+                313322: QuadTreeLevel::add_models: 4 models
+                  313323: =====================
+                  313323: QuadTreeLevel::add_models 313323 9 4
+                  313323: QuadTreeLevel::add_models: 1 models
+                  313324: =====================
+                  313324: QuadTreeLevel::add_models 313324 9 4
+                  313324: QuadTreeLevel::add_models: 2 models
+                    313325: =====================
+                    313325: QuadTreeLevel::add_models 313325 10 2
+                    313325: QuadTreeLevel::add_models: 2 models
+                    313326: =====================
+                    313326: QuadTreeLevel::add_models 313326 10 2
+                    313326: QuadTreeLevel::add_models: 2 models
+                    313327: =====================
+                    313327: QuadTreeLevel::add_models 313327 10 2
+                    313327: QuadTreeLevel::add_models: 0 models
+                    313328: =====================
+                    313328: QuadTreeLevel::add_models 313328 10 2
+                    313328: QuadTreeLevel::add_models: 0 models
+                  313324: ne: 313325
+                  313324: se: 313326
+                  313329: =====================
+                  313329: QuadTreeLevel::add_models 313329 9 4
+                  313329: QuadTreeLevel::add_models: 0 models
+                  313330: =====================
+                  313330: QuadTreeLevel::add_models 313330 9 4
+                  313330: QuadTreeLevel::add_models: 4 models
+                    313331: =====================
+                    313331: QuadTreeLevel::add_models 313331 10 4
+                    313331: QuadTreeLevel::add_models: 0 models
+                    313332: =====================
+                    313332: QuadTreeLevel::add_models 313332 10 4
+                    313332: QuadTreeLevel::add_models: 1 models
+                    313333: =====================
+                    313333: QuadTreeLevel::add_models 313333 10 4
+                    313333: QuadTreeLevel::add_models: 2 models
+                    313334: =====================
+                    313334: QuadTreeLevel::add_models 313334 10 4
+                    313334: QuadTreeLevel::add_models: 4 models
+                  313330: se: 313332
+                  313330: sw: 313333
+                  313330: nw: 313334
+                313322: ne: 313323
+                313322: se: 313324
+                313322: nw: 313330
+                313335: =====================
+                313335: QuadTreeLevel::add_models 313335 8 19
+                313335: QuadTreeLevel::add_models: 10 models
+                  313336: =====================
+                  313336: QuadTreeLevel::add_models 313336 9 10
+                  313336: QuadTreeLevel::add_models: 9 models
+                    313337: =====================
+                    313337: QuadTreeLevel::add_models 313337 10 9
+                    313337: QuadTreeLevel::add_models: 4 models
+                    313338: =====================
+                    313338: QuadTreeLevel::add_models 313338 10 9
+                    313338: QuadTreeLevel::add_models: 1 models
+                    313339: =====================
+                    313339: QuadTreeLevel::add_models 313339 10 9
+                    313339: QuadTreeLevel::add_models: 7 models
+                    313340: =====================
+                    313340: QuadTreeLevel::add_models 313340 10 9
+                    313340: QuadTreeLevel::add_models: 2 models
+                  313336: ne: 313337
+                  313336: se: 313338
+                  313336: sw: 313339
+                  313336: nw: 313340
+                  313341: =====================
+                  313341: QuadTreeLevel::add_models 313341 9 10
+                  313341: QuadTreeLevel::add_models: 1 models
+                  313342: =====================
+                  313342: QuadTreeLevel::add_models 313342 9 10
+                  313342: QuadTreeLevel::add_models: 4 models
+                    313343: =====================
+                    313343: QuadTreeLevel::add_models 313343 10 4
+                    313343: QuadTreeLevel::add_models: 2 models
+                    313344: =====================
+                    313344: QuadTreeLevel::add_models 313344 10 4
+                    313344: QuadTreeLevel::add_models: 0 models
+                    313345: =====================
+                    313345: QuadTreeLevel::add_models 313345 10 4
+                    313345: QuadTreeLevel::add_models: 3 models
+                    313346: =====================
+                    313346: QuadTreeLevel::add_models 313346 10 4
+                    313346: QuadTreeLevel::add_models: 2 models
+                  313342: ne: 313343
+                  313342: sw: 313345
+                  313342: nw: 313346
+                  313347: =====================
+                  313347: QuadTreeLevel::add_models 313347 9 10
+                  313347: QuadTreeLevel::add_models: 4 models
+                    313348: =====================
+                    313348: QuadTreeLevel::add_models 313348 10 4
+                    313348: QuadTreeLevel::add_models: 0 models
+                    313349: =====================
+                    313349: QuadTreeLevel::add_models 313349 10 4
+                    313349: QuadTreeLevel::add_models: 4 models
+                    313350: =====================
+                    313350: QuadTreeLevel::add_models 313350 10 4
+                    313350: QuadTreeLevel::add_models: 0 models
+                    313351: =====================
+                    313351: QuadTreeLevel::add_models 313351 10 4
+                    313351: QuadTreeLevel::add_models: 0 models
+                  313347: se: 313349
+                313335: ne: 313336
+                313335: se: 313341
+                313335: sw: 313342
+                313335: nw: 313347
+              313283: ne: 313284
+              313283: se: 313305
+              313283: sw: 313322
+              313283: nw: 313335
+              313352: =====================
+              313352: QuadTreeLevel::add_models 313352 7 83
+              313352: QuadTreeLevel::add_models: 7 models
+                313353: =====================
+                313353: QuadTreeLevel::add_models 313353 8 7
+                313353: QuadTreeLevel::add_models: 5 models
+                  313354: =====================
+                  313354: QuadTreeLevel::add_models 313354 9 5
+                  313354: QuadTreeLevel::add_models: 1 models
+                  313355: =====================
+                  313355: QuadTreeLevel::add_models 313355 9 5
+                  313355: QuadTreeLevel::add_models: 4 models
+                    313356: =====================
+                    313356: QuadTreeLevel::add_models 313356 10 4
+                    313356: QuadTreeLevel::add_models: 3 models
+                    313357: =====================
+                    313357: QuadTreeLevel::add_models 313357 10 4
+                    313357: QuadTreeLevel::add_models: 1 models
+                    313358: =====================
+                    313358: QuadTreeLevel::add_models 313358 10 4
+                    313358: QuadTreeLevel::add_models: 0 models
+                    313359: =====================
+                    313359: QuadTreeLevel::add_models 313359 10 4
+                    313359: QuadTreeLevel::add_models: 0 models
+                  313355: ne: 313356
+                  313355: se: 313357
+                  313360: =====================
+                  313360: QuadTreeLevel::add_models 313360 9 5
+                  313360: QuadTreeLevel::add_models: 0 models
+                  313361: =====================
+                  313361: QuadTreeLevel::add_models 313361 9 5
+                  313361: QuadTreeLevel::add_models: 0 models
+                313353: ne: 313354
+                313353: se: 313355
+                313362: =====================
+                313362: QuadTreeLevel::add_models 313362 8 7
+                313362: QuadTreeLevel::add_models: 5 models
+                  313363: =====================
+                  313363: QuadTreeLevel::add_models 313363 9 5
+                  313363: QuadTreeLevel::add_models: 4 models
+                    313364: =====================
+                    313364: QuadTreeLevel::add_models 313364 10 4
+                    313364: QuadTreeLevel::add_models: 4 models
+                    313365: =====================
+                    313365: QuadTreeLevel::add_models 313365 10 4
+                    313365: QuadTreeLevel::add_models: 0 models
+                    313366: =====================
+                    313366: QuadTreeLevel::add_models 313366 10 4
+                    313366: QuadTreeLevel::add_models: 2 models
+                    313367: =====================
+                    313367: QuadTreeLevel::add_models 313367 10 4
+                    313367: QuadTreeLevel::add_models: 1 models
+                  313363: ne: 313364
+                  313363: sw: 313366
+                  313363: nw: 313367
+                  313368: =====================
+                  313368: QuadTreeLevel::add_models 313368 9 5
+                  313368: QuadTreeLevel::add_models: 3 models
+                    313369: =====================
+                    313369: QuadTreeLevel::add_models 313369 10 3
+                    313369: QuadTreeLevel::add_models: 0 models
+                    313370: =====================
+                    313370: QuadTreeLevel::add_models 313370 10 3
+                    313370: QuadTreeLevel::add_models: 3 models
+                    313371: =====================
+                    313371: QuadTreeLevel::add_models 313371 10 3
+                    313371: QuadTreeLevel::add_models: 0 models
+                    313372: =====================
+                    313372: QuadTreeLevel::add_models 313372 10 3
+                    313372: QuadTreeLevel::add_models: 0 models
+                  313368: se: 313370
+                  313373: =====================
+                  313373: QuadTreeLevel::add_models 313373 9 5
+                  313373: QuadTreeLevel::add_models: 3 models
+                    313374: =====================
+                    313374: QuadTreeLevel::add_models 313374 10 3
+                    313374: QuadTreeLevel::add_models: 0 models
+                    313375: =====================
+                    313375: QuadTreeLevel::add_models 313375 10 3
+                    313375: QuadTreeLevel::add_models: 0 models
+                    313376: =====================
+                    313376: QuadTreeLevel::add_models 313376 10 3
+                    313376: QuadTreeLevel::add_models: 2 models
+                    313377: =====================
+                    313377: QuadTreeLevel::add_models 313377 10 3
+                    313377: QuadTreeLevel::add_models: 3 models
+                  313373: sw: 313376
+                  313373: nw: 313377
+                  313378: =====================
+                  313378: QuadTreeLevel::add_models 313378 9 5
+                  313378: QuadTreeLevel::add_models: 3 models
+                    313379: =====================
+                    313379: QuadTreeLevel::add_models 313379 10 3
+                    313379: QuadTreeLevel::add_models: 0 models
+                    313380: =====================
+                    313380: QuadTreeLevel::add_models 313380 10 3
+                    313380: QuadTreeLevel::add_models: 3 models
+                    313381: =====================
+                    313381: QuadTreeLevel::add_models 313381 10 3
+                    313381: QuadTreeLevel::add_models: 0 models
+                    313382: =====================
+                    313382: QuadTreeLevel::add_models 313382 10 3
+                    313382: QuadTreeLevel::add_models: 0 models
+                  313378: se: 313380
+                313362: ne: 313363
+                313362: se: 313368
+                313362: sw: 313373
+                313362: nw: 313378
+                313383: =====================
+                313383: QuadTreeLevel::add_models 313383 8 7
+                313383: QuadTreeLevel::add_models: 0 models
+                313384: =====================
+                313384: QuadTreeLevel::add_models 313384 8 7
+                313384: QuadTreeLevel::add_models: 0 models
+              313352: ne: 313353
+              313352: se: 313362
+              313385: =====================
+              313385: QuadTreeLevel::add_models 313385 7 83
+              313385: QuadTreeLevel::add_models: 5 models
+                313386: =====================
+                313386: QuadTreeLevel::add_models 313386 8 5
+                313386: QuadTreeLevel::add_models: 2 models
+                  313387: =====================
+                  313387: QuadTreeLevel::add_models 313387 9 2
+                  313387: QuadTreeLevel::add_models: 1 models
+                  313388: =====================
+                  313388: QuadTreeLevel::add_models 313388 9 2
+                  313388: QuadTreeLevel::add_models: 2 models
+                    313389: =====================
+                    313389: QuadTreeLevel::add_models 313389 10 2
+                    313389: QuadTreeLevel::add_models: 0 models
+                    313390: =====================
+                    313390: QuadTreeLevel::add_models 313390 10 2
+                    313390: QuadTreeLevel::add_models: 2 models
+                    313391: =====================
+                    313391: QuadTreeLevel::add_models 313391 10 2
+                    313391: QuadTreeLevel::add_models: 0 models
+                    313392: =====================
+                    313392: QuadTreeLevel::add_models 313392 10 2
+                    313392: QuadTreeLevel::add_models: 0 models
+                  313388: se: 313390
+                  313393: =====================
+                  313393: QuadTreeLevel::add_models 313393 9 2
+                  313393: QuadTreeLevel::add_models: 0 models
+                  313394: =====================
+                  313394: QuadTreeLevel::add_models 313394 9 2
+                  313394: QuadTreeLevel::add_models: 0 models
+                313386: ne: 313387
+                313386: se: 313388
+                313395: =====================
+                313395: QuadTreeLevel::add_models 313395 8 5
+                313395: QuadTreeLevel::add_models: 5 models
+                  313396: =====================
+                  313396: QuadTreeLevel::add_models 313396 9 5
+                  313396: QuadTreeLevel::add_models: 3 models
+                    313397: =====================
+                    313397: QuadTreeLevel::add_models 313397 10 3
+                    313397: QuadTreeLevel::add_models: 3 models
+                    313398: =====================
+                    313398: QuadTreeLevel::add_models 313398 10 3
+                    313398: QuadTreeLevel::add_models: 0 models
+                    313399: =====================
+                    313399: QuadTreeLevel::add_models 313399 10 3
+                    313399: QuadTreeLevel::add_models: 0 models
+                    313400: =====================
+                    313400: QuadTreeLevel::add_models 313400 10 3
+                    313400: QuadTreeLevel::add_models: 0 models
+                  313396: ne: 313397
+                  313401: =====================
+                  313401: QuadTreeLevel::add_models 313401 9 5
+                  313401: QuadTreeLevel::add_models: 4 models
+                    313402: =====================
+                    313402: QuadTreeLevel::add_models 313402 10 4
+                    313402: QuadTreeLevel::add_models: 1 models
+                    313403: =====================
+                    313403: QuadTreeLevel::add_models 313403 10 4
+                    313403: QuadTreeLevel::add_models: 0 models
+                    313404: =====================
+                    313404: QuadTreeLevel::add_models 313404 10 4
+                    313404: QuadTreeLevel::add_models: 0 models
+                    313405: =====================
+                    313405: QuadTreeLevel::add_models 313405 10 4
+                    313405: QuadTreeLevel::add_models: 4 models
+                  313401: ne: 313402
+                  313401: nw: 313405
+                  313406: =====================
+                  313406: QuadTreeLevel::add_models 313406 9 5
+                  313406: QuadTreeLevel::add_models: 2 models
+                    313407: =====================
+                    313407: QuadTreeLevel::add_models 313407 10 2
+                    313407: QuadTreeLevel::add_models: 1 models
+                    313408: =====================
+                    313408: QuadTreeLevel::add_models 313408 10 2
+                    313408: QuadTreeLevel::add_models: 0 models
+                    313409: =====================
+                    313409: QuadTreeLevel::add_models 313409 10 2
+                    313409: QuadTreeLevel::add_models: 0 models
+                    313410: =====================
+                    313410: QuadTreeLevel::add_models 313410 10 2
+                    313410: QuadTreeLevel::add_models: 1 models
+                  313406: ne: 313407
+                  313406: nw: 313410
+                  313411: =====================
+                  313411: QuadTreeLevel::add_models 313411 9 5
+                  313411: QuadTreeLevel::add_models: 0 models
+                313395: ne: 313396
+                313395: se: 313401
+                313395: sw: 313406
+                313412: =====================
+                313412: QuadTreeLevel::add_models 313412 8 5
+                313412: QuadTreeLevel::add_models: 3 models
+                  313413: =====================
+                  313413: QuadTreeLevel::add_models 313413 9 3
+                  313413: QuadTreeLevel::add_models: 0 models
+                  313414: =====================
+                  313414: QuadTreeLevel::add_models 313414 9 3
+                  313414: QuadTreeLevel::add_models: 3 models
+                    313415: =====================
+                    313415: QuadTreeLevel::add_models 313415 10 3
+                    313415: QuadTreeLevel::add_models: 2 models
+                    313416: =====================
+                    313416: QuadTreeLevel::add_models 313416 10 3
+                    313416: QuadTreeLevel::add_models: 0 models
+                    313417: =====================
+                    313417: QuadTreeLevel::add_models 313417 10 3
+                    313417: QuadTreeLevel::add_models: 0 models
+                    313418: =====================
+                    313418: QuadTreeLevel::add_models 313418 10 3
+                    313418: QuadTreeLevel::add_models: 1 models
+                  313414: ne: 313415
+                  313414: nw: 313418
+                  313419: =====================
+                  313419: QuadTreeLevel::add_models 313419 9 3
+                  313419: QuadTreeLevel::add_models: 3 models
+                    313420: =====================
+                    313420: QuadTreeLevel::add_models 313420 10 3
+                    313420: QuadTreeLevel::add_models: 1 models
+                    313421: =====================
+                    313421: QuadTreeLevel::add_models 313421 10 3
+                    313421: QuadTreeLevel::add_models: 0 models
+                    313422: =====================
+                    313422: QuadTreeLevel::add_models 313422 10 3
+                    313422: QuadTreeLevel::add_models: 0 models
+                    313423: =====================
+                    313423: QuadTreeLevel::add_models 313423 10 3
+                    313423: QuadTreeLevel::add_models: 2 models
+                  313419: ne: 313420
+                  313419: nw: 313423
+                  313424: =====================
+                  313424: QuadTreeLevel::add_models 313424 9 3
+                  313424: QuadTreeLevel::add_models: 0 models
+                313412: se: 313414
+                313412: sw: 313419
+                313425: =====================
+                313425: QuadTreeLevel::add_models 313425 8 5
+                313425: QuadTreeLevel::add_models: 0 models
+              313385: ne: 313386
+              313385: se: 313395
+              313385: sw: 313412
+            313209: ne: 313210
+            313209: se: 313283
+            313209: sw: 313352
+            313209: nw: 313385
+          312561: ne: 312562
+          312561: se: 312799
+          312561: sw: 312964
+          312561: nw: 313209
+\ QuadTree build 257900 - 00:00:13| QuadTree build 259119 - 00:00:13/ QuadTree build 259119 - 00:00:13- QuadTree build 260370 - 00:00:13\ QuadTree build 262650 - 00:00:13| QuadTree build 265669 - 00:00:13/ QuadTree build 269687 - 00:00:14- QuadTree build 270755 - 00:00:14\ QuadTree build 272708 - 00:00:14| QuadTree build 274974 - 00:00:14/ QuadTree build 277683 - 00:00:14- QuadTree build 280602 - 00:00:14\ QuadTree build 283400 - 00:00:14| QuadTree build 285997 - 00:00:14/ QuadTree build 288016 - 00:00:14- QuadTree build 291229 - 00:00:14\ QuadTree build 293828 - 00:00:15| QuadTree build 296749 - 00:00:15/ QuadTree build 298769 - 00:00:15- QuadTree build 301039 - 00:00:15\ QuadTree build 303041 - 00:00:15| QuadTree build 304892 - 00:00:15/ QuadTree build 306835 - 00:00:15- QuadTree build 307984 - 00:00:15\ QuadTree build 310119 - 00:00:15| QuadTree build 312208 - 00:00:16/ QuadTree build 313892 - 00:00:16- QuadTree build 315598 - 00:00:16\ QuadTree build 317697 - 00:00:16| QuadTree build 319411 - 00:00:16/ QuadTree build 322159 - 00:00:16- QuadTree build 323650 - 00:00:16\ QuadTree build 325520 - 00:00:16| QuadTree build 326861 - 00:00:16/ QuadTree build 329661 - 00:00:16- QuadTree build 332070 - 00:00:17\ QuadTree build 334001 - 00:00:17| QuadTree build 335688 - 00:00:17/ QuadTree build 337541 - 00:00:17- QuadTree build 339176 - 00:00:17\ QuadTree build 341731 - 00:00:17| QuadTree build 342594 - 00:00:17/ QuadTree build 343681 - 00:00:17- QuadTree build 346602 - 00:00:17\ QuadTree build 349843 - 00:00:18| QuadTree build 352420 - 00:00:18/ QuadTree build 353963 - 00:00:18- QuadTree build 356108 - 00:00:18\ QuadTree build 358148 - 00:00:18| QuadTree build 359757 - 00:00:18/ QuadTree build 361590 - 00:00:18- QuadTree build 363436 - 00:00:18\ QuadTree build 365313 - 00:00:18| QuadTree build 367160 - 00:00:18/ QuadTree build 369154 - 00:00:19- QuadTree build 370588 - 00:00:19\ QuadTree build 372604 - 00:00:19| QuadTree build 374465 - 00:00:19/ QuadTree build 377051 - 00:00:19- QuadTree build 377466 - 00:00:19\ QuadTree build 377466 - 00:00:19| QuadTree build 377467 - 00:00:19/ QuadTree build 377467 - 00:00:19- QuadTree build 377467 - 00:00:20\ QuadTree build 377467 - 00:00:20| QuadTree build 377467 - 00:00:20/ QuadTree build 377467 - 00:00:20
+QuadTree build - finished at 377468
+\ QuadTree to json 0 - 00:00:00| QuadTree to json 5913 - 00:00:00/ QuadTree to json 12079 - 00:00:00- QuadTree to json 17421 - 00:00:00\ QuadTree to json 20898 - 00:00:00| QuadTree to json 25173 - 00:00:00/ QuadTree to json 27152 - 00:00:00- QuadTree to json 30910 - 00:00:00\ QuadTree to json 35095 - 00:00:00| QuadTree to json 37602 - 00:00:00/ QuadTree to json 40540 - 00:00:01- QuadTree to json 45460 - 00:00:01\ QuadTree to json 48770 - 00:00:01| QuadTree to json 53609 - 00:00:01/ QuadTree to json 58144 - 00:00:01- QuadTree to json 62015 - 00:00:01\ QuadTree to json 65614 - 00:00:01| QuadTree to json 68172 - 00:00:01/ QuadTree to json 70473 - 00:00:01- QuadTree to json 75757 - 00:00:01\ QuadTree to json 79406 - 00:00:02| QuadTree to json 82995 - 00:00:02/ QuadTree to json 86721 - 00:00:02- QuadTree to json 90230 - 00:00:02\ QuadTree to json 95076 - 00:00:02| QuadTree to json 99125 - 00:00:02/ QuadTree to json 106547 - 00:00:02- QuadTree to json 110721 - 00:00:02\ QuadTree to json 118635 - 00:00:02| QuadTree to json 124321 - 00:00:03/ QuadTree to json 126503 - 00:00:03- QuadTree to json 131105 - 00:00:03\ QuadTree to json 136388 - 00:00:03| QuadTree to json 143002 - 00:00:03/ QuadTree to json 146710 - 00:00:03- QuadTree to json 151089 - 00:00:03\ QuadTree to json 153816 - 00:00:03| QuadTree to json 156859 - 00:00:03/ QuadTree to json 159319 - 00:00:03- QuadTree to json 163774 - 00:00:04\ QuadTree to json 167246 - 00:00:04| QuadTree to json 169787 - 00:00:04/ QuadTree to json 174598 - 00:00:04- QuadTree to json 178060 - 00:00:04\ QuadTree to json 180444 - 00:00:04| QuadTree to json 183116 - 00:00:04/ QuadTree to json 186426 - 00:00:04- QuadTree to json 193272 - 00:00:04\ QuadTree to json 197157 - 00:00:05| QuadTree to json 199542 - 00:00:05/ QuadTree to json 203100 - 00:00:05- QuadTree to json 208494 - 00:00:05\ QuadTree to json 212293 - 00:00:05| QuadTree to json 216370 - 00:00:05/ QuadTree to json 221356 - 00:00:05- QuadTree to json 228540 - 00:00:05\ QuadTree to json 233996 - 00:00:05| QuadTree to json 239843 - 00:00:05/ QuadTree to json 245008 - 00:00:06- QuadTree to json 248129 - 00:00:06\ QuadTree to json 253464 - 00:00:06| QuadTree to json 260334 - 00:00:06/ QuadTree to json 265682 - 00:00:06- QuadTree to json 269689 - 00:00:06\ QuadTree to json 270858 - 00:00:06| QuadTree to json 275343 - 00:00:06/ QuadTree to json 280557 - 00:00:06- QuadTree to json 284664 - 00:00:06\ QuadTree to json 286922 - 00:00:07| QuadTree to json 290485 - 00:00:07/ QuadTree to json 294454 - 00:00:07- QuadTree to json 297344 - 00:00:07\ QuadTree to json 300920 - 00:00:07| QuadTree to json 304402 - 00:00:07/ QuadTree to json 306832 - 00:00:07- QuadTree to json 310574 - 00:00:07\ QuadTree to json 314219 - 00:00:07| QuadTree to json 316488 - 00:00:08/ QuadTree to json 319982 - 00:00:08- QuadTree to json 323432 - 00:00:08\ QuadTree to json 325716 - 00:00:08| QuadTree to json 330856 - 00:00:08/ QuadTree to json 333496 - 00:00:08- QuadTree to json 336057 - 00:00:08\ QuadTree to json 339696 - 00:00:08| QuadTree to json 344684 - 00:00:08/ QuadTree to json 348657 - 00:00:08- QuadTree to json 353832 - 00:00:09\ QuadTree to json 358704 - 00:00:09| QuadTree to json 362108 - 00:00:09/ QuadTree to json 366587 - 00:00:09- QuadTree to json 370085 - 00:00:09\ QuadTree to json 376832 - 00:00:09| QuadTree to json 377468 - 00:00:09
+QuadTree to json - finished at 377468
+\ QuadTree grid layout 0 - 00:00:00
+QuadTree grid layout - finished at 377468

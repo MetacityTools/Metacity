@@ -1,16 +1,18 @@
 #include "attribute.hpp"
 #include "triangulation.hpp"
 
-
 Attribute::Attribute() : dtype(AttributeType::NONE) {}
 
 void Attribute::allowedAttributeType(AttributeType type)
 {
-    if (this->dtype != AttributeType::NONE && this->dtype != type)
+    if (this->dtype == AttributeType::NONE)
+    {
+        this->dtype = type;
+    }
+    else if (this->dtype != type)
     {
         throw runtime_error("Attribute type already set to a different type");
     }
-    this->dtype = type;
 }
 
 void Attribute::push_point2D(const vector<tfloat> &ivertices)
@@ -154,7 +156,7 @@ const tvec3 &Attribute::operator[](const size_t index) const
 
 BBox Attribute::bbox() const
 {
-    return BBox{vmin(), vmax()};
+    return BBox(vmin(), vmax());
 }
 
 tvec3 Attribute::vmin() const
