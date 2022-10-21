@@ -19,10 +19,6 @@ using namespace std;
 
 
 PYBIND11_MODULE(geometry, m) {
-    py::enum_<MetadataMode>(m, "MetadataMode", py::arithmetic())
-        .value("AVERAGE", MetadataMode::AVERAGE)
-        .value("MAX_AREA", MetadataMode::MAX_AREA);
-
     py::class_<Attribute, std::shared_ptr<Attribute>>(m, "Attribute")
         .def(py::init<>())
         .def("push_point2D", &Attribute::push_point2D)
@@ -67,9 +63,8 @@ PYBIND11_MODULE(geometry, m) {
         .def("update", &Progress::update);
 
     py::class_<QuadTree, std::shared_ptr<QuadTree>>(m, "QuadTree")
-        .def(py::init<const vector<shared_ptr<Model>> &, MetadataMode, size_t>(), py::arg("models"), py::arg("num_values_mode") = MetadataMode::AVERAGE, py::arg("max_depth") = 10)
-        .def(py::init<shared_ptr<Layer>, MetadataMode, size_t>(), py::arg("layer"), py::arg("num_values_mode") = MetadataMode::AVERAGE, py::arg("max_depth") = 10)
+        .def(py::init<const vector<shared_ptr<Model>> &, size_t>())
+        .def(py::init<shared_ptr<Layer>, size_t>())
         .def("merge_at_level", &QuadTree::merge_at_level)
-        .def("filter_metadata", &QuadTree::filter_metadata)
         .def("to_json", &QuadTree::to_json, py::arg("dirname"), py::arg("yield_models_at_level"), py::arg("store_metadata") = true);
 }

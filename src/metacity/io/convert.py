@@ -1,20 +1,21 @@
-from metacity.io.geobuf import encode, decode
-from metacity.utils.filesystem import read_json, read_pbf
+from metacity.utils.filesystem import read_json, filename, change_suffix, concat
+import metacity.io.pyshp.pyshp as shapefile
+from metacity.io.geobuf import encode
 
 
-def json_to_pbf(geojson_file, output_file: str):
+
+def shp_to_pbf(shp_file: str, buff_dir: str):
     """
     Convert a SHP file to a PBF file.
     """
-    data = read_json(geojson_file)
-    with open(output_file, 'wb') as f:
-        f.write(encode(data))
+
+    shapefile.VERBOSE = False
+    sf = shapefile.Reader(shp_file)
+    geo = sf.shapeRecords().__geo_interface__
+    buff_file = change_suffix(filename(shp_file), "pbf")
+    buff_file = concat(buff_dir, buff_file)
+    with open(buff_file, 'wb') as f:
+        f.write(encode(geo))
 
 
-def pbf_to_json(pbf_file: str):
-    """
-    Convert a SHP file to a PBF file.
-    """
-    data = read_pbf(pbf_file)
-    return decode(data)
 

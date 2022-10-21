@@ -1,5 +1,6 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shapefile
+from metacity.io.convert import shp_to_pbf
 
 import metacity.utils.filesystem as fs
 from metacity.geometry import Progress 
@@ -26,5 +27,10 @@ def parse_recursively(directory: str):
         if submodels is not None:
             models.extend(submodels)
     return models
+
+
+def convert_to_pbf(file: str, output: str):
+    if file.endswith('.shp'):
+        shp_to_pbf(file, output)
 
         

@@ -57,6 +57,7 @@ BVH::BVH(const vector<shared_ptr<Model>> & models_)
 {
 
     BBox main;
+    set_empty(main);
 
     for (auto & model : models_)
     {
@@ -72,8 +73,8 @@ BVH::BVH(const vector<shared_ptr<Model>> & models_)
         for (size_t i = 0, j = 0; i < attr->size(); i += 3, ++j)
         {
             auto node = make_shared<BVHLeafNode>((*attr)[i], (*attr)[i + 1], (*attr)[i + 2]);
-            node->bbox.for_triangle((*attr)[i], (*attr)[i + 1], (*attr)[i + 2]);
-            node->bbox.extend(node->bbox);
+            for_triangle(&((*attr)[i]), node->bbox);
+            extend(main, node->bbox);
             node->type = BVHNodeType::leaf;
             nodes.push_back(node);
         }
@@ -90,7 +91,7 @@ shared_ptr<BVHNode> BVH::build_two_nodes(const BBox &box, const size_t start, co
     node->bbox = box;
     const auto l = nodes[start];
     const auto r = nodes[start + 1];
-    node->bbox.for_bboxes(l->bbox, r->bbox);
+    for_bboxes(l->bbox, r->bbox, node->bbox);
     const tvec3 lc = l->bbox.centroid();
     const tvec3 rc = r->bbox.centroid();
 
@@ -109,18 +110,21 @@ shared_ptr<BVHNode> BVH::build_two_nodes(const BBox &box, const size_t start, co
 
 size_t BVH::classify(const tfloat split, BBox &left, BBox &right, const size_t start, const size_t end, const uint8_t axis)
 {
+    set_empty(left);
+    set_empty(right);
+
     tfloat mid;
     size_t firstRight = start;
     for (size_t i = start; i < end; i++)
     {
-        mid = nodes[i]->bbox.midpoint(axis);
+        mid = midpoint(nodes[i]->bbox, axis);
         if (mid >= split)
         {
-            right.extend(nodes[i]->bbox);
+            extend(right, nodes[i]->bbox);
         }
         else
         {
-            left.extend(nodes[i]->bbox);
+            extend(left, nodes[i]->bbox);
             swap(nodes[i], nodes[firstRight]);
             ++firstRight;
         }
@@ -131,22 +135,22 @@ size_t BVH::classify(const tfloat split, BBox &left, BBox &right, const size_t s
 
 size_t BVH::handle_special_case(BBox &left, BBox &right, const size_t start, const size_t end, const uint8_t axis)
 {
-    left.set_empty();
-    right.set_empty();
+    set_empty(left);
+    set_empty(right);
 
     tfloat minMid = FLT_MAX;
     tfloat mid;
 
     for (size_t i = start; i < end; i++)
     {
-        mid = nodes[i]->bbox.midpoint(axis);
+        mid = midpoint(nodes[i]->bbox, axis);
         if (mid < minMid)
             minMid = mid, swap(nodes[i], nodes[start]);
     }
 
-    left.extend(nodes[start]->bbox);
+    extend(left, nodes[start]->bbox);
     for (size_t i = start + 1; i < end; i++)
-        right.extend(nodes[i]->bbox);
+        extend(right, nodes[i]->bbox);
 
     return start + 1;
 }
@@ -156,7 +160,7 @@ shared_ptr<BVHNode> BVH::build_general(const BBox &box, const size_t start, cons
     auto node = make_shared<BVHInternalNode>();
     node->bbox = box;
     BBox left, right;
-    tfloat split = box.midpoint(axis);
+    tfloat split = midpoint(box, axis);
     size_t firstRight = classify(split, left, right, start, end, axis);
 
     // maybe?
