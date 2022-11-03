@@ -1,5 +1,6 @@
 from metacity.io.geojson import parse as parse_geojson
 from metacity.io.shapefile import parse as parse_shapefile
+from metacity.io.obj import parse as parse_obj
 
 import metacity.utils.filesystem as fs
 from metacity.geometry import Progress 
@@ -15,6 +16,8 @@ def parse(file: str, progress: Progress = None):
         return parse_shapefile(file, progress)
     elif file.endswith('.json'):
         return parse_geojson(file, progress)
+    elif file.endswith('.obj'):
+        return parse_obj(file, progress)
 
 
 

@@ -228,14 +228,14 @@ void QuadTreeLevel::consolidate_aggregated_metadata(const MetadataAggregate &met
         const string &key = it->first;
         const auto &values = it->second;
         
-        size_t max_count = 0;
+        size_t max_area = 0;
         string max_value;
         for (const auto & value : values)
         {
-            if (value.second > max_count)
+            if (value.second > max_area)
             {
                 max_value = value.first;
-                max_count = value.second;
+                max_area = value.second;
             }
         }
         metadata[key] = max_value;
