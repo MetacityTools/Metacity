@@ -17,6 +17,7 @@ endif()
 
 
 # Now we can find pybind11
+find_package(CGAL)
 find_package(pybind11 CONFIG REQUIRED)
 
 #add_compile_options(-Wall -pedantic -g) 
