@@ -5,8 +5,8 @@ import metacity.geometry as mg
 from metacity.processor.config import Config
 
 
-def load_layer(config: Config):
-    models = io.parse(config.input)
+def load_layer(path: str):
+    models = io.parse(path)
     if models is None:
         raise ValueError("No models were loaded")
     print(f"Loaded {len(models)} models")
@@ -20,7 +20,7 @@ def export_tree(config: Config, layer: mg.Layer):
     print(f"Building tree with config: {treeConfig.config}")
     tree = mg.QuadTree(layer, treeConfig.aggregate_mode, treeConfig.max_depth)
     if treeConfig.merge_tiles:
-        print("Merging tiles")
+        print(f"Merging tiles at level {treeConfig.tile_level}")
         tree.merge_at_level(treeConfig.tile_level)
     
     print(f"Writing tree to {config.output}")
@@ -43,14 +43,15 @@ def apply_modifiers(config: Config, layer: mg.Layer):
         layer.move_to_plane_z(config.move_to_plane_z)
 
     if config.map_to_layer is not None:
+        #SUS - to investigate
         print(f"Mapping models to layer: {config.map_to_layer}")
         mapLayer = load_layer(config.map_to_layer)
         layer.map_to_layer(mapLayer)
 
 
 def apply(config: Config):
-    print(f"Applying config {config}")
-    layer = load_layer(config)
+    print(f"Applying config {config.config}")
+    layer = load_layer(config.input)
     apply_modifiers(config, layer)
     export_tree(config, layer)
 
