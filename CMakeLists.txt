@@ -17,6 +17,7 @@ endif()
 
 
 # Now we can find pybind11
+find_package(CGAL)
 find_package(pybind11 CONFIG REQUIRED)
 find_package(CGAL CONFIG COMPONENTS REQUIRED)
 

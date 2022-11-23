@@ -1,6 +1,10 @@
 #include "modifiers.hpp"
 #include "graham.hpp"
 #include "bvh.hpp"
+
+//#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+//#include <CGAL/Boolean_set_operations_2.h>
+
 #include "../progress.hpp"
 
 
@@ -76,6 +80,7 @@ namespace modifiers
         simple_model->set_metadata(model->get_metadata());
         return simple_model;
     }
+
 
     shared_ptr<Model> simplify_tight_hull(shared_ptr<Model> model)
     {
