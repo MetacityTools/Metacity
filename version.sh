@@ -13,7 +13,7 @@ if [ -z "$GIT_VERSION" ]; then
 fi
 CURRENT_VERSION=$(python3 setup.py --version) 
 echo "The latest versions:"
-echo "    github (release): $GIT_VERSION"
+echo "    github (release):  $GIT_VERSION"
 echo "               local:  $CURRENT_VERSION"
 
 git checkout dev 1>/dev/null 2>/dev/null

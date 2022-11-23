@@ -1,6 +1,25 @@
 from typing import List
 from metacity.geometry import Attribute, Model, Progress
 
+
+def swapYZ(file_in: str, file_out: str):
+    with open(file_in, 'r') as f:
+        lines = f.readlines()
+    contents = ""
+
+    for line in lines:
+        if line.startswith('v '):
+            line = line.split()
+            line[2], line[3] = str(-float(line[3])), line[2]
+            line = " ".join(line) + "\n"
+            contents += line
+        else:
+            contents += line
+
+    with open(file_out, 'w') as f:
+        f.write(contents)
+
+
 def load_obj(file: str):
     with open(file, 'r') as f:
         lines = f.readlines()
