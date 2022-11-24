@@ -6,10 +6,11 @@ using namespace std;
 class Layer {
 public:
     Layer();
+    Layer(const vector<shared_ptr<Model>> & models);
     void add_model(shared_ptr<Model> model);
     void add_models(const vector<shared_ptr<Model>> & models);
     
-    void map_to_height(shared_ptr<Layer> height_layer);
+    void map_to_layer(shared_ptr<Layer> height_layer);
 
     const vector<shared_ptr<Model>> & get_models() const;
     void to_gltf(const string &filename) const;

@@ -17,13 +17,14 @@ endif()
 
 
 # Now we can find pybind11
+find_package(CGAL)
 find_package(pybind11 CONFIG REQUIRED)
+find_package(CGAL CONFIG COMPONENTS REQUIRED)
 
 #add_compile_options(-Wall -pedantic -g) 
 add_compile_options(-Wall -pedantic -O3)
 #add_link_options(-fsanitize=address -shared-libasan -pthread)
 add_link_options(-pthread)
-
 
 pybind11_add_module(geometry        src/metacity/geometry/geometry.cpp 
                                     src/metacity/geometry/types.hpp
@@ -50,4 +51,5 @@ pybind11_add_module(geometry        src/metacity/geometry/geometry.cpp
                                     src/metacity/geometry/mesh/triangulation.hpp
                                     src/metacity/geometry/mesh/triangulation.cpp)
 
+target_link_libraries(geometry PRIVATE CGAL::CGAL)
 install(TARGETS geometry DESTINATION .)

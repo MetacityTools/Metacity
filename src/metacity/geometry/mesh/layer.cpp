@@ -7,6 +7,10 @@
 
 Layer::Layer() {}
 
+Layer::Layer(const vector<shared_ptr<Model>> & models) {
+    this->models = models;
+}
+
 void Layer::add_model(shared_ptr<Model> model) {
     models.push_back(model);
 }
@@ -19,7 +23,7 @@ const vector<shared_ptr<Model>> & Layer::get_models() const {
     return models;
 }
 
-void Layer::map_to_height(shared_ptr<Layer> height_layer) {
+void Layer::map_to_layer(shared_ptr<Layer> height_layer) {
     auto bvh = BVH(height_layer->get_models());
     modifiers::map_to_height(bvh, models);
 }

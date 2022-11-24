@@ -23,6 +23,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest pytest-cov
+        sudo apt-get install libcgal-dev
 
     - name: Build Geometry package
       run: |

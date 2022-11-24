@@ -1,7 +1,16 @@
 #include "modifiers.hpp"
 #include "graham.hpp"
 #include "bvh.hpp"
+
+//#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+//#include <CGAL/Boolean_set_operations_2.h>
+
 #include "../progress.hpp"
+
+
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Boolean_set_operations_2.h>
+
 
 namespace modifiers
 {
@@ -70,6 +79,12 @@ namespace modifiers
         simple_model->add_attribute("POSITION", new_attribute);
         simple_model->set_metadata(model->get_metadata());
         return simple_model;
+    }
+
+
+    shared_ptr<Model> simplify_tight_hull(shared_ptr<Model> model)
+    {
+        return nullptr;
     }
 
     shared_ptr<Model> merge_models(const vector<shared_ptr<Model>> &models)

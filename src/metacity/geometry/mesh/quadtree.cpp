@@ -228,14 +228,14 @@ void QuadTreeLevel::consolidate_aggregated_metadata(const MetadataAggregate &met
         const string &key = it->first;
         const auto &values = it->second;
         
-        size_t max_count = 0;
+        size_t max_area = 0;
         string max_value;
         for (const auto & value : values)
         {
-            if (value.second > max_count)
+            if (value.second > max_area)
             {
                 max_value = value.first;
-                max_count = value.second;
+                max_area = value.second;
             }
         }
         metadata[key] = max_value;
@@ -355,11 +355,11 @@ void QuadTreeLevel::quad_merge(size_t merge_models_at_level)
     }
 }
 
-void QuadTreeLevel::filter_metadata(const vector<string> &keys)
+void QuadTreeLevel::filter_metadata(const vector<string> &keys_to_keep)
 {
     for (auto it = metadata.begin(); it != metadata.end();)
     {
-        if (find(keys.begin(), keys.end(), it.key()) == keys.end())
+        if (find(keys_to_keep.begin(), keys_to_keep.end(), it.key()) == keys_to_keep.end())
         {
             it = metadata.erase(it);
         }
@@ -370,13 +370,13 @@ void QuadTreeLevel::filter_metadata(const vector<string> &keys)
     }
 
     if (ne != nullptr)
-        ne->filter_metadata(keys);
+        ne->filter_metadata(keys_to_keep);
     if (se != nullptr)
-        se->filter_metadata(keys);
+        se->filter_metadata(keys_to_keep);
     if (sw != nullptr)
-        sw->filter_metadata(keys);
+        sw->filter_metadata(keys_to_keep);
     if (nw != nullptr)
-        nw->filter_metadata(keys);
+        nw->filter_metadata(keys_to_keep);
 }
 
 void QuadTreeLevel::to_gltf(const string &filename) const

@@ -1,0 +1,22 @@
+version: "3.7"
+
+services:
+  metacity:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+        resources:
+            limits:
+              cpus: '0.75'
+              memory: 12G
+            reservations:
+              cpus: '0.25'
+              memory: 1G
+    volumes:
+      - type: bind
+        source: ./datasets
+        target: /datasets
+      - type: bind
+        source: ./config
+        target: /config
