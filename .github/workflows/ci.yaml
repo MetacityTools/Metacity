@@ -99,9 +99,10 @@ jobs:
 
 
   build-image:
-    name: Upload to Container Registry
-    runs-on: ubuntu-latest
+    name: Build Docker Image test
+    if: github.event_name == 'push' && contains(github.ref, 'release')
     needs: test
+    runs-on: ubuntu-latest
     permissions:
       contents: read
 
