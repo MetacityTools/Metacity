@@ -2,7 +2,7 @@
 This module tests the functionality of shapefile.py.
 """
 # std lib imports
-import os.path
+import os
 import sys
 from pathlib import Path
 
@@ -925,6 +925,10 @@ def test_reader_corrupt_files(pyshp_shapefiles):
         sf.shp.seek(0, 2)
         end = sf.shp.tell()
         assert (end - stopped) == 5
+
+    os.remove(basename + ".shp")
+    os.remove(basename + ".shx")
+    os.remove(basename + ".dbf")
 
 
 def test_bboxfilter_shape(pyshp_shapefiles):
