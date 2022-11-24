@@ -46,11 +46,43 @@ jobs:
         pip install coveralls
         coveralls
 
+  build-image:
+    name: Build Docker Image test
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: false
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
 
   make-wheels:
     name: Make ${{ matrix.os }} wheels
     if: github.event_name == 'push' && contains(github.ref, 'release')
-    needs: test
+    needs: build-image
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -79,7 +111,7 @@ jobs:
   make-sdist:
     name: Make source distribution
     if: github.event_name == 'push' && contains(github.ref, 'release')
-    needs: test
+    needs: build-image
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -98,43 +130,9 @@ jobs:
         path: dist/*.tar.gz
 
 
-  build-image:
-    name: Build Docker Image test
-    if: github.event_name == 'push' && contains(github.ref, 'release')
-    needs: test
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
-
   tag-and-release:
     name: Tag commit and create a release
-    needs: [make-wheels, make-sdist, build-image]
+    needs: [make-wheels, make-sdist]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
