@@ -1,4 +1,4 @@
-name: "Publish to Container Registry"
+name: "Get Version"
 
 on:
   workflow_dispatch: {}
@@ -10,7 +10,6 @@ env:
 jobs:
   version:
     name: Get version to ENV
-    needs: [make-wheels, make-sdist]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -29,7 +28,7 @@ jobs:
 
     - name: "Get release version"
       run: |
-        CURRENT_VERSION=$(python3 setup.py --version) 
+        CURRENT_VERSION=$(python3 setup.py --version | tail -1) 
         echo "Current version: $CURRENT_VERSION"
         echo "CURRENT_VERSION=v$CURRENT_VERSION" >> $GITHUB_ENV
 
