@@ -170,6 +170,25 @@ bool Model::overlaps(const BBox &box)
                 return true;
             }
         }
+    } else if (positions->geom_type() == AttributeType::SEGMENT) {
+        //line
+        for (size_t i = 0; i < positions->size(); i += 2) {
+            auto p0 = (*positions)[i];
+            auto p1 = (*positions)[i + 1];
+            if (box.overlaps(p0, p1)) {
+                return true;
+            }
+        }
+    } else if (positions->geom_type() == AttributeType::POINT) {
+        //point
+        for (size_t i = 0; i < positions->size(); i++) {
+            auto p0 = (*positions)[i];
+            if (box.overlaps(p0)) {
+                return true;
+            }
+        }
+    } else {
+        throw runtime_error("Unsupported geometry type in model/box overlap");
     }
 
     return false;

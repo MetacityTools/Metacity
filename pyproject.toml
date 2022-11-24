@@ -16,9 +16,12 @@ build-verbosity = 1
 
 [tool.cibuildwheel.macos]
 archs = ["universal2"]
+before-all = "brew install cgal"
 
 [tool.cibuildwheel.linux]
 archs = ["auto64"]
+before-all = "sudo apt-get install libcgal-dev"
 
 [tool.cibuildwheel.windows]
 archs = ["auto64"]
+before-all = "vcpkg install cgal"

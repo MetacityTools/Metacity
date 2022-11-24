@@ -7,6 +7,11 @@
 
 #include "../progress.hpp"
 
+
+#include <CGAL/Exact_predicates_exact_constructions_kernel.h>
+#include <CGAL/Boolean_set_operations_2.h>
+
+
 namespace modifiers
 {
     shared_ptr<Model> simplify_envelope(shared_ptr<Model> model)
@@ -79,9 +84,6 @@ namespace modifiers
 
     shared_ptr<Model> simplify_tight_hull(shared_ptr<Model> model)
     {
-
-
-
         return nullptr;
     }
 

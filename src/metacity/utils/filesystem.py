@@ -25,7 +25,11 @@ def recreate_dir(dir: str):
 
 
 def file_exists(file: str):
-    return os.path.exists(file)
+    return os.path.exists(file) and os.path.isfile(file)
+
+
+def dir_exists(dir: str):
+    return os.path.exists(dir) and os.path.isdir(dir)
 
 
 def list_subdirectories(dir: str):

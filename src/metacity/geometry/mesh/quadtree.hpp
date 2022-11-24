@@ -23,7 +23,7 @@ public:
     nlohmann::json to_json(const string & dirname, size_t yield_models_at_level, bool store_metadata, Progress & progress) const; 
     void grid_layout(const string & dirname, size_t yield_models_at_level, nlohmann::json  & layout, Progress & progress) const;
     void quad_merge(size_t merge_models_at_level);
-    void filter_metadata(const vector<string> & keys);
+    void filter_metadata(const vector<string> & keys_to_keep);
 protected:
     static size_t gen_id() { return id_counter++; }
     static size_t id_counter;
@@ -55,7 +55,7 @@ public:
     QuadTree(const vector<shared_ptr<Model>> & models, MetadataMode num_values_mode = MetadataMode::AVERAGE, size_t max_depth = 10);
     QuadTree(shared_ptr<Layer> layer, MetadataMode num_values_mode = MetadataMode::AVERAGE, size_t max_depth = 10);
     void merge_at_level(size_t merge_models_at_level);
-    void filter_metadata(const vector<string> & keys);
+    void filter_metadata(const vector<string> & keys_to_keep);
     void to_json(const string & dirname, size_t yield_models_at_level, bool store_metadata = true) const;
 protected:
     void init(const vector<shared_ptr<Model>> & models, MetadataMode num_values_mode, size_t max_depth);

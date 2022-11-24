@@ -8,7 +8,7 @@ from metacity.geometry import Progress
 __all__ = ["parse", "parse_recursively"]
 
 
-def parse(file: str, progress: Progress = None):
+def parse_model(file: str, progress: Progress = None):
     if progress is None:
         progress = Progress("Loading Model")
 
@@ -25,9 +25,18 @@ def parse_recursively(directory: str):
     models = []
     progress = Progress("Loading Models")
     for file in fs.list_files_recursive(directory):
-        submodels = parse(file, progress)
+        submodels = parse_model(file, progress)
         if submodels is not None:
             models.extend(submodels)
     return models
+
+
+def parse(file_or_dir: str):
+    if fs.file_exists(file_or_dir):
+        return parse_model(file_or_dir)
+    elif fs.dir_exists(file_or_dir):
+        return parse_recursively(file_or_dir)
+    else:
+        raise ValueError(f"File or directory {file_or_dir} does not exist")
 
         
