@@ -6,7 +6,6 @@ COPY src ./src
 COPY tests ./tests
 COPY CMakeLists.txt pyproject.toml setup.py MANIFEST.in README.md ./
 RUN pip install .
-RUN pip install pytest
-CMD ["pytest", "."]
+CMD ["python", "-m", "metacity", "--config", "/config/config.json"]
 
 

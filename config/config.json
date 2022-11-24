@@ -1,0 +1,11 @@
+{
+    "input": "/datasets/stromy_shp/selekce",
+    "map_to_layer": "/datasets/PrahaTeren/",
+    "output": "/datasets/out/",
+    "tree": {
+        "max_depth": 10,
+        "tile_level": 6,
+        "aggregate_mode": "AVERAGE",
+        "merge_tiles": true
+    }
+}  

@@ -39,6 +39,17 @@ struct BBox
         max.z = std::max(l[0].z, l[1].z);
     }
 
+
+    inline void for_line(const tvec3 a, const tvec3 b)
+    {
+        min.x = std::min(a.x, b.x);
+        min.y = std::min(a.y, b.y);
+        min.z = std::min(a.z, b.z);
+        max.x = std::max(a.x, b.x);
+        max.y = std::max(a.y, b.y);
+        max.z = std::max(a.z, b.z);
+    }
+
     inline void for_bboxes(const BBox &b1, const BBox &b2)
     {
         min.x = std::min(b1.min.x, b2.min.x);
@@ -61,6 +72,19 @@ struct BBox
         BBox box_tri;
         box_tri.for_triangle(a, b, c);
         return overlaps(box_tri);
+    }
+
+    inline bool overlaps(const tvec3 & a, const tvec3 & b) const
+    {
+        BBox box_tri;
+        box_tri.for_line(a, b);
+        return overlaps(box_tri);
+    }
+
+
+    inline bool overlaps(const tvec3 & a) const
+    {
+        return inside(a);
     }
 
     inline bool inside(const tvec3 &p) const

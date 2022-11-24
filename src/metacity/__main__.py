@@ -2,7 +2,7 @@ import argparse
 import metacity.utils.filesystem as fs
 import metacity.io as io
 import metacity.geometry as mg 
-from metacity.processor.config import Config
+from metacity.utils.config import Config
 
 
 def load_layer(path: str):
@@ -17,19 +17,21 @@ def load_layer(path: str):
 def export_tree(config: Config, layer: mg.Layer):
     treeConfig = config.tree
 
-    print(f"Building tree with config: {treeConfig.config}")
+    print(f"Building tree with mode {treeConfig.aggregate_mode}, max depth {treeConfig.max_depth}")
     tree = mg.QuadTree(layer, treeConfig.aggregate_mode, treeConfig.max_depth)
+    
     if treeConfig.merge_tiles:
         print(f"Merging tiles at level {treeConfig.tile_level}")
         tree.merge_at_level(treeConfig.tile_level)
     
-    print(f"Writing tree to {config.output}")
+    print(f"Recreating {config.output}")
     fs.recreate_dir(config.output)
 
     if treeConfig.keep_keys is not None:
         print(f"Keeping keys: {treeConfig.keep_keys}")
         tree.filter_metadata(treeConfig.keep_keys)
 
+    print(f"Writing tree to {config.output}, tile_level: {treeConfig.tile_level}")
     tree.to_json(config.output, treeConfig.tile_level)
 
 
