@@ -16,12 +16,12 @@ build-verbosity = 1
 
 [tool.cibuildwheel.macos]
 archs = ["universal2"]
-before-all = "brew install cgal"
+before-all = "brew install cgal gmp mpfr"
 
 [tool.cibuildwheel.linux]
 archs = ["auto64"]
-before-all = "sudo apt-get install libcgal-dev"
+before-all = "apt install libcgal-dev libgmp-dev libmpfr-dev"
 
 [tool.cibuildwheel.windows]
 archs = ["auto64"]
-before-all = "vcpkg install cgal"
+before-all = "vcpkg install cgal gmp mpfr"
